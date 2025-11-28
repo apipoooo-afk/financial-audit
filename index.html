@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <title>Financial Audit</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root{
+      --primary:#1a237e;
+      --primary-2:#3949ab;
+      --accent:#ffeb3b;
+      --bg:#f5f5f5;
+      --card:#ffffff;
+      --text:#222;
+      --muted:#666;
+      --green:#2e7d32;
+      --red:#c62828;
+    }
+    *{box-sizing:border-box;}
+    body{
+      margin:0; font-family:"Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      color:var(--text); background:var(--bg);
+    }
+    a{color:var(--primary); text-decoration:none;}
+    header{
+      position:sticky; top:0; z-index:50;
+      background:var(--primary); color:#fff;
+      box-shadow:0 2px 8px rgba(0,0,0,0.15);
+    }
+    .container{max-width:1080px; margin:0 auto; padding:0 20px;}
+    .header-inner{
+      display:flex; align-items:center; justify-content:space-between; padding:14px 0;
+    }
+    .brand{display:flex; align-items:center; gap:10px; font-weight:700; font-size:20px;}
+    nav ul{list-style:none; display:flex; gap:22px; margin:0; padding:0;}
+    nav a{color:#fff; font-weight:500; padding:8px 6px; border-radius:4px;}
+    nav a:hover{background:rgba(255,255,255,0.12);}
+    .hero{
+      background:linear-gradient(135deg, #e8eaf6, #fff);
+      padding:50px 0;
+      border-bottom:1px solid #e0e0e0;
+    }
+    .hero-inner{
+      display:grid; grid-template-columns:1.2fr 0.8fr; gap:24px; align-items:center;
+    }
+    .hero h1{margin:0 0 10px 0; color:var(--primary); font-size:32px;}
+    .hero p{margin:0 0 16px 0; color:var(--muted);}
+    .btn{
+      display:inline-block; padding:12px 18px; border-radius:6px; font-weight:600;
+      background:var(--primary); color:#fff;
+      transition:background .2s ease;
+    }
+    .btn:hover{background:var(--primary-2);}
+    .btn-outline{
+      background:#fff; color:var(--primary); border:1px solid var(--primary);
+    }
+    main section{padding:36px 0;}
+    h2{color:var(--primary); margin:0 0 14px 0;}
+    .card{
+      background:var(--card); border:1px solid #e0e0e0; border-radius:10px;
+      box-shadow:0 2px 8px rgba(0,0,0,0.06); padding:18px;
+    }
+    .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:20px;}
+    label{display:block; font-weight:600; margin:12px 0 6px;}
+    input[type="text"], input[type="email"], input[type="password"]{
+      width:100%; padding:10px; border:1px solid #ccc; border-radius:6px; font-size:14px;
+    }
+    button{
+      padding:10px 16px; border:none; border-radius:6px; font-weight:600; cursor:pointer;
+      background:var(--primary); color:#fff;
+    }
+    button:hover{background:var(--primary-2);}
+    .muted{color:var(--muted); font-size:13px;}
+    .status{padding:8px 12px; border-radius:6px; font-size:12px; font-weight:700;}
+    .status-pending{background:#fff8e1; color:#8a6d3b; border:1px solid #ffe0b2;}
+    .status-approved{background:#e8f5e9; color:#1b5e20; border:1px solid #c8e6c9;}
+    .status-rejected{background:#ffebee; color:#b71c1c; border:1px solid #ffcdd2;}
+    table{width:100%; border-collapse:collapse; margin-top:10px;}
+    th, td{border:1px solid #e0e0e0; padding:10px; text-align:left;}
+    th{background:#f0f2ff; color:#2c3e50;}
+    .actions{display:flex; gap:8px;}
+    .approve{background:var(--green);}
+    .approve:hover{background:#1b5e20;}
+    .reject{background:var(--red);}
+    .reject:hover{background:#8e0000;}
+    footer{
+      padding:26px 0; background:#12143d; color:#cfd8dc; margin-top:20px;
+    }
+    .footer-grid{display:grid; grid-template-columns:2fr 1fr; gap:20px;}
+    .small{font-size:12px;}
+    @media (max-width:860px){
+      .hero-inner{grid-template-columns:1fr;}
+      .grid-2{grid-template-columns:1fr;}
+      nav ul{gap:12px;}
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="container header-inner">
+      <div class="brand">📊 Financial Audit</div>
+      <nav>
+        <ul>
+          <li><a href="#home">หน้าแรก</a></li>
+          <li><a href="#about">เกี่ยวกับโครงการ</a></li>
+          <li><a href="#guidelines">แนวทางการตรวจสอบ</a></li>
+          <li><a href="#tips">ข้อแนะนำการใช้โปรแกรม</a></li>
+          <li><a href="#system">ระบบการตรวจสอบ</a></li>
+          <li><a href="#auth">ลงทะเบียน/เข้าสู่ระบบ</a></li>
+          <li><a href="#admin">ระบบ Admin</a></li>
+          <li><a href="#contact">ติดต่อเรา</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section id="home" class="hero">
+    <div class="container hero-inner">
+      <div>
+        <h1>การตรวจสอบการเงิน โปร่งใส ตรวจสอบได้ ตามมาตรฐาน</h1>
+        <p>ระบบนี้สนับสนุนแนวทางการตรวจสอบรายงานการเงิน พ.ศ. 2567 พร้อมระบบลงทะเบียนและอนุมัติจากผู้ดูแล (Admin) ก่อนเข้าใช้งานจริง</p>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <a class="btn" href="#guidelines">เปิดดูแนวทางการตรวจสอบ</a>
+          <a class="btn btn-outline" href="#auth">เริ่มต้นใช้งานระบบ</a>
+        </div>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0;">ลิงก์เอกสารแนวทาง 2567</h3>
+        <p class="muted">เปิดเอกสารอย่างเป็นทางการ เพื่อใช้อ้างอิงในการตรวจสอบ</p>
+        <a class="btn" target="_blank" href="documents/00 แนวทางการปฏิบัติงานตรวจสอบรายงานการเงิน 2567.pdf">🔗 เปิดดูเอกสาร PDF</a>
+      </div>
+    </div>
+  </section>
+
+  <main>
+    <!-- About -->
+    <section id="about">
+      <div class="container grid-2">
+        <div class="card">
+          <h2>เกี่ยวกับโครงการ</h2>
+          <p>โครงการ Financial Audit จัดทำขึ้นเพื่อรวบรวมแนวทางและเครื่องมือที่ช่วยให้หน่วยงานของรัฐและผู้ตรวจสอบสามารถดำเนินงานตรวจสอบการเงินได้ตามมาตรฐาน, โปร่งใส และตรวจสอบได้</p>
+          <p class="muted">ครอบคลุมหลักการ: ความเชื่อมั่นอย่างสมเหตุสมผล, ความมีสาระสำคัญ, ดุลพินิจและความสงสัยเชิงวิชาชีพ</p>
+        </div>
+        <div class="card">
+          <h3 style="margin-top:0;">ขอบเขต</h3>
+          <ul>
+            <li>ตรวจสอบความถูกต้องตามแม่บทการรายงานการเงิน</li>
+            <li>ตรวจสอบการปฏิบัติตามกฎหมายและระเบียบที่เกี่ยวข้อง</li>
+            <li>การวางแผน/ปฏิบัติงาน/รายงาน/เผยแพร่/ติดตามผล</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Guidelines -->
+    <section id="guidelines">
+      <div class="container card">
+        <h2>แนวทางการตรวจสอบการเงิน</h2>
+        <p>เอกสารแนวทางการปฏิบัติงานตรวจสอบรายงานการเงิน พ.ศ. 2567</p>
+        <a class="btn" target="_blank" href="documents/00 แนวทางการปฏิบัติงานตรวจสอบรายงานการเงิน 2567.pdf">🔗 เปิดดูเอกสาร PDF</a>
+        <p class="muted" style="margin-top:10px;">นำไฟล์ PDF ไปไว้ในโฟลเดอร์ documents/ แล้วปรับลิงก์ให้ตรงกับชื่อไฟล์จริง</p>
+      </div>
+    </section>
+
+    <!-- Tips -->
+    <section id="tips">
+      <div class="container card">
+        <h2>ข้อแนะนำการใช้โปรแกรม</h2>
+        <ul>
+          <li>สมัครผู้ใช้ด้วยข้อมูลจริงและอีเมลที่ใช้งานได้</li>
+          <li>รอการอนุมัติจาก Admin ก่อนเข้าสู่ระบบ</li>
+          <li>หลังอนุมัติ ระบบจะส่งรหัสผ่านหรือลิงก์ตั้งรหัสผ่านทางอีเมล</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- System overview -->
+    <section id="system">
+      <div class="container grid-2">
+        <div class="card">
+          <h2>ระบบการตรวจสอบ</h2>
+          <p>ตัวอย่างขั้นตอน: เปิดตรวจ, เก็บหลักฐาน, ประเมินความเสี่ยง, รายงานผล, เผยแพร่ และติดตามผล</p>
+          <div class="muted">สามารถต่อยอดด้วยการเชื่อมฐานข้อมูล, สร้างรายงานอัตโนมัติ และบันทึก Audit Log</div>
+        </div>
+        <div class="card">
+          <h3 style="margin-top:0;">ตัวอย่างโค้ดตรวจสอบสมดุล</h3>
+<pre style="white-space:pre-wrap; background:#f7f9ff; padding:10px; border:1px solid #e0e0e0; border-radius:8px;"><code>financial_statements = {
+  "assets": 1000000,
+  "liabilities": 400000,
+  "equity": 600000
+}
+assert financial_statements["assets"] == financial_statements["liabilities"] + financial_statements["equity"]
+</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- Auth: Register & Login -->
+    <section id="auth">
+      <div class="container grid-2">
+        <div class="card">
+          <h2>ลงทะเบียนผู้ใช้งาน</h2>
+          <form id="registerForm">
+            <label for="fullname">ชื่อ-นามสกุล</label>
+            <input type="text" id="fullname" required />
+            <label for="email">อีเมล</label>
+            <input type="email" id="email" required />
+            <label for="password">รหัสผ่าน (จะใช้งานหลังได้รับอนุมัติ)</label>
+            <input type="password" id="password" required />
+            <div style="margin-top:12px;">
+              <button type="submit">ส่งคำขอลงทะเบียน</button>
+            </div>
+          </form>
+          <p id="registerMsg" class="muted" style="margin-top:10px;"></p>
+          <div class="status status-pending" style="margin-top:10px;">สถานะการใช้งาน: รอการอนุมัติจาก Admin</div>
+        </div>
+
+        <div class="card">
+          <h2>เข้าสู่ระบบ</h2>
+          <form id="loginForm">
+            <label for="loginEmail">อีเมล</label>
+            <input type="email" id="loginEmail" required />
+            <label for="loginPassword">รหัสผ่าน</label>
+            <input type="password" id="loginPassword" required />
+            <div style="margin-top:12px;">
+              <button type="submit">เข้าสู่ระบบ</button>
+            </div>
+          </form>
+          <p id="loginMsg" class="muted" style="margin-top:10px;"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Admin Dashboard -->
+    <section id="admin">
+      <div class="container card">
+        <h2>ระบบ Admin</h2>
+        <p class="muted">ผู้ดูแลสามารถอนุมัติ/ปฏิเสธผู้สมัคร และระบบจะส่งรหัสผ่าน/ลิงก์ตั้งรหัสผ่านทางอีเมล (ตัวอย่างนี้จำลองการทำงาน)</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>ชื่อ-นามสกุล</th>
+              <th>อีเมล</th>
+              <th>สถานะ</th>
+              <th>การจัดการ</th>
+            </tr>
+          </thead>
+          <tbody id="adminTable"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <!-- Contact -->
+  <section id="contact">
+    <div class="container footer-grid">
+      <div class="card">
+        <h2>ติดต่อเรา</h2>
+        <p>เจ้าของโครงการ: apipoooo-afk</p>
+        <p>GitHub: <a href="https://github.com/apipoooo-afk/financial-audit" target="_blank">apipoooo-afk/financial-audit</a></p>
+        <p class="small muted">หมายเหตุ: ระบบอีเมลในตัวอย่างนี้เป็นการจำลอง คุณสามารถเชื่อมต่อบริการอีเมลจริง (เช่น SMTP, SendGrid) ในฝั่งเซิร์ฟเวอร์</p>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0;">ลิงก์ด่วน</h3>
+        <ul>
+          <li><a href="#guidelines">แนวทางการตรวจสอบ</a></li>
+          <li><a href="#auth">ลงทะเบียน/เข้าสู่ระบบ</a></li>
+          <li><a href="#admin">ระบบ Admin</a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container" style="display:flex; justify-content:space-between; align-items:center; gap:12px;">
+      <div>© 2025 Financial Audit</div>
+      <div class="small">ระบบเดโมสำหรับการนำเสนอและทดสอบ UX/UI</div>
+    </div>
+  </footer>
+
+  <!-- Demo Logic -->
+  <script>
+    // In-memory demo store
+    const store = {
+      users: [
+        { fullname: "สมชาย ใจดี", email: "somchai@example.com", password: "123456", status: "approved" },
+        { fullname: "สุดา สายใจ", email: "suda@example.com", password: "abcdef", status: "pending" }
+      ]
+    };
+
+    // Render Admin table
+    function renderAdminTable(){
+      const tbody = document.getElementById("adminTable");
+      tbody.innerHTML = "";
+      store.users.forEach(u => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${u.fullname}</td>
+          <td>${u.email}</td>
+          <td>
+            <span class="status ${u.status === "approved" ? "status-approved" : u.status === "rejected" ? "status-rejected" : "status-pending"}">
+              ${u.status}
+            </span>
+          </td>
+          <td class="actions">
+            <button class="approve" onclick="approveUser('${u.email}')">อนุมัติ</button>
+            <button class="reject" onclick="rejectUser('${u.email}')">ปฏิเสธ</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function approveUser(email){
+      const user = store.users.find(u => u.email === email);
+      if(!user) return alert("ไม่พบผู้ใช้");
+      user.status = "approved";
+
+      // Simulate sending email with password or reset link
+      console.log(`ส่งอีเมลไปยัง ${user.email}: แจ้งอนุมัติ พร้อมรหัสผ่าน/ลิงก์ตั้งรหัสผ่าน`);
+      alert(`✅ อนุมัติ ${user.fullname} แล้ว\nระบบได้ส่งอีเมลแจ้งรหัสผ่าน/ลิงก์ตั้งรหัสผ่าน`);
+      renderAdminTable();
+    }
+
+    function rejectUser(email){
+      const user = store.users.find(u => u.email === email);
+      if(!user) return alert("ไม่พบผู้ใช้");
+      user.status = "rejected";
+      console.log(`ส่งอีเมลไปยัง ${user.email}: แจ้งผลการสมัครว่าไม่ผ่าน`);
+      alert(`❌ ปฏิเสธ ${user.fullname}`);
+      renderAdminTable();
+    }
+
+    // Register
+    document.getElementById("registerForm").addEventListener("submit", function(e){
+      e.preventDefault();
+      const fullname = document.getElementById("fullname").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      if(!fullname || !email || !password){
+        return document.getElementById("registerMsg").innerText = "กรุณากรอกข้อมูลให้ครบถ้วน";
+      }
+      if(store.users.some(u => u.email === email)){
+        return document.getElementById("registerMsg").innerText = "อีเมลนี้ถูกใช้ลงทะเบียนแล้ว";
+      }
+      store.users.push({ fullname, email, password, status: "pending" });
+      document.getElementById("registerMsg").innerText = "✅ ส่งคำขอลงทะเบียนเรียบร้อย รอการอนุมัติจาก Admin";
+      renderAdminTable();
+      // Simulate notify admin
+      console.log(`แจ้งเตือน Admin: มีผู้สมัครใหม่ ${fullname} (${email})`);
+    });
+
+    // Login
+    document.getElementById("loginForm").addEventListener("submit", function(e){
+      e.preventDefault();
+      const email = document.getElementById("loginEmail").value.trim();
+      const password = document.getElementById("loginPassword").value.trim();
+      const user = store.users.find(u => u.email === email);
+
+      const msgEl = document.getElementById("loginMsg");
+      if(!user) return msgEl.innerText = "❌ ไม่พบผู้ใช้งาน";
+      if(user.status !== "approved") return msgEl.innerText = "⚠️ บัญชีนี้ยังไม่ได้รับการอนุมัติจาก Admin";
+      if(user.password !== password) return msgEl.innerText = "❌ รหัสผ่านไม่ถูกต้อง";
+
+      msgEl.innerText = "✅ เข้าสู่ระบบสำเร็จ!";
+    });
+
+    // Initial render
+    renderAdminTable();
+  </script>
+</body>
+</html>
