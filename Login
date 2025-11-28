@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>ระบบ Login - Financial Audit</title>
+</head>
+<body>
+  <h2>เข้าสู่ระบบ</h2>
+  <form id="loginForm">
+    <label>อีเมล</label>
+    <input type="email" id="email" required><br><br>
+
+    <label>รหัสผ่าน</label>
+    <input type="password" id="password" required><br><br>
+
+    <button type="submit">เข้าสู่ระบบ</button>
+  </form>
+
+  <p id="message"></p>
+
+  <script>
+    // จำลองฐานข้อมูลผู้ใช้
+    const users = [
+      { email: "somchai@example.com", password: "123456", status: "approved" },
+      { email: "suda@example.com", password: "abcdef", status: "pending" }
+    ];
+
+    document.getElementById("loginForm").addEventListener("submit", function(event){
+      event.preventDefault();
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      const user = users.find(u => u.email === email);
+
+      if(!user){
+        document.getElementById("message").innerText = "❌ ไม่พบผู้ใช้งาน";
+      } else if(user.status !== "approved"){
+        document.getElementById("message").innerText = "⚠️ บัญชีนี้ยังไม่ได้รับการอนุมัติจาก Admin";
+      } else if(user.password === password){
+        document.getElementById("message").innerText = "✅ เข้าสู่ระบบสำเร็จ!";
+      } else {
+        document.getElementById("message").innerText = "❌ รหัสผ่านไม่ถูกต้อง";
+      }
+    });
+  </script>
+</body>
+</html>
