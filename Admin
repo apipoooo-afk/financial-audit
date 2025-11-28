@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard - Financial Audit</title>
+  <style>
+    body { font-family: "Segoe UI", sans-serif; background: #f5f5f5; }
+    .container { width: 600px; margin: 50px auto; background: white; padding: 20px; border-radius: 8px; }
+    h2 { color: #1a237e; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 10px; text-align: center; }
+    button { padding: 8px 12px; margin: 5px; border: none; border-radius: 5px; cursor: pointer; }
+    .approve { background: green; color: white; }
+    .reject { background: red; color: white; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>📊 Admin Dashboard</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>ชื่อ-นามสกุล</th>
+          <th>อีเมล</th>
+          <th>สถานะ</th>
+          <th>การจัดการ</th>
+        </tr>
+      </thead>
+      <tbody id="userTable">
+        <!-- ตัวอย่างข้อมูล -->
+        <tr>
+          <td>สมชาย ใจดี</td>
+          <td>somchai@example.com</td>
+          <td>pending</td>
+          <td>
+            <button class="approve" onclick="approveUser('somchai@example.com')">อนุมัติ</button>
+            <button class="reject" onclick="rejectUser('somchai@example.com')">ปฏิเสธ</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    function approveUser(email){
+      alert("✅ อนุมัติผู้ใช้: " + email + " แล้ว");
+      // ในระบบจริง: อัพเดทสถานะในฐานข้อมูล และส่งอีเมลแจ้งผู้ใช้
+    }
+    function rejectUser(email){
+      alert("❌ ปฏิเสธผู้ใช้: " + email);
+      // ในระบบจริง: อัพเดทสถานะในฐานข้อมูล และส่งอีเมลแจ้งผล
+    }
+  </script>
+</body>
+</html>
