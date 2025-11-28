@@ -1,246 +1,80 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8" />
-  <title>Financial Audit System</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8">
+  <title>Financial Audit Showcase</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    :root {
-      --primary: #1a237e;
-      --accent: #ffd54f;
-      --bg: #f5f5f5;
-      --card: #ffffff;
-      --text: #222;
-      --muted: #666;
-      --green: #2e7d32;
-      --red: #c62828;
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-    }
-    header {
-      background: var(--primary);
-      color: white;
-      padding: 12px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 20px;
-      font-weight: bold;
-    }
-    .brand img {
-      height: 50px;
-    }
-    nav a {
-      color: white;
-      margin-left: 20px;
-      text-decoration: none;
-      font-weight: 500;
-    }
-    nav a:hover {
-      text-decoration: underline;
-      color: var(--accent);
-    }
-    .hero {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-      padding: 40px 20px;
-      background: linear-gradient(135deg, #e8eaf6, #fff);
-    }
-    .hero img {
-      width: 100%;
-      border-radius: 10px;
-    }
-    .btn {
-      display: inline-block;
-      padding: 12px 20px;
-      background: var(--primary);
-      color: white;
-      border-radius: 6px;
-      text-decoration: none;
-      font-weight: bold;
-      margin-top: 10px;
-    }
-    .btn:hover {
-      background: #3949ab;
-    }
-    section {
-      padding: 40px 20px;
-    }
-    .card {
-      background: var(--card);
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-      margin-bottom: 20px;
-    }
-    input, button {
-      padding: 10px;
-      margin-top: 8px;
-      width: 100%;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      font-size: 14px;
-    }
-    button {
-      background: var(--primary);
-      color: white;
-      font-weight: bold;
-      border: none;
-      cursor: pointer;
-    }
-    button:hover {
-      background: #3949ab;
-    }
-    .status {
-      margin-top: 10px;
-      padding: 8px;
-      border-radius: 6px;
-      font-size: 13px;
-      font-weight: bold;
-    }
-    .status-pending { background: #fff8e1; color: #8a6d3b; }
-    .status-approved { background: #e8f5e9; color: #1b5e20; }
-    .status-rejected { background: #ffebee; color: #b71c1c; }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-    }
-    th, td {
-      border: 1px solid #ddd;
-      padding: 10px;
-      text-align: left;
-    }
-    th {
-      background: #f0f2ff;
-    }
-    .actions button {
-      width: auto;
-      margin-right: 8px;
-    }
-    footer {
-      background: #12143d;
-      color: #cfd8dc;
-      padding: 20px;
-      text-align: center;
-      font-size: 13px;
-    }
+    body { margin:0; font-family: 'Segoe UI', sans-serif; background:#f9f9fb; color:#222; }
+    header { position:sticky; top:0; background:#1a237e; color:#fff; padding:15px 30px; display:flex; justify-content:space-between; align-items:center; }
+    header img { height:40px; }
+    nav a { color:#fff; margin-left:20px; text-decoration:none; font-weight:500; }
+    nav a:hover { color:#ffd54f; }
+    .hero { padding:60px 30px; background:linear-gradient(135deg,#e8eaf6,#fff); display:flex; justify-content:space-between; align-items:center; }
+    .hero-text { max-width:50%; }
+    .hero h1 { font-size:36px; color:#1a237e; }
+    .btn { display:inline-block; padding:12px 20px; background:#1a237e; color:#fff; border-radius:6px; text-decoration:none; margin-top:20px; }
+    .btn:hover { background:#3949ab; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:20px; padding:40px 30px; }
+    .card { background:#fff; border-radius:10px; box-shadow:0 4px 12px rgba(0,0,0,0.08); padding:20px; transition:transform .2s; }
+    .card:hover { transform:translateY(-5px); }
+    footer { background:#12143d; color:#cfd8dc; text-align:center; padding:20px; margin-top:40px; }
   </style>
 </head>
 <body>
 
-  <!-- Header -->
-  <header>
-    <div class="brand">
-      <img src="images/oag-logo.png" alt="สำนักงานการตรวจเงินแผ่นดิน">
-      Financial Audit System
-    </div>
-    <nav>
-      <a href="#home">หน้าแรก</a>
-      <a href="#guidelines">แนวทาง</a>
-      <a href="#auth">ลงทะเบียน/เข้าสู่ระบบ</a>
-      <a href="#admin">Admin</a>
-    </nav>
-  </header>
+<header>
+  <div class="brand">
+    <img src="images/oag-logo.png" alt="OAG Logo">
+    <span>Financial Audit System</span>
+  </div>
+  <nav>
+    <a href="#home">หน้าแรก</a>
+    <a href="#guidelines">แนวทาง</a>
+    <a href="#auth">เข้าสู่ระบบ</a>
+    <a href="#admin">Admin</a>
+  </nav>
+</header>
 
-  <!-- Hero -->
-  <section class="hero" id="home">
-    <div>
-      <h1>ตรวจสอบการเงินด้วยเทคโนโลยีที่โปร่งใสและทันสมัย</h1>
-      <p>ระบบสนับสนุนการตรวจสอบตามมาตรฐานของสำนักงานการตรวจเงินแผ่นดิน</p>
-      <a class="btn" href="#guidelines">📑 เปิดดูแนวทางการตรวจสอบ</a>
-    </div>
-    <div>
-      <img src="images/fintech-banner.png" alt="เทคโนโลยีการเงิน">
-    </div>
-  </section>
+<section class="hero" id="home">
+  <div class="hero-text">
+    <h1>ตรวจสอบการเงินด้วยเทคโนโลยีที่โปร่งใส</h1>
+    <p>ระบบสนับสนุนการตรวจสอบตามมาตรฐานของสำนักงานการตรวจเงินแผ่นดิน</p>
+    <a class="btn" href="#guidelines">📑 เปิดดูแนวทาง</a>
+  </div>
+  <div>
+    <img src="images/fintech-banner.png" alt="Fintech" style="width:100%;border-radius:10px;">
+  </div>
+</section>
 
-  <!-- Guidelines -->
-  <section id="guidelines">
-    <div class="card">
-      <h2>📄 แนวทางการตรวจสอบ</h2>
-      <p>เปิดเอกสารแนวทางการปฏิบัติงานตรวจสอบรายงานการเงิน พ.ศ. 2567</p>
-      <a class="btn" target="_blank" href="documents/00 แนวทางการปฏิบัติงานตรวจสอบรายงานการเงิน 2567.pdf">🔗 เปิดดูเอกสาร PDF</a>
-    </div>
-  </section>
+<section id="guidelines">
+  <h2 style="text-align:center;color:#1a237e;">แนวทางการตรวจสอบ</h2>
+  <div class="grid">
+    <div class="card">📊 <h3>มาตรฐานการเงิน</h3><p>แนวทางการตรวจสอบรายงานการเงิน พ.ศ.2567</p></div>
+    <div class="card">💹 <h3>การวิเคราะห์</h3><p>ระบบช่วยวิเคราะห์ความเสี่ยงและความโปร่งใส</p></div>
+    <div class="card">💳 <h3>ระบบลงทะเบียน</h3><p>ลงทะเบียนผู้ใช้งานพร้อมการอนุมัติจาก Admin</p></div>
+    <div class="card">🔗 <h3>การเชื่อมต่อ</h3><p>รองรับการเชื่อมโยงข้อมูลกับระบบการเงินอื่น</p></div>
+  </div>
+</section>
 
-  <!-- Auth -->
-  <section id="auth">
-    <div class="card">
-      <h2>ลงทะเบียนผู้ใช้งาน</h2>
-      <form id="registerForm">
-        <label>ชื่อ-นามสกุล</label>
-        <input type="text" id="fullname" required>
-        <label>อีเมล</label>
-        <input type="email" id="email" required>
-        <label>รหัสผ่าน</label>
-        <input type="password" id="password" required>
-        <button type="submit">ส่งคำขอลงทะเบียน</button>
-      </form>
-      <p id="registerMsg"></p>
-    </div>
+<section id="auth" style="padding:40px 30px;">
+  <h2 style="color:#1a237e;">เข้าสู่ระบบ / ลงทะเบียน</h2>
+  <!-- ฟอร์มลงทะเบียนและเข้าสู่ระบบ -->
+</section>
 
-    <div class="card">
-      <h2>เข้าสู่ระบบ</h2>
-      <form id="loginForm">
-        <label>อีเมล</label>
-        <input type="email" id="loginEmail" required>
-        <label>รหัสผ่าน</label>
-        <input type="password" id="loginPassword" required>
-        <button type="submit">เข้าสู่ระบบ</button>
-      </form>
-      <p id="loginMsg"></p>
-    </div>
-  </section>
+<section id="admin" style="display:none;padding:40px 30px;">
+  <h2 style="color:#1a237e;">ระบบ Admin</h2>
+  <!-- ตาราง Admin -->
+</section>
 
-  <!-- Admin -->
-  <section id="admin" style="display:none;">
-    <div class="card">
-      <h2>ระบบ Admin</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>ชื่อ</th>
-            <th>อีเมล</th>
-            <th>สถานะ</th>
-            <th>การจัดการ</th>
-          </tr>
-        </thead>
-        <tbody id="adminTable"></tbody>
-      </table>
-    </div>
-  </section>
+<footer>
+  © 2025 Financial Audit | สำนักงานการตรวจเงินแผ่นดิน
+</footer>
 
-  <!-- Footer -->
-  <footer>
-    © 2025 Financial Audit | สำนักงานการตรวจเงินแผ่นดิน
-  </footer>
+<script>
+  const isAdmin = false; // เปลี่ยนเป็น true ถ้าเป็น Admin
+  document.getElementById("admin").style.display = isAdmin ? "block" : "none";
+</script>
 
-  <script>
-    const store = {
-      users: [
-        { fullname: "สมชาย ใจดี", email: "somchai@example.com", password: "123456", status: "approved", role: "admin" },
-        { fullname: "สุดา สายใจ", email: "suda@example.com", password: "abcdef", status: "pending", role: "user" }
-      ],
-      currentUser: null
-    };
-
-    function renderAdminTable(){
-      const tbody = document.getElementById("adminTable");
-      tbody.innerHTML = "";
-      store.users.forEach(u => {
-        const
+</body>
+</html>
