@@ -1,0 +1,39 @@
+<header>
+  <div class="brand">
+    <img src="images/oag-logo.png" alt="สำนักงานการตรวจเงินแผ่นดิน" style="height:50px;">
+    <span>Financial Audit System</span>
+  </div>
+  <nav>
+    <a href="#home">หน้าแรก</a>
+    <a href="#guidelines">แนวทาง</a>
+    <a href="#auth">ลงทะเบียน/เข้าสู่ระบบ</a>
+    <a href="#admin">Admin</a>
+  </nav>
+</header>
+header {
+  background: #1a237e;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 20px;
+  font-weight: bold;
+}
+.brand img {
+  height: 50px;
+}
+nav a {
+  color: white;
+  margin-left: 20px;
+  text-decoration: none;
+  font-weight: 500;
+}
+nav a:hover {
+  text-decoration: underline;
+}
