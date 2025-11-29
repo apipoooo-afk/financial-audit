@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8">
-  <title>FA Login | Financial Audit System</title>
+  <title>FA Review Login | Financial Audit System</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <style>
@@ -158,13 +158,13 @@
 <body>
 
 <header>
-  <h1>🔐 Financial Audit – FA Login</h1>
-  <h3>เข้าสู่ระบบตรวจสอบการเงิน (FA System)</h3>
+  <h1>🔐 Financial Audit – Review Login</h1>
+  <h3>เข้าสู่ระบบสอบทาน (FA Review System)</h3>
 </header>
 
 <div class="wrap">
   <div class="card">
-    <h2>เข้าสู่ระบบตรวจสอบการเงิน</h2>
+    <h2>เข้าสู่ระบบสอบทาน</h2>
     <p class="muted">
       ใช้บัญชีที่ลงทะเบียนแล้วในระบบหลัก (หน้า <code>login.html</code>)<br>
       หากยังไม่มีบัญชี ให้กลับไปลงทะเบียนก่อน
@@ -172,16 +172,16 @@
 
     <div id="msgAlert" class="alert"></div>
 
-    <form id="faLoginForm">
-      <label for="faEmail">อีเมลที่ใช้ลงทะเบียน (Email)</label>
-      <input type="email" id="faEmail" required placeholder="เช่น apipoooo@gmail.com">
+    <form id="faReviewLoginForm">
+      <label for="faReviewEmail">อีเมลที่ใช้ลงทะเบียน (Email)</label>
+      <input type="email" id="faReviewEmail" required placeholder="เช่น apipoooo@gmail.com">
 
-      <label for="faPass">รหัสผ่าน (Password)</label>
-      <input type="password" id="faPass" required placeholder="กรอกรหัสผ่าน">
+      <label for="faReviewPass">รหัสผ่าน (Password)</label>
+      <input type="password" id="faReviewPass" required placeholder="กรอกรหัสผ่าน">
 
       <div class="row-remember">
         <label>
-          <input type="checkbox" id="rememberUser">
+          <input type="checkbox" id="rememberReviewUser">
           จำอีเมลผู้ใช้ (ไม่เกิน 3 เดือน)
         </label>
       </div>
@@ -195,14 +195,14 @@
       </div>
 
       <button type="submit" class="btn-primary">
-        ✅ เข้าสู่ระบบ FA System
+        ✅ เข้าสู่ระบบ FA Review System
       </button>
     </form>
 
     <div class="help">
       หาก Login ไม่ผ่าน ระบบจะพาคุณกลับไปหน้า
       <a href="login.html#register-section">ลงทะเบียนผู้ใช้ในระบบหลัก</a>
-      เพื่อยืนยัน / สร้างบัญชีใหม่ก่อนใช้งาน FA System
+      เพื่อยืนยัน / สร้างบัญชีใหม่ก่อนใช้งาน FA Review System
     </div>
 
     <div id="debugInfo" class="debug"></div>
@@ -223,8 +223,8 @@
     }
   }
 
-  // ==== จำอีเมล 3 เดือน ====
-  const REMEMBER_KEY = "fa-remember-email";
+  // ==== จำอีเมล 3 เดือน (สำหรับ Review แยกจาก FA ปกติ) ====
+  const REMEMBER_KEY = "fa-review-remember-email";
   function rememberEmail(email){
     const threeMonthsMs = 90 * 24 * 60 * 60 * 1000;
     const payload = { email, expiresAt: Date.now() + threeMonthsMs };
@@ -240,8 +240,8 @@
         localStorage.removeItem(REMEMBER_KEY);
         return;
       }
-      const emailInput = document.getElementById("faEmail");
-      const chk = document.getElementById("rememberUser");
+      const emailInput = document.getElementById("faReviewEmail");
+      const chk = document.getElementById("rememberReviewUser");
       if(emailInput) emailInput.value = data.email;
       if(chk) chk.checked = true;
     }catch(e){
@@ -249,16 +249,17 @@
     }
   }
 
-  // ==== Session (fas-session) ====
-  function createSession(email){
+  // ==== Session (fas-review-session) ====
+  function createReviewSession(email){
     const ttlMs = 8 * 60 * 60 * 1000; // 8 ชม.
     const session = {
       email,
       loginAt: Date.now(),
       expiresAt: Date.now() + ttlMs,
-      from: "fa-login"
+      role: "review",
+      from: "fa-review-login"
     };
-    localStorage.setItem("fas-session", JSON.stringify(session));
+    localStorage.setItem("fas-review-session", JSON.stringify(session));
   }
 
   // ==== Human check ====
@@ -289,21 +290,21 @@
     const users = loadUsersFromStorage();
     const dbg = document.getElementById("debugInfo");
     if(dbg){
-      dbg.textContent = `พบผู้ใช้ใน fas-users: ${users.length} บัญชี`;
+      dbg.textContent = `พบผู้ใช้ใน fas-users: ${users.length} บัญชี (ใช้สิทธิ์กับระบบสอบทานได้)`;
     }
 
-    // ถ้าเข้าหน้านี้เพราะไม่มี session จาก fa-menu.html
+    // ถ้าเข้าหน้านี้เพราะไม่มี session จาก fa-review-menu.html
     if(window.location.search.indexOf("reason=no-session") !== -1){
-      showError("กรุณาเข้าสู่ระบบก่อนใช้งาน FA System");
+      showError("กรุณาเข้าสู่ระบบก่อนใช้งาน FA Review System");
     }
 
-    const form = document.getElementById("faLoginForm");
+    const form = document.getElementById("faReviewLoginForm");
     form.addEventListener("submit", function(e){
       e.preventDefault();
-      const email = (document.getElementById("faEmail").value || "").trim().toLowerCase();
-      const pass = (document.getElementById("faPass").value || "").trim();
+      const email = (document.getElementById("faReviewEmail").value || "").trim().toLowerCase();
+      const pass = (document.getElementById("faReviewPass").value || "").trim();
       const ans = (document.getElementById("humanA").value || "").trim();
-      const remember = document.getElementById("rememberUser").checked;
+      const remember = document.getElementById("rememberReviewUser").checked;
 
       if(!email || !pass){
         showError("กรุณากรอกอีเมลและรหัสผ่านให้ครบถ้วน");
@@ -343,9 +344,9 @@
         localStorage.removeItem(REMEMBER_KEY);
       }
 
-      // สร้าง session แล้วไปหน้าเมนู FA
-      createSession(email);
-      window.location.href = "fa-menu.html";
+      // สร้าง session แยกของ Review แล้วไปหน้าเมนูสอบทาน
+      createReviewSession(email);
+      window.location.href = "fa-review-menu.html";
     });
   });
 </script>
