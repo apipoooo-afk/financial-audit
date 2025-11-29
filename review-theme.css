@@ -1,0 +1,49 @@
+body.review-bg {
+  background: #e9f5e9;
+  font-size: 1.2rem; /* เพิ่มขนาด */
+  font-family: "Sarabun", sans-serif;
+}
+
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  background: #0a7a36;
+  color: white;
+}
+
+.menu-grid {
+  margin: 30px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.menu-card {
+  padding: 25px;
+  border-radius: 12px;
+  background: white;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+  text-align: center;
+  font-size: 1.3rem;
+  text-decoration: none;
+  color: black;
+}
+
+.menu-card .icon {
+  font-size: 3rem;
+}
+
+.review1 { background: #e3ffe3; }
+.review2 { background: #d9ffe8; }
+.review3 { background: #e9fff5; }
+.review4 { background: #dafae6; }
+
+.login-box {
+  margin: 80px auto;
+  width: 330px;
+  padding: 25px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.2);
+}
