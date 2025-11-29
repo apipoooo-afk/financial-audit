@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>Review Login</title>
+<link rel="stylesheet" href="css/review-theme.css">
+<script>
+function loginReview() {
+  const u = document.getElementById("user").value;
+  const p = document.getElementById("pass").value;
+
+  // ตัวอย่างผู้ใช้ (คุณสามารถเชื่อมฐานข้อมูลจริงได้)
+  if (u === "reviewer" && p === "1234") {
+    sessionStorage.setItem("review_user", u);
+    window.location.href = "fa-review-menu.html";
+  } else {
+    alert("❌ เข้าสู่ระบบไม่สำเร็จ — โปรดลงทะเบียนใหม่");
+    window.location.href = "register.html";
+  }
+}
+</script>
+</head>
+<body class="review-bg">
+  <div class="login-box">
+    <h2>เข้าสู่ระบบสอบทาน</h2>
+    <input id="user" type="text" placeholder="ชื่อผู้ใช้">
+    <input id="pass" type="password" placeholder="รหัสผ่าน">
+    <button onclick="loginReview()">เข้าสู่ระบบ</button>
+  </div>
+</body>
+</html>
