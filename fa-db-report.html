@@ -1,1 +1,521 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>FA DB | รายงานการตรวจสอบการเงิน</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    --bg:#060818;
+    --card:#11152b;
+    --muted:#a3acc7;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Segoe UI",Arial,sans-serif;
+    background:var(--bg);
+    color:#fff;
+  }
+  header{
+    padding:18px 10px;
+    text-align:center;
+    background:linear-gradient(120deg,#0d47a1,#6f42c1);
+    box-shadow:0 4px 14px rgba(0,0,0,.6);
+  }
+  header h1{margin:0;font-size:22px;font-weight:800;}
+  header p{margin:4px 0 0;font-size:13px;color:var(--muted);}
+  .wrap{max-width:1000px;margin:18px auto 30px;padding:0 16px;}
+
+  .top-row{
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:8px;
+    font-size:13px;
+    color:var(--muted);
+    margin-bottom:10px;
+  }
+  .card{
+    background:var(--card);
+    border-radius:16px;
+    border:1px solid rgba(255,255,255,.14);
+    padding:14px 14px 10px;
+    margin-bottom:14px;
+    box-shadow:0 8px 20px rgba(0,0,0,.55);
+  }
+  h2{margin:0 0 10px;font-size:18px;}
+
+  label{display:block;font-size:13px;margin-top:6px;}
+  input,textarea{
+    width:100%;
+    margin-top:4px;
+    padding:7px 8px;
+    border-radius:8px;
+    border:1px solid rgba(255,255,255,.18);
+    background:#05081a;
+    color:#fff;
+    font-size:13px;
+  }
+  textarea{min-height:60px;resize:vertical;}
+  input:focus,textarea:focus{
+    outline:none;
+    border-color:#20c997;
+  }
+  .form-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:8px 12px;
+  }
+
+  .btn-row{
+    margin-top:10px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    align-items:center;
+  }
+  button,.nav-btn{
+    border:none;
+    border-radius:999px;
+    padding:8px 14px;
+    font-size:13px;
+    cursor:pointer;
+  }
+  .btn-primary{background:#20c997;color:#000;font-weight:700;}
+  .btn-secondary{background:#374151;color:#e5e7eb;}
+  .btn-danger{background:#b91c1c;color:#fff;}
+
+  table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:12px;
+    margin-top:6px;
+  }
+  th,td{
+    border:1px solid rgba(148,163,184,.4);
+    padding:6px 5px;
+  }
+  th{background:#020617;font-weight:600;}
+  tr:nth-child(even){background:rgba(15,23,42,.8);}
+
+  .actions button{margin-right:4px;margin-bottom:2px;}
+
+  .stat-box span{margin-right:10px;}
+
+  a.nav{
+    display:inline-block;
+    margin-top:10px;
+    margin-right:8px;
+    color:#e0e7ff;
+    text-decoration:none;
+    font-size:13px;
+  }
+
+  input[type="file"]{padding:4px 0;}
+
+  .note{
+    font-size:12px;
+    color:var(--muted);
+    margin-top:4px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📑 FA DB – รายงานการตรวจสอบการเงิน</h1>
+  <p>Financial Audit Reports Database</p>
+</header>
+
+<div class="wrap">
+
+  <div class="top-row">
+    <div>ผู้ใช้งาน: <strong id="userEmail">-</strong></div>
+    <div class="stat-box">
+      👁 รอบนี้: <strong id="statCurrent">0</strong>
+      🔄 สะสม: <strong id="statTotal">0</strong>
+    </div>
+  </div>
+
+  <!-- ฟอร์มบันทึก/แก้ไข -->
+  <div class="card">
+    <h2>บันทึก / แก้ไขรายงานการตรวจสอบการเงิน</h2>
+    <form id="dataForm">
+      <div class="form-grid">
+        <div>
+          <label>หน่วยรับตรวจ (entity)</label>
+          <input type="text" id="f-entity" placeholder="เช่น อบต.ปรือใหญ่" required>
+        </div>
+        <div>
+          <label>ปีงบประมาณ (fy)</label>
+          <input type="text" id="f-fy" placeholder="เช่น 2567" required>
+        </div>
+        <div>
+          <label>ประเภทรายงาน (reportType)</label>
+          <input type="text" id="f-reportType" placeholder="เช่น รายงานการตรวจสอบการเงิน">
+        </div>
+        <div>
+          <label>ลักษณะความเห็นผู้สอบบัญชี (opinion)</label>
+          <input type="text" id="f-opinion" placeholder="เช่น ให้ความเห็นอย่างไม่มีเงื่อนไข">
+        </div>
+        <div>
+          <label>เลขที่รายงาน / อ้างอิง (refNo)</label>
+          <input type="text" id="f-refNo">
+        </div>
+      </div>
+
+      <label>หมายเหตุ/ข้อสรุปสำคัญ (remark)</label>
+      <textarea id="f-remark"></textarea>
+
+      <div class="btn-row">
+        <button type="submit" class="btn-primary" id="btnSave">บันทึกข้อมูล</button>
+        <button type="button" class="btn-secondary" id="btnClear">ล้างฟอร์ม</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- ตาราง + Import/Export -->
+  <div class="card">
+    <h2>ตารางรายงานการตรวจสอบการเงิน</h2>
+    <div class="note">
+      * ข้อมูลเก็บใน localStorage: <code>fa-db-data-report</code><br>
+      * สามารถ Import จากไฟล์ CSV ที่มาจากคอมพิวเตอร์, ระบบ e-LAAS (ผ่านไฟล์ export) และ Google Drive (ลิงก์ CSV)
+    </div>
+
+    <div class="btn-row" style="margin-top:8px;">
+      <!-- Import จากคอมพิวเตอร์ / e-LAAS -->
+      <label style="font-size:12px;">
+        📥 Import CSV (คอมพิวเตอร์ / e-LAAS):
+        <input type="file" id="csvFile" accept=".csv">
+      </label>
+
+      <!-- Import จาก Google Drive -->
+      <div style="flex:1;min-width:220px;">
+        <label style="font-size:12px;">📥 Import จาก Google Drive (ลิงก์ CSV แชร์แบบ Anyone with the link)</label>
+        <input type="text" id="driveUrl" placeholder="วางลิงก์ Google Drive ที่เป็นไฟล์ CSV">
+      </div>
+      <button type="button" class="btn-secondary" id="btnImportDrive">ดึงจาก Google Drive</button>
+
+      <!-- Export และ Delete -->
+      <button type="button" class="btn-secondary" id="btnExport">📤 Export CSV</button>
+      <button type="button" class="btn-danger" id="btnDeleteAll">🗑 ลบทั้งหมด</button>
+    </div>
+
+    <div class="note">
+      รูปแบบหัวตาราง CSV ที่ระบบคาดหวัง: <br>
+      <code>entity,fy,reportType,opinion,refNo,remark</code>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>หน่วยรับตรวจ</th>
+          <th>ปีงบประมาณ</th>
+          <th>ประเภทรายงาน</th>
+          <th>ความเห็น</th>
+          <th>เลขที่อ้างอิง</th>
+          <th>หมายเหตุ</th>
+          <th>จัดการ</th>
+        </tr>
+      </thead>
+      <tbody id="dataBody"></tbody>
+    </table>
+  </div>
+
+  <a href="fa-database-menu.html" class="nav">⬅ กลับเมนูฐานข้อมูล</a>
+  <a href="index.html" class="nav">⬅ กลับหน้าแรก</a>
+
+</div>
+
+<script>
+/* ================== CONFIG ================== */
+const MODULE_KEY   = "report";
+const STORAGE_KEY  = "fa-db-data-" + MODULE_KEY;
+const TOTAL_KEY    = "fa-db-total-" + MODULE_KEY;
+const SESSION_KEY  = "fa-db-session-" + MODULE_KEY;
+
+let data = [];
+let editIndex = -1;
+
+/* ================== SESSION ================== */
+function checkSession(){
+  const raw = localStorage.getItem("fas-session");
+  if(!raw){
+    location.href = "fa-database-login.html";
+    return;
+  }
+  try{
+    const s = JSON.parse(raw);
+    if(Date.now() > s.expiresAt){
+      localStorage.removeItem("fas-session");
+      location.href = "fa-database-login.html";
+      return;
+    }
+    document.getElementById("userEmail").textContent = s.email || "-";
+  }catch(e){
+    location.href = "fa-database-login.html";
+  }
+}
+
+/* ================== STATS ================== */
+function updateStatsOnLoad(){
+  const total = Number(localStorage.getItem(TOTAL_KEY) || "0") + 1;
+  const curr  = Number(sessionStorage.getItem(SESSION_KEY) || "0") + 1;
+  localStorage.setItem(TOTAL_KEY, String(total));
+  sessionStorage.setItem(SESSION_KEY, String(curr));
+  document.getElementById("statTotal").textContent   = total;
+  document.getElementById("statCurrent").textContent = curr;
+}
+
+/* ================== STORAGE ================== */
+function loadData(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    data = raw ? JSON.parse(raw) : [];
+  }catch{ data = []; }
+}
+function saveData(){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+
+/* ================== TABLE RENDER ================== */
+function renderTable(){
+  const tbody = document.getElementById("dataBody");
+  tbody.innerHTML = "";
+  data.forEach((row, idx) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${idx+1}</td>
+      <td>${row.entity || ""}</td>
+      <td>${row.fy || ""}</td>
+      <td>${row.reportType || ""}</td>
+      <td>${row.opinion || ""}</td>
+      <td>${row.refNo || ""}</td>
+      <td>${row.remark || ""}</td>
+      <td class="actions">
+        <button type="button" onclick="editRow(${idx})">แก้ไข</button>
+        <button type="button" onclick="deleteRow(${idx})">ลบ</button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+/* ================== FORM HELPERS ================== */
+function clearForm(){
+  document.getElementById("f-entity").value = "";
+  document.getElementById("f-fy").value = "";
+  document.getElementById("f-reportType").value = "";
+  document.getElementById("f-opinion").value = "";
+  document.getElementById("f-refNo").value = "";
+  document.getElementById("f-remark").value = "";
+  editIndex = -1;
+  document.getElementById("btnSave").textContent = "บันทึกข้อมูล";
+}
+
+/* ================== CRUD ================== */
+document.getElementById("dataForm").addEventListener("submit", e=>{
+  e.preventDefault();
+
+  const row = {
+    entity:     document.getElementById("f-entity").value.trim(),
+    fy:         document.getElementById("f-fy").value.trim(),
+    reportType: document.getElementById("f-reportType").value.trim(),
+    opinion:    document.getElementById("f-opinion").value.trim(),
+    refNo:      document.getElementById("f-refNo").value.trim(),
+    remark:     document.getElementById("f-remark").value.trim(),
+    updatedAt:  new Date().toISOString()
+  };
+
+  if(!row.entity || !row.fy){
+    alert("กรุณากรอก หน่วยรับตรวจ และ ปีงบประมาณ ให้ครบ");
+    return;
+  }
+
+  if(editIndex === -1){
+    row.createdAt = row.updatedAt;
+    data.push(row);
+  }else{
+    data[editIndex] = { ...data[editIndex], ...row };
+  }
+
+  saveData();
+  renderTable();
+  clearForm();
+});
+
+document.getElementById("btnClear").addEventListener("click", clearForm);
+
+window.editRow = function(idx){
+  const row = data[idx];
+  document.getElementById("f-entity").value     = row.entity     || "";
+  document.getElementById("f-fy").value         = row.fy         || "";
+  document.getElementById("f-reportType").value = row.reportType || "";
+  document.getElementById("f-opinion").value    = row.opinion    || "";
+  document.getElementById("f-refNo").value      = row.refNo      || "";
+  document.getElementById("f-remark").value     = row.remark     || "";
+  editIndex = idx;
+  document.getElementById("btnSave").textContent = "บันทึกการแก้ไข";
+};
+
+window.deleteRow = function(idx){
+  if(!confirm("ยืนยันการลบรายการนี้?")) return;
+  data.splice(idx, 1);
+  saveData();
+  renderTable();
+};
+
+document.getElementById("btnDeleteAll").addEventListener("click", ()=>{
+  if(!confirm("ลบข้อมูลทั้งหมดของหมวดนี้?")) return;
+  data = [];
+  saveData();
+  renderTable();
+});
+
+/* ================== CSV EXPORT ================== */
+function toCSV(){
+  const header = ["entity","fy","reportType","opinion","refNo","remark"];
+  const lines = [header.join(",")];
+
+  data.forEach(r=>{
+    const row = header.map(k=>{
+      const v = (r[k] || "").toString().replace(/"/g,'""');
+      return `"${v}"`;
+    });
+    lines.push(row.join(","));
+  });
+
+  return lines.join("\r\n");
+}
+
+document.getElementById("btnExport").addEventListener("click", ()=>{
+  const csv = toCSV();
+  const blob = new Blob([csv], {type:"text/csv;charset=utf-8;"});
+  const url  = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "fa-db-report.csv";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+});
+
+/* ================== CSV IMPORT – คอมพิวเตอร์ / e-LAAS ================== */
+document.getElementById("csvFile").addEventListener("change", e=>{
+  const file = e.target.files[0];
+  if(!file) return;
+
+  const reader = new FileReader();
+  reader.onload = evt => {
+    const text = evt.target.result;
+    importCSV(text);
+  };
+  reader.readAsText(file, "utf-8");
+});
+
+function importCSV(text){
+  const lines = text.split(/\r?\n/).filter(l=>l.trim()!=="");
+  if(lines.length < 2){
+    alert("ไฟล์ไม่มีข้อมูล");
+    return;
+  }
+  const header = lines[0].split(",").map(h=>h.replace(/(^"|"$)/g,"").trim());
+  const idxs = {
+    entity:     header.indexOf("entity"),
+    fy:         header.indexOf("fy"),
+    reportType: header.indexOf("reportType"),
+    opinion:    header.indexOf("opinion"),
+    refNo:      header.indexOf("refNo"),
+    remark:     header.indexOf("remark")
+  };
+  for(const k in idxs){
+    if(idxs[k] === -1){
+      alert("หัวตารางต้องมีคอลัมน์: entity, fy, reportType, opinion, refNo, remark");
+      return;
+    }
+  }
+
+  const imported = [];
+  for(let i=1;i<lines.length;i++){
+    const cols = lines[i].split(",").map(c=>c.replace(/(^"|"$)/g,""));
+    if(cols.length === 0) continue;
+    imported.push({
+      entity:     cols[idxs.entity]     || "",
+      fy:         cols[idxs.fy]         || "",
+      reportType: cols[idxs.reportType] || "",
+      opinion:    cols[idxs.opinion]    || "",
+      refNo:      cols[idxs.refNo]      || "",
+      remark:     cols[idxs.remark]     || "",
+      createdAt:  new Date().toISOString(),
+      updatedAt:  new Date().toISOString()
+    });
+  }
+
+  data = data.concat(imported);
+  saveData();
+  renderTable();
+  alert("นำเข้า CSV เรียบร้อย: " + imported.length + " รายการ");
+}
+
+/* ================== IMPORT จาก GOOGLE DRIVE ================== */
+/**
+ * แปลงลิงก์แชร์ Google Drive ให้เป็นลิงก์ดาวน์โหลดไฟล์ตรง
+ * รองรับทั้งรูปแบบ:
+ * - https://drive.google.com/file/d/FILE_ID/view?usp=sharing
+ * - https://drive.google.com/open?id=FILE_ID
+ * - ถ้าไม่พบ id จะคืนลิงก์เดิม (เผื่อกรณีเป็น direct link อยู่แล้ว)
+ */
+function buildDriveDownloadUrl(sharedUrl){
+  if(!sharedUrl) return "";
+  let idMatch = sharedUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
+  let fileId = null;
+  if(idMatch && idMatch[1]){
+    fileId = idMatch[1];
+  }else{
+    // ลองดูแบบ ?id=FILE_ID
+    const urlObj = new URL(sharedUrl, window.location.origin);
+    const idParam = urlObj.searchParams.get("id");
+    if(idParam) fileId = idParam;
+  }
+
+  if(fileId){
+    return "https://drive.google.com/uc?export=download&id=" + fileId;
+  }
+  return sharedUrl; // ถ้าเดาไม่ได้ ให้ลองใช้ตามเดิม
+}
+
+document.getElementById("btnImportDrive").addEventListener("click", ()=>{
+  const urlInput = document.getElementById("driveUrl").value.trim();
+  if(!urlInput){
+    alert("กรุณาวางลิงก์ Google Drive ก่อน");
+    return;
+  }
+
+  const dlUrl = buildDriveDownloadUrl(urlInput);
+  fetch(dlUrl)
+    .then(res => {
+      if(!res.ok) throw new Error("โหลดไฟล์ไม่สำเร็จ");
+      return res.text();
+    })
+    .then(text => {
+      importCSV(text);
+    })
+    .catch(err => {
+      console.error(err);
+      alert("ไม่สามารถดึงไฟล์จาก Google Drive ได้\nตรวจสอบว่าไฟล์เป็น CSV และแชร์แบบ Anyone with the link แล้ว");
+    });
+});
+
+/* ================== INIT ================== */
+checkSession();
+updateStatsOnLoad();
+loadData();
+renderTable();
+</script>
+
+</body>
+</html>
 
