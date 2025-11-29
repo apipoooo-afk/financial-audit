@@ -2,257 +2,318 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8">
-  <title>Financial Audit System | Digital • AI • Compliance by OAG</title>
+  <title>Financial Audit System | OAG Sisaket</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <style>
     :root {
-      --bg-main: #f4f6fb;
-      --bg-header: linear-gradient(120deg,#004b8d,#1967b3,#20a36b);
-      --bg-card: #ffffff;
-      --text-main: #111827;
-      --text-sub: #4b5563;
-      --accent: #2563eb;
-      --radius-lg: 18px;
-      --shadow-soft: 0 6px 18px rgba(15,23,42,0.18);
+      --bg-page: #f4f6fb;
+      --bg-header: linear-gradient(120deg,#0d6efd,#6f42c1,#20c997);
+      --text-main: #222;
+      --card-radius: 16px;
+      --shadow-soft: 0 4px 10px rgba(0,0,0,0.12);
     }
 
-    * { box-sizing:border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     body {
-      margin:0;
-      padding:0;
-      font-family:"Sarabun","Segoe UI",system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
-      background:var(--bg-main);
-      color:var(--text-main);
-      font-size:20px; /* ขยายตัวหนังสือใหญ่ขึ้น ~80% จาก default 11–12px */
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: var(--bg-page);
+      color: var(--text-main);
     }
 
     /* HEADER */
+
     header {
-      background:var(--bg-header);
-      color:#fff;
-      padding:20px 16px 18px;
-      box-shadow:0 2px 10px rgba(15,23,42,0.35);
-      position:sticky;
-      top:0;
-      z-index:10;
+      background: var(--bg-header);
+      color: #fff;
+      padding: 18px 20px 14px 20px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.25);
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
     }
 
-    .header-top {
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      flex-wrap:wrap;
+    .header-left {
+      max-width: 60%;
+      min-width: 260px;
     }
 
-    .brand-block {
-      display:flex;
-      flex-direction:column;
-      gap:4px;
+    .header-title {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: 0.4px;
     }
 
-    .brand-title {
-      font-size:1.8rem;
-      font-weight:700;
-      letter-spacing:0.03em;
+    .header-subtitle {
+      margin-top: 4px;
+      font-size: 14px;
+      opacity: 0.95;
     }
 
-    .brand-sub {
-      font-size:1rem;
-      opacity:0.9;
+    .header-tags {
+      margin-top: 6px;
+      font-size: 12px;
+      opacity: 0.9;
+    }
+
+    .header-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 6px;
+      min-width: 220px;
     }
 
     .theme-toggle {
-      display:flex;
-      align-items:center;
-      gap:8px;
-      font-size:1rem;
-      background:rgba(15,23,42,0.35);
-      padding:6px 12px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,0.25);
+      font-size: 13px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.35);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: default; /* ยังไม่ทำ dark mode จริง */
     }
 
-    .theme-toggle span {
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
+    .date-time-box {
+      background: rgba(0,0,0,0.18);
+      border-radius: 10px;
+      padding: 6px 10px;
+      font-size: 13px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 2px;
     }
 
-    /* MAIN LAYOUT */
-    main {
-      max-width:1100px;
-      margin:22px auto 40px;
-      padding:0 14px 24px;
+    .date-line {
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
-    .hero-card {
-      background:var(--bg-card);
-      border-radius:var(--radius-lg);
-      padding:18px 18px 16px;
-      box-shadow:var(--shadow-soft);
-      margin-bottom:18px;
-      display:flex;
-      flex-direction:column;
-      gap:6px;
+    .time-line {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      font-weight: 600;
     }
 
-    .hero-title {
-      font-size:1.4rem;
-      font-weight:700;
-      margin-bottom:2px;
+    .time-icon {
+      font-size: 18px;
     }
 
-    .hero-text {
-      font-size:0.98rem;
-      color:var(--text-sub);
-      line-height:1.5;
+    /* MAIN WRAPPER */
+
+    .main-wrapper {
+      max-width: 1120px;
+      margin: 18px auto 70px auto;
+      padding: 0 14px;
+    }
+
+    .top-info {
+      margin-bottom: 10px;
+      font-size: 13px;
+      color: #555;
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .top-info span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
     }
 
     /* MENU GRID */
+
     .menu-grid {
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
-      gap:16px;
-      margin-top:18px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 14px;
+      margin-top: 10px;
     }
 
     .menu-card {
-      background:var(--bg-card);
-      border-radius:var(--radius-lg);
-      padding:14px 15px;
-      box-shadow:var(--shadow-soft);
-      display:flex;
-      align-items:flex-start;
-      gap:12px;
-      text-decoration:none;
-      color:inherit;
-      position:relative;
-      overflow:hidden;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 14px 14px;
+      border-radius: var(--card-radius);
+      background: #ffffff;
+      box-shadow: var(--shadow-soft);
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s;
+      position: relative;
+      overflow: hidden;
     }
 
     .menu-card::after {
-      content:"";
-      position:absolute;
-      inset:auto -60px -60px auto;
-      width:120px;
-      height:120px;
-      opacity:0.14;
-      border-radius:999px;
-      transform:translate(24px,24px);
+      content: "";
+      position: absolute;
+      right: -20px;
+      top: -20px;
+      width: 80px;
+      height: 80px;
+      background: rgba(255,255,255,0.18);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .menu-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 14px rgba(0,0,0,0.18);
+      opacity: 0.97;
     }
 
     .menu-icon {
-      font-size:1.8rem;
-      flex-shrink:0;
-      margin-top:2px;
+      font-size: 30px;
+      flex-shrink: 0;
     }
 
     .menu-body {
-      display:flex;
-      flex-direction:column;
-      gap:2px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
     }
 
     .menu-title {
-      font-size:1.1rem;
-      font-weight:700;
-      margin-bottom:1px;
+      font-size: 16px;
+      font-weight: 700;
     }
 
     .menu-desc {
-      font-size:0.9rem;
-      color:var(--text-sub);
-      line-height:1.4;
+      font-size: 13px;
+      color: #222;
+      opacity: 0.9;
     }
 
     .menu-tag {
-      margin-top:4px;
-      display:inline-flex;
-      align-items:center;
-      gap:4px;
-      font-size:0.78rem;
-      padding:2px 8px;
-      border-radius:999px;
-      background:rgba(15,23,42,0.05);
-      color:#374151;
+      margin-top: 3px;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.7);
+      display: inline-block;
     }
 
-    /* สีแต่ละเมนู */
-    .m-home     { border-left:5px solid #0ea5e9; }
-    .m-login    { border-left:5px solid #6366f1; }
-    .m-admin    { border-left:5px solid #7c3aed; }
-    .m-guide    { border-left:5px solid #22c55e; }
-    .m-tips     { border-left:5px solid #14b8a6; }
-    .m-audit    { border-left:5px solid #f97316; }
-    .m-review   { border-left:5px solid #10b981; }
-    .m-tracking { border-left:5px solid #ec4899; }
-    .m-board    { border-left:5px solid #8b5cf6; }
-    .m-db       { border-left:5px solid #f59e0b; }
-    .m-bot      { border-left:5px solid #0ea5e9; }
-    .m-contact  { border-left:5px solid #6b7280; }
+    /* สีของแต่ละเมนู (แตกต่างกัน) */
 
-    .m-home::after     { background:#0ea5e9; }
-    .m-login::after    { background:#6366f1; }
-    .m-admin::after    { background:#7c3aed; }
-    .m-guide::after    { background:#22c55e; }
-    .m-tips::after     { background:#14b8a6; }
-    .m-audit::after    { background:#f97316; }
-    .m-review::after   { background:#10b981; }
-    .m-tracking::after { background:#ec4899; }
-    .m-board::after    { background:#8b5cf6; }
-    .m-db::after       { background:#f59e0b; }
-    .m-bot::after      { background:#0ea5e9; }
-    .m-contact::after  { background:#6b7280; }
+    .m-home   { background: linear-gradient(135deg,#fff,#e3f2fd); }
+    .m-login  { background: linear-gradient(135deg,#fff,#ffecb3); }
+    .m-guide  { background: linear-gradient(135deg,#fff,#e8f5e9); }
+    .m-tips   { background: linear-gradient(135deg,#fff,#fce4ec); }
+    .m-fa     { background: linear-gradient(135deg,#fff,#e1f5fe); }
+    .m-review { background: linear-gradient(135deg,#fff,#ede7f6); }
+    .m-track  { background: linear-gradient(135deg,#fff,#fff3e0); }
+    .m-board  { background: linear-gradient(135deg,#fff,#e0f2f1); }
+    .m-db     { background: linear-gradient(135deg,#fff,#f3e5f5); }
+    .m-bot    { background: linear-gradient(135deg,#fff,#ffe0e0); }
+    .m-contact{ background: linear-gradient(135deg,#fff,#e0f7fa); }
+    .m-admin  { background: linear-gradient(135deg,#fff,#f5f5f5); }
 
-    .menu-card:hover {
-      transform:translateY(-2px);
-      box-shadow:0 8px 18px rgba(15,23,42,0.24);
-      transition:all 0.16s ease-out;
+    /* FOOTER ADDRESS */
+
+    footer {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: #1f2933;
+      color: #f9fafb;
+      font-size: 12px;
+      padding: 6px 16px;
+      display: flex;
+      justify-content: center;
+      box-shadow: 0 -2px 8px rgba(0,0,0,0.35);
     }
 
-    /* RESPONSIVE */
-    @media (max-width:640px) {
-      .brand-title { font-size:1.5rem; }
-      .hero-card { padding:14px 13px; }
-      .menu-card { padding:12px 11px; }
-      body { font-size:18px; }
+    .footer-inner {
+      max-width: 1120px;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .footer-address {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .footer-phone {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .footer-address strong {
+      font-weight: 600;
+    }
+
+    @media (max-width: 768px) {
+      .header-left { max-width: 100%; }
+      .header-right { align-items: flex-start; }
+      header { padding-bottom: 18px; }
     }
   </style>
 </head>
-
 <body>
 
 <header>
-  <div class="header-top">
-    <div class="brand-block">
-      <div class="brand-title">Financial Audit System</div>
-      <div class="brand-sub">Digital • AI • Compliance by OAG</div>
+  <div class="header-left">
+    <div class="header-title">
+      Financial Audit System
+    </div>
+    <div class="header-subtitle">
+      Digital • AI • Compliance by OAG – ศูนย์ข้อมูลเพื่อการบริหารและการตรวจสอบดิจิทัล
+    </div>
+    <div class="header-tags">
+      กลุ่มตรวจสอบที่ 4 • สำนักงานการตรวจเงินแผ่นดินจังหวัดศรีสะเกษ
+    </div>
+  </div>
+
+  <div class="header-right">
+    <div class="theme-toggle">
+      ☀️ Light mode
+      <!-- ถ้าภายหลังอยากทำ Dark mode จริง ค่อยผูก JavaScript เพิ่มได้ -->
     </div>
 
-    <div class="theme-toggle">
-      <span>☀️</span>
-      <span>Light</span>
+    <div class="date-time-box">
+      <div class="date-line">
+        📅 <span id="thai-date">--</span>
+      </div>
+      <div class="time-line">
+        <span class="time-icon">🕒</span>
+        <span id="thai-time">--:--:--</span> น.
+      </div>
     </div>
   </div>
 </header>
 
-<main>
-  <!-- HERO / SUMMARY -->
-  <section class="hero-card">
-    <div class="hero-title">ระบการตรวจสอบการเงิน ของสำนักงานการตรวจเงินแผ่นดิน (FA)</div>
-    <p class="hero-text">
-      เลือกเมนูด้านล่างเพื่อเข้าสู่ระบบต่าง ๆ ของศูนย์ตรวจสอบการเงินดิจิทัล
-      ระบบ Login เดียวสามารถใช้งานได้ทุกระบบ ยกเว้น Admin
-      (ต้องมีสิทธิ์เฉพาะ) ส่วนระบบตรวจสอบการเงินและระบบสอบทาน
-      ใช้โครงสร้างข้อมูลและมาตรฐานเดียวกัน แยกหน้าที่ตามหลักการควบคุมภายใน
-    </p>
-  </section>
+<div class="main-wrapper">
 
-  <!-- MENU GRID -->
-  <section class="menu-grid">
+  <div class="top-info">
+    <span>📌 ระบบศูนย์รวมเมนูงานตรวจสอบด้านการเงิน สำหรับเจ้าหน้าที่ สตง.</span>
+    <span>✅ เข้าระบบ Login เพียงครั้งเดียว ใช้งานได้ทุกโมดูล (ยกเว้น Admin)</span>
+  </div>
+
+  <div class="menu-grid">
 
     <!-- หน้าแรก -->
     <a href="index.html" class="menu-card m-home">
@@ -260,73 +321,57 @@
       <div class="menu-body">
         <div class="menu-title">หน้าแรก</div>
         <div class="menu-desc">
-          ภาพรวมของระบบทั้งหมด ใช้เป็นจุดเริ่มต้นสำหรับผู้ใช้งานใหม่และผู้บริหาร
+          หน้ารวมระบบงานตรวจสอบและฐานข้อมูลดิจิทัลของ สตง. จังหวัดศรีสะเกษ
         </div>
-        <div class="menu-tag">Entry Point</div>
+        <div class="menu-tag">Portal</div>
       </div>
     </a>
 
-    <!-- Login รวม (ใช้สำหรับทุกระบบ ยกเว้น Admin) -->
-    <a href="login.html" class="menu-card m-login">
+    <!-- Login -->
+    <a href="fa-login.html" class="menu-card m-login">
       <div class="menu-icon">🔐</div>
       <div class="menu-body">
         <div class="menu-title">Login</div>
         <div class="menu-desc">
-          เข้าสู่ระบบหลักเพื่อใช้งาน ระบบตรวจสอบการเงิน ระบบสอบทาน
-          ระบบติดตามงานตรวจ Cash board และฐานข้อมูล
+          เข้าสู่ระบบเพื่อตรวจสอบสิทธิ์และเปิดใช้งานระบบตรวจสอบการเงินทั้งหมด (ยกเว้น Admin)
         </div>
-        <div class="menu-tag">Single Sign-On (SSO) ภายในระบบ</div>
-      </div>
-    </a>
-
-    <!-- Admin -->
-    <a href="admin.html" class="menu-card m-admin">
-      <div class="menu-icon">🛡️</div>
-      <div class="menu-body">
-        <div class="menu-title">Admin</div>
-        <div class="menu-desc">
-          จัดการสิทธิ์ผู้ใช้งาน อนุมัติคำขอเป็น Admin ตรวจสอบ Log
-          และตั้งค่าระบบ (สงวนสิทธิ์เฉพาะ Super Admin / Admin)
-        </div>
-        <div class="menu-tag">Access Control & Compliance</div>
+        <div class="menu-tag">Authentication</div>
       </div>
     </a>
 
     <!-- แนวทางตรวจสอบ -->
-    <a href="guideline.html" class="menu-card m-guide">
+    <a href="fa-audit-guide.html" class="menu-card m-guide">
       <div class="menu-icon">📑</div>
       <div class="menu-body">
         <div class="menu-title">แนวทางตรวจสอบ</div>
         <div class="menu-desc">
-          รวบรวมคู่มือ CA/PA แนวทางการตรวจสอบ ตัวอย่างกระดาษทำการ
-          และมาตรฐานการสอบทานสำหรับผู้ตรวจ
+          รวมคู่มือ แนวทาง มาตรฐานการตรวจสอบการเงิน และเอกสารอ้างอิงที่ใช้จริงในภาคสนาม
         </div>
-        <div class="menu-tag">Guideline • Manual</div>
+        <div class="menu-tag">Guideline</div>
       </div>
     </a>
 
     <!-- ข้อแนะนำใช้ระบบ -->
-    <a href="tips.html" class="menu-card m-tips">
+    <a href="fa-user-tips.html" class="menu-card m-tips">
       <div class="menu-icon">💡</div>
       <div class="menu-body">
         <div class="menu-title">ข้อแนะนำใช้ระบบ</div>
         <div class="menu-desc">
-          วิดีโอสั้น คู่มือ Step-by-step และ FAQ สำหรับการใช้งานระบบดิจิทัลทุกโมดูล
+          แนะนำขั้นตอนการเข้าใช้ระบบ การบันทึกข้อมูล และข้อควรระวังสำหรับผู้ตรวจสอบ
         </div>
-        <div class="menu-tag">How-to & FAQ</div>
+        <div class="menu-tag">How to Use</div>
       </div>
     </a>
 
     <!-- ระบบตรวจสอบการเงิน -->
-    <a href="fa-login.html" class="menu-card m-audit">
+    <a href="fa-menu.html" class="menu-card m-fa">
       <div class="menu-icon">📊</div>
       <div class="menu-body">
         <div class="menu-title">ระบบตรวจสอบการเงิน</div>
         <div class="menu-desc">
-          เข้าสู่ระบบตรวจสอบการเงิน (Financial Audit) ผ่านหน้า Login ของระบบตรวจสอบ
-          จากนั้นไปยังเมนู fa-menu และ 4 ระบบตรวจสอบจริง
+          เข้าเมนูหลักของการตรวจสอบการเงิน FA เชื่อมโยงแบบฟอร์ม กระดาษทำการ และรายงานต่าง ๆ
         </div>
-        <div class="menu-tag">Financial Audit</div>
+        <div class="menu-tag">FA System</div>
       </div>
     </a>
 
@@ -336,80 +381,130 @@
       <div class="menu-body">
         <div class="menu-title">ระบบสอบทาน</div>
         <div class="menu-desc">
-          ระบบสอบทานกระดาษทำการและผลการตรวจสอบ แยกสิทธิ์จากผู้ตรวจ
-          ใช้สถาปัตยกรรมเดียวกับระบบตรวจสอบการเงิน (fa-review-*) 
+          ระบบสอบทานงานตรวจสอบการเงิน (ประจำปี/ระหว่างปี ทั้ง อปท. และส่วนราชการ)
         </div>
-        <div class="menu-tag">Review • Second Layer</div>
+        <div class="menu-tag">Review</div>
       </div>
     </a>
 
     <!-- ระบบติดตามงานตรวจ -->
-    <a href="tracking.html" class="menu-card m-tracking">
+    <a href="fa-tracking.html" class="menu-card m-track">
       <div class="menu-icon">📌</div>
       <div class="menu-body">
         <div class="menu-title">ระบบติดตามงานตรวจ</div>
         <div class="menu-desc">
-          ติดตามผลการตรวจ ข้อเสนอแนะ และการตอบรับจากหน่วยรับตรวจ
-          เชื่อมโยงกับเลขที่รายงานและสถานะการปิดประเด็น
+          ติดตามสถานะการตรวจ รายงานผล ข้อเสนอแนะ และการตอบกลับของหน่วยรับตรวจ
         </div>
-        <div class="menu-tag">Follow-up & Status</div>
+        <div class="menu-tag">Follow-up</div>
       </div>
     </a>
 
-    <!-- Cash board -->
-    <a href="cashboard.html" class="menu-card m-board">
+    <!-- Cash board / Dashboard -->
+    <a href="fa-dashboard.html" class="menu-card m-board">
       <div class="menu-icon">📈</div>
       <div class="menu-body">
         <div class="menu-title">Cash board</div>
         <div class="menu-desc">
-          แผงควบคุมสรุปผลตัวเลขสำคัญแบบเรียลไทม์ รายได้ รายจ่าย
-          ตัวชี้วัดความเสี่ยง และ Performance ของทีมตรวจ
+          แดชบอร์ดภาพรวมข้อมูลการเงิน ตัวชี้วัดความเสี่ยง และสถิติสำคัญสำหรับผู้บริหาร
         </div>
-        <div class="menu-tag">Dashboard • KPI</div>
+        <div class="menu-tag">Dashboard</div>
       </div>
     </a>
 
     <!-- ฐานข้อมูล -->
-    <a href="database.html" class="menu-card m-db">
+    <a href="fa-database.html" class="menu-card m-db">
       <div class="menu-icon">🗄</div>
       <div class="menu-body">
         <div class="menu-title">ฐานข้อมูล</div>
         <div class="menu-desc">
-          ศูนย์ข้อมูลสำหรับเชื่อมต่อ Big Data, ฐานข้อมูลน้ำบาดาล,
-          ข้อมูลงบประมาณท้องถิ่น และข้อมูลเสริมการตรวจสอบอื่น ๆ
+          ศูนย์รวมฐานข้อมูลการตรวจสอบ บันทึกรายการ และคลังข้อมูลเพื่อการวิเคราะห์
         </div>
-        <div class="menu-tag">Data Hub</div>
+        <div class="menu-tag">Data Center</div>
       </div>
     </a>
 
-    <!-- Chatbot -->
+    <!-- Chatbot FA -->
     <a href="fa-chatbot.html" class="menu-card m-bot">
       <div class="menu-icon">🤖</div>
       <div class="menu-body">
-        <div class="menu-title">Chatbot</div>
+        <div class="menu-title">Chatbot FA</div>
         <div class="menu-desc">
-          ผู้ช่วยอัจฉริยะสำหรับตอบคำถามเกี่ยวกับระเบียบ กฎหมาย ขั้นตอนการตรวจสอบ
-          และสรุปข้อมูลจากฐานข้อมูลตรวจสอบ
+          ผู้ช่วยอัจฉริยะสำหรับตอบคำถามเกี่ยวกับระเบียบ กฎหมาย ขั้นตอนการตรวจสอบการเงิน
+          และสรุปข้อมูลจากฐานข้อมูลตรวจสอบ (RAG)
         </div>
         <div class="menu-tag">AI Assistant</div>
       </div>
     </a>
 
     <!-- ติดต่อ -->
-    <a href="contact.html" class="menu-card m-contact">
+    <a href="fa-contact.html" class="menu-card m-contact">
       <div class="menu-icon">📬</div>
       <div class="menu-body">
         <div class="menu-title">ติดต่อ</div>
         <div class="menu-desc">
-          ช่องทางติดต่อผู้ดูแลระบบ ทีมพัฒนา และทีมตรวจสอบ
-          เพื่อแจ้งปัญหา ขอเพิ่มฟีเจอร์ หรือประสานงาน
+          ข้อมูลติดต่อทีมงาน กลุ่มตรวจสอบที่ 4 และช่องทางประสานงานอื่น ๆ
         </div>
-        <div class="menu-tag">Support & Coordination</div>
+        <div class="menu-tag">Contact</div>
       </div>
     </a>
 
-  </section>
-</main>
+    <!-- Admin (ถ้าคุณมีระบบ admin แยก) -->
+    <a href="fa-admin.html" class="menu-card m-admin">
+      <div class="menu-icon">🛠</div>
+      <div class="menu-body">
+        <div class="menu-title">Admin</div>
+        <div class="menu-desc">
+          สำหรับผู้ดูแลระบบ: จัดการผู้ใช้ สิทธิการเข้าถึง และฐานข้อมูลระบบตรวจสอบ
+        </div>
+        <div class="menu-tag">Administrator</div>
+      </div>
+    </a>
+
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-address">
+      📍
+      <span>
+        <strong>สำนักงานการตรวจเงินแผ่นดินจังหวัดศรีสะเกษ</strong>
+        599 ตำบลหนองครก อำเภอเมือง จังหวัดศรีสะเกษ
+      </span>
+    </div>
+    <div class="footer-phone">
+      ☎️ <span>085-439-4099</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // แปลงวันที่เป็นรูปแบบไทย + พ.ศ.
+  function updateThaiDateTime() {
+    const now = new Date();
+
+    const thMonths = [
+      "มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน",
+      "กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"
+    ];
+
+    const d = now.getDate();
+    const m = now.getMonth();
+    const y = now.getFullYear() + 543; // แปลงเป็น พ.ศ.
+
+    const dateStr = `วันที่ ${d} ${thMonths[m]} พ.ศ. ${y}`;
+    const hh = String(now.getHours()).padStart(2,'0');
+    const mm = String(now.getMinutes()).padStart(2,'0');
+    const ss = String(now.getSeconds()).padStart(2,'0');
+    const timeStr = `${hh}:${mm}:${ss}`;
+
+    document.getElementById("thai-date").textContent = dateStr;
+    document.getElementById("thai-time").textContent = timeStr;
+  }
+
+  updateThaiDateTime();
+  setInterval(updateThaiDateTime, 1000);
+</script>
 
 </body>
 </html>
