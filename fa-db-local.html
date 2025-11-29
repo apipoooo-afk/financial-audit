@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>FA Database | หมวดข้อมูล</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  body{font-family:"Segoe UI";margin:0;background:#060818;color:#fff;}
+  header{
+    padding:20px;text-align:center;
+    background:linear-gradient(120deg,#6f42c1,#20c997);
+  }
+  .wrap{max-width:800px;margin:20px auto;padding:0 16px;}
+  a.back{display:block;margin-top:20px;color:#ccc;text-align:center;text-decoration:none;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🏘️ หมวดข้อมูล อปท.</h1>
+  <p>Local Government Database</p>
+</header>
+
+<div class="wrap">
+
+  <h2>ข้อมูล อปท.</h2>
+  <p>พื้นที่สำหรับบันทึกข้อมูล แสดงข้อมูล และเชื่อมต่อระบบอื่น ๆ</p>
+
+</div>
+
+<a href="fa-database-menu.html" class="back">⬅ กลับเมนูฐานข้อมูล</a>
+<a href="index.html" class="back">⬅ กลับหน้าแรก</a>
+
+<script>
+function checkSession(){
+  let raw=localStorage.getItem("fas-session");
+  if(!raw){ location.href="fa-database-login.html"; return; }
+  let s=JSON.parse(raw);
+  if(Date.now()>s.expiresAt){
+    localStorage.removeItem("fas-session");
+    location.href="fa-database-login.html";
+  }
+}
+checkSession();
+</script>
+
+</body>
+</html>
