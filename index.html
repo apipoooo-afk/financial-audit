@@ -79,7 +79,7 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      cursor: default; /* ยังไม่ทำ dark mode จริง */
+      cursor: default;
     }
 
     .date-time-box {
@@ -135,6 +135,20 @@
       gap: 6px;
     }
 
+    .top-stats {
+      margin: 10px 0 4px 0;
+      font-size: 13px;
+      color: #333;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .top-stats strong {
+      font-weight: 700;
+    }
+
     /* MENU GRID */
 
     .menu-grid {
@@ -186,11 +200,25 @@
       display: flex;
       flex-direction: column;
       gap: 4px;
+      width: 100%;
     }
 
     .menu-title {
       font-size: 16px;
       font-weight: 700;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: baseline;
+    }
+
+    .menu-en {
+      font-size: 12px;
+      font-weight: 500;
+      opacity: 0.85;
+      padding: 1px 7px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.7);
     }
 
     .menu-desc {
@@ -207,6 +235,23 @@
       border-radius: 999px;
       background: rgba(255,255,255,0.7);
       display: inline-block;
+    }
+
+    .menu-stats {
+      margin-top: 4px;
+      font-size: 11px;
+      color: #333;
+      opacity: 0.9;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .menu-stats span {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
     }
 
     /* สีของแต่ละเมนู (แตกต่างกัน) */
@@ -270,6 +315,10 @@
       .header-left { max-width: 100%; }
       .header-right { align-items: flex-start; }
       header { padding-bottom: 18px; }
+      .top-stats {
+        flex-direction: column;
+        align-items: flex-start;
+      }
     }
   </style>
 </head>
@@ -291,7 +340,6 @@
   <div class="header-right">
     <div class="theme-toggle">
       ☀️ Light mode
-      <!-- ถ้าภายหลังอยากทำ Dark mode จริง ค่อยผูก JavaScript เพิ่มได้ -->
     </div>
 
     <div class="date-time-box">
@@ -313,152 +361,245 @@
     <span>✅ เข้าระบบ Login เพียงครั้งเดียว ใช้งานได้ทุกโมดูล (ยกเว้น Admin)</span>
   </div>
 
+  <!-- แสดงสถิติรวม -->
+  <div class="top-stats">
+    <span>🟢 กำลังเข้าใช้งานระบบ (จำลอง): <strong id="current-online">0</strong> คน</span>
+    <span>👤 ผู้ใช้สะสมทั้งหมด (ทุกเมนูรวมกัน): <strong id="total-users-all">0</strong> ครั้ง</span>
+  </div>
+
   <div class="menu-grid">
 
     <!-- หน้าแรก -->
-    <a href="index.html" class="menu-card m-home">
+    <a href="index.html" class="menu-card m-home" data-menu-key="home">
       <div class="menu-icon">🏠</div>
       <div class="menu-body">
-        <div class="menu-title">หน้าแรก</div>
+        <div class="menu-title">
+          หน้าแรก
+          <span class="menu-en">Home</span>
+        </div>
         <div class="menu-desc">
           หน้ารวมระบบงานตรวจสอบและฐานข้อมูลดิจิทัลของ สตง. จังหวัดศรีสะเกษ
         </div>
         <div class="menu-tag">Portal</div>
+        <div class="menu-stats" data-menu-key="home">
+          <span>👁 ปัจจุบัน: <strong class="ms-current">0</strong></span>
+          <span>🔄 สะสม: <strong class="ms-total">0</strong></span>
+        </div>
       </div>
     </a>
 
     <!-- Login -->
-    <a href="fa-login.html" class="menu-card m-login">
+    <a href="fa-login.html" class="menu-card m-login" data-menu-key="login">
       <div class="menu-icon">🔐</div>
       <div class="menu-body">
-        <div class="menu-title">Login</div>
+        <div class="menu-title">
+          เข้าสู่ระบบ
+          <span class="menu-en">Login</span>
+        </div>
         <div class="menu-desc">
           เข้าสู่ระบบเพื่อตรวจสอบสิทธิ์และเปิดใช้งานระบบตรวจสอบการเงินทั้งหมด (ยกเว้น Admin)
         </div>
         <div class="menu-tag">Authentication</div>
+        <div class="menu-stats" data-menu-key="login">
+          <span>👁 ปัจจุบัน: <strong class="ms-current">0</strong></span>
+          <span>🔄 สะสม: <strong class="ms-total">0</strong></span>
+        </div>
       </div>
     </a>
 
     <!-- แนวทางตรวจสอบ -->
-    <a href="fa-audit-guide.html" class="menu-card m-guide">
+    <a href="fa-audit-guide.html" class="menu-card m-guide" data-menu-key="guide">
       <div class="menu-icon">📑</div>
       <div class="menu-body">
-        <div class="menu-title">แนวทางตรวจสอบ</div>
+        <div class="menu-title">
+          แนวทางตรวจสอบ
+          <span class="menu-en">Audit Guidelines</span>
+        </div>
         <div class="menu-desc">
           รวมคู่มือ แนวทาง มาตรฐานการตรวจสอบการเงิน และเอกสารอ้างอิงที่ใช้จริงในภาคสนาม
         </div>
         <div class="menu-tag">Guideline</div>
+        <div class="menu-stats" data-menu-key="guide">
+          <span>👁 ปัจจุบัน: <strong class="ms-current">0</strong></span>
+          <span>🔄 สะสม: <strong class="ms-total">0</strong></span>
+        </div>
       </div>
     </a>
 
     <!-- ข้อแนะนำใช้ระบบ -->
-    <a href="fa-user-tips.html" class="menu-card m-tips">
+    <a href="fa-user-tips.html" class="menu-card m-tips" data-menu-key="tips">
       <div class="menu-icon">💡</div>
       <div class="menu-body">
-        <div class="menu-title">ข้อแนะนำใช้ระบบ</div>
+        <div class="menu-title">
+          ข้อแนะนำใช้ระบบ
+          <span class="menu-en">User Tips</span>
+        </div>
         <div class="menu-desc">
           แนะนำขั้นตอนการเข้าใช้ระบบ การบันทึกข้อมูล และข้อควรระวังสำหรับผู้ตรวจสอบ
         </div>
         <div class="menu-tag">How to Use</div>
+        <div class="menu-stats" data-menu-key="tips">
+          <span>👁 ปัจจุบัน: <strong class="ms-current">0</strong></span>
+          <span>🔄 สะสม: <strong class="ms-total">0</strong></span>
+        </div>
       </div>
     </a>
 
     <!-- ระบบตรวจสอบการเงิน -->
-    <a href="fa-menu.html" class="menu-card m-fa">
+    <a href="fa-menu.html" class="menu-card m-fa" data-menu-key="fa">
       <div class="menu-icon">📊</div>
       <div class="menu-body">
-        <div class="menu-title">ระบบตรวจสอบการเงิน</div>
+        <div class="menu-title">
+          ระบบตรวจสอบการเงิน
+          <span class="menu-en">Financial Audit System</span>
+        </div>
         <div class="menu-desc">
           เข้าเมนูหลักของการตรวจสอบการเงิน FA เชื่อมโยงแบบฟอร์ม กระดาษทำการ และรายงานต่าง ๆ
         </div>
         <div class="menu-tag">FA System</div>
+        <div class="menu-stats" data-menu-key="fa">
+          <span>👁 ปัจจุบัน: <strong class="ms-current">0</strong></span>
+          <span>🔄 สะสม: <strong class="ms-total">0</strong></span>
+        </div>
       </div>
     </a>
 
     <!-- ระบบสอบทาน -->
-    <a href="fa-review-login.html" class="menu-card m-review">
+    <a href="fa-review-login.html" class="menu-card m-review" data-menu-key="review">
       <div class="menu-icon">🧮</div>
       <div class="menu-body">
-        <div class="menu-title">ระบบสอบทาน</div>
+        <div class="menu-title">
+          ระบบสอบทาน
+          <span class="menu-en">Review System</span>
+        </div>
         <div class="menu-desc">
           ระบบสอบทานงานตรวจสอบการเงิน (ประจำปี/ระหว่างปี ทั้ง อปท. และส่วนราชการ)
         </div>
         <div class="menu-tag">Review</div>
+        <div class="menu-stats" data-menu-key="review">
+          <span>👁 ปัจจุบัน: <strong class="ms-current">0</strong></span>
+          <span>🔄 สะสม: <strong class="ms-total">0</strong></span>
+        </div>
       </div>
     </a>
 
     <!-- ระบบติดตามงานตรวจ -->
-    <a href="fa-tracking.html" class="menu-card m-track">
+    <a href="fa-tracking.html" class="menu-card m-track" data-menu-key="track">
       <div class="menu-icon">📌</div>
       <div class="menu-body">
-        <div class="menu-title">ระบบติดตามงานตรวจ</div>
+        <div class="menu-title">
+          ระบบติดตามงานตรวจ
+          <span class="menu-en">Audit Tracking</span>
+        </div>
         <div class="menu-desc">
           ติดตามสถานะการตรวจ รายงานผล ข้อเสนอแนะ และการตอบกลับของหน่วยรับตรวจ
         </div>
         <div class="menu-tag">Follow-up</div>
+        <div class="menu-stats" data-menu-key="track">
+          <span>👁 ปัจจุบัน: <strong class="ms-current">0</strong></span>
+          <span>🔄 สะสม: <strong class="ms-total">0</strong></span>
+        </div>
       </div>
     </a>
 
     <!-- Cash board / Dashboard -->
-    <a href="fa-dashboard.html" class="menu-card m-board">
+    <a href="fa-dashboard.html" class="menu-card m-board" data-menu-key="board">
       <div class="menu-icon">📈</div>
       <div class="menu-body">
-        <div class="menu-title">Cash board</div>
+        <div class="menu-title">
+          Cash board
+          <span class="menu-en">Dashboard</span>
+        </div>
         <div class="menu-desc">
           แดชบอร์ดภาพรวมข้อมูลการเงิน ตัวชี้วัดความเสี่ยง และสถิติสำคัญสำหรับผู้บริหาร
         </div>
         <div class="menu-tag">Dashboard</div>
+        <div class="menu-stats" data-menu-key="board">
+          <span>👁 ปัจจุบัน: <strong class="ms-current">0</strong></span>
+          <span>🔄 สะสม: <strong class="ms-total">0</strong></span>
+        </div>
       </div>
     </a>
 
     <!-- ฐานข้อมูล -->
-    <a href="fa-database.html" class="menu-card m-db">
+    <a href="fa-database.html" class="menu-card m-db" data-menu-key="db">
       <div class="menu-icon">🗄</div>
       <div class="menu-body">
-        <div class="menu-title">ฐานข้อมูล</div>
+        <div class="menu-title">
+          ฐานข้อมูล
+          <span class="menu-en">Database</span>
+        </div>
         <div class="menu-desc">
           ศูนย์รวมฐานข้อมูลการตรวจสอบ บันทึกรายการ และคลังข้อมูลเพื่อการวิเคราะห์
         </div>
         <div class="menu-tag">Data Center</div>
+        <div class="menu-stats" data-menu-key="db">
+          <span>👁 ปัจจุบัน: <strong class="ms-current">0</strong></span>
+          <span>🔄 สะสม: <strong class="ms-total">0</strong></span>
+        </div>
       </div>
     </a>
 
     <!-- Chatbot FA -->
-    <a href="fa-chatbot.html" class="menu-card m-bot">
+    <a href="fa-chatbot.html" class="menu-card m-bot" data-menu-key="bot">
       <div class="menu-icon">🤖</div>
       <div class="menu-body">
-        <div class="menu-title">Chatbot FA</div>
+        <div class="menu-title">
+          Chatbot FA
+          <span class="menu-en">FA Chatbot</span>
+        </div>
         <div class="menu-desc">
           ผู้ช่วยอัจฉริยะสำหรับตอบคำถามเกี่ยวกับระเบียบ กฎหมาย ขั้นตอนการตรวจสอบการเงิน
           และสรุปข้อมูลจากฐานข้อมูลตรวจสอบ (RAG)
         </div>
         <div class="menu-tag">AI Assistant</div>
+        <div class="menu-stats" data-menu-key="bot">
+          <span>👁 ปัจจุบัน: <strong class="ms-current">0</strong></span>
+          <span>🔄 สะสม: <strong class="ms-total">0</strong></span>
+        </div>
       </div>
     </a>
 
     <!-- ติดต่อ -->
-    <a href="fa-contact.html" class="menu-card m-contact">
+    <a href="fa-contact.html" class="menu-card m-contact" data-menu-key="contact">
       <div class="menu-icon">📬</div>
       <div class="menu-body">
-        <div class="menu-title">ติดต่อ</div>
+        <div class="menu-title">
+          ติดต่อ
+          <span class="menu-en">Contact</span>
+        </div>
         <div class="menu-desc">
           ข้อมูลติดต่อทีมงาน กลุ่มตรวจสอบที่ 4 และช่องทางประสานงานอื่น ๆ
         </div>
         <div class="menu-tag">Contact</div>
+        <div class="menu-stats" data-menu-key="contact">
+          <span>👁 ปัจจุบัน: <strong class="ms-current">0</strong></span>
+          <span>🔄 สะสม: <strong class="ms-total">0</strong></span>
+        </div>
       </div>
     </a>
 
-    <!-- Admin (เชื่อมไปหน้า admin.html) -->
-    <a href="admin.html" class="menu-card m-admin">
+    <!-- Admin -->
+    <a href="admin.html" class="menu-card m-admin" data-menu-key="admin">
       <div class="menu-icon">🛠</div>
       <div class="menu-body">
-        <div class="menu-title">Admin</div>
+        <div class="menu-title">
+          Admin
+          <span class="menu-en">Administrator</span>
+        </div>
         <div class="menu-desc">
           สำหรับผู้ดูแลระบบ: จัดการผู้ใช้ สิทธิการเข้าถึง และฐานข้อมูลระบบตรวจสอบ
         </div>
         <div class="menu-tag">Administrator</div>
+        <div class="menu-stats" data-menu-key="admin">
+          <span>👁 ปัจจุบัน: <strong class="ms-current">0</strong></span>
+          <span>🔄 สะสม: <strong class="ms-total">0</strong></span>
+        </div>
       </div>
     </a>
+
+  </div> <!-- .menu-grid -->
+</div> <!-- .main-wrapper -->
 
 <footer>
   <div class="footer-inner">
@@ -476,7 +617,9 @@
 </footer>
 
 <script>
-  // แปลงวันที่เป็นรูปแบบไทย + พ.ศ.
+  // ==========================
+  // แสดงวันที่/เวลาแบบไทย
+  // ==========================
   function updateThaiDateTime() {
     const now = new Date();
 
@@ -501,6 +644,103 @@
 
   updateThaiDateTime();
   setInterval(updateThaiDateTime, 1000);
+
+  // ==========================
+  // ระบบสถิติผู้ใช้ (จำลอง + localStorage)
+  // ==========================
+
+  const STORAGE_KEY = 'faMenuStats_v1';
+  const MENU_KEYS = [
+    'home','login','guide','tips','fa',
+    'review','track','board','db','bot','contact','admin'
+  ];
+
+  let menuStats = {};
+
+  function loadMenuStats() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      menuStats = raw ? JSON.parse(raw) : {};
+    } catch(e) {
+      menuStats = {};
+    }
+    // ensure all keys exist
+    MENU_KEYS.forEach(k => {
+      if (typeof menuStats[k] !== 'number') {
+        menuStats[k] = 0;
+      }
+    });
+  }
+
+  function saveMenuStats() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(menuStats));
+    } catch(e) {
+      // ถ้า localStorage ใช้ไม่ได้ ก็ไม่ต้องทำอะไร
+    }
+  }
+
+  function incrementMenuStat(key) {
+    if (!key) return;
+    if (typeof menuStats[key] !== 'number') {
+      menuStats[key] = 0;
+    }
+    menuStats[key] += 1;
+    saveMenuStats();
+    updateMenuStatsUI();
+  }
+
+  function updateMenuStatsUI() {
+    // รวมสะสมทุกเมนู
+    let totalAll = 0;
+    MENU_KEYS.forEach(k => {
+      totalAll += (menuStats[k] || 0);
+    });
+
+    const totalAllEl = document.getElementById('total-users-all');
+    if (totalAllEl) {
+      totalAllEl.textContent = totalAll;
+    }
+
+    // อัปเดตในแต่ละเมนู
+    document.querySelectorAll('.menu-stats').forEach(box => {
+      const key = box.getAttribute('data-menu-key');
+      const currentEl = box.querySelector('.ms-current');
+      const totalEl   = box.querySelector('.ms-total');
+
+      // จำลองจำนวนคนใช้งานปัจจุบันของเมนูนั้น (0–3)
+      if (currentEl) {
+        const fakeCurrent = Math.floor(Math.random() * 4);
+        currentEl.textContent = fakeCurrent;
+      }
+      if (totalEl) {
+        totalEl.textContent = menuStats[key] || 0;
+      }
+    });
+  }
+
+  function updateOnlineUsers() {
+    // จำลองจำนวนคนออนไลน์รวมทั้งระบบ (1–6)
+    const online = Math.floor(1 + Math.random() * 6);
+    const el = document.getElementById('current-online');
+    if (el) el.textContent = online;
+  }
+
+  // initial load
+  loadMenuStats();
+  updateMenuStatsUI();
+  updateOnlineUsers();
+  setInterval(updateOnlineUsers, 15000);
+
+  // ผูก event ให้ทุกเมนู เมื่อคลิกจะเพิ่ม "ผู้ใช้สะสม" ของเมนูนั้น
+  document.querySelectorAll('.menu-card').forEach(card => {
+    const key = card.getAttribute('data-menu-key');
+    if (!key) return;
+    card.addEventListener('click', () => {
+      incrementMenuStat(key);
+    });
+  });
+
 </script>
 
 </body>
