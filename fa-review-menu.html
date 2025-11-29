@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>Review Menu</title>
+<link rel="stylesheet" href="css/review-theme.css">
+<script src="js/review-session.js"></script>
+</head>
+
+<body class="review-bg">
+
+<div class="top-bar">
+  <h1>ระบบสอบทาน (Review System)</h1>
+  <button onclick="window.location.href='index.html'">🏠 กลับหน้าหลัก</button>
+</div>
+
+<div class="menu-grid">
+
+  <a class="menu-card review1" href="fa-review-system1.html">
+    <div class="icon">📄</div>
+    <div class="title">ระบบสอบทาน 1</div>
+    <div class="usage">ผู้ใช้วันนี้: <span id="s1_today"></span><br>สะสม: <span id="s1_total"></span></div>
+  </a>
+
+  <a class="menu-card review2" href="fa-review-system2.html">
+    <div class="icon">🧾</div>
+    <div class="title">ระบบสอบทาน 2</div>
+    <div class="usage">ผู้ใช้วันนี้: <span id="s2_today"></span><br>สะสม: <span id="s2_total"></span></div>
+  </a>
+
+  <a class="menu-card review3" href="fa-review-system3.html">
+    <div class="icon">🔍</div>
+    <div class="title">ระบบสอบทาน 3</div>
+    <div class="usage">ผู้ใช้วันนี้: <span id="s3_today"></span><br>สะสม: <span id="s3_total"></span></div>
+  </a>
+
+  <a class="menu-card review4" href="fa-review-system4.html">
+    <div class="icon">📊</div>
+    <div class="title">ระบบสอบทาน 4</div>
+    <div class="usage">ผู้ใช้วันนี้: <span id="s4_today"></span><br>สะสม: <span id="s4_total"></span></div>
+  </a>
+
+</div>
+
+<script>
+// ตัวอย่างข้อมูลการใช้งาน (คุณจะเชื่อมฐานจริงได้)
+document.getElementById("s1_today").innerText = 5;
+document.getElementById("s1_total").innerText = 121;
+
+document.getElementById("s2_today").innerText = 7;
+document.getElementById("s2_total").innerText = 300;
+
+document.getElementById("s3_today").innerText = 2;
+document.getElementById("s3_total").innerText = 80;
+
+document.getElementById("s4_today").innerText = 10;
+document.getElementById("s4_total").innerText = 412;
+</script>
+
+</body>
+</html>
