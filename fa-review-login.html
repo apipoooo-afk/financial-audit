@@ -1,31 +1,363 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-<meta charset="UTF-8">
-<title>Review Login</title>
-<link rel="stylesheet" href="css/review-theme.css">
-<script>
-function loginReview() {
-  const u = document.getElementById("user").value;
-  const p = document.getElementById("pass").value;
+  <meta charset="UTF-8">
+  <title>FA Review Menu | Financial Audit System</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  // ตัวอย่างผู้ใช้ (คุณสามารถเชื่อมฐานข้อมูลจริงได้)
-  if (u === "reviewer" && p === "1234") {
-    sessionStorage.setItem("review_user", u);
-    window.location.href = "fa-review-menu.html";
-  } else {
-    alert("❌ เข้าสู่ระบบไม่สำเร็จ — โปรดลงทะเบียนใหม่");
-    window.location.href = "register.html";
-  }
-}
-</script>
+  <style>
+    :root{
+      --bg:#050816;
+      --card:#101425;
+      --card-soft:#151a30;
+      --border:#262b46;
+      --pink:#f48fb1;
+      --green:#10b981;
+      --blue:#42a5f5;
+      --muted:#a3acc7;
+    }
+    *{box-sizing:border-box;}
+    body{
+      margin:0;
+      font-family:"Segoe UI","Sarabun",Tahoma,sans-serif;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(244,143,177,0.20) 0, transparent 55%),
+        radial-gradient(circle at 100% 100%, rgba(66,165,245,0.24) 0, transparent 55%),
+        var(--bg);
+      color:#f5f7ff;
+      font-size:20px; /* ตัวใหญ่ขึ้น */
+    }
+    header{
+      padding:18px 14px;
+      background:linear-gradient(120deg,#7b1e3c,#0d47a1,#10b981);
+      box-shadow:0 6px 18px rgba(0,0,0,0.7);
+      border-bottom:1px solid rgba(255,255,255,0.16);
+      position:sticky;
+      top:0;
+      z-index:10;
+    }
+    .head-row{
+      max-width:1100px;
+      margin:0 auto;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .head-title{
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+    }
+    .head-title h1{
+      margin:0;
+      font-size:26px;
+      font-weight:800;
+    }
+    .head-title h3{
+      margin:0;
+      font-size:14px;
+      opacity:0.9;
+    }
+    .head-actions{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .btn{
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.25);
+      padding:7px 14px;
+      background:rgba(5,8,30,0.4);
+      color:#f9fafb;
+      font-size:14px;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+    }
+    .btn:hover{
+      background:rgba(5,8,30,0.7);
+    }
+    .btn-danger{
+      border-color:rgba(248,113,113,0.9);
+      color:#fecaca;
+    }
+
+    main{
+      max-width:1100px;
+      margin:22px auto 40px;
+      padding:0 14px 24px;
+    }
+
+    .info-card{
+      background:var(--card);
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,0.10);
+      padding:16px 18px;
+      box-shadow:0 8px 24px rgba(0,0,0,0.8);
+      margin-bottom:18px;
+    }
+    .info-title{
+      font-size:20px;
+      font-weight:700;
+      margin:0 0 4px;
+    }
+    .info-sub{
+      font-size:14px;
+      color:var(--muted);
+      margin:0 0 6px;
+    }
+    .info-user{
+      font-size:14px;
+      margin-top:4px;
+      color:#e5e7eb;
+    }
+    .badge-role{
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+      font-size:12px;
+      padding:2px 9px;
+      border-radius:999px;
+      background:rgba(16,185,129,0.18);
+      border:1px solid rgba(16,185,129,0.8);
+      margin-left:6px;
+      color:#bbf7d0;
+    }
+
+    .menu-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+      gap:16px;
+      margin-top:6px;
+    }
+    .menu-card{
+      background:var(--card-soft);
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,0.1);
+      padding:16px 16px 14px;
+      box-shadow:0 6px 20px rgba(0,0,0,0.75);
+      text-decoration:none;
+      color:inherit;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      position:relative;
+      overflow:hidden;
+    }
+    .menu-card::after{
+      content:"";
+      position:absolute;
+      inset:auto -60px -60px auto;
+      width:120px;
+      height:120px;
+      opacity:0.20;
+      border-radius:999px;
+      transform:translate(24px,24px);
+    }
+
+    .menu-icon{
+      font-size:26px;
+      margin-bottom:2px;
+    }
+    .menu-title{
+      font-size:18px;
+      font-weight:700;
+    }
+    .menu-desc{
+      font-size:14px;
+      color:var(--muted);
+      line-height:1.5;
+    }
+    .usage{
+      margin-top:6px;
+      font-size:13px;
+      color:#e5e7eb;
+    }
+    .usage span{
+      font-weight:700;
+      color:#bef264;
+    }
+
+    /* สีแต่ละระบบสอบทาน */
+    .r1{border-left:4px solid #f97316;}
+    .r2{border-left:4px solid #22c55e;}
+    .r3{border-left:4px solid #38bdf8;}
+    .r4{border-left:4px solid #e879f9;}
+
+    .r1::after{background:#f97316;}
+    .r2::after{background:#22c55e;}
+    .r3::after{background:#38bdf8;}
+    .r4::after{background:#e879f9;}
+
+    .menu-card:hover{
+      transform:translateY(-2px);
+      box-shadow:0 10px 26px rgba(0,0,0,0.9);
+      transition:all 0.16s ease-out;
+    }
+
+    @media (max-width:640px){
+      .head-title h1{font-size:22px;}
+      body{font-size:18px;}
+    }
+  </style>
+
+  <script>
+    // ==== ตรวจ fas-review-session ตั้งแต่โหลด ====
+    function getReviewSession(){
+      try{
+        const raw = localStorage.getItem("fas-review-session");
+        if(!raw) return null;
+        const data = JSON.parse(raw);
+        if(!data || !data.email || !data.expiresAt) return null;
+        if(Date.now() > data.expiresAt){
+          localStorage.removeItem("fas-review-session");
+          return null;
+        }
+        return data;
+      }catch(e){
+        console.warn("อ่าน fas-review-session ไม่สำเร็จ", e);
+        return null;
+      }
+    }
+
+    function requireReviewSession(){
+      const s = getReviewSession();
+      if(!s){
+        alert("กรุณาเข้าสู่ระบบก่อนใช้งาน FA Review System");
+        window.location.href = "fa-review-login.html?reason=no-session";
+      }
+      return s;
+    }
+
+    function logoutReview(){
+      localStorage.removeItem("fas-review-session");
+      alert("ออกจากระบบสอบทานเรียบร้อย");
+      window.location.href = "fa-review-login.html";
+    }
+
+    document.addEventListener("DOMContentLoaded", function(){
+      const session = requireReviewSession();
+      if(!session) return;
+
+      // แสดงอีเมลผู้สอบทาน
+      const elUser = document.getElementById("reviewUserInfo");
+      if(elUser){
+        elUser.textContent = `ผู้เข้าสู่ระบบสอบทาน: ${session.email || "-ไม่ทราบ-"}`;
+      }
+
+      // ตัวอย่างการตั้งค่าจำนวนผู้ใช้งาน (คุณปรับให้ดึงจริงจากฐานข้อมูลได้)
+      const stats = {
+        r1:{today:3,total:57},
+        r2:{today:5,total:132},
+        r3:{today:2,total:48},
+        r4:{today:4,total:99},
+      };
+
+      function setUsage(idToday,idTotal,obj){
+        const t = document.getElementById(idToday);
+        const tt = document.getElementById(idTotal);
+        if(t) t.textContent = obj.today;
+        if(tt) tt.textContent = obj.total;
+      }
+
+      setUsage("r1_today","r1_total",stats.r1);
+      setUsage("r2_today","r2_total",stats.r2);
+      setUsage("r3_today","r3_total",stats.r3);
+      setUsage("r4_today","r4_total",stats.r4);
+    });
+  </script>
 </head>
-<body class="review-bg">
-  <div class="login-box">
-    <h2>เข้าสู่ระบบสอบทาน</h2>
-    <input id="user" type="text" placeholder="ชื่อผู้ใช้">
-    <input id="pass" type="password" placeholder="รหัสผ่าน">
-    <button onclick="loginReview()">เข้าสู่ระบบ</button>
+<body>
+
+<header>
+  <div class="head-row">
+    <div class="head-title">
+      <h1>🧮 FA Review – เมนูระบบสอบทาน</h1>
+      <h3>ศูนย์กลางสำหรับผู้สอบทานผลการตรวจสอบการเงิน (Second Layer Review)</h3>
+    </div>
+    <div class="head-actions">
+      <button class="btn" onclick="window.location.href='index.html'">🏠 กลับหน้าหลัก</button>
+      <button class="btn btn-danger" onclick="logoutReview()">🚪 Logout</button>
+    </div>
   </div>
+</header>
+
+<main>
+  <section class="info-card">
+    <p class="info-title">
+      ระบบสอบทาน (FA Review System)
+      <span class="badge-role">Reviewer</span>
+    </p>
+    <p class="info-sub">
+      ใช้สำหรับตรวจทานกระดาษทำการ ข้อสรุปการตรวจสอบ และการเชื่อมโยงกับรายงานตรวจสอบ
+      แยกหน้าที่จากผู้ตรวจโดยเด็ดขาด ตามหลักการ Segregation of Duties
+    </p>
+    <p id="reviewUserInfo" class="info-user">
+      ผู้เข้าสู่ระบบสอบทาน: -
+    </p>
+  </section>
+
+  <section class="menu-grid">
+    <!-- ระบบสอบทาน 1 -->
+    <a href="fa-review-system1.html" class="menu-card r1">
+      <div class="menu-icon">📄</div>
+      <div class="menu-title">ระบบสอบทาน 1</div>
+      <div class="menu-desc">
+        ใช้สอบทานกระดาษทำการส่วนหลัก เช่น งบการเงิน รายได้ รายจ่าย
+        และการกระทบยอดตัวเลขสำคัญก่อนออกข้อสรุป
+      </div>
+      <div class="usage">
+        ผู้ใช้วันนี้: <span id="r1_today">0</span> รายการ<br>
+        สะสมทั้งหมด: <span id="r1_total">0</span> ครั้ง
+      </div>
+    </a>
+
+    <!-- ระบบสอบทาน 2 -->
+    <a href="fa-review-system2.html" class="menu-card r2">
+      <div class="menu-icon">🧾</div>
+      <div class="menu-title">ระบบสอบทาน 2</div>
+      <div class="menu-desc">
+        สอบทานรายละเอียดเชิงลึก เช่น รายการตัวอย่างที่เลือกตรวจ ข้อสังเกต
+        และการตอบข้อทักท้วงของหน่วยรับตรวจ
+      </div>
+      <div class="usage">
+        ผู้ใช้วันนี้: <span id="r2_today">0</span> รายการ<br>
+        สะสมทั้งหมด: <span id="r2_total">0</span> ครั้ง
+      </div>
+    </a>
+
+    <!-- ระบบสอบทาน 3 -->
+    <a href="fa-review-system3.html" class="menu-card r3">
+      <div class="menu-icon">🔍</div>
+      <div class="menu-title">ระบบสอบทาน 3</div>
+      <div class="menu-desc">
+        สอบทานการปฏิบัติตามกฎหมาย ระเบียบ ข้อบังคับ
+        การอ้างอิงข้อกฎหมาย และความครบถ้วนของเอกสารแนบ
+      </div>
+      <div class="usage">
+        ผู้ใช้วันนี้: <span id="r3_today">0</span> รายการ<br>
+        สะสมทั้งหมด: <span id="r3_total">0</span> ครั้ง
+      </div>
+    </a>
+
+    <!-- ระบบสอบทาน 4 -->
+    <a href="fa-review-system4.html" class="menu-card r4">
+      <div class="menu-icon">📊</div>
+      <div class="menu-title">ระบบสอบทาน 4</div>
+      <div class="menu-desc">
+        สอบทานสรุปข้อสังเกต ประเด็นสำคัญ ความเสี่ยง และการนำเสนอข้อมูลในรายงาน
+        รวมถึงการจัดลำดับความสำคัญของประเด็นตรวจ
+      </div>
+      <div class="usage">
+        ผู้ใช้วันนี้: <span id="r4_today">0</span> รายการ<br>
+        สะสมทั้งหมด: <span id="r4_total">0</span> ครั้ง
+      </div>
+    </a>
+  </section>
+</main>
+
 </body>
 </html>
