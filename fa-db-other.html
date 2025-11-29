@@ -1,1 +1,119 @@
 
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>FA DB | ข้อมูลอื่น ๆ (ไฟล์ + สื่อออนไลน์)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{--bg:#060818;--card:#11152b;--muted:#a3acc7;}
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:"Segoe UI",Arial,sans-serif;background:var(--bg);color:#fff;}
+  header{padding:18px 10px;text-align:center;background:linear-gradient(120deg,#0f766e,#e11d48);box-shadow:0 4px 14px rgba(0,0,0,.6);}
+  header h1{margin:0;font-size:22px;font-weight:800;}
+  header p{margin:4px 0 0;font-size:13px;color:var(--muted);}
+  .wrap{max-width:1100px;margin:18px auto 30px;padding:0 16px;}
+  .top-row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;font-size:13px;color:var(--muted);margin-bottom:10px;}
+  .stat-box span{margin-right:10px;}
+  .card{background:var(--card);border-radius:16px;border:1px solid rgba(255,255,255,.14);padding:14px;margin-bottom:14px;box-shadow:0 8px 20px rgba(0,0,0,.55);}
+  h2{margin:0 0 8px;font-size:18px;}
+  .muted{font-size:12px;color:var(--muted);}
+  label{display:block;font-size:12px;margin-top:6px;margin-bottom:3px;}
+  input,textarea,select{width:100%;padding:7px 8px;border-radius:8px;border:1px solid rgba(255,255,255,.18);background:#05081a;color:#fff;font-size:13px;outline:none;}
+  input:focus,textarea:focus,select:focus{border-color:#f97316;box-shadow:0 0 0 1px rgba(249,115,22,.4);}
+  textarea{min-height:50px;resize:vertical;}
+  .form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px 12px;}
+  .btn-row{margin-top:10px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;}
+  button{border:none;border-radius:999px;padding:8px 13px;font-size:12px;cursor:pointer;}
+  .btn-primary{background:#f97316;color:#000;font-weight:700;}
+  .btn-secondary{background:#374151;color:#e5e7eb;}
+  .btn-danger{background:#b91c1c;color:#fff;}
+  table{width:100%;border-collapse:collapse;font-size:12px;margin-top:6px;}
+  th,td{border:1px solid rgba(148,163,184,.4);padding:6px 5px;vertical-align:top;}
+  th{background:#020617;font-weight:600;position:sticky;top:0;z-index:1;}
+  tr:nth-child(even){background:rgba(15,23,42,.8);}
+  .actions button{margin-right:4px;margin-bottom:2px;}
+  a.nav{display:inline-block;margin-top:10px;margin-right:8px;color:#e0e7ff;text-decoration:none;font-size:13px;}
+  @media(max-width:720px){th,td{font-size:11px;}}
+</style>
+</head>
+<body>
+<header>
+  <h1>📂 FA DB – ข้อมูลอื่น ๆ</h1>
+  <p>Other Data (Files + Online Sources)</p>
+</header>
+
+<div class="wrap">
+  <div class="top-row">
+    <div>ผู้ใช้งาน (session): <strong id="userEmail">-</strong></div>
+    <div class="stat-box">
+      👁 รอบนี้: <strong id="statCurrent">0</strong>
+      🔄 สะสม: <strong id="statTotal">0</strong>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>บันทึกข้อมูลอื่น ๆ</h2>
+    <form id="dataForm">
+      <div class="form-grid">
+        <div>
+          <label>หมวดข้อมูล (category)</label>
+          <select id="f-category">
+            <option value="">- เลือก -</option>
+            <option>สถิติพื้นฐาน</option>
+            <option>ข้อมูลประชากร</option>
+            <option>ข้อมูลเศรษฐกิจท้องถิ่น</option>
+            <option>ข้อมูลสิ่งแวดล้อม</option>
+            <option>ข้อมูลโครงการ/แผนงาน</option>
+            <option>ข้อมูลจากหน่วยงานภายนอก</option>
+            <option>อื่น ๆ</option>
+          </select>
+        </div>
+        <div>
+          <label>ชื่อข้อมูล / ชุดข้อมูล (title)</label>
+          <input id="f-title" required>
+        </div>
+        <div>
+          <label>หน่วยรับตรวจ/พื้นที่เกี่ยวข้อง (entity)</label>
+          <input id="f-entity">
+        </div>
+        <div>
+          <label>ปี / ช่วงเวลา (period)</label>
+          <input id="f-period" placeholder="เช่น 2567 หรือ 2565-2567">
+        </div>
+        <div>
+          <label>แหล่งข้อมูล (sourceType)</label>
+          <input id="f-sourceType" placeholder="ไฟล์, เว็บไซต์, API, ฐานข้อมูลอื่น ฯลฯ">
+        </div>
+        <div>
+          <label>URL / ที่มา (sourceUrl)</label>
+          <input id="f-sourceUrl" placeholder="https://...">
+        </div>
+      </div>
+      <label>คำอธิบายสั้น ๆ (description)</label>
+      <textarea id="f-description"></textarea>
+
+      <div class="btn-row">
+        <button type="submit" class="btn-primary" id="btnSave">บันทึกข้อมูล</button>
+        <button type="button" class="btn-secondary" id="btnClear">ล้างฟอร์ม</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="card">
+    <h2>ตารางข้อมูลอื่น ๆ</h2>
+    <p class="muted">
+      • เก็บใน <code>localStorage["fa-db-data-other"]</code><br>
+      • ใช้เป็น “คลังเมทาดาต้า” สำหรับข้อมูลภายนอก/ข้อมูลประกอบการวิเคราะห์
+    </p>
+    <div class="btn-row">
+      <label class="muted">
+        📥 Import CSV จากไฟล์:
+        <input type="file" id="csvFile" accept=".csv">
+      </label>
+      <div style="flex:1;min-width:220px;">
+        <label class="muted">📥 ดึงจาก URL (CSV/JSON)</label>
+        <input id="onlineUrl" placeholder="https://...">
+      </div>
+      <button type="button" class="btn-secondary" id="btnImportOnline">ดึงจาก URL</button>
+      <button type="butt
