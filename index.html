@@ -6,10 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     :root{
-      --primary:#0d47a1;          /* น้ำเงินเข้ม */
-      --primary-2:#42a5f5;        /* น้ำเงินสด */
-      --accent:#ffd54f;           /* ทองอ่อน */
-      --bg:#060818;               /* พื้นหลังโทนมืดแบบแดชบอร์ด AI */
+      --primary:#0d47a1;
+      --primary-2:#42a5f5;
+      --accent:#ffd54f;
+      --bg:#060818;
       --bg-soft:#0b1024;
       --card:#11152b;
       --card-soft:#171c33;
@@ -18,8 +18,8 @@
       --green:#2e7d32;
       --red:#c62828;
       --border:#262b46;
-      --maroon:#7b1e3c;           /* แดงเลือดหมู */
-      --pink:#f48fb1;             /* ชมพู */
+      --maroon:#7b1e3c;
+      --pink:#f48fb1;
       --chip-bg:rgba(244,143,177,0.12);
       --chip-border:rgba(244,143,177,0.5);
       --glow:0 0 18px rgba(66,165,245,0.55);
@@ -40,7 +40,6 @@
     a{color:var(--pink); text-decoration:none}
     a:hover{text-decoration:underline}
 
-    /* HEADER */
     header{
       position:sticky; top:0; z-index:50;
       background:linear-gradient(120deg,var(--maroon),var(--primary),var(--pink));
@@ -119,7 +118,18 @@
       background:rgba(0,0,0,0.3);
     }
 
-    /* HERO */
+    .current-user-badge{
+      font-size:11px;
+      padding:4px 9px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.25);
+      background:rgba(0,0,0,0.22);
+      max-width:180px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
     .hero{
       border-bottom:1px solid var(--border);
       background:radial-gradient(circle at 0 0, rgba(244,143,177,0.15) 0, transparent 55%),
@@ -212,7 +222,6 @@
       box-shadow:0 0 8px #69f0ae;
     }
 
-    /* SECTION & CARDS */
     main section{padding:32px 0;}
     h2{
       color:#ffffff;
@@ -315,7 +324,6 @@
 
     .actions{display:flex; gap:6px; flex-wrap:wrap;}
 
-    /* FOOTER */
     footer{
       padding:20px 0;
       background:#050714;
@@ -328,7 +336,6 @@
       font-size:12px;
     }
 
-    /* CHAT LOG CARDS */
     #chatLog .card{
       margin-top:8px;
       padding:10px 12px;
@@ -337,7 +344,6 @@
       background:rgba(11,16,40,0.9);
     }
 
-    /* Sparkline */
     .sparkline{
       width:100%;
       height:160px;
@@ -347,7 +353,6 @@
                  rgba(5,8,26,0.85);
     }
 
-    /* LIGHT THEME OVERRIDE */
     body[data-theme="light"]{
       --text:#11152b;
       --muted:#5c647a;
@@ -376,7 +381,6 @@
       background:linear-gradient(180deg,#ffffff,#e5edff);
     }
 
-    /* RESPONSIVE */
     @media (max-width:980px){
       .hero-inner{grid-template-columns:1fr}
       .grid-2,.grid-3{grid-template-columns:1fr}
@@ -390,7 +394,6 @@
   </style>
 </head>
 <body>
-  <!-- Header -->
   <header>
     <div class="container header-inner">
       <div class="brand">
@@ -401,6 +404,7 @@
         </div>
       </div>
       <div class="header-right">
+        <div id="currentUserBadge" class="current-user-badge" style="display:none;"></div>
         <button class="theme-toggle" id="themeToggle">
           <span class="icon">🌙</span>
           <span>Dark</span>
@@ -408,8 +412,7 @@
         <nav>
           <ul>
             <li><a href="#home">🏠 หน้าแรก</a></li>
-            <li><a href="#login">🔐 Login</a></li>
-            <li><a href="#register">📝 ลงทะเบียน</a></li>
+            <li><a href="login.html">🔐 Login</a></li>
             <li><a href="#guidelines">📑 แนวทาง</a></li>
             <li><a href="#tips">💡 ข้อแนะนำ</a></li>
             <li><a href="#fa-system">📊 ตรวจสอบการเงิน</a></li>
@@ -419,15 +422,15 @@
             <li><a href="#database">🗄 ฐานข้อมูล</a></li>
             <li><a href="#chatbot">🤖 Chatbot</a></li>
             <li><a href="#contact">📬 ติดต่อ</a></li>
-            <li><a href="admin.html" target="_blank">🧑‍💼 Admin</a></li>
-  </ul>
-</nav>
-
+            <li id="adminMenuItem" style="display:none;">
+              <a href="admin.html" target="_blank">🧑‍💼 Admin</a>
+            </li>
+          </ul>
+        </nav>
       </div>
     </div>
   </header>
 
-  <!-- Hero -->
   <section id="home" class="hero">
     <div class="container hero-inner">
       <div>
@@ -443,7 +446,7 @@
         </p>
         <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:6px;">
           <a class="btn" href="#guidelines">📑 เปิดดูแนวทางการตรวจสอบ</a>
-          <a class="btn btn-outline" href="#register">📝 เริ่มลงทะเบียนใช้งาน</a>
+          <a class="btn btn-outline" href="login.html#register-section">📝 เริ่มลงทะเบียนใช้งาน</a>
         </div>
         <div class="hero-kpi-row">
           <div class="kpi-pill"><strong>Realtime</strong> • สถานะผู้ใช้ &amp; งานตรวจ</div>
@@ -468,82 +471,7 @@
   </section>
 
   <main>
-    <!-- 2. ระบบ Login -->
-    <section id="login">
-      <div class="container">
-        <div class="section-header">
-          <div>
-            <h2>🔐 ระบบ Login</h2>
-            <div class="section-tagline">เข้าใช้งานด้วยบัญชีที่ผ่านการอนุมัติจาก Admin แล้วเท่านั้น</div>
-          </div>
-        </div>
-        <div class="grid-2">
-          <div class="card">
-            <form id="loginForm">
-              <label for="loginEmail">อีเมล</label>
-              <input type="email" id="loginEmail" required>
-              <label for="loginPassword">รหัสผ่าน</label>
-              <input type="password" id="loginPassword" required>
-              <div style="margin-top:12px;">
-                <button type="submit">เข้าสู่ระบบ</button>
-            </div>
-            </form>
-            <p id="loginMsg" class="muted"></p>
-          </div>
-          <div class="card">
-            <h3 style="margin-top:0;">🛡 นโยบายความปลอดภัย</h3>
-            <ul class="muted">
-              <li>บัญชีต้องผ่านการอนุมัติจาก Admin ก่อนเข้าใช้งาน</li>
-              <li>รหัสผ่านควรถูกเก็บแบบเข้ารหัส (ระบบนี้เป็นเดโมฝั่งหน้าเว็บ)</li>
-              <li>แนะนำให้เปิดใช้การยืนยันตัวตนหลายชั้น (MFA)</li>
-              <li>ตั้งรหัสผ่านอย่างน้อย 12 ตัวอักษร มีทั้งตัวเลข ตัวใหญ่ ตัวเล็ก และสัญลักษณ์</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 3. ระบบลงทะเบียน -->
-    <section id="register">
-      <div class="container">
-        <div class="section-header">
-          <div>
-            <h2>📝 ระบบลงทะเบียน</h2>
-            <div class="section-tagline">เก็บข้อมูลพื้นฐานผู้ใช้ และส่งคำขอให้ Admin ตรวจสอบ</div>
-          </div>
-        </div>
-        <div class="grid-2">
-          <div class="card">
-            <form id="registerForm">
-              <label for="fullname">ชื่อ-นามสกุล</label>
-              <input type="text" id="fullname" required>
-              <label for="email">อีเมล</label>
-              <input type="email" id="email" required>
-              <label for="password">รหัสผ่าน</label>
-              <input type="password" id="password" required>
-              <div style="margin-top:12px;">
-                <button type="submit">ส่งคำขอลงทะเบียน</button>
-              </div>
-            </form>
-            <p id="registerMsg" class="muted"></p>
-            <div class="status status-pending" style="margin-top:10px;">
-              สถานะบัญชี: รอการอนุมัติจาก Admin
-            </div>
-          </div>
-          <div class="card">
-            <h3 style="margin-top:0;">📌 ขั้นตอนอนุมัติ</h3>
-            <ol class="muted">
-              <li>ผู้ใช้กรอกข้อมูลและส่งคำขอลงทะเบียน</li>
-              <li>Admin ตรวจสอบตัวตน / สิทธิ์ / หน่วยรับตรวจ</li>
-              <li>กำหนดบทบาท (User / Admin / Viewer)</li>
-              <li>ระบบแจ้งเตือนผลการอนุมัติทางอีเมล</li>
-            </ol>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 4. แนวทางการตรวจสอบ -->
+    <!-- แนวทาง -->
     <section id="guidelines">
       <div class="container">
         <div class="card">
@@ -563,7 +491,7 @@
       </div>
     </section>
 
-    <!-- 5. ข้อแนะนำการใช้โปรแกรม -->
+    <!-- ข้อแนะนำ -->
     <section id="tips">
       <div class="container">
         <div class="section-header">
@@ -601,7 +529,7 @@
       </div>
     </section>
 
-    <!-- 6. ระบบการตรวจสอบการเงิน -->
+    <!-- ระบบการตรวจสอบการเงิน -->
     <section id="fa-system">
       <div class="container">
         <div class="section-header">
@@ -638,7 +566,7 @@
       </div>
     </section>
 
-    <!-- 7. ระบบการสอบทางการเงิน -->
+    <!-- ระบบการสอบทางการเงิน -->
     <section id="financial-exam">
       <div class="container">
         <div class="section-header">
@@ -674,7 +602,7 @@
       </div>
     </section>
 
-    <!-- 8. ระบบการติดตามงบการเงิน -->
+    <!-- ระบบติดตามงบ -->
     <section id="tracking">
       <div class="container">
         <div class="section-header">
@@ -721,7 +649,7 @@
       </div>
     </section>
 
-    <!-- 10. ระบบตอบถามอัตโนมัติ (Chatbot - demo) -->
+    <!-- Chatbot -->
     <section id="chatbot">
       <div class="container">
         <div class="section-header">
@@ -756,7 +684,7 @@
       </div>
     </section>
 
-    <!-- 11. Cash board -->
+    <!-- Dashboard -->
     <section id="dashboard">
       <div class="container">
         <div class="section-header">
@@ -792,7 +720,7 @@
       </div>
     </section>
 
-    <!-- 12. ระบบฐานข้อมูล -->
+    <!-- Database -->
     <section id="database">
       <div class="container">
         <div class="section-header">
@@ -816,7 +744,7 @@
             </table>
           </div>
           <div class="card">
-            <h3 style="margin-top:0;">เพิ่มข้อมูลใหม่</h3>
+            <h3 style="margin-top:0;">เพิ่มข้อมูลใหม่ (เดโม)</h3>
             <form id="dbForm">
               <label>ชื่อ-นามสกุล</label>
               <input type="text" id="dbName" required>
@@ -830,14 +758,14 @@
             </form>
             <p id="dbMsg" class="muted"></p>
             <p class="muted" style="margin-top:8px;">
-              * ข้อมูลที่เพิ่มจากฟอร์มนี้จะเชื่อมกับตาราง Admin และ Cash board (เดโมในหน่วยความจำ)
+              * ข้อมูลที่เพิ่มจากฟอร์มนี้จะเชื่อมกับ Cash board และฐานผู้ใช้ (เดโมในเบราว์เซอร์)
             </p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- 13. ติดต่อผู้สร้าง -->
+    <!-- Contact -->
     <section id="contact">
       <div class="container">
         <div class="section-header">
@@ -865,9 +793,9 @@
           <div class="card">
             <h3 style="margin-top:0;">ลิงก์ด่วน</h3>
             <ul class="muted">
-              <li><a href="#register">ลงทะเบียน</a></li>
-              <li><a href="#login">เข้าสู่ระบบ</a></li>
-              <li><a href="#admin">ระบบ Admin</a></li>
+              <li><a href="login.html#register-section">ลงทะเบียนใช้งาน</a></li>
+              <li><a href="login.html">เข้าสู่ระบบ</a></li>
+              <li><a href="admin.html" target="_blank">ระบบ Admin</a></li>
               <li><a href="#dashboard">ดู Cash board</a></li>
               <li><a href="#database">ฐานข้อมูลผู้ใช้</a></li>
             </ul>
@@ -883,53 +811,9 @@
       <div class="muted">Demo UX/UI • AI-inspired • Maroon–Blue–White–Pink Palette</div>
     </div>
   </footer>
-<script>
-  // ====== Storage helpers: ใช้เชื่อม index.html กับ admin.html ======
-  function loadUsersFromStorage(){
-    try{
-      const raw = localStorage.getItem("fas-users");
-      if(!raw) return null;
-      return JSON.parse(raw);
-    }catch(e){
-      console.warn("โหลด fas-users จาก localStorage ไม่สำเร็จ", e);
-      return null;
-    }
-  }
 
-  function saveUsersToStorage(users){
-    try{
-      localStorage.setItem("fas-users", JSON.stringify(users));
-    }catch(e){
-      console.warn("บันทึก fas-users ลง localStorage ไม่สำเร็จ", e);
-    }
-  }
-
-  // ====== In-memory demo store (ผูกกับ localStorage) ======
-  const defaultUsers = [
-    { fullname: "สมชาย ใจดี", email: "somchai@example.com", password: "123456", status: "approved", role: "admin" },
-    { fullname: "สุดา สายใจ", email: "suda@example.com",   password: "abcdef", status: "pending",  role: "user" }
-  ];
-
-  const storedUsers = loadUsersFromStorage();
-
-  const store = {
-    // ถ้าเคยมีข้อมูลเก็บไว้แล้ว ให้ใช้ของเดิม ไม่งั้นใช้ค่า default
-    users: storedUsers || defaultUsers,
-    currentUser: null,
-    chatHistory: []
-  };
   <script>
-    // In-memory demo store
-    const store = {
-      users: [
-        { fullname: "สมชาย ใจดี", email: "somchai@example.com", password: "123456", status: "approved", role: "admin" },
-        { fullname: "สุดา สายใจ", email: "suda@example.com", password: "abcdef", status: "pending", role: "user" }
-      ],
-      currentUser: null,
-      chatHistory: []
-    };
-
-    // THEME TOGGLE
+    // ---------- Theme ----------
     const themeToggleBtn = document.getElementById("themeToggle");
     function applyTheme(theme){
       document.body.dataset.theme = theme;
@@ -955,120 +839,135 @@
       });
     }
 
-    // Admin visibility control
-    function updateAdminVisibility(){
-      const adminSection = document.getElementById("admin");
-      const isAdmin = store.currentUser && store.currentUser.role === "admin";
-      if(adminSection) adminSection.style.display = isAdmin ? "block" : "none";
+    // ---------- User store (แชร์กับ login.html / admin.html) ----------
+    function loadUsersFromStorage(){
+      try{
+        const raw = localStorage.getItem("fas-users");
+        if(!raw) return null;
+        return JSON.parse(raw);
+      }catch(e){
+        console.warn("โหลด fas-users ไม่สำเร็จ", e);
+        return null;
+      }
+    }
+    function saveUsersToStorage(users){
+      try{
+        localStorage.setItem("fas-users", JSON.stringify(users));
+      }catch(e){
+        console.warn("บันทึก fas-users ไม่สำเร็จ", e);
+      }
     }
 
-    // Render Admin table
-    function renderAdminTable(){
-      const tbody = document.getElementById("adminTable");
-      if(!tbody) return;
-      tbody.innerHTML = "";
-      store.users.forEach(u => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td>${u.fullname}</td>
-          <td>${u.email}</td>
-          <td><span class="status ${
-            u.status === "approved" ? "status-approved" :
-            u.status === "rejected" ? "status-rejected" : "status-pending"
-          }">${u.status}</span></td>
-          <td>${u.role}</td>
-          <td class="actions">
-            <button onclick="approveUser('${u.email}')">อนุมัติ</button>
-            <button onclick="rejectUser('${u.email}')">ปฏิเสธ</button>
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
+    function seedDefaultUsersIfNeeded(){
+      const existing = loadUsersFromStorage();
+      if(existing && Array.isArray(existing) && existing.length > 0){
+        return existing;
+      }
+      const seed = [
+        {
+          id:"super-admin-1",
+          firstName:"Apiphuthanadet",
+          lastName:"SuperAdmin",
+          fullname:"Apiphuthanadet SuperAdmin",
+          citizenId:"",
+          govId:"",
+          position:"ผู้ดูแลระบบสูงสุด",
+          email:"apipoooo@gmail.com",
+          phone:"",
+          password:"Apiphu17122558",
+          status:"approved",
+          role:"super_admin",
+          createdAt:new Date().toISOString()
+        },
+        {
+          id:"admin-1",
+          firstName:"สมชาย",
+          lastName:"ใจดี",
+          fullname:"สมชาย ใจดี",
+          citizenId:"",
+          govId:"",
+          position:"Admin กลุ่มตรวจสอบ",
+          email:"somchai@example.com",
+          phone:"",
+          password:"12345678",
+          status:"approved",
+          role:"admin",
+          createdAt:new Date().toISOString()
+        },
+        {
+          id:"user-1",
+          firstName:"สุดา",
+          lastName:"สายใจ",
+          fullname:"สุดา สายใจ",
+          citizenId:"",
+          govId:"",
+          position:"ผู้ใช้ทั่วไป",
+          email:"suda@example.com",
+          phone:"",
+          password:"abcdef12",
+          status:"pending",
+          role:"user",
+          createdAt:new Date().toISOString()
+        }
+      ];
+      saveUsersToStorage(seed);
+      return seed;
     }
 
-    function approveUser(email){
-      const user = store.users.find(u => u.email === email);
-      if(!user) return alert("ไม่พบผู้ใช้");
-      user.status = "approved";
-      alert(`✅ อนุมัติ ${user.fullname} แล้ว`);
-      renderAdminTable();
-      updateUserSummary();
-      renderDbTable();
-      renderSparkline();
+    // session: fas-session = { email, loginAt, expiresAt, remember }
+    function loadSession(){
+      try{
+        const raw = localStorage.getItem("fas-session");
+        if(!raw) return null;
+        const sess = JSON.parse(raw);
+        if(sess.expiresAt && Date.now() > sess.expiresAt){
+          localStorage.removeItem("fas-session");
+          return null;
+        }
+        return sess;
+      }catch(e){
+        console.warn("โหลด fas-session ไม่สำเร็จ", e);
+        return null;
+      }
     }
 
-    function rejectUser(email){
-      const user = store.users.find(u => u.email === email);
-      if(!user) return alert("ไม่พบผู้ใช้");
-      user.status = "rejected";
-      alert(`❌ ปฏิเสธ ${user.fullname}`);
-      renderAdminTable();
-      updateUserSummary();
-      renderDbTable();
-      renderSparkline();
+    const store = {
+      users: seedDefaultUsersIfNeeded(),
+      currentUser: null,
+      chatHistory: []
+    };
+
+    const currentSession = loadSession();
+    if(currentSession){
+      const u = store.users.find(x => x.email === currentSession.email);
+      if(u){
+        store.currentUser = u;
+      }
     }
 
-    // Register
-    document.getElementById("registerForm").addEventListener("submit", function(e){
-      e.preventDefault();
-      const fullname = document.getElementById("fullname").value.trim();
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value.trim();
-      const msgEl = document.getElementById("registerMsg");
-
-      if(!fullname || !email || !password){
-        msgEl.innerText = "กรุณากรอกข้อมูลให้ครบถ้วน";
-        return;
+    // header: แสดงชื่อผู้ใช้งาน
+    function updateCurrentUserBadge(){
+      const badge = document.getElementById("currentUserBadge");
+      const adminMenu = document.getElementById("adminMenuItem");
+      if(!badge) return;
+      if(store.currentUser){
+        badge.style.display = "inline-block";
+        const roleText =
+          store.currentUser.role === "super_admin" ? "Super Admin" :
+          store.currentUser.role === "admin" ? "Admin" : "User";
+        badge.textContent = `${store.currentUser.fullname || store.currentUser.email} • ${roleText}`;
+      }else{
+        badge.style.display = "none";
       }
-      if(store.users.some(u => u.email === email)){
-        msgEl.innerText = "อีเมลนี้ถูกใช้ลงทะเบียนแล้ว";
-        return;
+      if(adminMenu){
+        const isAdmin =
+          store.currentUser &&
+          (store.currentUser.role === "admin" || store.currentUser.role === "super_admin");
+        adminMenu.style.display = isAdmin ? "list-item" : "none";
       }
-      store.users.push({ fullname, email, password, status: "pending", role: "user" });
-      msgEl.innerText = "✅ ส่งคำขอลงทะเบียนเรียบร้อย รอการอนุมัติจาก Admin";
-      renderAdminTable();
-      updateUserSummary();
-      renderDbTable();
-      renderSparkline();
-    });
+    }
 
-    // Login
-    document.getElementById("loginForm").addEventListener("submit", function(e){
-      e.preventDefault();
-      const email = document.getElementById("loginEmail").value.trim();
-      const password = document.getElementById("loginPassword").value.trim();
-      const msgEl = document.getElementById("loginMsg");
-
-      const user = store.users.find(u => u.email === email);
-      if(!user){
-        msgEl.innerText = "❌ ไม่พบผู้ใช้งาน";
-        return;
-      }
-      if(user.status !== "approved"){
-        msgEl.innerText = "⚠️ บัญชียังไม่ได้รับการอนุมัติจาก Admin";
-        return;
-      }
-      if(user.password !== password){
-        msgEl.innerText = "❌ รหัสผ่านไม่ถูกต้อง";
-        return;
-      }
-
-      store.currentUser = user;
-      msgEl.innerText = `✅ เข้าสู่ระบบสำเร็จ (${user.role})`;
-      updateAdminVisibility();
-    });
-
-    // Chatbot (demo)
-    document.getElementById("chatForm").addEventListener("submit", function(e){
-      e.preventDefault();
-      const input = document.getElementById("chatInput").value.trim();
-      if(!input) return;
-      const answer = demoAnswer(input);
-      store.chatHistory.push({ q: input, a: answer });
-      renderChat();
-      document.getElementById("chatInput").value = "";
-    });
-
+    // ---------- Chatbot ----------
     function demoAnswer(q){
       const lower = q.toLowerCase();
       if(lower.includes("หลักฐาน") || lower.includes("evidence")) return "ควรเก็บหลักฐานเชิงเอกสารและดิจิทัล พร้อมบันทึก Audit Log ทุกขั้นตอน";
@@ -1077,8 +976,23 @@
       return "คำถามได้รับแล้ว: โปรดระบุหัวข้อให้ชัดเจน (เช่น แนวทาง, หลักฐาน, ความเสี่ยง) เพื่อคำตอบที่แม่นยำ";
     }
 
+    const chatForm = document.getElementById("chatForm");
+    if(chatForm){
+      chatForm.addEventListener("submit", function(e){
+        e.preventDefault();
+        const inputEl = document.getElementById("chatInput");
+        const text = (inputEl.value || "").trim();
+        if(!text) return;
+        const ans = demoAnswer(text);
+        store.chatHistory.push({ q:text, a:ans });
+        renderChat();
+        inputEl.value = "";
+      });
+    }
+
     function renderChat(){
       const log = document.getElementById("chatLog");
+      if(!log) return;
       log.innerHTML = "";
       store.chatHistory.slice().reverse().forEach(item => {
         const card = document.createElement("div");
@@ -1088,7 +1002,7 @@
       });
     }
 
-    // Dashboard summary
+    // ---------- Dashboard & DB ----------
     function updateUserSummary(){
       const el = document.getElementById("userSummary");
       if(!el) return;
@@ -1098,7 +1012,6 @@
       el.innerText = `รวมผู้ใช้: ${total} • รออนุมัติ: ${pending} • อนุมัติแล้ว: ${approved}`;
     }
 
-    // Database table render
     function renderDbTable(){
       const tbody = document.getElementById("dbTable");
       if(!tbody) return;
@@ -1106,7 +1019,7 @@
       store.users.forEach(u => {
         const tr = document.createElement("tr");
         tr.innerHTML = `
-          <td>${u.fullname}</td>
+          <td>${u.fullname || (u.firstName || "") + " " + (u.lastName || "")}</td>
           <td>${u.email}</td>
           <td><span class="status ${
             u.status === "approved" ? "status-approved" :
@@ -1117,11 +1030,12 @@
       });
     }
 
-    // Database form
     const dbForm = document.getElementById("dbForm");
     if(dbForm){
       dbForm.addEventListener("submit", function(e){
         e.preventDefault();
+        if(!confirm("คุณต้องการยืนยันการส่งข้อมูลใช่หรือไม่?")) return;
+
         const name = document.getElementById("dbName").value.trim();
         const email = document.getElementById("dbEmail").value.trim();
         const status = document.getElementById("dbStatus").value.trim() || "pending";
@@ -1132,24 +1046,37 @@
           return;
         }
 
-        // ถ้ามีอยู่แล้ว ให้ปรับสถานะ แทนการเพิ่มซ้ำ
         let user = store.users.find(u => u.email === email);
         if(user){
           user.fullname = name;
           user.status = status;
         }else{
-          store.users.push({ fullname:name, email, password:"", status, role:"user" });
+          user = {
+            id: "manual-" + Date.now(),
+            firstName: name,
+            lastName: "",
+            fullname: name,
+            citizenId:"",
+            govId:"",
+            position:"เพิ่มจากฐานข้อมูลหน้าแรก",
+            email,
+            phone:"",
+            password:"",
+            status,
+            role:"user",
+            createdAt:new Date().toISOString()
+          };
+          store.users.push(user);
         }
 
+        saveUsersToStorage(store.users);
         msgEl.innerText = "✅ บันทึกข้อมูลผู้ใช้ในฐานข้อมูล (เดโม) แล้ว";
-        renderAdminTable();
         renderDbTable();
         updateUserSummary();
         renderSparkline();
       });
     }
 
-    // Sparkline renderer (ใช้จำนวนผู้ใช้ approved/pending/rejected)
     function renderSparkline(){
       const svg = document.getElementById("statusSparkline");
       if(!svg) return;
@@ -1159,7 +1086,7 @@
       let points = [approved, pending, rejected];
 
       if(points.every(v => v === 0)){
-        points = [1,1,1]; // กันกรณีไม่มีข้อมูล
+        points = [1,1,1];
       }
 
       const max = Math.max(...points) || 1;
@@ -1208,9 +1135,8 @@
       `;
     }
 
-    // Init
-    renderAdminTable();
-    updateAdminVisibility();
+    // init
+    updateCurrentUserBadge();
     updateUserSummary();
     renderDbTable();
     renderSparkline();
