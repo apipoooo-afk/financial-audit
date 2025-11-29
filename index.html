@@ -908,7 +908,41 @@
       <div class="muted">Demo UX/UI • AI-inspired • Maroon–Blue–White–Pink Palette</div>
     </div>
   </footer>
+<script>
+  // ====== Storage helpers: ใช้เชื่อม index.html กับ admin.html ======
+  function loadUsersFromStorage(){
+    try{
+      const raw = localStorage.getItem("fas-users");
+      if(!raw) return null;
+      return JSON.parse(raw);
+    }catch(e){
+      console.warn("โหลด fas-users จาก localStorage ไม่สำเร็จ", e);
+      return null;
+    }
+  }
 
+  function saveUsersToStorage(users){
+    try{
+      localStorage.setItem("fas-users", JSON.stringify(users));
+    }catch(e){
+      console.warn("บันทึก fas-users ลง localStorage ไม่สำเร็จ", e);
+    }
+  }
+
+  // ====== In-memory demo store (ผูกกับ localStorage) ======
+  const defaultUsers = [
+    { fullname: "สมชาย ใจดี", email: "somchai@example.com", password: "123456", status: "approved", role: "admin" },
+    { fullname: "สุดา สายใจ", email: "suda@example.com",   password: "abcdef", status: "pending",  role: "user" }
+  ];
+
+  const storedUsers = loadUsersFromStorage();
+
+  const store = {
+    // ถ้าเคยมีข้อมูลเก็บไว้แล้ว ให้ใช้ของเดิม ไม่งั้นใช้ค่า default
+    users: storedUsers || defaultUsers,
+    currentUser: null,
+    chatHistory: []
+  };
   <script>
     // In-memory demo store
     const store = {
