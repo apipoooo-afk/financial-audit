@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>FA Database Menu</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  body{font-family:"Segoe UI";margin:0;background:#060818;color:#fff;}
+  header{
+    padding:20px;text-align:center;
+    background:linear-gradient(120deg,#0d47a1,#6f42c1,#20c997);
+  }
+  .wrap{max-width:900px;margin:20px auto;padding:0 16px;}
+  .grid{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:16px;
+  }
+  .item{
+    background:#11152b;border-radius:16px;padding:18px;
+    cursor:pointer;transition:.1s;border:1px solid rgba(255,255,255,.1);
+  }
+  .item:hover{
+    transform:translateY(-3px);
+    border-color:#20c997;
+  }
+  .stats{font-size:12px;margin-top:10px;color:#bbb;}
+  a.back{display:block;margin-top:20px;color:#ccc;text-align:center;text-decoration:none;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🗄 FA Database Center</h1>
+</header>
+
+<div class="wrap">
+
+<h2>เมนูฐานข้อมูล</h2>
+
+<div class="grid">
+
+  <a class="item" href="fa-db-local.html">🏘️ ข้อมูล อปท.
+    <div class="stats">สถิติการใช้งาน</div>
+  </a>
+
+  <a class="item" href="fa-db-gov.html">🏛️ ข้อมูลส่วนราชการ
+    <div class="stats"></div>
+  </a>
+
+  <a class="item" href="fa-db-law.html">📚 กฎหมาย/ระเบียบ</a>
+
+  <a class="item" href="fa-db-report.html">📑 รายงานการตรวจสอบ</a>
+
+  <a class="item" href="fa-db-users.html">👥 ผู้ลงทะเบียน</a>
+
+  <a class="item" href="fa-db-adminreq.html">🛡️ ผู้ขอเป็นแอดมิน</a>
+
+  <a class="item" href="fa-db-complaint.html">🚨 ร้องเรียนทุจริต</a>
+
+  <a class="item" href="fa-db-finance.html">📊 รายงานการเงิน</a>
+
+  <a class="item" href="fa-db-wp.html">🧾 กระดาษทำการ FA</a>
+
+  <a class="item" href="fa-db-other.html">📂 ข้อมูลอื่นๆ</a>
+
+</div>
+
+<a href="index.html" class="back">⬅ กลับหน้าแรก</a>
+
+</div>
+
+<script>
+function checkSession(){
+  let raw=localStorage.getItem("fas-session");
+  if(!raw){ location.href="fa-database-login.html"; return; }
+  let s=JSON.parse(raw);
+  if(Date.now()>s.expiresAt){
+    localStorage.removeItem("fas-session");
+    location.href="fa-database-login.html";
+  }
+}
+checkSession();
+</script>
+
+</body>
+</html>
