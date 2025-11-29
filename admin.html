@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Console | Financial Audit System</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root{
+      --primary:#0d47a1;
+      --primary-2:#42a5f5;
+      --accent:#ffd54f;
+      --bg:#060818;
+      --bg-soft:#0b1024;
+      --card:#11152b;
+      --text:#f5f7ff;
+      --muted:#a3acc7;
+      --border:#262b46;
+      --maroon:#7b1e3c;
+      --pink:#f48fb1;
+      --chip-bg:rgba(244,143,177,0.12);
+      --chip-border:rgba(244,143,177,0.5);
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:"Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(123,30,60,0.36) 0, transparent 55%),
+        radial-gradient(circle at 90% 100%, rgba(66,165,245,0.32) 0, transparent 55%),
+        radial-gradient(circle at 0% 100%, rgba(244,143,177,0.25) 0, transparent 55%),
+        var(--bg);
+      color:var(--text);
+      transition:background .25s ease,color .25s ease;
+    }
+    a{color:var(--pink); text-decoration:none}
+    a:hover{text-decoration:underline}
+
+    .container{max-width:1120px; margin:0 auto; padding:0 20px;}
+
+    header{
+      position:sticky; top:0; z-index:50;
+      background:linear-gradient(120deg,var(--maroon),var(--primary),var(--pink));
+      box-shadow:0 10px 28px rgba(0,0,0,.55);
+      border-bottom:1px solid rgba(255,255,255,0.06);
+      backdrop-filter:blur(16px);
+    }
+    .header-inner{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:10px 0; gap:16px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      font-weight:700; font-size:18px;
+      letter-spacing:.03em;
+    }
+    .brand img{
+      height:40px;
+      border-radius:50%;
+      background:#fff;
+      padding:4px;
+      box-shadow:0 4px 10px rgba(0,0,0,0.4);
+    }
+    .brand span.small{
+      display:block; font-size:11px; font-weight:500; opacity:.85;
+    }
+    .header-right{
+      display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+      font-size:12px;
+    }
+    .chip{
+      display:inline-flex; align-items:center; gap:6px;
+      padding:6px 10px; border-radius:999px;
+      background:var(--chip-bg);
+      border:1px solid var(--chip-border);
+      font-size:11px; font-weight:600;
+    }
+    .chip span.dot{
+      width:8px; height:8px; border-radius:50%;
+      background:#69f0ae; box-shadow:0 0 8px #69f0ae;
+    }
+    .back-link{
+      padding:6px 10px; border-radius:999px;
+      border:1px solid rgba(255,255,255,0.4);
+      background:rgba(0,0,0,0.2);
+      color:#fff; text-decoration:none;
+      display:inline-flex; align-items:center; gap:6px;
+    }
+    .back-link:hover{
+      background:rgba(0,0,0,0.4);
+    }
+
+    main{padding:30px 0 24px;}
+
+    h1{font-size:24px; margin:0 0 10px;}
+    h2{font-size:20px; margin:0 0 10px;}
+    h3{font-size:16px; margin:0 0 8px; color:#e0e5ff;}
+    .muted{color:var(--muted); font-size:12px;}
+
+    .grid-2{display:grid; grid-template-columns:1.1fr .9fr; gap:18px;}
+    @media(max-width:900px){
+      .grid-2{grid-template-columns:1fr;}
+    }
+
+    .card{
+      background:linear-gradient(145deg,rgba(17,21,43,0.98),rgba(25,31,60,0.98));
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,0.06);
+      box-shadow:0 14px 34px rgba(0,0,0,.8);
+      padding:18px;
+      position:relative;
+      overflow:hidden;
+    }
+    .card::before{
+      content:"";
+      position:absolute; inset:-40%;
+      background:radial-gradient(circle at 0 0, rgba(244,143,177,0.18) 0, transparent 55%);
+      opacity:0; transition:opacity .25s ease;
+      pointer-events:none;
+    }
+    .card:hover::before{opacity:1;}
+    .card>*{position:relative; z-index:1;}
+
+    label{display:block; font-size:13px; font-weight:600; margin:8px 0 4px;}
+    input, select{
+      width:100%; padding:8px 10px; border-radius:8px;
+      border:1px solid rgba(255,255,255,0.12);
+      background:rgba(5,8,26,0.9);
+      color:#fff;
+      font-size:13px;
+      outline:none;
+    }
+    input:focus, select:focus{
+      border-color:var(--pink);
+      box-shadow:0 0 0 1px rgba(244,143,177,0.4);
+    }
+    button{
+      padding:8px 14px;
+      border-radius:999px;
+      border:none;
+      cursor:pointer;
+      font-size:13px;
+      font-weight:700;
+      color:#fff;
+      background:linear-gradient(135deg,var(--primary-2),var(--maroon));
+      box-shadow:0 6px 16px rgba(13,71,161,0.7);
+    }
+    button:hover{
+      filter:brightness(1.04);
+      box-shadow:0 0 14px rgba(66,165,245,0.85);
+    }
+    .btn-secondary{
+      background:rgba(255,255,255,0.06);
+      border:1px solid rgba(255,255,255,0.2);
+      box-shadow:none;
+    }
+    .btn-danger{
+      background:#c62828;
+      box-shadow:0 6px 16px rgba(198,40,40,0.7);
+    }
+
+    .status{
+      display:inline-block;
+      padding:4px 8px;
+      border-radius:999px;
+      font-size:11px;
+      font-weight:700;
+    }
+    .status-ACTIVE{
+      background:rgba(129,199,132,0.12); color:#69f0ae;
+      border:1px solid rgba(129,199,132,0.6);
+    }
+    .status-SUSPENDED{
+      background:rgba(255,213,79,0.1); color:#ffca28;
+      border:1px solid rgba(255,213,79,0.55);
+    }
+    .status-REVOKED{
+      background:rgba(239,83,80,0.12); color:#ff8a80;
+      border:1px solid rgba(239,83,80,0.6);
+    }
+
+    table{
+      width:100%; border-collapse:collapse; font-size:12px; margin-top:6px;
+    }
+    th, td{
+      border:1px solid rgba(255,255,255,0.1);
+      padding:6px 8px;
+      text-align:left;
+      vertical-align:middle;
+    }
+    th{
+      background:linear-gradient(90deg,rgba(13,71,161,0.85),rgba(123,30,60,0.75));
+      color:#fff;
+      font-weight:600;
+    }
+    .actions{display:flex; flex-wrap:wrap; gap:4px;}
+
+    .tag-role{
+      padding:3px 6px;
+      border-radius:999px;
+      font-size:11px;
+      border:1px solid rgba(255,255,255,0.25);
+    }
+
+    /* Sections */
+    #loginSection{max-width:420px; margin:32px auto;}
+    #consoleSection{display:none;}
+
+    .pill-tabs{
+      display:flex; gap:8px; flex-wrap:wrap;
+      margin-bottom:12px;
+    }
+    .pill-tab{
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.25);
+      font-size:12px;
+      cursor:pointer;
+      background:rgba(0,0,0,0.25);
+    }
+    .pill-tab.active{
+      background:var(--pink);
+      border-color:var(--pink);
+      color:#11152b;
+      font-weight:700;
+    }
+
+    .badge-small{
+      padding:2px 6px;
+      border-radius:999px;
+      font-size:10px;
+      background:rgba(0,0,0,0.4);
+      border:1px solid rgba(255,255,255,0.2);
+    }
+
+    @media(max-width:600px){
+      .header-inner{flex-direction:column; align-items:flex-start;}
+      main{padding-top:22px;}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container header-inner">
+      <div class="brand">
+        <img src="images/oag-logo.png" alt="OAG Logo">
+        <div>
+          Admin Console
+          <span class="small">Financial Audit System • Platform Owner Panel</span>
+        </div>
+      </div>
+      <div class="header-right">
+        <span class="chip">
+          <span class="dot"></span>
+          เฉพาะผู้สร้างแพลตฟอร์ม / แอดมินที่ได้รับมอบหมาย
+        </span>
+        <a href="index.html" class="back-link">⬅ กลับหน้าใช้งานหลัก</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- SECTION: LOGIN -->
+    <section id="loginSection">
+      <div class="card">
+        <h1>เข้าสู่ระบบผู้จัดการแพลตฟอร์ม</h1>
+        <p class="muted">
+          ส่วนนี้สำหรับเจ้าของระบบและแอดมินที่ได้รับสิทธิ์เท่านั้น
+          บัญชีผู้ใช้ทั่วไปไม่สามารถเข้าสู่ระบบส่วนนี้ได้
+        </p>
+        <form id="adminLoginForm" style="margin-top:10px;">
+          <label for="adminUsername">ชื่อผู้ใช้ หรืออีเมลแอดมิน</label>
+          <input type="text" id="adminUsername" required placeholder="เช่น root หรือ admin@example.com">
+
+          <label for="adminPassword">รหัสผ่าน</label>
+          <input type="password" id="adminPassword" required placeholder="••••••••">
+
+          <div style="margin-top:12px; display:flex; gap:8px; align-items:center;">
+            <button type="submit">เข้าสู่ระบบผู้จัดการระบบ</button>
+            <span class="muted">Demo: root / Admin123!</span>
+          </div>
+        </form>
+        <p id="adminLoginMsg" class="muted" style="margin-top:8px;"></p>
+      </div>
+    </section>
+
+    <!-- SECTION: ADMIN CONSOLE -->
+    <section id="consoleSection">
+      <div style="margin-bottom:16px;">
+        <h1>แดชบอร์ดผู้จัดการระบบ</h1>
+        <p class="muted">
+          จัดการบัญชีแอดมิน สร้าง/อนุมัติ/ระงับแอดมิน และจำกัดสิทธิ์การเข้าถึงระบบตรวจสอบการเงิน
+        </p>
+      </div>
+
+      <div class="grid-2" style="margin-bottom:18px;">
+        <!-- Current admin card -->
+        <div class="card">
+          <h2>👤 แอดมินปัจจุบัน</h2>
+          <p class="muted">ข้อมูลบัญชีที่กำลังเข้าสู่ระบบ Admin Console อยู่ในขณะนี้</p>
+          <div id="currentAdminInfo" class="muted" style="font-size:13px; margin-top:8px;">
+            <!-- เติมด้วย JS -->
+          </div>
+          <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap;">
+            <button id="logoutBtn" class="btn-secondary">ออกจากระบบผู้จัดการระบบ</button>
+          </div>
+        </div>
+
+        <!-- Summary card -->
+        <div class="card">
+          <h2>สรุปสถานะแอดมิน</h2>
+          <p class="muted">ใช้ดูภาพรวมจำนวนแอดมินทั้งหมดและสถานะต่าง ๆ</p>
+          <div id="adminSummary" class="muted" style="margin-top:8px; font-size:13px;">
+            <!-- เติมด้วย JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="pill-tabs">
+        <div class="pill-tab active" data-tab="adminsTab">บัญชีแอดมิน</div>
+        <div class="pill-tab" data-tab="futureTab">Audit Log (รอเชื่อมภายหลัง)</div>
+      </div>
+
+      <!-- Tab: Admin accounts -->
+      <div id="adminsTab" class="tab-panel">
+        <div class="grid-2">
+          <!-- Create admin -->
+          <div class="card">
+            <h2>➕ สร้างแอดมินใหม่</h2>
+            <p class="muted">
+              เฉพาะ SUPER_ADMIN เท่านั้นที่ควรสร้างแอดมินใหม่
+              แนะนำให้กำหนดสิทธิ์ตามความจำเป็น (Principle of Least Privilege)
+            </p>
+            <form id="createAdminForm" style="margin-top:8px;">
+              <label for="newFullName">ชื่อ–นามสกุล</label>
+              <input type="text" id="newFullName" required>
+
+              <label for="newEmail">อีเมล</label>
+              <input type="email" id="newEmail" required placeholder="เช่น admin@example.com">
+
+              <label for="newUsername">Username</label>
+              <input type="text" id="newUsername" required placeholder="เช่น admin001">
+
+              <label for="newPassword">รหัสผ่านตั้งต้น</label>
+              <input type="text" id="newPassword" required placeholder="เช่น StrongPass!234">
+
+              <label for="newRole">บทบาท (Role)</label>
+              <select id="newRole">
+                <option value="ADMIN">ADMIN – จัดการข้อมูลทั่วไป</option>
+                <option value="VIEWER">VIEWER – อ่านอย่างเดียว</option>
+                <option value="SUPER_ADMIN">SUPER_ADMIN – สิทธิ์สูงสุด</option>
+              </select>
+
+              <p class="muted" style="margin-top:8px;">
+                * การสร้าง SUPER_ADMIN ใหม่ให้ใช้เฉพาะกรณีจำเป็นจริง ๆ
+              </p>
+
+              <div style="margin-top:10px;">
+                <button type="submit">สร้างบัญชีแอดมิน</button>
+              </div>
+            </form>
+            <p id="createAdminMsg" class="muted" style="margin-top:6px;"></p>
+          </div>
+
+          <!-- Admin list -->
+          <div class="card">
+            <h2>🧑‍💼 รายการผู้จัดการระบบ</h2>
+            <p class="muted">จัดการ Role / สถานะ / ลบแอดมินที่ไม่ใช้งานแล้ว</p>
+            <div style="max-height:320px; overflow:auto; margin-top:6px;">
+              <table>
+                <thead>
+                  <tr>
+                    <th>ชื่อ–นามสกุล</th>
+                    <th>Username / Email</th>
+                    <th>Role</th>
+                    <th>สถานะ</th>
+                    <th>จัดการ</th>
+                  </tr>
+                </thead>
+                <tbody id="adminsTable"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab: future (placeholder) -->
+      <div id="futureTab" class="tab-panel" style="display:none;">
+        <div class="card">
+          <h2>📜 Audit Log (พื้นที่ในอนาคต)</h2>
+          <p class="muted">
+            ส่วนนี้เตรียมไว้สำหรับเชื่อมระบบบันทึกการใช้งานแอดมินในอนาคต
+            เช่น ใครสร้าง/แก้ไข/ลบบัญชีแอดมินคนไหน เมื่อเวลาใด
+          </p>
+          <p class="muted">
+            สามารถต่อยอดด้วย API เช่น <code>/api/admin/audit-log</code> แล้วแสดงในรูปแบบตาราง / timeline ได้
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // ---------------------------
+    // DEMO STORE (แทน DB จริง)
+    // ---------------------------
+    const adminStore = {
+      admins: [
+        {
+          id: 1,
+          fullName: "เจ้าของแพลตฟอร์ม",
+          email: "root@example.com",
+          username: "root",
+          password: "Admin123!",      // DEMO เท่านั้น – ของจริงต้องเก็บ hash
+          role: "SUPER_ADMIN",
+          status: "ACTIVE",
+          lastLoginAt: null
+        },
+        {
+          id: 2,
+          fullName: "สุดา สายใจ",
+          email: "suda-admin@example.com",
+          username: "suda-admin",
+          password: "Admin456!",      // DEMO
+          role: "ADMIN",
+          status: "ACTIVE",
+          lastLoginAt: null
+        }
+      ],
+      currentAdmin: null
+    };
+
+    const loginSection   = document.getElementById("loginSection");
+    const consoleSection = document.getElementById("consoleSection");
+    const loginMsg       = document.getElementById("adminLoginMsg");
+    const currentAdminInfoEl = document.getElementById("currentAdminInfo");
+    const adminSummaryEl = document.getElementById("adminSummary");
+    const adminsTableEl  = document.getElementById("adminsTable");
+    const createAdminMsg = document.getElementById("createAdminMsg");
+
+    function showConsole(){
+      loginSection.style.display = "none";
+      consoleSection.style.display = "block";
+    }
+
+    function showLogin(){
+      loginSection.style.display = "block";
+      consoleSection.style.display = "none";
+    }
+
+    // ---------------------------
+    // Render Functions
+    // ---------------------------
+    function renderCurrentAdminInfo(){
+      const a = adminStore.currentAdmin;
+      if(!a){
+        currentAdminInfoEl.innerHTML = "<span class='muted'>ยังไม่ได้เข้าสู่ระบบผู้จัดการระบบ</span>";
+        return;
+      }
+      currentAdminInfoEl.innerHTML = `
+        <div><strong>ชื่อ:</strong> ${a.fullName}</div>
+        <div><strong>Username:</strong> ${a.username}</div>
+        <div><strong>Email:</strong> ${a.email}</div>
+        <div><strong>Role:</strong> <span class="tag-role">${a.role}</span></div>
+        <div><strong>สถานะ:</strong> <span class="status status-${a.status}">${a.status}</span></div>
+        <div><strong>เข้าสู่ระบบล่าสุด:</strong> ${a.lastLoginAt ? new Date(a.lastLoginAt).toLocaleString() : "-"}</div>
+      `;
+    }
+
+    function renderAdminSummary(){
+      const total = adminStore.admins.length;
+      const active = adminStore.admins.filter(a => a.status === "ACTIVE").length;
+      const suspended = adminStore.admins.filter(a => a.status === "SUSPENDED").length;
+      const revoked = adminStore.admins.filter(a => a.status === "REVOKED").length;
+
+      adminSummaryEl.innerHTML = `
+        <div>จำนวนแอดมินทั้งหมด: <strong>${total}</strong></div>
+        <div>Active: <strong>${active}</strong> • Suspended: <strong>${suspended}</strong> • Revoked: <strong>${revoked}</strong></div>
+        <div style="margin-top:4px;">
+          <span class="badge-small">SUPER_ADMIN: ${adminStore.admins.filter(a => a.role === "SUPER_ADMIN").length}</span>
+          <span class="badge-small">ADMIN: ${adminStore.admins.filter(a => a.role === "ADMIN").length}</span>
+          <span class="badge-small">VIEWER: ${adminStore.admins.filter(a => a.role === "VIEWER").length}</span>
+        </div>
+      `;
+    }
+
+    function renderAdminsTable(){
+      adminsTableEl.innerHTML = "";
+      adminStore.admins.forEach(a => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${a.fullName}</td>
+          <td>
+            <div>${a.username}</div>
+            <div class="muted">${a.email}</div>
+          </td>
+          <td>
+            <select data-admin-id="${a.id}" class="role-select">
+              <option value="SUPER_ADMIN" ${a.role==="SUPER_ADMIN"?"selected":""}>SUPER_ADMIN</option>
+              <option value="ADMIN" ${a.role==="ADMIN"?"selected":""}>ADMIN</option>
+              <option value="VIEWER" ${a.role==="VIEWER"?"selected":""}>VIEWER</option>
+            </select>
+          </td>
+          <td><span class="status status-${a.status}">${a.status}</span></td>
+          <td class="actions">
+            <button class="btn-secondary" data-action="toggleStatus" data-id="${a.id}">
+              ${a.status === "ACTIVE" ? "ระงับ" : "ปลดระงับ"}
+            </button>
+            <button class="btn-secondary" data-action="resetPwd" data-id="${a.id}">รีเซ็ตรหัสผ่าน</button>
+            <button class="btn-danger" data-action="deleteAdmin" data-id="${a.id}">ลบ</button>
+          </td>
+        `;
+        adminsTableEl.appendChild(tr);
+      });
+
+      // handle change role
+      document.querySelectorAll(".role-select").forEach(sel=>{
+        sel.addEventListener("change", e=>{
+          const id = Number(e.target.getAttribute("data-admin-id"));
+          const admin = adminStore.admins.find(a=>a.id===id);
+          if(!admin) return;
+          const newRole = e.target.value;
+          admin.role = newRole;
+          renderAdminSummary();
+          if(adminStore.currentAdmin && adminStore.currentAdmin.id === id){
+            renderCurrentAdminInfo();
+          }
+          // *** จุดสำหรับเชื่อม API จริงในอนาคต ***
+        });
+      });
+    }
+
+    // ---------------------------
+    // LOGIN HANDLER
+    // ---------------------------
+    document.getElementById("adminLoginForm").addEventListener("submit", function(e){
+      e.preventDefault();
+      const username = document.getElementById("adminUsername").value.trim();
+      const password = document.getElementById("adminPassword").value;
+
+      if(!username || !password){
+        loginMsg.textContent = "กรุณากรอกชื่อผู้ใช้และรหัสผ่านให้ครบถ้วน";
+        return;
+      }
+
+      const admin = adminStore.admins.find(a =>
+        (a.username === username || a.email === username)
+      );
+
+      if(!admin || admin.password !== password){
+        loginMsg.textContent = "❌ ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง";
+        return;
+      }
+      if(admin.status === "SUSPENDED"){
+        loginMsg.textContent = "⛔ บัญชีนี้ถูกระงับ กรุณาติดต่อผู้ดูแลสูงสุด (SUPER_ADMIN)";
+        return;
+      }
+      if(admin.status === "REVOKED"){
+        loginMsg.textContent = "⛔ บัญชีนี้ถูกยกเลิกการใช้งานแล้ว";
+        return;
+      }
+
+      admin.lastLoginAt = new Date().toISOString();
+      adminStore.currentAdmin = admin;
+      loginMsg.textContent = "";
+      showConsole();
+      renderCurrentAdminInfo();
+      renderAdminSummary();
+      renderAdminsTable();
+    });
+
+    // Logout
+    document.getElementById("logoutBtn").addEventListener("click", function(){
+      adminStore.currentAdmin = null;
+      showLogin();
+      document.getElementById("adminPassword").value = "";
+      loginMsg.textContent = "ออกจากระบบผู้จัดการระบบเรียบร้อย";
+    });
+
+    // ---------------------------
+    // CREATE ADMIN HANDLER
+    // ---------------------------
+    document.getElementById("createAdminForm").addEventListener("submit", function(e){
+      e.preventDefault();
+      const fullName = document.getElementById("newFullName").value.trim();
+      const email = document.getElementById("newEmail").value.trim();
+      const username = document.getElementById("newUsername").value.trim();
+      const password = document.getElementById("newPassword").value;
+      const role = document.getElementById("newRole").value;
+      createAdminMsg.textContent = "";
+
+      if(!fullName || !email || !username || !password){
+        createAdminMsg.textContent = "กรุณากรอกข้อมูลให้ครบถ้วน";
+        return;
+      }
+      if(adminStore.admins.some(a => a.username === username || a.email === email)){
+        createAdminMsg.textContent = "มีแอดมินที่ใช้ Username หรือ Email นี้อยู่แล้ว";
+        return;
+      }
+
+      const newAdmin = {
+        id: adminStore.admins.length ? Math.max(...adminStore.admins.map(a=>a.id))+1 : 1,
+        fullName, email, username, password,
+        role,
+        status: "ACTIVE",
+        lastLoginAt: null
+      };
+      adminStore.admins.push(newAdmin);
+      createAdminMsg.textContent = "✅ สร้างบัญชีแอดมินใหม่เรียบร้อย";
+      renderAdminSummary();
+      renderAdminsTable();
+      e.target.reset();
+    });
+
+    // ---------------------------
+    // Table actions
+    // ---------------------------
+    adminsTableEl.addEventListener("click", function(e){
+      const btn = e.target.closest("button");
+      if(!btn) return;
+      const action = btn.getAttribute("data-action");
+      const id = Number(btn.getAttribute("data-id"));
+      const admin = adminStore.admins.find(a => a.id === id);
+      if(!admin) return;
+
+      if(action === "toggleStatus"){
+        admin.status = admin.status === "ACTIVE" ? "SUSPENDED" : "ACTIVE";
+        renderAdminSummary();
+        renderAdminsTable();
+        if(adminStore.currentAdmin && adminStore.currentAdmin.id === admin.id){
+          renderCurrentAdminInfo();
+        }
+      }
+
+      if(action === "resetPwd"){
+        const newPwd = prompt("กำหนดรหัสผ่านใหม่ (DEMO):", "");
+        if(!newPwd) return;
+        admin.password = newPwd;
+        alert("✅ รีเซ็ตรหัสผ่านเรียบร้อย (DEMO – ของจริงควรส่งลิงก์ reset ทางอีเมล)");
+      }
+
+      if(action === "deleteAdmin"){
+        if(!confirm("ยืนยันการลบบัญชีแอดมินนี้หรือไม่?")) return;
+        if(adminStore.currentAdmin && adminStore.currentAdmin.id === admin.id){
+          alert("ไม่สามารถลบบัญชีที่กำลังเข้าสู่ระบบอยู่");
+          return;
+        }
+        const idx = adminStore.admins.findIndex(a=>a.id===id);
+        if(idx !== -1) adminStore.admins.splice(idx,1);
+        renderAdminSummary();
+        renderAdminsTable();
+      }
+    });
+
+    // ---------------------------
+    // Tabs
+    // ---------------------------
+    document.querySelectorAll(".pill-tab").forEach(tab=>{
+      tab.addEventListener("click", ()=>{
+        document.querySelectorAll(".pill-tab").forEach(t=>t.classList.remove("active"));
+        tab.classList.add("active");
+        const target = tab.getAttribute("data-tab");
+        document.querySelectorAll(".tab-panel").forEach(p=>p.style.display="none");
+        document.getElementById(target).style.display = "block";
+      });
+    });
+
+    // Init
+    showLogin();
+  </script>
+</body>
+</html>
