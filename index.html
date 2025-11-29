@@ -25,10 +25,12 @@
       --glow:0 0 18px rgba(66,165,245,0.55);
     }
 
-    *{box-sizing:border-box}
+    *{box-sizing:border-box;}
+
     body{
       margin:0;
       font-family:"Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      font-size:18px; /* ใหญ่ขึ้นจากเดิม ~80% */
       background:
         radial-gradient(circle at 10% 0%, rgba(123,30,60,0.36) 0, transparent 55%),
         radial-gradient(circle at 90% 100%, rgba(66,165,245,0.32) 0, transparent 55%),
@@ -37,9 +39,11 @@
       color:var(--text);
       transition:background .25s ease,color .25s ease;
     }
-    a{color:var(--pink); text-decoration:none}
-    a:hover{text-decoration:underline}
 
+    a{color:var(--pink); text-decoration:none;}
+    a:hover{text-decoration:underline;}
+
+    /* HEADER */
     header{
       position:sticky; top:0; z-index:50;
       background:linear-gradient(120deg,var(--maroon),var(--primary),var(--pink));
@@ -47,89 +51,96 @@
       border-bottom:1px solid rgba(255,255,255,0.06);
       backdrop-filter:blur(16px);
     }
-    .container{max-width:1180px; margin:0 auto; padding:0 30px;}
+    .container{max-width:1180px; margin:0 auto; padding:0 24px;}
     .header-inner{
       display:flex; align-items:center; justify-content:space-between;
-      padding:10px 0;
-      gap:18px;
+      padding:12px 0;
+      gap:24px;
     }
     .brand{
-      display:flex; align-items:center; gap:12px;
-      font-weight:700; font-size:18px;
-      letter-spacing:0.03em;
+      display:flex; align-items:center; gap:14px;
     }
     .brand img{
-      height:44px;
+      height:56px;
       border-radius:50%;
       background:rgba(255,255,255,0.9);
-      padding:4px;
+      padding:5px;
       box-shadow:0 4px 10px rgba(0,0,0,0.4);
     }
-    .brand span.small{
-      display:block;
-      font-size:11px;
-      font-weight:500;
-      opacity:.85;
+    .brand-text-main{
+      font-weight:800;
+      font-size:30px;       /* หัว Financial Audit System ใหญ่ขึ้น */
+      letter-spacing:0.04em;
     }
+    .brand-text-sub{
+      display:block;
+      font-size:16px;       /* Digital • AI • Compliance by OAG */
+      font-weight:500;
+      opacity:.9;
+      margin-top:2px;
+    }
+
     nav ul{
       list-style:none; display:flex; gap:10px;
       padding:0; margin:0; flex-wrap:wrap;
     }
     nav a{
       color:#fff;
-      padding:6px 10px;
+      padding:8px 14px;
       border-radius:999px;
-      font-weight:600;
-      font-size:12px;
+      font-weight:700;
+      font-size:18px;   /* เมนูใหญ่ขึ้น ~80% */
       border:1px solid rgba(255,255,255,0.18);
-      background:rgba(0,0,0,0.08);
+      background:rgba(0,0,0,0.12);
       backdrop-filter:blur(12px);
       white-space:nowrap;
     }
     nav a:hover{
-      background:rgba(255,255,255,0.18);
+      background:rgba(255,255,255,0.22);
       box-shadow:0 0 12px rgba(255,255,255,0.35);
     }
 
     .header-right{
       display:flex;
       align-items:center;
-      gap:10px;
+      gap:12px;
       flex-wrap:wrap;
+      justify-content:flex-end;
     }
 
     .theme-toggle{
       border-radius:999px;
       border:1px solid rgba(255,255,255,0.4);
-      background:rgba(0,0,0,0.15);
+      background:rgba(0,0,0,0.18);
       color:#fff;
-      padding:6px 10px;
-      font-size:11px;
+      padding:7px 14px;
+      font-size:16px;
       display:inline-flex;
       align-items:center;
-      gap:6px;
+      gap:8px;
       cursor:pointer;
       backdrop-filter:blur(12px);
     }
     .theme-toggle span.icon{
-      font-size:14px;
+      font-size:20px;
     }
     .theme-toggle:hover{
       background:rgba(0,0,0,0.3);
     }
 
     .current-user-badge{
-      font-size:11px;
-      padding:4px 9px;
+      font-size:14px;
+      padding:4px 12px;
       border-radius:999px;
       border:1px solid rgba(255,255,255,0.25);
       background:rgba(0,0,0,0.22);
-      max-width:180px;
+      max-width:220px;
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
     }
 
+    /* HERO */
     .hero{
       border-bottom:1px solid var(--border);
       background:radial-gradient(circle at 0 0, rgba(244,143,177,0.15) 0, transparent 55%),
@@ -138,44 +149,60 @@
     }
     .hero-inner{
       display:grid; grid-template-columns:1.25fr .75fr;
-      gap:26px; align-items:center; padding:42px 0 34px;
+      gap:28px; align-items:center; padding:46px 0 40px;
     }
     .hero h1{
-      margin:10px 0 12px 0;
-      font-size:30px;
+      margin:10px 0 10px 0;
+      font-size:40px;      /* ใหญ่ขึ้นจากเดิม */
       color:#ffffff;
-      letter-spacing:0.02em;
+      letter-spacing:0.03em;
     }
     .hero p{
       margin:0 0 18px 0;
       color:var(--muted);
-      max-width:540px;
+      max-width:620px;
+      font-size:18px;
     }
     .hero-kpi-row{
       display:flex; flex-wrap:wrap;
-      gap:12px; margin-top:14px;
+      gap:12px; margin-top:16px;
     }
     .kpi-pill{
-      padding:8px 10px;
-      border-radius:10px;
+      padding:8px 12px;
+      border-radius:12px;
       background:rgba(17,21,43,0.85);
-      border:1px solid rgba(255,255,255,0.08);
-      font-size:12px;
+      border:1px solid rgba(255,255,255,0.12);
+      font-size:16px;
       color:var(--muted);
     }
     .kpi-pill strong{color:#fff;}
 
+    .chip{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 14px; border-radius:999px;
+      background:var(--chip-bg);
+      border:1px solid var(--chip-border);
+      color:#ffebf3;
+      font-weight:600; font-size:16px;
+      backdrop-filter:blur(16px);
+    }
+    .chip span.dot{
+      width:10px; height:10px; border-radius:50%;
+      background:#69f0ae;
+      box-shadow:0 0 8px #69f0ae;
+    }
+
     .btn{
       display:inline-flex; align-items:center; justify-content:center;
-      padding:11px 18px; border-radius:999px;
-      font-weight:700; font-size:14px;
+      padding:12px 20px; border-radius:999px;
+      font-weight:800; font-size:18px;
       border:none; cursor:pointer;
       background:linear-gradient(135deg,var(--pink),var(--primary-2));
       color:#fff;
       box-shadow:0 6px 20px rgba(244,143,177,0.6);
       transition:transform .18s ease, box-shadow .18s ease, filter .18s ease;
       text-decoration:none;
-      gap:6px;
+      gap:8px;
     }
     .btn:hover{
       transform:translateY(-1px);
@@ -207,51 +234,39 @@
     }
     .hero-right-inner{position:relative; z-index:1;}
 
-    .chip{
-      display:inline-flex; align-items:center; gap:6px;
-      padding:7px 12px; border-radius:999px;
-      background:var(--chip-bg);
-      border:1px solid var(--chip-border);
-      color:#ffebf3;
-      font-weight:600; font-size:12px;
-      backdrop-filter:blur(16px);
-    }
-    .chip span.dot{
-      width:8px; height:8px; border-radius:50%;
-      background:#69f0ae;
-      box-shadow:0 0 8px #69f0ae;
-    }
-
-    main section{padding:32px 0;}
+    /* MAIN LAYOUT */
+    main section{padding:34px 0;}
     h2{
       color:#ffffff;
       margin:0 0 14px 0;
-      font-size:22px;
+      font-size:28px;
       letter-spacing:0.02em;
     }
     h3{
       color:#e0e5ff;
-      font-size:17px;
+      font-size:20px;
+      margin-top:0;
     }
     .section-header{
-      margin-bottom:12px;
+      margin-bottom:14px;
       display:flex;
       justify-content:space-between;
       align-items:flex-end;
-      gap:10px;
+      gap:12px;
     }
     .section-tagline{
-      font-size:12px;
+      font-size:16px;
       color:var(--muted);
     }
 
     .card{
       background:linear-gradient(145deg,rgba(17,21,43,0.98),rgba(25,31,60,0.98));
       border:1px solid rgba(255,255,255,0.06);
-      border-radius:14px; padding:18px;
+      border-radius:16px; padding:22px;
       box-shadow:0 14px 34px rgba(0,0,0,.8);
       position:relative;
       overflow:hidden;
+      font-size:16px;
     }
     .card::before{
       content:"";
@@ -263,14 +278,16 @@
     .card:hover::before{opacity:1;}
     .card > *{position:relative; z-index:1;}
 
-    .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:20px;}
-    .grid-3{display:grid; grid-template-columns:repeat(3, 1fr); gap:20px;}
-    .grid-auto{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:20px;}
+    .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:22px;}
+    .grid-3{display:grid; grid-template-columns:repeat(3, 1fr); gap:22px;}
+    .grid-auto{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:22px;}
 
-    label{display:block; font-weight:600; margin:10px 0 6px; font-size:13px;}
+    label{
+      display:block; font-weight:600; margin:10px 0 6px; font-size:16px;
+    }
     input[type="text"], input[type="email"], input[type="password"], textarea{
-      width:100%; padding:10px; border-radius:10px; font-size:13px;
-      border:1px solid rgba(255,255,255,0.08);
+      width:100%; padding:10px 12px; border-radius:10px; font-size:16px;
+      border:1px solid rgba(255,255,255,0.10);
       background:rgba(5,8,26,0.85); color:#fff;
       outline:none;
     }
@@ -279,10 +296,10 @@
       box-shadow:0 0 0 1px rgba(244,143,177,0.4);
     }
     button{
-      padding:9px 14px; border:none; border-radius:999px;
+      padding:10px 16px; border:none; border-radius:999px;
       font-weight:700; cursor:pointer;
       background:linear-gradient(135deg,var(--primary-2),var(--maroon));
-      color:#fff; font-size:13px;
+      color:#fff; font-size:16px;
       box-shadow:0 6px 16px rgba(13,71,161,0.7);
     }
     button:hover{
@@ -290,11 +307,11 @@
       box-shadow:0 0 16px rgba(66,165,245,0.85);
     }
 
-    .muted{color:var(--muted); font-size:12px;}
+    .muted{color:var(--muted); font-size:16px;}
 
     .status{
       padding:6px 10px; border-radius:999px;
-      font-size:11px; font-weight:700; display:inline-block;
+      font-size:14px; font-weight:700; display:inline-block;
     }
     .status-pending{
       background:rgba(255,213,79,0.1); color:#ffca28;
@@ -311,11 +328,11 @@
 
     table{
       width:100%; border-collapse:collapse; margin-top:10px;
-      font-size:12px;
+      font-size:16px;
     }
     th, td{
-      border:1px solid rgba(255,255,255,0.05);
-      padding:8px 9px; text-align:left;
+      border:1px solid rgba(255,255,255,0.08);
+      padding:8px 10px; text-align:left;
     }
     th{
       background:linear-gradient(90deg,rgba(13,71,161,0.85),rgba(123,30,60,0.75));
@@ -328,17 +345,19 @@
       padding:20px 0;
       background:#050714;
       color:var(--muted);
-      border-top:1px solid rgba(255,255,255,0.08);
+      border-top:1px solid rgba(255,255,255,0.10);
       margin-top:26px;
+      font-size:14px;
     }
     .footer-inner{
       display:flex; justify-content:space-between; align-items:center; gap:12px;
-      font-size:12px;
+      flex-wrap:wrap;
     }
 
+    /* Chat cards */
     #chatLog .card{
       margin-top:8px;
-      padding:10px 12px;
+      padding:12px 14px;
       border-radius:12px;
       box-shadow:none;
       background:rgba(11,16,40,0.9);
@@ -346,13 +365,14 @@
 
     .sparkline{
       width:100%;
-      height:160px;
+      height:200px;
       border-radius:10px;
       background:radial-gradient(circle at 0 0, rgba(244,143,177,0.18) 0, transparent 60%),
                  radial-gradient(circle at 100% 100%, rgba(66,165,245,0.18) 0, transparent 60%),
                  rgba(5,8,26,0.85);
     }
 
+    /* Light theme */
     body[data-theme="light"]{
       --text:#11152b;
       --muted:#5c647a;
@@ -381,33 +401,37 @@
       background:linear-gradient(180deg,#ffffff,#e5edff);
     }
 
+    /* Responsive */
     @media (max-width:980px){
-      .hero-inner{grid-template-columns:1fr}
-      .grid-2,.grid-3{grid-template-columns:1fr}
-      nav ul{justify-content:flex-start}
+      .hero-inner{grid-template-columns:1fr;}
+      .grid-2,.grid-3{grid-template-columns:1fr;}
+      nav ul{justify-content:flex-start;}
       .header-inner{flex-wrap:wrap;}
+      .brand-text-main{font-size:26px;}
+      nav a{font-size:16px;}
     }
     @media (max-width:640px){
-      .hero h1{font-size:24px;}
+      .hero h1{font-size:32px;}
       .header-inner{align-items:flex-start;}
     }
   </style>
 </head>
 <body>
+  <!-- Header -->
   <header>
     <div class="container header-inner">
       <div class="brand">
         <img src="images/oag-logo.png" alt="สำนักงานการตรวจเงินแผ่นดิน">
         <div>
-          Financial Audit System
-          <span class="small">Digital • AI • Compliance by OAG</span>
+          <div class="brand-text-main">Financial Audit System</div>
+          <span class="brand-text-sub">Digital • AI • Compliance by OAG</span>
         </div>
       </div>
       <div class="header-right">
         <div id="currentUserBadge" class="current-user-badge" style="display:none;"></div>
         <button class="theme-toggle" id="themeToggle">
-          <span class="icon">🌙</span>
-          <span>Dark</span>
+          <span class="icon">☀️</span>
+          <span>Light</span>
         </button>
         <nav>
           <ul>
@@ -422,15 +446,14 @@
             <li><a href="#database">🗄 ฐานข้อมูล</a></li>
             <li><a href="#chatbot">🤖 Chatbot</a></li>
             <li><a href="#contact">📬 ติดต่อ</a></li>
-            <li id="adminMenuItem" style="display:none;">
-              <a href="admin.html" target="_blank">🧑‍💼 Admin</a>
-            </li>
+            <li><a href="admin.html" target="_blank">🧑‍💼 Admin</a></li>
           </ul>
         </nav>
       </div>
     </div>
   </header>
 
+  <!-- Hero -->
   <section id="home" class="hero">
     <div class="container hero-inner">
       <div>
@@ -444,8 +467,8 @@
           วางแผนตรวจ เก็บหลักฐาน สอบทางการเงิน ติดตามข้อเสนอแนะ
           และสรุปผลบนแดชบอร์ดเดียว
         </p>
-        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:6px;">
-          <a class="btn" href="#guidelines">📑 เปิดดูแนวทางการตรวจสอบ</a>
+        <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:10px;">
+          <a class="btn" href="#guidelines">📑 เปิดดูแนวทางตรวจสอบ</a>
           <a class="btn btn-outline" href="login.html#register-section">📝 เริ่มลงทะเบียนใช้งาน</a>
         </div>
         <div class="hero-kpi-row">
@@ -458,11 +481,11 @@
       <div class="card hero-right">
         <div class="hero-right-card-bg"></div>
         <div class="hero-right-inner">
-          <h3 style="margin-top:0;">ภาพรวมระบบตรวจสอบการเงินดิจิทัล</h3>
+          <h3>ภาพรวมระบบตรวจสอบการเงินดิจิทัล</h3>
           <p class="muted">FinTech • Analytics • Risk • Compliance</p>
           <img src="images/fintech-banner.png" alt="เทคโนโลยีการเงิน"
-               style="width:100%; border-radius:12px; box-shadow:var(--glow); margin-bottom:10px;">
-          <p class="muted" style="font-size:11px;">
+               style="width:100%; border-radius:14px; box-shadow:var(--glow); margin-bottom:12px;">
+          <p class="muted" style="font-size:14px;">
             โมดูลหลัก: Login / Register / Admin / Financial Examination / Tracking / Dashboard / Database / Chatbot
           </p>
         </div>
@@ -471,11 +494,11 @@
   </section>
 
   <main>
-    <!-- แนวทาง -->
+    <!-- แนวทางตรวจสอบ -->
     <section id="guidelines">
       <div class="container">
         <div class="card">
-          <h2>📑 แนวทางการตรวจสอบการเงิน</h2>
+          <h2>📑 แนวทางตรวจสอบการเงิน</h2>
           <p class="muted">
             เอกสารแนวทางการปฏิบัติงานตรวจสอบรายงานการเงิน พ.ศ. 2567 (ไฟล์ PDF)
             ใช้เป็นมาตรฐานกลางสำหรับการปฏิบัติงานตรวจสอบ
@@ -491,12 +514,12 @@
       </div>
     </section>
 
-    <!-- ข้อแนะนำ -->
+    <!-- ข้อแนะนำใช้ระบบ -->
     <section id="tips">
       <div class="container">
         <div class="section-header">
           <div>
-            <h2>💡 ข้อแนะนำการใช้โปรแกรม</h2>
+            <h2>💡 ข้อแนะนำใช้ระบบ</h2>
             <div class="section-tagline">แนวทางใช้งานให้รองรับ Audit Trail และลดความเสี่ยงผิดพลาด</div>
           </div>
         </div>
@@ -529,12 +552,12 @@
       </div>
     </section>
 
-    <!-- ระบบการตรวจสอบการเงิน -->
+    <!-- ระบบตรวจสอบการเงิน -->
     <section id="fa-system">
       <div class="container">
         <div class="section-header">
           <div>
-            <h2>📊 ระบบการตรวจสอบการเงิน</h2>
+            <h2>📊 ระบบตรวจสอบการเงิน</h2>
             <div class="section-tagline">ออกแบบให้ครอบคลุมวงจรการตรวจสอบรายงานการเงินครบชุด</div>
           </div>
         </div>
@@ -566,13 +589,13 @@
       </div>
     </section>
 
-    <!-- ระบบการสอบทางการเงิน -->
+    <!-- ระบบสอบทานทางการเงิน -->
     <section id="financial-exam">
       <div class="container">
         <div class="section-header">
           <div>
-            <h2>🧮 ระบบการสอบทางการเงิน</h2>
-            <div class="section-tagline">รองรับแบบสอบถามและ Test of Detail/Test of Control</div>
+            <h2>🧮 ระบบสอบทาน</h2>
+            <div class="section-tagline">รองรับแบบสอบถามและ Test of Detail / Test of Control</div>
           </div>
         </div>
         <div class="grid-2">
@@ -587,7 +610,7 @@
             </ul>
           </div>
           <div class="card">
-            <h3 style="margin-top:0;">ตัวอย่างแบบฟอร์ม</h3>
+            <h3>ตัวอย่างแบบฟอร์ม</h3>
             <form>
               <label>หัวข้อที่สอบทาน</label>
               <input type="text" placeholder="เช่น กระบวนการรายงานรายได้">
@@ -602,12 +625,12 @@
       </div>
     </section>
 
-    <!-- ระบบติดตามงบ -->
+    <!-- ระบบติดตามงานตรวจ -->
     <section id="tracking">
       <div class="container">
         <div class="section-header">
           <div>
-            <h2>📌 ระบบการติดตามงบการเงิน</h2>
+            <h2>📌 ระบบติดตามงานตรวจ</h2>
             <div class="section-tagline">โฟกัสการปิดประเด็นและติดตามข้อเสนอแนะอย่างเป็นระบบ</div>
           </div>
         </div>
@@ -624,7 +647,7 @@
             </ul>
           </div>
           <div class="card">
-            <h3 style="margin-top:0;">รายการติดตาม (ตัวอย่าง)</h3>
+            <h3>รายการติดตาม (ตัวอย่าง)</h3>
             <table>
               <thead>
                 <tr><th>ประเด็น</th><th>ผู้รับผิดชอบ</th><th>สถานะ</th><th>กำหนดเสร็จ</th></tr>
@@ -654,7 +677,7 @@
       <div class="container">
         <div class="section-header">
           <div>
-            <h2>🤖 ระบบตอบถามอัตโนมัติ</h2>
+            <h2>🤖 Chatbot</h2>
             <div class="section-tagline">ใช้ถามแนวทางการตรวจสอบและการใช้งานหน้าเว็บนี้แบบรวดเร็ว</div>
           </div>
         </div>
@@ -673,7 +696,7 @@
             <div id="chatLog" style="margin-top:12px;"></div>
           </div>
           <div class="card">
-            <h3 style="margin-top:0;">ขอบเขตคำตอบ</h3>
+            <h3>ขอบเขตคำตอบ</h3>
             <ul class="muted">
               <li>แนวทางการตรวจสอบและการจัดทำเอกสาร</li>
               <li>ขั้นตอนการใช้งานระบบในหน้าเว็บนี้</li>
@@ -695,7 +718,7 @@
         </div>
         <div class="grid-3">
           <div class="card">
-            <h3 style="margin-top:0;">ภาพรวมการตรวจสอบ</h3>
+            <h3>ภาพรวมการตรวจสอบ</h3>
             <p class="muted">
               แดชบอร์ดภาพรวมสถานะงานตรวจสอบและติดตามข้อเสนอแนะ
               สามารถต่อยอดเชื่อม BI/Power BI/Excel Dashboard ได้
@@ -707,13 +730,13 @@
             </ul>
           </div>
           <div class="card">
-            <h3 style="margin-top:0;">สรุปผู้ใช้ (ตัวอย่าง)</h3>
+            <h3>สรุปผู้ใช้</h3>
             <div id="userSummary" class="muted">
               รวมผู้ใช้: 0 • รออนุมัติ: 0 • อนุมัติแล้ว: 0
             </div>
           </div>
           <div class="card">
-            <h3 style="margin-top:0;">กราฟสถานะ (Sparkline)</h3>
+            <h3>กราฟสถานะ (Sparkline)</h3>
             <svg id="statusSparkline" viewBox="0 0 100 40" class="sparkline"></svg>
           </div>
         </div>
@@ -725,13 +748,13 @@
       <div class="container">
         <div class="section-header">
           <div>
-            <h2>🗄 ระบบฐานข้อมูล</h2>
+            <h2>🗄 ฐานข้อมูล</h2>
             <div class="section-tagline">ตัวอย่างการจัดเก็บข้อมูลผู้ใช้งานในรูปแบบตาราง</div>
           </div>
         </div>
         <div class="grid-2">
           <div class="card">
-            <h3 style="margin-top:0;">ตารางผู้ใช้งาน (เชื่อมกับข้อมูล Register/Admin)</h3>
+            <h3>ตารางผู้ใช้งาน</h3>
             <table>
               <thead>
                 <tr>
@@ -744,7 +767,7 @@
             </table>
           </div>
           <div class="card">
-            <h3 style="margin-top:0;">เพิ่มข้อมูลใหม่ (เดโม)</h3>
+            <h3>เพิ่มข้อมูลใหม่ (เดโม)</h3>
             <form id="dbForm">
               <label>ชื่อ-นามสกุล</label>
               <input type="text" id="dbName" required>
@@ -770,7 +793,7 @@
       <div class="container">
         <div class="section-header">
           <div>
-            <h2>📬 ติดต่อผู้สร้าง</h2>
+            <h2>📬 ติดต่อ</h2>
             <div class="section-tagline">สำหรับต่อยอดเชื่อม API/ฐานข้อมูลจริง และระบบ AI Audit เพิ่มเติม</div>
           </div>
         </div>
@@ -791,7 +814,7 @@
             </p>
           </div>
           <div class="card">
-            <h3 style="margin-top:0;">ลิงก์ด่วน</h3>
+            <h3>ลิงก์ด่วน</h3>
             <ul class="muted">
               <li><a href="login.html#register-section">ลงทะเบียนใช้งาน</a></li>
               <li><a href="login.html">เข้าสู่ระบบ</a></li>
@@ -813,7 +836,7 @@
   </footer>
 
   <script>
-    // ---------- Theme ----------
+    // ===== Theme toggle =====
     const themeToggleBtn = document.getElementById("themeToggle");
     function applyTheme(theme){
       document.body.dataset.theme = theme;
@@ -839,7 +862,7 @@
       });
     }
 
-    // ---------- User store (แชร์กับ login.html / admin.html) ----------
+    // ===== Shared user storage (ใช้ร่วมกับ login.html / admin.html) =====
     function loadUsersFromStorage(){
       try{
         const raw = localStorage.getItem("fas-users");
@@ -895,6 +918,21 @@
           createdAt:new Date().toISOString()
         },
         {
+          id:"admin-2",
+          firstName:"Admin",
+          lastName:"One",
+          fullname:"Admin1 กลุ่มตรวจสอบ",
+          citizenId:"",
+          govId:"",
+          position:"Admin1",
+          email:"admin1@example.com",
+          phone:"",
+          password:"admin001",
+          status:"approved",
+          role:"admin1",
+          createdAt:new Date().toISOString()
+        },
+        {
           id:"user-1",
           firstName:"สุดา",
           lastName:"สายใจ",
@@ -933,8 +971,8 @@
 
     const store = {
       users: seedDefaultUsersIfNeeded(),
-      currentUser: null,
-      chatHistory: []
+      chatHistory: [],
+      currentUser: null
     };
 
     const currentSession = loadSession();
@@ -945,34 +983,27 @@
       }
     }
 
-    // header: แสดงชื่อผู้ใช้งาน
     function updateCurrentUserBadge(){
       const badge = document.getElementById("currentUserBadge");
-      const adminMenu = document.getElementById("adminMenuItem");
       if(!badge) return;
       if(store.currentUser){
         badge.style.display = "inline-block";
         const roleText =
           store.currentUser.role === "super_admin" ? "Super Admin" :
-          store.currentUser.role === "admin" ? "Admin" : "User";
+          store.currentUser.role === "admin" ? "Admin" :
+          store.currentUser.role === "admin1" ? "Admin1" : "User";
         badge.textContent = `${store.currentUser.fullname || store.currentUser.email} • ${roleText}`;
       }else{
         badge.style.display = "none";
       }
-      if(adminMenu){
-        const isAdmin =
-          store.currentUser &&
-          (store.currentUser.role === "admin" || store.currentUser.role === "super_admin");
-        adminMenu.style.display = isAdmin ? "list-item" : "none";
-      }
     }
 
-    // ---------- Chatbot ----------
+    // ===== Chatbot (demo) =====
     function demoAnswer(q){
       const lower = q.toLowerCase();
       if(lower.includes("หลักฐาน") || lower.includes("evidence")) return "ควรเก็บหลักฐานเชิงเอกสารและดิจิทัล พร้อมบันทึก Audit Log ทุกขั้นตอน";
       if(lower.includes("risk") || lower.includes("ความเสี่ยง")) return "เริ่มจาก Risk assessment ระบุความมีสาระสำคัญ และจัดลำดับความเสี่ยงตามผลกระทบ";
-      if(lower.includes("แนวทาง") || lower.includes("guidelines")) return "ดูเอกสารแนวทางการตรวจสอบ 2567 ในเมนู 'แนวทางการตรวจสอบ'";
+      if(lower.includes("แนวทาง") || lower.includes("guidelines")) return "ดูเอกสารแนวทางการตรวจสอบ 2567 ในเมนู 'แนวทางตรวจสอบ'";
       return "คำถามได้รับแล้ว: โปรดระบุหัวข้อให้ชัดเจน (เช่น แนวทาง, หลักฐาน, ความเสี่ยง) เพื่อคำตอบที่แม่นยำ";
     }
 
@@ -1002,7 +1033,7 @@
       });
     }
 
-    // ---------- Dashboard & DB ----------
+    // ===== Dashboard / Database =====
     function updateUserSummary(){
       const el = document.getElementById("userSummary");
       if(!el) return;
@@ -1041,8 +1072,10 @@
         const status = document.getElementById("dbStatus").value.trim() || "pending";
         const msgEl = document.getElementById("dbMsg");
 
+        msgEl.textContent = "";
+
         if(!name || !email){
-          msgEl.innerText = "กรุณากรอกข้อมูลให้ครบถ้วน";
+          msgEl.textContent = "กรุณากรอกข้อมูลให้ครบถ้วน";
           return;
         }
 
@@ -1058,7 +1091,7 @@
             fullname: name,
             citizenId:"",
             govId:"",
-            position:"เพิ่มจากฐานข้อมูลหน้าแรก",
+            position:"เพิ่มจากหน้า index",
             email,
             phone:"",
             password:"",
@@ -1070,7 +1103,7 @@
         }
 
         saveUsersToStorage(store.users);
-        msgEl.innerText = "✅ บันทึกข้อมูลผู้ใช้ในฐานข้อมูล (เดโม) แล้ว";
+        msgEl.textContent = "✅ บันทึกข้อมูลผู้ใช้แล้ว (เดโม)";
         renderDbTable();
         updateUserSummary();
         renderSparkline();
@@ -1084,11 +1117,9 @@
       const pending = store.users.filter(u => u.status === "pending").length;
       const rejected = store.users.filter(u => u.status === "rejected").length;
       let points = [approved, pending, rejected];
-
       if(points.every(v => v === 0)){
         points = [1,1,1];
       }
-
       const max = Math.max(...points) || 1;
       const paddingX = 5;
       const paddingY = 5;
