@@ -6,96 +6,346 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     :root{
-      --primary:#1a237e;
-      --primary-2:#3949ab;
-      --accent:#ffd54f;
-      --bg:#f9f9fb;
-      --card:#ffffff;
-      --text:#222;
-      --muted:#666;
+      --primary:#0d47a1;          /* น้ำเงินเข้ม */
+      --primary-2:#42a5f5;        /* น้ำเงินสด */
+      --accent:#ffd54f;           /* ทองอ่อน */
+      --bg:#060818;               /* พื้นหลังโทนมืดแบบแดชบอร์ด AI */
+      --bg-soft:#0b1024;
+      --card:#11152b;
+      --card-soft:#171c33;
+      --text:#f5f7ff;
+      --muted:#a3acc7;
       --green:#2e7d32;
       --red:#c62828;
-      --border:#e6e8ef;
+      --border:#262b46;
+      --maroon:#7b1e3c;           /* แดงเลือดหมู */
+      --pink:#f48fb1;             /* ชมพู */
+      --chip-bg:rgba(244,143,177,0.12);
+      --chip-border:rgba(244,143,177,0.5);
+      --glow:0 0 18px rgba(66,165,245,0.55);
     }
+
     *{box-sizing:border-box}
-    body{margin:0; font-family:"Segoe UI", Tahoma, Geneva, Verdana, sans-serif; background:var(--bg); color:var(--text);}
-    a{color:var(--primary); text-decoration:none}
+    body{
+      margin:0;
+      font-family:"Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(123,30,60,0.36) 0, transparent 55%),
+        radial-gradient(circle at 90% 100%, rgba(66,165,245,0.32) 0, transparent 55%),
+        radial-gradient(circle at 0% 100%, rgba(244,143,177,0.25) 0, transparent 55%),
+        var(--bg);
+      color:var(--text);
+    }
+    a{color:var(--pink); text-decoration:none}
+    a:hover{text-decoration:underline}
+
+    /* HEADER */
     header{
       position:sticky; top:0; z-index:50;
-      background:var(--primary); color:#fff; box-shadow:0 2px 10px rgba(0,0,0,.12);
+      background:linear-gradient(120deg,var(--maroon),var(--primary),var(--pink));
+      box-shadow:0 10px 28px rgba(0,0,0,.55);
+      border-bottom:1px solid rgba(255,255,255,0.06);
+      backdrop-filter:blur(16px);
     }
-    .container{max-width:1120px; margin:0 auto; padding:0 20px;}
-    .header-inner{display:flex; align-items:center; justify-content:space-between; padding:14px 0;}
-    .brand{display:flex; align-items:center; gap:12px; font-weight:700; font-size:18px;}
-    .brand img{height:44px}
-    nav ul{list-style:none; display:flex; gap:16px; padding:0; margin:0; flex-wrap:wrap;}
-    nav a{color:#fff; padding:8px 10px; border-radius:6px; font-weight:600;}
-    nav a:hover{background:rgba(255,255,255,.12)}
+    .container{max-width:1180px; margin:0 auto; padding:0 20px;}
+    .header-inner{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:10px 0;
+      gap:18px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:12px;
+      font-weight:700; font-size:18px;
+      letter-spacing:0.03em;
+    }
+    .brand img{
+      height:44px;
+      border-radius:50%;
+      background:rgba(255,255,255,0.9);
+      padding:4px;
+      box-shadow:0 4px 10px rgba(0,0,0,0.4);
+    }
+    .brand span.small{
+      display:block;
+      font-size:11px;
+      font-weight:500;
+      opacity:.85;
+    }
+    nav ul{
+      list-style:none; display:flex; gap:10px;
+      padding:0; margin:0; flex-wrap:wrap;
+    }
+    nav a{
+      color:#fff;
+      padding:6px 10px;
+      border-radius:999px;
+      font-weight:600;
+      font-size:12px;
+      border:1px solid rgba(255,255,255,0.18);
+      background:rgba(0,0,0,0.08);
+      backdrop-filter:blur(12px);
+      white-space:nowrap;
+    }
+    nav a:hover{
+      background:rgba(255,255,255,0.18);
+      box-shadow:0 0 12px rgba(255,255,255,0.35);
+    }
+
+    /* HERO */
     .hero{
-      background:linear-gradient(135deg,#e8eaf6,#ffffff);
       border-bottom:1px solid var(--border);
+      background:radial-gradient(circle at 0 0, rgba(244,143,177,0.15) 0, transparent 55%),
+                 radial-gradient(circle at 100% 100%, rgba(13,71,161,0.6) 0, transparent 65%),
+                 var(--bg-soft);
     }
-    .hero-inner{display:grid; grid-template-columns:1.2fr .8fr; gap:24px; align-items:center; padding:40px 0;}
-    .hero h1{margin:0 0 8px 0; font-size:32px; color:var(--primary);}
-    .hero p{margin:0 0 16px 0; color:var(--muted);}
+    .hero-inner{
+      display:grid; grid-template-columns:1.25fr .75fr;
+      gap:26px; align-items:center; padding:42px 0 34px;
+    }
+    .hero h1{
+      margin:10px 0 12px 0;
+      font-size:30px;
+      color:#ffffff;
+      letter-spacing:0.02em;
+    }
+    .hero p{
+      margin:0 0 18px 0;
+      color:var(--muted);
+      max-width:540px;
+    }
+    .hero-kpi-row{
+      display:flex; flex-wrap:wrap;
+      gap:12px; margin-top:14px;
+    }
+    .kpi-pill{
+      padding:8px 10px;
+      border-radius:10px;
+      background:rgba(17,21,43,0.85);
+      border:1px solid rgba(255,255,255,0.08);
+      font-size:12px;
+      color:var(--muted);
+    }
+    .kpi-pill strong{color:#fff;}
+
     .btn{
-      display:inline-block; padding:12px 18px; border-radius:8px; font-weight:700; background:var(--primary); color:#fff;
-      box-shadow:0 2px 8px rgba(26,35,126,.25); transition:background .2s ease, transform .2s ease;
+      display:inline-flex; align-items:center; justify-content:center;
+      padding:11px 18px; border-radius:999px;
+      font-weight:700; font-size:14px;
+      border:none; cursor:pointer;
+      background:linear-gradient(135deg,var(--pink),var(--primary-2));
+      color:#fff;
+      box-shadow:0 6px 20px rgba(244,143,177,0.6);
+      transition:transform .18s ease, box-shadow .18s ease, filter .18s ease;
+      text-decoration:none;
+      gap:6px;
     }
-    .btn:hover{background:var(--primary-2); transform:translateY(-1px)}
-    .btn-outline{background:#fff; color:var(--primary); border:1px solid var(--primary)}
-    main section{padding:36px 0;}
-    h2{color:var(--primary); margin:0 0 14px 0; font-size:24px;}
+    .btn:hover{
+      transform:translateY(-1px);
+      filter:brightness(1.05);
+      box-shadow:0 0 22px rgba(66,165,245,0.85);
+    }
+    .btn-outline{
+      background:rgba(8,12,32,0.85);
+      border:1px solid rgba(244,143,177,0.7);
+      color:var(--pink);
+      box-shadow:none;
+    }
+    .btn-outline:hover{
+      box-shadow:0 0 18px rgba(244,143,177,0.75);
+    }
+
+    .hero-right.card{
+      position:relative;
+      overflow:hidden;
+    }
+    .hero-right-card-bg{
+      position:absolute; inset:-40%;
+      background:
+        radial-gradient(circle at 0 0, rgba(244,143,177,0.25) 0, transparent 55%),
+        radial-gradient(circle at 100% 100%, rgba(66,165,245,0.35) 0, transparent 55%);
+      opacity:0.85;
+      filter:blur(12px);
+      z-index:0;
+    }
+    .hero-right-inner{position:relative; z-index:1;}
+
+    .chip{
+      display:inline-flex; align-items:center; gap:6px;
+      padding:7px 12px; border-radius:999px;
+      background:var(--chip-bg);
+      border:1px solid var(--chip-border);
+      color:#ffebf3;
+      font-weight:600; font-size:12px;
+      backdrop-filter:blur(16px);
+    }
+    .chip span.dot{
+      width:8px; height:8px; border-radius:50%;
+      background:#69f0ae;
+      box-shadow:0 0 8px #69f0ae;
+    }
+
+    /* SECTION & CARDS */
+    main section{padding:32px 0;}
+    h2{
+      color:#ffffff;
+      margin:0 0 14px 0;
+      font-size:22px;
+      letter-spacing:0.02em;
+    }
+    h3{
+      color:#e0e5ff;
+      font-size:17px;
+    }
+    .section-header{
+      margin-bottom:12px;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-end;
+      gap:10px;
+    }
+    .section-tagline{
+      font-size:12px;
+      color:var(--muted);
+    }
+
     .card{
-      background:var(--card); border:1px solid var(--border); border-radius:12px; padding:18px;
-      box-shadow:0 4px 14px rgba(0,0,0,.06);
+      background:linear-gradient(145deg,rgba(17,21,43,0.98),rgba(25,31,60,0.98));
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:14px; padding:18px;
+      box-shadow:0 14px 34px rgba(0,0,0,.8);
+      position:relative;
+      overflow:hidden;
     }
+    .card::before{
+      content:"";
+      position:absolute; inset:-40%;
+      background:radial-gradient(circle at 0 0, rgba(244,143,177,0.18) 0, transparent 55%);
+      opacity:0; pointer-events:none;
+      transition:opacity .25s ease;
+    }
+    .card:hover::before{opacity:1;}
+    .card > *{position:relative; z-index:1;}
+
     .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:20px;}
     .grid-3{display:grid; grid-template-columns:repeat(3, 1fr); gap:20px;}
     .grid-auto{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:20px;}
-    label{display:block; font-weight:600; margin:10px 0 6px;}
+
+    label{display:block; font-weight:600; margin:10px 0 6px; font-size:13px;}
     input[type="text"], input[type="email"], input[type="password"], textarea{
-      width:100%; padding:10px; border:1px solid #cfd3dc; border-radius:8px; font-size:14px;
+      width:100%; padding:10px; border-radius:10px; font-size:13px;
+      border:1px solid rgba(255,255,255,0.08);
+      background:rgba(5,8,26,0.85); color:#fff;
+      outline:none;
     }
-    button{padding:10px 16px; border:none; border-radius:8px; font-weight:700; cursor:pointer; background:var(--primary); color:#fff;}
-    button:hover{background:var(--primary-2)}
-    .muted{color:var(--muted); font-size:13px;}
-    .status{padding:8px 12px; border-radius:8px; font-size:12px; font-weight:700;}
-    .status-pending{background:#fff8e1; color:#8a6d3b; border:1px solid #ffe0b2;}
-    .status-approved{background:#e8f5e9; color:#1b5e20; border:1px solid #c8e6c9;}
-    .status-rejected{background:#ffebee; color:#b71c1c; border:1px solid #ffcdd2;}
-    table{width:100%; border-collapse:collapse; margin-top:10px;}
-    th, td{border:1px solid var(--border); padding:10px; text-align:left;}
-    th{background:#f2f4ff; color:#2c3e50;}
-    .actions{display:flex; gap:8px;}
-    footer{padding:24px 0; background:#12143d; color:#cfd8dc;}
-    .footer-inner{display:flex; justify-content:space-between; align-items:center; gap:12px;}
-    .chip{display:inline-block; padding:6px 10px; border-radius:999px; background:#eef2ff; border:1px solid #dbe4ff; color:#1a237e; font-weight:700; font-size:12px;}
-    @media (max-width:980px){.hero-inner{grid-template-columns:1fr} .grid-2,.grid-3{grid-template-columns:1fr}}
+    input:focus, textarea:focus{
+      border-color:var(--pink);
+      box-shadow:0 0 0 1px rgba(244,143,177,0.4);
+    }
+    button{
+      padding:9px 14px; border:none; border-radius:999px;
+      font-weight:700; cursor:pointer;
+      background:linear-gradient(135deg,var(--primary-2),var(--maroon));
+      color:#fff; font-size:13px;
+      box-shadow:0 6px 16px rgba(13,71,161,0.7);
+    }
+    button:hover{
+      filter:brightness(1.04);
+      box-shadow:0 0 16px rgba(66,165,245,0.85);
+    }
+
+    .muted{color:var(--muted); font-size:12px;}
+
+    .status{
+      padding:6px 10px; border-radius:999px;
+      font-size:11px; font-weight:700; display:inline-block;
+    }
+    .status-pending{
+      background:rgba(255,213,79,0.1); color:#ffca28;
+      border:1px solid rgba(255,213,79,0.55);
+    }
+    .status-approved{
+      background:rgba(129,199,132,0.12); color:#69f0ae;
+      border:1px solid rgba(129,199,132,0.6);
+    }
+    .status-rejected{
+      background:rgba(239,83,80,0.12); color:#ff8a80;
+      border:1px solid rgba(239,83,80,0.6);
+    }
+
+    table{
+      width:100%; border-collapse:collapse; margin-top:10px;
+      font-size:12px;
+    }
+    th, td{
+      border:1px solid rgba(255,255,255,0.05);
+      padding:8px 9px; text-align:left;
+    }
+    th{
+      background:linear-gradient(90deg,rgba(13,71,161,0.85),rgba(123,30,60,0.75));
+      color:#ffffff;
+    }
+
+    .actions{display:flex; gap:6px; flex-wrap:wrap;}
+
+    /* FOOTER */
+    footer{
+      padding:20px 0;
+      background:#050714;
+      color:var(--muted);
+      border-top:1px solid rgba(255,255,255,0.08);
+      margin-top:26px;
+    }
+    .footer-inner{
+      display:flex; justify-content:space-between; align-items:center; gap:12px;
+      font-size:12px;
+    }
+
+    /* CHAT LOG CARDS */
+    #chatLog .card{
+      margin-top:8px;
+      padding:10px 12px;
+      border-radius:12px;
+      box-shadow:none;
+      background:rgba(11,16,40,0.9);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width:980px){
+      .hero-inner{grid-template-columns:1fr}
+      .grid-2,.grid-3{grid-template-columns:1fr}
+      nav ul{justify-content:flex-start}
+    }
+    @media (max-width:640px){
+      .header-inner{flex-direction:column; align-items:flex-start;}
+      .hero h1{font-size:24px;}
+    }
   </style>
 </head>
 <body>
-  <!-- Header with logo visible on all pages -->
+  <!-- Header -->
   <header>
     <div class="container header-inner">
       <div class="brand">
         <img src="images/oag-logo.png" alt="สำนักงานการตรวจเงินแผ่นดิน">
-        Financial Audit System
+        <div>
+          Financial Audit System
+          <span class="small">Digital • AI • Compliance by OAG</span>
+        </div>
       </div>
       <nav>
         <ul>
           <li><a href="#home">หน้าแรก</a></li>
-          <li><a href="#login">ระบบ Login</a></li>
-          <li><a href="#register">ระบบลงทะเบียน</a></li>
-          <li><a href="#guidelines">แนวทางการตรวจสอบ</a></li>
-          <li><a href="#tips">ข้อแนะนำการใช้โปรแกรม</a></li>
-          <li><a href="#fa-system">ระบบการตรวจสอบการเงิน</a></li>
-          <li><a href="#financial-exam">ระบบการสอบทางการเงิน</a></li>
-          <li><a href="#tracking">ระบบการติดตามงบการเงิน</a></li>
-          <li><a href="#admin">ระบบ Admin</a></li>
-          <li><a href="#chatbot">ระบบตอบถามอัตโนมัติ</a></li>
+          <li><a href="#login">Login</a></li>
+          <li><a href="#register">ลงทะเบียน</a></li>
+          <li><a href="#guidelines">แนวทางตรวจสอบ</a></li>
+          <li><a href="#tips">ข้อแนะนำ</a></li>
+          <li><a href="#fa-system">ระบบตรวจสอบการเงิน</a></li>
+          <li><a href="#financial-exam">ระบบการสอบ</a></li>
+          <li><a href="#tracking">ติดตามงบการเงิน</a></li>
           <li><a href="#dashboard">Cash board</a></li>
-          <li><a href="#contact">ติดต่อผู้สร้าง</a></li>
+          <li><a href="#database">ฐานข้อมูล</a></li>
+          <li><a href="#chatbot">Chatbot</a></li>
+          <li><a href="#contact">ติดต่อ</a></li>
         </ul>
       </nav>
     </div>
@@ -105,18 +355,38 @@
   <section id="home" class="hero">
     <div class="container hero-inner">
       <div>
-        <span class="chip">มาตรฐาน สตง. • โปร่งใส • ตรวจสอบได้</span>
-        <h1>ตรวจสอบการเงินด้วยเทคโนโลยีที่โปร่งใสและทันสมัย</h1>
-        <p>ระบบนี้ออกแบบเพื่อรองรับการทำงานตรวจสอบการเงินครบวงจร ตั้งแต่การลงทะเบียน, อนุมัติ, ตรวจสอบ, สอบทางการเงิน, ติดตามผล และรายงาน</p>
-        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <div class="chip">
+          <span class="dot"></span>
+          มาตรฐาน สตง. • โปร่งใส • ตรวจสอบย้อนกลับได้
+        </div>
+        <h1>แพลตฟอร์มตรวจสอบการเงินยุค AI สำหรับงาน สตง. ดิจิทัล</h1>
+        <p>
+          รองรับ Workflow ตรวจสอบการเงินครบวงจร — ตั้งแต่ลงทะเบียนผู้ใช้ อนุมัติสิทธิ์
+          วางแผนตรวจ เก็บหลักฐาน สอบทางการเงิน ติดตามข้อเสนอแนะ
+          และสรุปผลบนแดชบอร์ดเดียว
+        </p>
+        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:6px;">
           <a class="btn" href="#guidelines">📑 เปิดดูแนวทางการตรวจสอบ</a>
           <a class="btn btn-outline" href="#register">📝 เริ่มลงทะเบียนใช้งาน</a>
         </div>
+        <div class="hero-kpi-row">
+          <div class="kpi-pill"><strong>Realtime</strong> • สถานะผู้ใช้ &amp; งานตรวจ</div>
+          <div class="kpi-pill"><strong>Digital Trail</strong> • Audit Log พร้อมสอบย้อนกลับ</div>
+          <div class="kpi-pill"><strong>AI Ready</strong> • สามารถต่อยอดเชื่อม API / AI Engine ได้</div>
+        </div>
       </div>
-      <div class="card">
-        <h3 style="margin-top:0;">สัญลักษณ์ทางการเงินและเทคโนโลยี</h3>
-        <p class="muted">FinTech • Analytics • Risk • Compliance</p>
-        <img src="images/fintech-banner.png" alt="เทคโนโลยีการเงิน" style="width:100%; border-radius:10px;">
+
+      <div class="card hero-right">
+        <div class="hero-right-card-bg"></div>
+        <div class="hero-right-inner">
+          <h3 style="margin-top:0;">ภาพรวมระบบตรวจสอบการเงินดิจิทัล</h3>
+          <p class="muted">FinTech • Analytics • Risk • Compliance</p>
+          <img src="images/fintech-banner.png" alt="เทคโนโลยีการเงิน"
+               style="width:100%; border-radius:12px; box-shadow:var(--glow); margin-bottom:10px;">
+          <p class="muted" style="font-size:11px;">
+            โมดูลหลัก: Login / Register / Admin / Financial Examination / Tracking / Dashboard / Database / Chatbot
+          </p>
+        </div>
       </div>
     </div>
   </section>
@@ -124,262 +394,436 @@
   <main>
     <!-- 2. ระบบ Login -->
     <section id="login">
-      <div class="container grid-2">
-        <div class="card">
-          <h2>ระบบ Login</h2>
-          <form id="loginForm">
-            <label for="loginEmail">อีเมล</label>
-            <input type="email" id="loginEmail" required>
-            <label for="loginPassword">รหัสผ่าน</label>
-            <input type="password" id="loginPassword" required>
-            <button type="submit">เข้าสู่ระบบ</button>
-          </form>
-          <p id="loginMsg" class="muted"></p>
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <h2>ระบบ Login</h2>
+            <div class="section-tagline">เข้าใช้งานด้วยบัญชีที่ผ่านการอนุมัติจาก Admin แล้วเท่านั้น</div>
+          </div>
         </div>
-        <div class="card">
-          <h3 style="margin-top:0;">นโยบายความปลอดภัย</h3>
-          <ul>
-            <li>บัญชีต้องผ่านการอนุมัติจาก Admin ก่อนเข้าใช้งาน</li>
-            <li>รหัสผ่านถูกเก็บอย่างปลอดภัยในระบบจริง (ตัวอย่างนี้เป็นการจำลอง)</li>
-            <li>แนะนำให้เปิดใช้การยืนยันตัวตนหลายชั้น</li>
-          </ul>
+        <div class="grid-2">
+          <div class="card">
+            <form id="loginForm">
+              <label for="loginEmail">อีเมล</label>
+              <input type="email" id="loginEmail" required>
+              <label for="loginPassword">รหัสผ่าน</label>
+              <input type="password" id="loginPassword" required>
+              <div style="margin-top:12px;">
+                <button type="submit">เข้าสู่ระบบ</button>
+              </div>
+            </form>
+            <p id="loginMsg" class="muted"></p>
+          </div>
+          <div class="card">
+            <h3 style="margin-top:0;">นโยบายความปลอดภัย</h3>
+            <ul class="muted">
+              <li>บัญชีต้องผ่านการอนุมัติจาก Admin ก่อนเข้าใช้งาน</li>
+              <li>รหัสผ่านควรถูกเก็บแบบเข้ารหัส (ระบบนี้เป็นเดโมฝั่งหน้าเว็บ)</li>
+              <li>แนะนำให้เปิดใช้การยืนยันตัวตนหลายชั้น (MFA)</li>
+              <li>ตั้งรหัสผ่านอย่างน้อย 12 ตัวอักษร มีทั้งตัวเลข ตัวใหญ่ ตัวเล็ก และสัญลักษณ์</li>
+            </ul>
+          </div>
         </div>
       </div>
     </section>
 
     <!-- 3. ระบบลงทะเบียน -->
     <section id="register">
-      <div class="container grid-2">
-        <div class="card">
-          <h2>ระบบลงทะเบียน</h2>
-          <form id="registerForm">
-            <label for="fullname">ชื่อ-นามสกุล</label>
-            <input type="text" id="fullname" required>
-            <label for="email">อีเมล</label>
-            <input type="email" id="email" required>
-            <label for="password">รหัสผ่าน</label>
-            <input type="password" id="password" required>
-            <button type="submit">ส่งคำขอลงทะเบียน</button>
-          </form>
-          <p id="registerMsg" class="muted"></p>
-          <div class="status status-pending" style="margin-top:10px;">สถานะบัญชี: รอการอนุมัติจาก Admin</div>
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <h2>ระบบลงทะเบียน</h2>
+            <div class="section-tagline">เก็บข้อมูลพื้นฐานผู้ใช้ และส่งคำขอให้ Admin ตรวจสอบ</div>
+          </div>
         </div>
-        <div class="card">
-          <h3 style="margin-top:0;">ขั้นตอนอนุมัติ</h3>
-          <ol>
-            <li>ผู้ใช้ส่งคำขอลงทะเบียน</li>
-            <li>Admin ตรวจสอบและอนุมัติ/ปฏิเสธ</li>
-            <li>ระบบแจ้งเตือนทางอีเมลเมื่ออนุมัติแล้ว</li>
-          </ol>
+        <div class="grid-2">
+          <div class="card">
+            <form id="registerForm">
+              <label for="fullname">ชื่อ-นามสกุล</label>
+              <input type="text" id="fullname" required>
+              <label for="email">อีเมล</label>
+              <input type="email" id="email" required>
+              <label for="password">รหัสผ่าน</label>
+              <input type="password" id="password" required>
+              <div style="margin-top:12px;">
+                <button type="submit">ส่งคำขอลงทะเบียน</button>
+              </div>
+            </form>
+            <p id="registerMsg" class="muted"></p>
+            <div class="status status-pending" style="margin-top:10px;">
+              สถานะบัญชี: รอการอนุมัติจาก Admin
+            </div>
+          </div>
+          <div class="card">
+            <h3 style="margin-top:0;">ขั้นตอนอนุมัติ</h3>
+            <ol class="muted">
+              <li>ผู้ใช้กรอกข้อมูลและส่งคำขอลงทะเบียน</li>
+              <li>Admin ตรวจสอบตัวตน / สิทธิ์ / หน่วยรับตรวจ</li>
+              <li>กำหนดบทบาท (User / Admin / Viewer)</li>
+              <li>ระบบแจ้งเตือนผลการอนุมัติทางอีเมล</li>
+            </ol>
+          </div>
         </div>
       </div>
     </section>
 
     <!-- 4. แนวทางการตรวจสอบ -->
     <section id="guidelines">
-      <div class="container card">
-        <h2>แนวทางการตรวจสอบการเงิน</h2>
-        <p>เอกสารแนวทางการปฏิบัติงานตรวจสอบรายงานการเงิน พ.ศ. 2567 (ไฟล์ PDF)</p>
-        <a class="btn" target="_blank" href="documents/00 แนวทางการปฏิบัติงานตรวจสอบรายงานการเงิน 2567.pdf">🔗 เปิดดูเอกสาร PDF</a>
-        <p class="muted" style="margin-top:10px;">นำไฟล์ PDF ไปไว้ในโฟลเดอร์ documents/ แล้วปรับลิงก์ให้ตรงกับชื่อไฟล์จริง</p>
+      <div class="container">
+        <div class="card">
+          <h2>แนวทางการตรวจสอบการเงิน</h2>
+          <p class="muted">
+            เอกสารแนวทางการปฏิบัติงานตรวจสอบรายงานการเงิน พ.ศ. 2567 (ไฟล์ PDF)
+            ใช้เป็นมาตรฐานกลางสำหรับการปฏิบัติงานตรวจสอบ
+          </p>
+          <a class="btn" target="_blank"
+             href="documents/00 แนวทางการปฏิบัติงานตรวจสอบรายงานการเงิน 2567.pdf">
+            🔗 เปิดดูเอกสาร PDF
+          </a>
+          <p class="muted" style="margin-top:10px;">
+            นำไฟล์ PDF ไปไว้ในโฟลเดอร์ <code>documents/</code> แล้วปรับลิงก์ให้ตรงกับชื่อไฟล์จริง
+          </p>
+        </div>
       </div>
     </section>
 
-    <!-- 5. ข้อแนะนำการใช้ Programe -->
+    <!-- 5. ข้อแนะนำการใช้โปรแกรม -->
     <section id="tips">
-      <div class="container grid-auto">
-        <div class="card">
-          <h2>ข้อแนะนำการใช้โปรแกรม</h2>
-          <ul>
-            <li>ใช้ข้อมูลจริงและอีเมลที่ใช้งานได้สำหรับการลงทะเบียน</li>
-            <li>เก็บหลักฐานและบันทึก Audit Log ให้ครบทุกขั้นตอน</li>
-            <li>ตรวจสอบเวอร์ชันเอกสารก่อนใช้อ้างอิง</li>
-          </ul>
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <h2>ข้อแนะนำการใช้โปรแกรม</h2>
+            <div class="section-tagline">แนวทางใช้งานให้รองรับ Audit Trail และลดความเสี่ยงผิดพลาด</div>
+          </div>
         </div>
-        <div class="card">
-          <h3 style="margin-top:0;">ข้อควรระวัง</h3>
-          <ul>
-            <li>อย่าแชร์รหัสผ่านให้ผู้อื่น</li>
-            <li>หลีกเลี่ยงการอัปโหลดข้อมูลส่วนตัวที่ไม่เกี่ยวข้อง</li>
-            <li>ปฏิบัติตามกฎหมายและระเบียบที่เกี่ยวข้อง</li>
-          </ul>
-        </div>
-        <div class="card">
-          <h3 style="margin-top:0;">ทิปส์การทำงานเร็วขึ้น</h3>
-          <ul>
-            <li>ใช้คีย์ลัดและเทมเพลตรายงาน</li>
-            <li>จัดหมวดหมู่เอกสารตั้งแต่ต้น</li>
-            <li>ใช้แดชบอร์ดดูภาพรวมก่อนลงรายละเอียด</li>
-          </ul>
+        <div class="grid-auto">
+          <div class="card">
+            <h3>แนวทางทั่วไป</h3>
+            <ul class="muted">
+              <li>ใช้ข้อมูลจริงและอีเมลที่ใช้งานได้สำหรับการลงทะเบียน</li>
+              <li>เก็บหลักฐานและบันทึก Audit Log ให้ครบทุกขั้นตอน</li>
+              <li>ตรวจสอบเวอร์ชันเอกสารก่อนใช้อ้างอิงทุกครั้ง</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>ข้อควรระวัง</h3>
+            <ul class="muted">
+              <li>อย่าแชร์รหัสผ่านให้ผู้อื่น</li>
+              <li>หลีกเลี่ยงการอัปโหลดข้อมูลส่วนบุคคลที่ไม่จำเป็นต่อการตรวจสอบ</li>
+              <li>ปฏิบัติตามกฎหมายและระเบียบที่เกี่ยวข้องอย่างเคร่งครัด</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>ทิปส์ทำงานเร็วขึ้น</h3>
+            <ul class="muted">
+              <li>ใช้เทมเพลตรายงานและตารางมาตรฐาน</li>
+              <li>จัดหมวดหมู่เอกสารตั้งแต่ต้น — งบ / สัญญา / หลักฐานประกอบ</li>
+              <li>ใช้แดชบอร์ดดูภาพรวมก่อนลงรายละเอียดเชิงลึก</li>
+            </ul>
+          </div>
         </div>
       </div>
     </section>
 
     <!-- 6. ระบบการตรวจสอบการเงิน -->
     <section id="fa-system">
-      <div class="container grid-3">
-        <div class="card">
-          <h2>ระบบการตรวจสอบการเงิน</h2>
-          <p>ออกแบบขั้นตอนตรวจสอบ: การวางแผน, เก็บหลักฐาน, ประเมินความเสี่ยง, รายงานผล, เผยแพร่ และติดตามผล</p>
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <h2>ระบบการตรวจสอบการเงิน</h2>
+            <div class="section-tagline">ออกแบบให้ครอบคลุมวงจรการตรวจสอบรายงานการเงินครบชุด</div>
+          </div>
         </div>
-        <div class="card">
-          <h3 style="margin-top:0;">โมดูลหลัก</h3>
-          <ul>
-            <li>Risk & Materiality</li>
-            <li>Evidence Collection</li>
-            <li>Findings & Recommendations</li>
-          </ul>
-        </div>
-        <div class="card">
-          <h3 style="margin-top:0;">เอกสารที่เกี่ยวข้อง</h3>
-          <ul>
-            <li>Audit Plan</li>
-            <li>Working Papers</li>
-            <li>Final Report</li>
-          </ul>
+        <div class="grid-3">
+          <div class="card">
+            <p class="muted">
+              ขั้นตอนหลัก: การวางแผน (Planning), การเก็บหลักฐาน (Evidence),
+              การประเมินความเสี่ยง (Risk &amp; Materiality), การสรุปผล (Reporting),
+              และการติดตามผล (Follow-up)
+            </p>
+          </div>
+          <div class="card">
+            <h3>โมดูลหลัก</h3>
+            <ul class="muted">
+              <li>Risk &amp; Materiality Assessment</li>
+              <li>Evidence Collection &amp; Sampling</li>
+              <li>Findings &amp; Recommendations</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>เอกสารที่เกี่ยวข้อง</h3>
+            <ul class="muted">
+              <li>Audit Plan</li>
+              <li>Working Papers</li>
+              <li>Final Report / Management Letter</li>
+            </ul>
+          </div>
         </div>
       </div>
     </section>
 
     <!-- 7. ระบบการสอบทางการเงิน -->
     <section id="financial-exam">
-      <div class="container grid-2">
-        <div class="card">
-          <h2>ระบบการสอบทางการเงิน</h2>
-          <p>รวมเครื่องมือและแบบสอบถามเพื่อทดสอบความถูกต้องและความเชื่อถือได้ของข้อมูลทางการเงิน</p>
-          <ul>
-            <li>แบบสอบถามการควบคุมภายใน</li>
-            <li>แบบทดสอบความสอดคล้อง</li>
-            <li>การยืนยันยอดและการสอบทาน</li>
-          </ul>
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <h2>ระบบการสอบทางการเงิน</h2>
+            <div class="section-tagline">รองรับแบบสอบถามและ Test of Detail/Test of Control</div>
+          </div>
         </div>
-        <div class="card">
-          <h3 style="margin-top:0;">ตัวอย่างแบบฟอร์ม</h3>
-          <form>
-            <label>หัวข้อที่สอบทาน</label>
-            <input type="text" placeholder="เช่น กระบวนการรายงานรายได้">
-            <label>หมายเหตุ</label>
-            <textarea rows="4" placeholder="บันทึกผลการสอบทาน"></textarea>
-            <button type="button">บันทึกข้อมูลตัวอย่าง</button>
-          </form>
+        <div class="grid-2">
+          <div class="card">
+            <p class="muted">
+              รวมเครื่องมือและแบบสอบถามเพื่อทดสอบความถูกต้องและความเชื่อถือได้ของข้อมูลทางการเงิน
+            </p>
+            <ul class="muted">
+              <li>แบบสอบถามการควบคุมภายใน (Internal Control Questionnaire)</li>
+              <li>แบบทดสอบความสอดคล้อง (Compliance Test)</li>
+              <li>การยืนยันยอดและการสอบทาน (Confirmation &amp; Review)</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3 style="margin-top:0;">ตัวอย่างแบบฟอร์ม</h3>
+            <form>
+              <label>หัวข้อที่สอบทาน</label>
+              <input type="text" placeholder="เช่น กระบวนการรายงานรายได้">
+              <label>หมายเหตุ</label>
+              <textarea rows="4" placeholder="บันทึกผลการสอบทาน"></textarea>
+              <div style="margin-top:10px;">
+                <button type="button">บันทึกข้อมูลตัวอย่าง</button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </section>
 
     <!-- 8. ระบบการติดตามงบการเงิน -->
     <section id="tracking">
-      <div class="container grid-2">
-        <div class="card">
-          <h2>ระบบการติดตามงบการเงิน</h2>
-          <p>ติดตามสถานะการดำเนินการตามข้อเสนอแนะ และความคืบหน้าการแก้ไขประเด็น</p>
-          <ul>
-            <li>สถานะ: รอดำเนินการ / กำลังดำเนินการ / เสร็จสิ้น</li>
-            <li>ผู้รับผิดชอบและวันครบกำหนด</li>
-            <li>หลักฐานการดำเนินการ</li>
-          </ul>
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <h2>ระบบการติดตามงบการเงิน</h2>
+            <div class="section-tagline">โฟกัสการปิดประเด็นและติดตามข้อเสนอแนะอย่างเป็นระบบ</div>
+          </div>
         </div>
+        <div class="grid-2">
+          <div class="card">
+            <p class="muted">
+              ติดตามสถานะการดำเนินการตามข้อเสนอแนะ
+              และความคืบหน้าการแก้ไขประเด็นสำคัญของหน่วยรับตรวจ
+            </p>
+            <ul class="muted">
+              <li>สถานะ: รอดำเนินการ / กำลังดำเนินการ / เสร็จสิ้น</li>
+              <li>ระบุผู้รับผิดชอบและกำหนดเสร็จ</li>
+              <li>แนบหลักฐานการดำเนินการ (เอกสาร/ภาพ/ไฟล์)</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3 style="margin-top:0;">รายการติดตาม (ตัวอย่าง)</h3>
+            <table>
+              <thead>
+                <tr><th>ประเด็น</th><th>ผู้รับผิดชอบ</th><th>สถานะ</th><th>กำหนดเสร็จ</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>การปรับปรุงกระบวนการรับรู้รายได้</td>
+                  <td>สมชาย</td>
+                  <td><span class="status status-pending">รอดำเนินการ</span></td>
+                  <td>2026-01-15</td>
+                </tr>
+                <tr>
+                  <td>ทบทวนการตั้งสำรองหนี้สูญ</td>
+                  <td>สุดา</td>
+                  <td><span class="status status-approved">กำลังดำเนินการ</span></td>
+                  <td>2026-02-10</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. ระบบ Admin -->
+    <section id="admin" style="display:none;">
+      <div class="container">
         <div class="card">
-          <h3 style="margin-top:0;">รายการติดตาม (ตัวอย่าง)</h3>
+          <h2>ระบบ Admin</h2>
+          <p class="muted">
+            ผู้ดูแลสามารถอนุมัติ/ปฏิเสธผู้สมัคร และจัดการสถานะผู้ใช้
+            (ตัวอย่างนี้เป็นการจำลองฝั่งหน้าเว็บ)
+          </p>
+
           <table>
             <thead>
-              <tr><th>ประเด็น</th><th>ผู้รับผิดชอบ</th><th>สถานะ</th><th>กำหนดเสร็จ</th></tr>
+              <tr>
+                <th>ชื่อ-นามสกุล</th>
+                <th>อีเมล</th>
+                <th>สถานะ</th>
+                <th>บทบาท</th>
+                <th>การจัดการ</th>
+              </tr>
             </thead>
-            <tbody>
-              <tr><td>การปรับปรุงกระบวนการรับรู้รายได้</td><td>สมชาย</td><td><span class="status status-pending">รอดำเนินการ</span></td><td>2026-01-15</td></tr>
-              <tr><td>ทบทวนการตั้งสำรองหนี้สูญ</td><td>สุดา</td><td><span class="status status-approved">กำลังดำเนินการ</span></td><td>2026-02-10</td></tr>
-            </tbody>
+            <tbody id="adminTable"></tbody>
           </table>
         </div>
       </div>
     </section>
 
-    <!-- 9. ระบบ Admin (visible only for Admin) -->
-    <section id="admin" style="display:none;">
-      <div class="container card">
-        <h2>ระบบ Admin</h2>
-        <p class="muted">ผู้ดูแลสามารถอนุมัติ/ปฏิเสธผู้สมัคร และจัดการสถานะผู้ใช้ (ตัวอย่างนี้เป็นการจำลองฝั่งหน้าเว็บ)</p>
-
-        <table>
-          <thead>
-            <tr>
-              <th>ชื่อ-นามสกุล</th>
-              <th>อีเมล</th>
-              <th>สถานะ</th>
-              <th>บทบาท</th>
-              <th>การจัดการ</th>
-            </tr>
-          </thead>
-          <tbody id="adminTable"></tbody>
-        </table>
-      </div>
-    </section>
-
     <!-- 10. ระบบตอบถามอัตโนมัติ (Chatbot - demo) -->
     <section id="chatbot">
-      <div class="container grid-2">
-        <div class="card">
-          <h2>ระบบตอบถามอัตโนมัติ</h2>
-          <p class="muted">พิมพ์คำถามเกี่ยวกับแนวทางการตรวจสอบ ระบบจะตอบกลับอัตโนมัติ (ตัวอย่างจำลอง)</p>
-          <form id="chatForm">
-            <label for="chatInput">คำถามของคุณ</label>
-            <input type="text" id="chatInput" placeholder="เช่น วิธีบันทึกหลักฐานการตรวจสอบ" required>
-            <button type="submit">ส่งคำถาม</button>
-          </form>
-          <div id="chatLog" style="margin-top:12px;"></div>
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <h2>ระบบตอบถามอัตโนมัติ</h2>
+            <div class="section-tagline">ใช้ถามแนวทางการตรวจสอบและการใช้งานหน้าเว็บนี้แบบรวดเร็ว</div>
+          </div>
         </div>
-        <div class="card">
-          <h3 style="margin-top:0;">ขอบเขตคำตอบ</h3>
-          <ul>
-            <li>แนวทางการตรวจสอบและการจัดทำเอกสาร</li>
-            <li>ขั้นตอนการใช้งานระบบในหน้าเว็บนี้</li>
-            <li>ข้อมูลทั่วไปด้านมาตรฐานการเงิน</li>
-          </ul>
+        <div class="grid-2">
+          <div class="card">
+            <p class="muted">
+              พิมพ์คำถามเกี่ยวกับแนวทางการตรวจสอบ ระบบจะตอบกลับอัตโนมัติ (ตัวอย่างจำลอง)
+            </p>
+            <form id="chatForm">
+              <label for="chatInput">คำถามของคุณ</label>
+              <input type="text" id="chatInput" placeholder="เช่น วิธีบันทึกหลักฐานการตรวจสอบ" required>
+              <div style="margin-top:10px;">
+                <button type="submit">ส่งคำถาม</button>
+              </div>
+            </form>
+            <div id="chatLog" style="margin-top:12px;"></div>
+          </div>
+          <div class="card">
+            <h3 style="margin-top:0;">ขอบเขตคำตอบ</h3>
+            <ul class="muted">
+              <li>แนวทางการตรวจสอบและการจัดทำเอกสาร</li>
+              <li>ขั้นตอนการใช้งานระบบในหน้าเว็บนี้</li>
+              <li>ข้อมูลทั่วไปด้านมาตรฐานการเงิน</li>
+            </ul>
+          </div>
         </div>
       </div>
     </section>
 
     <!-- 11. Cash board -->
     <section id="dashboard">
-      <div class="container grid-3">
-        <div class="card">
-          <h2>Cash board</h2>
-          <p>แดชบอร์ดภาพรวมสถานะงานตรวจสอบและติดตามข้อเสนอแนะ</p>
-          <ul>
-            <li>ผู้ใช้ที่รออนุมัติ</li>
-            <li>รายการติดตามที่ค้าง</li>
-            <li>ความคืบหน้ารายไตรมาส</li>
-          </ul>
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <h2>Cash board</h2>
+            <div class="section-tagline">สรุปภาพรวมสถานะผู้ใช้และงานตรวจสอบในมุมมอง Dashboard</div>
+          </div>
         </div>
-        <div class="card">
-          <h3 style="margin-top:0;">สรุปผู้ใช้ (ตัวอย่าง)</h3>
-          <div id="userSummary">รวมผู้ใช้: 0 • รออนุมัติ: 0 • อนุมัติแล้ว: 0</div>
-        </div>
-        <div class="card">
-          <h3 style="margin-top:0;">กราฟสถานะ (ภาพจำลอง)</h3>
-          <div style="height:160px; border:1px dashed #cfd3dc; border-radius:10px; display:flex; align-items:center; justify-content:center; color:#9097a7;">
-            กราฟสถานะรวม (Placeholder)
+        <div class="grid-3">
+          <div class="card">
+            <p class="muted">
+              แดชบอร์ดภาพรวมสถานะงานตรวจสอบและติดตามข้อเสนอแนะ
+              สามารถต่อยอดเชื่อม BI/Power BI/Excel Dashboard ได้
+            </p>
+            <ul class="muted">
+              <li>ผู้ใช้ที่รออนุมัติ</li>
+              <li>รายการติดตามที่ค้าง</li>
+              <li>ความคืบหน้ารายไตรมาส</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3 style="margin-top:0;">สรุปผู้ใช้ (ตัวอย่าง)</h3>
+            <div id="userSummary" class="muted">
+              รวมผู้ใช้: 0 • รออนุมัติ: 0 • อนุมัติแล้ว: 0
+            </div>
+          </div>
+          <div class="card">
+            <h3 style="margin-top:0;">กราฟสถานะ (Placeholder)</h3>
+            <div style="height:160px; border:1px dashed rgba(255,255,255,0.18); border-radius:10px;
+                        display:flex; align-items:center; justify-content:center; color:var(--muted); font-size:12px;">
+              พื้นที่แสดงกราฟ (เชื่อม BI/Chart ภายหลัง)
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- 12. ติดต่อผู้สร้าง -->
-    <section id="contact">
-      <div class="container grid-2">
-        <div class="card">
-          <h2>ติดต่อผู้สร้าง</h2>
-          <p>เจ้าของระบบ: apipoooo-afk</p>
-          <p>GitHub Pages: <a href="https://apipoooo-afk.github.io/financial-audit/" target="_blank">เปิดหน้าเว็บ</a></p>
-          <p>Repository: <a href="https://github.com/apipoooo-afk/financial-audit" target="_blank">apipoooo-afk/financial-audit</a></p>
-          <p class="muted">หมายเหตุ: ระบบนี้เป็นเดโมฝั่งหน้าเว็บ สามารถต่อยอดเชื่อม API/ฐานข้อมูล และระบบอีเมลจริงได้</p>
+    <!-- 12. ระบบฐานข้อมูล -->
+    <section id="database">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <h2>ระบบฐานข้อมูล</h2>
+            <div class="section-tagline">ตัวอย่างการจัดเก็บข้อมูลผู้ใช้งานในรูปแบบตาราง</div>
+          </div>
         </div>
-        <div class="card">
-          <h3 style="margin-top:0;">ลิงก์ด่วน</h3>
-          <ul>
-            <li><a href="#register">ลงทะเบียน</a></li>
-            <li><a href="#login">เข้าสู่ระบบ</a></li>
-            <li><a href="#admin">ระบบ Admin</a></li>
-          </ul>
+        <div class="grid-2">
+          <div class="card">
+            <h3 style="margin-top:0;">ตารางผู้ใช้งาน (เชื่อมกับข้อมูล Register/Admin)</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>ชื่อ-นามสกุล</th>
+                  <th>อีเมล</th>
+                  <th>สถานะ</th>
+                </tr>
+              </thead>
+              <tbody id="dbTable"></tbody>
+            </table>
+          </div>
+          <div class="card">
+            <h3 style="margin-top:0;">เพิ่มข้อมูลใหม่</h3>
+            <form id="dbForm">
+              <label>ชื่อ-นามสกุล</label>
+              <input type="text" id="dbName" required>
+              <label>อีเมล</label>
+              <input type="email" id="dbEmail" required>
+              <label>สถานะ</label>
+              <input type="text" id="dbStatus" placeholder="เช่น approved / pending / rejected" required>
+              <div style="margin-top:10px;">
+                <button type="submit">เพิ่มข้อมูล</button>
+              </div>
+            </form>
+            <p id="dbMsg" class="muted"></p>
+            <p class="muted" style="margin-top:8px;">
+              * ข้อมูลที่เพิ่มจากฟอร์มนี้จะเชื่อมกับตาราง Admin และ Cash board (เดโมในหน่วยความจำ)
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 13. ติดต่อผู้สร้าง -->
+    <section id="contact">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <h2>ติดต่อผู้สร้าง</h2>
+            <div class="section-tagline">สำหรับต่อยอดเชื่อม API/ฐานข้อมูลจริง และระบบ AI Audit เพิ่มเติม</div>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <p>เจ้าของระบบ: apipoooo-afk</p>
+            <p>GitHub Pages:
+              <a href="https://apipoooo-afk.github.io/financial-audit/" target="_blank">เปิดหน้าเว็บ</a>
+            </p>
+            <p>Repository:
+              <a href="https://github.com/apipoooo-afk/financial-audit" target="_blank">
+                apipoooo-afk/financial-audit
+              </a>
+            </p>
+            <p class="muted">
+              ระบบนี้เป็นเดโมฝั่งหน้าเว็บ สามารถต่อยอดเชื่อม API / ฐานข้อมูลจริง
+              และระบบแจ้งเตือนอีเมล/LINE/AI Chatbot ได้ในอนาคต
+            </p>
+          </div>
+          <div class="card">
+            <h3 style="margin-top:0;">ลิงก์ด่วน</h3>
+            <ul class="muted">
+              <li><a href="#register">ลงทะเบียน</a></li>
+              <li><a href="#login">เข้าสู่ระบบ</a></li>
+              <li><a href="#admin">ระบบ Admin</a></li>
+              <li><a href="#dashboard">ดู Cash board</a></li>
+              <li><a href="#database">ฐานข้อมูลผู้ใช้</a></li>
+            </ul>
+          </div>
         </div>
       </div>
     </section>
@@ -388,7 +832,7 @@
   <footer>
     <div class="container footer-inner">
       <div>© 2025 Financial Audit • สำนักงานการตรวจเงินแผ่นดิน</div>
-      <div class="muted">เดโม UX/UI • สีกรม-ทอง • การ์ด/กริดแบบทันสมัย</div>
+      <div class="muted">Demo UX/UI • AI-inspired • Maroon–Blue–White–Pink Palette</div>
     </div>
   </footer>
 
@@ -413,13 +857,17 @@
     // Render Admin table
     function renderAdminTable(){
       const tbody = document.getElementById("adminTable");
+      if(!tbody) return;
       tbody.innerHTML = "";
       store.users.forEach(u => {
         const tr = document.createElement("tr");
         tr.innerHTML = `
           <td>${u.fullname}</td>
           <td>${u.email}</td>
-          <td><span class="status ${u.status === "approved" ? "status-approved" : u.status === "rejected" ? "status-rejected" : "status-pending"}">${u.status}</span></td>
+          <td><span class="status ${
+            u.status === "approved" ? "status-approved" :
+            u.status === "rejected" ? "status-rejected" : "status-pending"
+          }">${u.status}</span></td>
           <td>${u.role}</td>
           <td class="actions">
             <button onclick="approveUser('${u.email}')">อนุมัติ</button>
@@ -437,6 +885,7 @@
       alert(`✅ อนุมัติ ${user.fullname} แล้ว`);
       renderAdminTable();
       updateUserSummary();
+      renderDbTable();
     }
 
     function rejectUser(email){
@@ -446,6 +895,7 @@
       alert(`❌ ปฏิเสธ ${user.fullname}`);
       renderAdminTable();
       updateUserSummary();
+      renderDbTable();
     }
 
     // Register
@@ -468,6 +918,7 @@
       msgEl.innerText = "✅ ส่งคำขอลงทะเบียนเรียบร้อย รอการอนุมัติจาก Admin";
       renderAdminTable();
       updateUserSummary();
+      renderDbTable();
     });
 
     // Login
@@ -478,9 +929,18 @@
       const msgEl = document.getElementById("loginMsg");
 
       const user = store.users.find(u => u.email === email);
-      if(!user){ msgEl.innerText = "❌ ไม่พบผู้ใช้งาน"; return; }
-      if(user.status !== "approved"){ msgEl.innerText = "⚠️ บัญชียังไม่ได้รับการอนุมัติจาก Admin"; return; }
-      if(user.password !== password){ msgEl.innerText = "❌ รหัสผ่านไม่ถูกต้อง"; return; }
+      if(!user){
+        msgEl.innerText = "❌ ไม่พบผู้ใช้งาน";
+        return;
+      }
+      if(user.status !== "approved"){
+        msgEl.innerText = "⚠️ บัญชียังไม่ได้รับการอนุมัติจาก Admin";
+        return;
+      }
+      if(user.password !== password){
+        msgEl.innerText = "❌ รหัสผ่านไม่ถูกต้อง";
+        return;
+      }
 
       store.currentUser = user;
       msgEl.innerText = `✅ เข้าสู่ระบบสำเร็จ (${user.role})`;
@@ -520,48 +980,68 @@
     // Dashboard summary
     function updateUserSummary(){
       const el = document.getElementById("userSummary");
+      if(!el) return;
       const total = store.users.length;
       const pending = store.users.filter(u => u.status === "pending").length;
       const approved = store.users.filter(u => u.status === "approved").length;
       el.innerText = `รวมผู้ใช้: ${total} • รออนุมัติ: ${pending} • อนุมัติแล้ว: ${approved}`;
     }
 
+    // Database table render
+    function renderDbTable(){
+      const tbody = document.getElementById("dbTable");
+      if(!tbody) return;
+      tbody.innerHTML = "";
+      store.users.forEach(u => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${u.fullname}</td>
+          <td>${u.email}</td>
+          <td><span class="status ${
+            u.status === "approved" ? "status-approved" :
+            u.status === "rejected" ? "status-rejected" : "status-pending"
+          }">${u.status}</span></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // Database form
+    const dbForm = document.getElementById("dbForm");
+    if(dbForm){
+      dbForm.addEventListener("submit", function(e){
+        e.preventDefault();
+        const name = document.getElementById("dbName").value.trim();
+        const email = document.getElementById("dbEmail").value.trim();
+        const status = document.getElementById("dbStatus").value.trim() || "pending";
+        const msgEl = document.getElementById("dbMsg");
+
+        if(!name || !email){
+          msgEl.innerText = "กรุณากรอกข้อมูลให้ครบถ้วน";
+          return;
+        }
+
+        // ถ้ามีอยู่แล้ว ให้ปรับสถานะ แทนการเพิ่มซ้ำ
+        let user = store.users.find(u => u.email === email);
+        if(user){
+          user.fullname = name;
+          user.status = status;
+        }else{
+          store.users.push({ fullname:name, email, password:"", status, role:"user" });
+        }
+
+        msgEl.innerText = "✅ บันทึกข้อมูลผู้ใช้ในฐานข้อมูล (เดโม) แล้ว";
+        renderAdminTable();
+        renderDbTable();
+        updateUserSummary();
+      });
+    }
+
     // Init
     renderAdminTable();
     updateAdminVisibility();
     updateUserSummary();
+    renderDbTable();
   </script>
 </body>
 </html>
-    <!-- 13. ระบบฐานข้อมูล -->
-    <section id="database">
-      <div class="container grid-2">
-        <div class="card">
-          <h2>ระบบฐานข้อมูล</h2>
-          <p>ตัวอย่างการจัดเก็บข้อมูลผู้ใช้งานในรูปแบบตาราง</p>
-          <table>
-            <thead>
-              <tr>
-                <th>ชื่อ-นามสกุล</th>
-                <th>อีเมล</th>
-                <th>สถานะ</th>
-              </tr>
-            </thead>
-            <tbody id="dbTable"></tbody>
-          </table>
-        </div>
-        <div class="card">
-          <h3 style="margin-top:0;">เพิ่มข้อมูลใหม่</h3>
-          <form id="dbForm">
-            <label>ชื่อ-นามสกุล</label>
-            <input type="text" id="dbName" required>
-            <label>อีเมล</label>
-            <input type="email" id="dbEmail" required>
-            <label>สถานะ</label>
-            <input type="text" id="dbStatus" placeholder="เช่น approved/pending" required>
-            <button type="submit">เพิ่มข้อมูล</button>
-          </form>
-          <p id="dbMsg" class="muted"></p>
-        </div>
-      </div>
-    </section>
