@@ -1,1 +1,355 @@
 
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>FA DB | คำขอสิทธิ์แอดมิน & รีเซ็ตรหัสผ่าน</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    --bg:#060818;
+    --card:#11152b;
+    --muted:#a3acc7;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Segoe UI",Arial,sans-serif;
+    background:var(--bg);
+    color:#fff;
+  }
+  header{
+    padding:18px 10px;
+    text-align:center;
+    background:linear-gradient(120deg,#7b1e3c,#0d47a1);
+    box-shadow:0 4px 14px rgba(0,0,0,.6);
+  }
+  header h1{margin:0;font-size:22px;font-weight:800;}
+  header p{margin:4px 0 0;font-size:13px;color:var(--muted);}
+  .wrap{max-width:1100px;margin:18px auto 30px;padding:0 16px;}
+
+  .top-row{
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:8px;
+    font-size:13px;
+    color:var(--muted);
+    margin-bottom:10px;
+  }
+  .stat-box span{margin-right:10px;}
+
+  .card{
+    background:var(--card);
+    border-radius:16px;
+    border:1px solid rgba(255,255,255,.14);
+    padding:14px 14px 12px;
+    margin-bottom:14px;
+    box-shadow:0 8px 20px rgba(0,0,0,.55);
+  }
+  h2{margin:0 0 8px;font-size:18px;}
+  .muted{font-size:12px;color:var(--muted);}
+
+  .summary-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:10px;
+    margin-top:8px;
+  }
+  .summary-item{
+    padding:8px 10px;
+    border-radius:12px;
+    background:rgba(15,23,42,.9);
+    border:1px solid rgba(148,163,184,.45);
+    font-size:12px;
+  }
+  .summary-item strong{font-size:18px;display:block;margin-bottom:2px;}
+
+  table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:12px;
+    margin-top:6px;
+  }
+  th,td{
+    border:1px solid rgba(148,163,184,.4);
+    padding:6px 5px;
+    vertical-align:top;
+  }
+  th{
+    background:#020617;
+    font-weight:600;
+    position:sticky;
+    top:0;
+    z-index:1;
+  }
+  tr:nth-child(even){background:rgba(15,23,42,.8);}
+
+  .btn-row{
+    margin-top:8px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    align-items:center;
+  }
+  button{
+    border:none;
+    border-radius:999px;
+    padding:7px 12px;
+    font-size:12px;
+    cursor:pointer;
+  }
+  .btn-secondary{background:#374151;color:#e5e7eb;}
+
+  a.nav{
+    display:inline-block;
+    margin-top:10px;
+    margin-right:8px;
+    color:#e0e7ff;
+    text-decoration:none;
+    font-size:13px;
+  }
+
+  @media(max-width:720px){
+    th,td{font-size:11px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🛡 FA DB – คำขอสิทธิ์แอดมิน / รีเซ็ตรหัสผ่าน</h1>
+  <p>Admin Requests Database (ดึงข้อมูลจากระบบ admin: fas-admin-requests)</p>
+</header>
+
+<div class="wrap">
+
+  <div class="top-row">
+    <div>ผู้ใช้งาน (session): <strong id="userEmail">-</strong></div>
+    <div class="stat-box">
+      👁 รอบนี้: <strong id="statCurrent">0</strong>
+      🔄 สะสม: <strong id="statTotal">0</strong>
+    </div>
+  </div>
+
+  <!-- สรุปภาพรวมคำขอ -->
+  <div class="card">
+    <h2>ภาพรวมคำขอจากระบบ Admin</h2>
+    <p class="muted">
+      ข้อมูลนี้ดึงจาก <code>localStorage["fas-admin-requests"]</code> ที่ใช้ในหน้า <code>admin.html</code><br>
+      • ประเภทคำขอหลัก: <code>NEW_ADMIN</code> (ขอสิทธิ์เป็นผู้ดูแลระบบ), <code>RESET_PASSWORD</code> (ขอรีเซ็ตรหัสผ่านแอดมิน)
+    </p>
+
+    <div class="summary-grid">
+      <div class="summary-item">
+        <span>จำนวนคำขอทั้งหมด (ที่ยังอยู่ในระบบ)</span>
+        <strong id="sumTotalReqs">0</strong>
+      </div>
+      <div class="summary-item">
+        <span>คำขอเป็น Admin ใหม่ (NEW_ADMIN)</span>
+        <strong id="sumNewAdmin">0</strong>
+      </div>
+      <div class="summary-item">
+        <span>คำขอรีเซ็ตรหัสผ่าน (RESET_PASSWORD)</span>
+        <strong id="sumReset">0</strong>
+      </div>
+      <div class="summary-item">
+        <span>อีเมลที่ส่งคำขอซ้ำ &gt; 1 ครั้ง</span>
+        <strong id="sumDuplicateEmail">0</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- ตารางคำขอ -->
+  <div class="card">
+    <h2>ตารางคำขอจากระบบ Admin (fas-admin-requests)</h2>
+    <p class="muted">
+      ใช้เพื่อวิเคราะห์รูปแบบการขอสิทธิ์แอดมินและการรีเซ็ตรหัสผ่าน<br>
+      * การอนุมัติ / ปฏิเสธคำขอ ให้ทำในหน้า <code>admin.html</code> เท่านั้น (หน้านี้เป็นฐานข้อมูลสำหรับดู / Export)
+    </p>
+
+    <div class="btn-row">
+      <button type="button" class="btn-secondary" id="btnExportReqs">📤 Export Requests CSV</button>
+      <span class="muted">หัวตาราง CSV: id,requestType,fullName,citizenId,govId,position,email,reason,createdAt</span>
+    </div>
+
+    <div style="max-height:360px;overflow:auto;margin-top:6px;">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>ประเภทคำขอ</th>
+            <th>ชื่อ–สกุล</th>
+            <th>เลขบัตรประชาชน</th>
+            <th>รหัสข้าราชการ</th>
+            <th>ตำแหน่ง</th>
+            <th>อีเมล</th>
+            <th>เหตุผล / รายละเอียด</th>
+            <th>วันที่ขอ</th>
+          </tr>
+        </thead>
+        <tbody id="reqBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <a href="fa-database-menu.html" class="nav">⬅ กลับเมนูฐานข้อมูล</a>
+  <a href="index.html" class="nav">⬅ กลับหน้าแรก</a>
+
+</div>
+
+<script>
+/* ===== CONFIG / KEYS ===== */
+const MODULE_KEY   = "adminreq";
+const TOTAL_KEY    = "fa-db-total-" + MODULE_KEY;
+const SESSION_KEY  = "fa-db-session-" + MODULE_KEY;
+
+/* ===== SESSION CHECK (ใช้ร่วมกับ fa-database อื่น) ===== */
+function checkSession(){
+  const raw = localStorage.getItem("fas-session");
+  if(!raw){
+    location.href = "fa-database-login.html";
+    return;
+  }
+  try{
+    const s = JSON.parse(raw);
+    if(Date.now() > s.expiresAt){
+      localStorage.removeItem("fas-session");
+      location.href = "fa-database-login.html";
+      return;
+    }
+    document.getElementById("userEmail").textContent = s.email || "-";
+  }catch{
+    location.href = "fa-database-login.html";
+  }
+}
+
+/* ===== MENU STATS ===== */
+function updateStatsOnLoad(){
+  const total = Number(localStorage.getItem(TOTAL_KEY) || "0") + 1;
+  const curr  = Number(sessionStorage.getItem(SESSION_KEY) || "0") + 1;
+  localStorage.setItem(TOTAL_KEY, String(total));
+  sessionStorage.setItem(SESSION_KEY, String(curr));
+  document.getElementById("statTotal").textContent   = total;
+  document.getElementById("statCurrent").textContent = curr;
+}
+
+/* ===== LOAD DATA FROM admin.html ===== */
+let adminReqs = [];
+
+function loadAdminReqs(){
+  try{
+    const raw = localStorage.getItem("fas-admin-requests");
+    adminReqs = raw ? JSON.parse(raw) : [];
+    if(!Array.isArray(adminReqs)) adminReqs = [];
+  }catch{
+    adminReqs = [];
+  }
+}
+
+/* ===== SUMMARY CALC ===== */
+function renderSummary(){
+  const total = adminReqs.length;
+  const newAdmin = adminReqs.filter(r => (r.requestType || "NEW_ADMIN") === "NEW_ADMIN").length;
+  const reset   = adminReqs.filter(r => r.requestType === "RESET_PASSWORD").length;
+
+  // นับ email ที่มีคำขอมากกว่า 1 รายการ
+  const emailCount = {};
+  adminReqs.forEach(r => {
+    const em = (r.email || "").toLowerCase();
+    if(!em) return;
+    emailCount[em] = (emailCount[em] || 0) + 1;
+  });
+  const dupEmails = Object.values(emailCount).filter(c => c > 1).length;
+
+  document.getElementById("sumTotalReqs").textContent    = total;
+  document.getElementById("sumNewAdmin").textContent     = newAdmin;
+  document.getElementById("sumReset").textContent        = reset;
+  document.getElementById("sumDuplicateEmail").textContent = dupEmails;
+}
+
+/* ===== TABLE RENDER ===== */
+function renderReqTable(){
+  const tbody = document.getElementById("reqBody");
+  tbody.innerHTML = "";
+
+  if(adminReqs.length === 0){
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td colspan="9" style="text-align:center;color:#9ca3af;">ยังไม่มีคำขอใน fas-admin-requests</td>`;
+    tbody.appendChild(tr);
+    return;
+  }
+
+  adminReqs.forEach((r, idx) => {
+    const type = r.requestType || "NEW_ADMIN";
+    let typeLabel = type;
+    if(type === "NEW_ADMIN")      typeLabel = "ขอเป็น Admin (NEW_ADMIN)";
+    if(type === "RESET_PASSWORD") typeLabel = "รีเซ็ตรหัสผ่าน (RESET_PASSWORD)";
+
+    const created = r.createdAt ? new Date(r.createdAt).toLocaleString("th-TH") : "-";
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${idx+1}</td>
+      <td>${typeLabel}</td>
+      <td>${r.fullName || ""}</td>
+      <td>${r.citizenId || ""}</td>
+      <td>${r.govId || ""}</td>
+      <td>${r.position || ""}</td>
+      <td>${r.email || ""}</td>
+      <td class="muted">${r.reason || ""}</td>
+      <td class="muted">${created}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+/* ===== EXPORT CSV ===== */
+function reqsToCSV(){
+  const header = ["id","requestType","fullName","citizenId","govId","position","email","reason","createdAt"];
+  const lines = [header.join(",")];
+
+  adminReqs.forEach(r=>{
+    const rowObj = {
+      id:          r.id || "",
+      requestType: r.requestType || "NEW_ADMIN",
+      fullName:    r.fullName || "",
+      citizenId:   r.citizenId || "",
+      govId:       r.govId || "",
+      position:    r.position || "",
+      email:       r.email || "",
+      reason:      r.reason || "",
+      createdAt:   r.createdAt || ""
+    };
+    const row = header.map(k=>{
+      const v = (rowObj[k] || "").toString().replace(/"/g,'""');
+      return `"${v}"`;
+    });
+    lines.push(row.join(","));
+  });
+
+  return lines.join("\r\n");
+}
+
+document.getElementById("btnExportReqs").addEventListener("click", ()=>{
+  const csv = reqsToCSV();
+  const blob = new Blob([csv], {type:"text/csv;charset=utf-8;"});
+  const url  = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "fa-db-admin-requests.csv";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+});
+
+/* ===== INIT ===== */
+checkSession();
+updateStatsOnLoad();
+loadAdminReqs();
+renderSummary();
+renderReqTable();
+</script>
+
+</body>
+</html>
