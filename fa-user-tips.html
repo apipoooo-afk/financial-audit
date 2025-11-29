@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>User Tips | Financial Audit System</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    :root{
+      --bg:#060818;
+      --bg-soft:#0b1024;
+      --card:#11152b;
+      --card-soft:#151a36;
+      --border:#262b46;
+      --accent:#ffd54f;
+      --accent-soft:#ffe08233;
+      --primary:#42a5f5;
+      --primary-strong:#0d47a1;
+      --danger:#ef5350;
+      --success:#66bb6a;
+      --text:#f5f7ff;
+      --muted:#a3acc7;
+      --muted-2:#7c84a3;
+      --tag:#20274b;
+      --tag-border:#303863;
+      --shadow-soft:0 18px 45px rgba(0,0,0,0.55);
+      --radius-lg:18px;
+    }
+
+    *{
+      box-sizing:border-box;
+    }
+
+    body{
+      margin:0;
+      font-family:"Segoe UI",Tahoma,sans-serif;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(123,30,60,0.36) 0, transparent 55%),
+        radial-gradient(circle at 90% 100%, rgba(66,165,245,0.32) 0, transparent 55%),
+        var(--bg);
+      color:var(--text);
+      min-height:100vh;
+    }
+
+    .page-wrap{
+      max-width:1100px;
+      margin:0 auto;
+      padding:18px 14px 48px;
+    }
+
+    header{
+      background:linear-gradient(135deg,#0d47a1,#6a1b9a,#00897b);
+      border-radius:20px;
+      padding:18px 18px 16px;
+      box-shadow:var(--shadow-soft);
+      position:relative;
+      overflow:hidden;
+    }
+
+    header::after{
+      content:"AI";
+      position:absolute;
+      right:-12px;
+      bottom:-32px;
+      font-size:68px;
+      font-weight:700;
+      color:rgba(255,255,255,0.04);
+    }
+
+    .header-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .system-title{
+      font-size:20px;
+      font-weight:600;
+    }
+
+    .system-sub{
+      font-size:13px;
+      color:#e0e6ff;
+    }
+
+    .system-tagline{
+      font-size:11px;
+      opacity:.9;
+      margin-top:3px;
+    }
+
+    .header-badges{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .badge{
+      font-size:11px;
+      padding:5px 9px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.26);
+      background:rgba(0,0,0,0.16);
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+      white-space:nowrap;
+    }
+
+    .header-bottom{
+      margin-top:10px;
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .header-bottom-left{
+      font-size:13px;
+      color:#e6ebff;
+    }
+
+    .header-bottom-left strong{
+      font-weight:600;
+    }
+
+    .header-bottom-right{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      border:none;
+      outline:none;
+      cursor:pointer;
+      font-family:inherit;
+      font-size:13px;
+      padding:7px 14px;
+      border-radius:999px;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      text-decoration:none;
+      transition:all .18s ease;
+      white-space:nowrap;
+    }
+
+    .btn-primary{
+      background:#ffffff;
+      color:#0d47a1;
+      font-weight:600;
+    }
+
+    .btn-primary:hover{
+      transform:translateY(-1px);
+      box-shadow:0 6px 18px rgba(0,0,0,0.35);
+    }
+
+    .btn-ghost{
+      background:rgba(0,0,0,0.14);
+      color:#f5f7ff;
+      border:1px solid rgba(255,255,255,0.32);
+    }
+
+    .btn-ghost:hover{
+      background:rgba(0,0,0,0.28);
+    }
+
+    main{
+      margin-top:18px;
+      display:grid;
+      grid-template-columns:minmax(0,2.2fr) minmax(0,1.4fr);
+      gap:16px;
+    }
+
+    @media (max-width:880px){
+      main{
+        grid-template-columns:1fr;
+      }
+    }
+
+    .card{
+      background:linear-gradient(145deg,#11152b,#10142a);
+      border-radius:var(--radius-lg);
+      padding:16px 16px 14px;
+      border:1px solid rgba(255,255,255,0.04);
+      box-shadow:0 10px 30px rgba(0,0,0,0.55);
+    }
+
+    .card-header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:8px;
+      margin-bottom:10px;
+    }
+
+    .card-title{
+      font-size:15px;
+      font-weight:600;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    .card-title span.icon{
+      font-size:18px;
+    }
+
+    .card-sub{
+      font-size:11px;
+      color:var(--muted);
+      margin-top:2px;
+    }
+
+    .pill{
+      font-size:11px;
+      padding:4px 9px;
+      border-radius:999px;
+      background:var(--tag);
+      border:1px solid var(--tag-border);
+      color:var(--muted);
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+      white-space:nowrap;
+    }
+
+    .tips-list{
+      list-style:none;
+      padding:0;
+      margin:0;
+      font-size:13px;
+    }
+
+    .tips-list li{
+      position:relative;
+      padding-left:20px;
+      margin-bottom:6px;
+      color:var(--muted);
+    }
+
+    .tips-list li::before{
+      content:"•";
+      position:absolute;
+      left:6px;
+      top:0;
+      color:var(--primary);
+    }
+
+    .section{
+      margin-top:10px;
+      padding-top:8px;
+      border-top:1px dashed rgba(255,255,255,0.06);
+    }
+
+    .section:first-of-type{
+      border-top:none;
+      padding-top:0;
+      margin-top:4px;
+    }
+
+    .section-title{
+      font-size:13px;
+      font-weight:600;
+      margin-bottom:6px;
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+
+    .section-title span.en{
+      font-size:11px;
+      font-weight:400;
+      color:var(--muted);
+    }
+
+    .section-body{
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    .grid-2{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:8px;
+      margin-top:4px;
+    }
+
+    @media (max-width:640px){
+      .grid-2{
+        grid-template-columns:1fr;
+      }
+    }
+
+    .mini-card{
+      background:var(--card-soft);
+      border-radius:12px;
+      border:1px solid var(--border);
+      padding:8px 9px 7px;
+    }
+
+    .mini-title{
+      font-size:13px;
+      font-weight:600;
+      margin-bottom:3px;
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+
+    .mini-title span.en{
+      font-size:11px;
+      font-weight:400;
+      color:var(--muted-2);
+    }
+
+    .mini-body{
+      font-size:12px;
+      color:var(--muted);
+    }
+
+    .kv-row{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:12px;
+      font-size:12px;
+      padding:5px 0;
+      border-bottom:1px dashed rgba(255,255,255,0.06);
+    }
+
+    .kv-row:last-child{
+      border-bottom:none;
+    }
+
+    .kv-label{
+      color:var(--muted-2);
+      white-space:nowrap;
+    }
+
+    .kv-value{
+      text-align:right;
+    }
+
+    .badge-soft{
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+      font-size:11px;
+      padding:3px 8px;
+      border-radius:999px;
+      background:var(--accent-soft);
+      color:var(--accent);
+      border:1px solid rgba(255,213,79,0.4);
+    }
+
+    .risk-box{
+      background:rgba(239,83,80,0.08);
+      border-radius:12px;
+      border:1px dashed rgba(239,83,80,0.5);
+      padding:8px 9px 7px;
+      font-size:12px;
+      color:#ffcdd2;
+      margin-top:6px;
+    }
+
+    .risk-box strong{
+      color:#ff867c;
+    }
+
+    .checklist{
+      list-style:none;
+      padding:0;
+      margin:0;
+      font-size:12px;
+    }
+
+    .checklist li{
+      margin-bottom:4px;
+      display:flex;
+      align-items:flex-start;
+      gap:6px;
+    }
+
+    .checklist span.icon{
+      font-size:13px;
+      margin-top:1px;
+    }
+
+    .section-divider{
+      margin:10px 0 6px;
+      height:1px;
+      background:linear-gradient(90deg,transparent,rgba(255,255,255,0.16),transparent);
+    }
+
+    .footer-note{
+      margin-top:14px;
+      font-size:11px;
+      color:var(--muted-2);
+      text-align:right;
+    }
+  </style>
+</head>
+<body>
+  <div class="page-wrap">
+    <header>
+      <div class="header-top">
+        <div>
+          <div class="system-title">
+            ข้อแนะนำการใช้ระบบ | User Tips
+          </div>
+          <div class="system-sub">
+            Financial Audit System · Digital • AI • Compliance
+          </div>
+          <div class="system-tagline">
+            ศูนย์ข้อมูลเพื่อการบริหารและการตรวจสอบดิจิทัล · กลุ่มตรวจสอบที่ 4 · สตง. จังหวัดศรีสะเกษ
+          </div>
+        </div>
+        <div class="header-badges">
+          <div class="badge">💼 สำหรับเจ้าหน้าที่ตรวจสอบการเงิน</div>
+          <div class="badge">🔐 Single Sign-On (ยกเว้น Admin)</div>
+          <div class="badge">📊 Data · AI · Compliance</div>
+        </div>
+      </div>
+
+      <div class="header-bottom">
+        <div class="header-bottom-left">
+          <div>คู่มือสั้น ๆ สำหรับใช้งานระบบให้ <strong>ถูกต้อง ปลอดภัย และมีหลักฐานตรวจสอบได้</strong></div>
+          <div style="margin-top:2px;">เหมาะสำหรับ: ผู้ตรวจสอบ · ผู้สอบทาน · ผู้บริหาร · Data Analyst</div>
+        </div>
+        <div class="header-bottom-right">
+          <a href="index.html" class="btn btn-ghost">← กลับหน้าแรก (Home)</a>
+          <a href="#quick-start" class="btn btn-primary">⚡ เริ่มใช้งานอย่างรวดเร็ว</a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- LEFT COLUMN -->
+      <section class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">
+              <span class="icon">📌</span>
+              ภาพรวมการใช้งานระบบ
+            </div>
+            <div class="card-sub">
+              เข้าใจภาพรวมก่อนลงมือใช้งาน ช่วยให้ทำงานเร็วขึ้นและลดข้อผิดพลาด
+            </div>
+          </div>
+          <div class="pill">
+            ℹ️ Overview · User Guide
+          </div>
+        </div>
+
+        <div class="section" id="quick-start">
+          <div class="section-title">
+            ขั้นตอนเริ่มต้นสำหรับผู้ตรวจสอบ
+            <span class="en">Quick Start for Auditors</span>
+          </div>
+          <ul class="tips-list">
+            <li>เข้า <strong>หน้าแรก (Home)</strong> เพื่อดูเมนูทั้งหมดและสถานะการใช้งานปัจจุบัน</li>
+            <li>กด <strong>เข้าสู่ระบบ (Login)</strong> เพื่อทำ Single Sign-On ให้ระบบจำสิทธิ์การเข้าถึงของคุณ</li>
+            <li>ก่อนเริ่มงานจริง แนะนำให้เปิด <strong>แนวทางตรวจสอบ (Audit Guidelines)</strong> คู่ไปด้วยทุกครั้ง</li>
+            <li>เลือกเข้า <strong>ระบบตรวจสอบการเงิน (Financial Audit System)</strong> เพื่อเริ่มบันทึกข้อมูลงานตรวจ</li>
+            <li>หากมีข้อสงสัยเรื่องระเบียบ/กฎหมาย ให้ทดลองถามผ่าน <strong>Chatbot FA</strong> ก่อนเสมอ</li>
+            <li>เมื่อทำงานเสร็จ ให้ตรวจสอบใน <strong>ระบบสอบทาน</strong> ว่ามีข้อเสนอแนะจากผู้สอบทานหรือไม่</li>
+            <li>ผู้บริหาร/หัวหน้าทีม สามารถดูภาพรวมทั้งหมดได้จาก <strong>Cash board / Dashboard</strong></li>
+          </ul>
+        </div>
+
+        <div class="section">
+          <div class="section-title">
+            หลักปฏิบัติด้านความปลอดภัยและข้อมูล
+            <span class="en">Data & Security Practices</span>
+          </div>
+          <div class="section-body">
+            <div class="grid-2">
+              <div class="mini-card">
+                <div class="mini-title">🔐 บัญชีผู้ใช้ & รหัสผ่าน</div>
+                <div class="mini-body">
+                  • ห้ามแชร์รหัสผ่านกับผู้อื่น ไม่ว่ากรณีใด ๆ<br>
+                  • เปลี่ยนรหัสผ่านทันทีหากสงสัยว่ามีการเข้าถึงผิดปกติ<br>
+                  • Login จากเครื่องที่ปลอดภัยเท่านั้น (หลีกเลี่ยงเครื่องสาธารณะ)
+                </div>
+              </div>
+              <div class="mini-card">
+                <div class="mini-title">📂 ข้อมูลหน่วยรับตรวจ</div>
+                <div class="mini-body">
+                  • ข้อมูลที่เห็นในระบบถือเป็น <strong>ข้อมูลลับ</strong><br>
+                  • ห้ามถ่ายภาพหน้าจอหรือส่งต่อผ่านช่องทางไม่เป็นทางการ<br>
+                  • หากต้องใช้ข้อมูลเพื่อการฝึกอบรม ให้ใช้ข้อมูลจำลองเท่านั้น
+                </div>
+              </div>
+            </div>
+
+            <div class="risk-box">
+              <strong>สำคัญ:</strong> การใช้งานระบบอย่างไม่ระมัดระวัง
+              อาจนำไปสู่การรั่วไหลของข้อมูล การละเมิดระเบียบราชการ
+              และกระทบต่อความน่าเชื่อถือของ สตง. ทั้งระบบ
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">
+            วิธีใช้งานแต่ละเมนูแบบย่อ
+            <span class="en">Module-by-Module Tips</span>
+          </div>
+          <div class="section-body">
+            <div class="grid-2">
+              <div class="mini-card">
+                <div class="mini-title">
+                  🏠 หน้าแรก
+                  <span class="en">Home / Portal</span>
+                </div>
+                <div class="mini-body">
+                  • ใช้เป็นจุดเริ่มทุกครั้ง<br>
+                  • ตรวจดูจำนวนผู้ใช้ปัจจุบัน/สะสมแต่ละเมนู<br>
+                  • เหมาะสำหรับผู้บริหารที่ต้องการดูการเคลื่อนไหวการใช้งานระบบ
+                </div>
+              </div>
+
+              <div class="mini-card">
+                <div class="mini-title">
+                  🔐 เข้าสู่ระบบ
+                  <span class="en">Login / Authentication</span>
+                </div>
+                <div class="mini-body">
+                  • Login เพียงครั้งเดียว ใช้งานได้ทุกโมดูล (ยกเว้น Admin)<br>
+                  • หากระบบหมด Session ให้ Login ใหม่ทุกครั้ง<br>
+                  • ระบบบันทึก Log ใช้เป็นหลักฐานหากเกิดกรณีพิพาท
+                </div>
+              </div>
+
+              <div class="mini-card">
+                <div class="mini-title">
+                  📑 แนวทางตรวจสอบ
+                  <span class="en">Audit Guidelines</span>
+                </div>
+                <div class="mini-body">
+                  • ควรเปิดคู่ไปกับการทำงานเสมอ<br>
+                  • เหมาะสำหรับตรวจสอบความถูกต้องของวิธีปฏิบัติ<br>
+                  • ใช้เป็นแหล่งอ้างอิงหากต้องเขียนข้อสังเกตหรือรายงาน
+                </div>
+              </div>
+
+              <div class="mini-card">
+                <div class="mini-title">
+                  📊 ระบบตรวจสอบการเงิน
+                  <span class="en">Financial Audit System</span>
+                </div>
+                <div class="mini-body">
+                  • ใช้บันทึกข้อมูล/ทำกระดาษทำการทั้งหมด<br>
+                  • กรอกข้อมูลให้ครบถ้วน พร้อมแนบหลักฐาน<br>
+                  • ตรวจทานก่อนบันทึกส่งเพื่อลดการแก้ไขซ้ำ
+                </div>
+              </div>
+
+              <div class="mini-card">
+                <div class="mini-title">
+                  🧮 ระบบสอบทาน
+                  <span class="en">Review System</span>
+                </div>
+                <div class="mini-body">
+                  • ผู้ตรวจสอบควรเช็คผลสอบทานเป็นระยะ<br>
+                  • ตอบข้อสังเกตของผู้สอบทานให้ครบถ้วน<br>
+                  • ผู้สอบทานควรบันทึกข้อเสนอแนะอย่างชัดเจน เพื่อใช้เป็นฐานความรู้
+                </div>
+              </div>
+
+              <div class="mini-card">
+                <div class="mini-title">
+                  📌 ระบบติดตามงานตรวจ
+                  <span class="en">Audit Tracking</span>
+                </div>
+                <div class="mini-body">
+                  • ใช้ติดตามความคืบหน้าของแต่ละงานตรวจ<br>
+                  • ตรวจดูงานที่ใกล้ครบกำหนดหรือค้างตอบกลับ<br>
+                  • เหมาะสำหรับหัวหน้าทีมและผู้ประสานงาน
+                </div>
+              </div>
+
+              <div class="mini-card">
+                <div class="mini-title">
+                  📈 Cash board
+                  <span class="en">Dashboard</span>
+                </div>
+                <div class="mini-body">
+                  • ใช้ดูภาพรวมข้อมูลและตัวชี้วัดความเสี่ยง<br>
+                  • เหมาะสำหรับการประชุมสรุปงาน/รายงานผู้บริหาร<br>
+                  • ตรวจสอบความสอดคล้องระหว่างตัวเลขใน Dashboard กับฐานข้อมูล
+                </div>
+              </div>
+
+              <div class="mini-card">
+                <div class="mini-title">
+                  🗄 ฐานข้อมูล
+                  <span class="en">Database / Data Center</span>
+                </div>
+                <div class="mini-body">
+                  • ใช้ค้นข้อมูลย้อนหลังและดึงข้อมูลสำหรับวิเคราะห์<br>
+                  • ตรวจสอบแหล่งที่มาของตัวเลขก่อนนำเสนอ<br>
+                  • เหมาะสำหรับ Data Analyst และผู้บริหารที่ต้องการเจาะข้อมูลลึก
+                </div>
+              </div>
+
+              <div class="mini-card">
+                <div class="mini-title">
+                  🤖 Chatbot FA
+                  <span class="en">AI Assistant</span>
+                </div>
+                <div class="mini-body">
+                  • ถามเรื่องระเบียบ กฎหมาย ขั้นตอนตรวจสอบ<br>
+                  • ใช้ช่วยสรุปข้อมูลหรือช่วยร่างข้อความ/รายงานเบื้องต้น<br>
+                  • ตรวจทานคำตอบจาก Chatbot กับระเบียบจริงก่อนใช้งานจริงทุกครั้ง
+                </div>
+              </div>
+
+              <div class="mini-card">
+                <div class="mini-title">
+                  🛠 Admin
+                  <span class="en">Administrator</span>
+                </div>
+                <div class="mini-body">
+                  • สำหรับผู้ดูแลระบบเท่านั้น<br>
+                  • ใช้จัดการผู้ใช้ สิทธิ์ และฐานข้อมูล<br>
+                  • หากพบปัญหาด้านระบบ ให้ติดต่อผู้ดูแลผ่านเมนู “ติดต่อ (Contact)”
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- RIGHT COLUMN -->
+      <aside class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">
+              <span class="icon">✅</span>
+              เช็กลิสต์ก่อน–ระหว่าง–หลังใช้งาน
+            </div>
+            <div class="card-sub">
+              แนวปฏิบัติง่าย ๆ ให้การใช้งานระบบเป็นไปตามหลักการตรวจสอบที่ดี
+            </div>
+          </div>
+          <div class="badge-soft">
+            📘 Practical Checklist
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">ก่อนเริ่มใช้งานระบบ</div>
+          <ul class="checklist">
+            <li>
+              <span class="icon">☑️</span>
+              <span>ตรวจสอบให้แน่ใจว่าใช้บัญชีผู้ใช้ของตนเอง ไม่ใช้เครื่องผู้อื่นที่ Login ค้างอยู่</span>
+            </li>
+            <li>
+              <span class="icon">☑️</span>
+              <span>เข้า “หน้าแรก (Home)” เพื่อตรวจสอบว่าเมนูที่ต้องการใช้ แสดงอยู่ครบถ้วน</span>
+            </li>
+            <li>
+              <span class="icon">☑️</span>
+              <span>อ่านแนวทางเฉพาะงานจาก “แนวทางตรวจสอบ (Audit Guidelines)” หากเป็นงานรูปแบบพิเศษ</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <div class="section">
+          <div class="section-title">ระหว่างใช้งานระบบ</div>
+          <ul class="checklist">
+            <li>
+              <span class="icon">📝</span>
+              <span>บันทึกข้อมูลให้ครบช่อง โดยเฉพาะช่องที่ใช้ในการคำนวณ/สรุปผล</span>
+            </li>
+            <li>
+              <span class="icon">🔍</span>
+              <span>หากไม่แน่ใจในระเบียบหรือบทกฎหมาย ให้ใช้ Chatbot FA ช่วยค้น–แต่ต้องตรวจทานกับเอกสารจริงทุกครั้ง</span>
+            </li>
+            <li>
+              <span class="icon">📎</span>
+              <span>แนบหลักฐานประกอบทุกครั้งที่ระบบรองรับการแนบไฟล์ เพื่อให้สอบทานและตรวจย้อนกลับได้</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <div class="section">
+          <div class="section-title">หลังใช้งานระบบ</div>
+          <ul class="checklist">
+            <li>
+              <span class="icon">📤</span>
+              <span>ตรวจสอบว่าบันทึกข้อมูลเรียบร้อยแล้ว และสถานะงานถูกต้องใน “ระบบติดตามงานตรวจ (Audit Tracking)”</span>
+            </li>
+            <li>
+              <span class="icon">👀</span>
+              <span>ย้อนดู Dashboard ว่าข้อมูลที่กรอกสะท้อนในภาพรวมอย่างถูกต้อง</span>
+            </li>
+            <li>
+              <span class="icon">🚪</span>
+              <span>ออกจากระบบ (Logout) เมื่อใช้งานเสร็จ โดยเฉพาะกรณีใช้เครื่องร่วมกัน</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <div class="section">
+          <div class="section-title">คำแนะนำสำหรับหัวหน้าทีม / ผู้บริหาร</div>
+          <div class="section-body">
+            <div class="kv-row">
+              <div class="kv-label">การใช้ Dashboard</div>
+              <div class="kv-value">ใช้ตรวจดูแนวโน้มความเสี่ยงและภาระงานของทีม</div>
+            </div>
+            <div class="kv-row">
+              <div class="kv-label">การใช้ Review System</div>
+              <div class="kv-value">กำหนดมาตรฐานข้อเสนอแนะและแนวปฏิบัติให้ใช้ซ้ำได้</div>
+            </div>
+            <div class="kv-row">
+              <div class="kv-label">การใช้ Database</div>
+              <div class="kv-value">ออกแบบตัวชี้วัดจากข้อมูลจริง รองรับการตัดสินใจเชิงนโยบาย</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-note">
+          หากพบปัญหาในการใช้งานระบบ โปรดติดต่อผ่านเมนู “ติดต่อ (Contact)” ในหน้าแรกของระบบ Financial Audit System
+        </div>
+      </aside>
+    </main>
+  </div>
+</body>
+</html>
