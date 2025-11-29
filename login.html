@@ -148,6 +148,20 @@
     .status-approved{color:#69f0ae; border-color:#69f0ae;}
     .msg{font-size:11px; margin-top:6px; min-height:14px;}
 
+    .stats-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:6px;
+      font-size:12px;
+    }
+    .stats-pill{
+      padding:4px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.18);
+      background:rgba(0,0,0,0.25);
+    }
+
     footer{
       border-top:1px solid rgba(255,255,255,0.1);
       padding:12px 0 16px;
@@ -224,6 +238,19 @@
             </div>
             <div id="loginMsg" class="msg"></div>
             <div id="loginStatus" class="status-badge" style="display:none;"></div>
+
+            <!-- สถิติการเข้าสู่ระบบ -->
+            <div style="margin-top:12px; border-top:1px solid rgba(255,255,255,0.12); padding-top:8px;">
+              <strong style="font-size:12px;">📊 สถิติการเข้าสู่ระบบ (สะสมจากเบราว์เซอร์นี้)</strong>
+              <div class="stats-row">
+                <div class="stats-pill">ผ่าน (สำเร็จ): <span id="loginSuccessCount">0</span> ครั้ง</div>
+                <div class="stats-pill">ไม่ผ่าน: <span id="loginFailCount">0</span> ครั้ง</div>
+                <div class="stats-pill">รวมทั้งหมด: <span id="loginTotalCount">0</span> ครั้ง</div>
+              </div>
+              <div class="muted" style="margin-top:4px;">
+                อัปเดตล่าสุด: <span id="loginLastUpdate">-</span>
+              </div>
+            </div>
           </form>
         </div>
 
@@ -236,6 +263,39 @@
             <li>ทุกการส่งข้อมูล ระบบจะถามยืนยันก่อนเสมอ (“คุณต้องการยืนยัน กดโอเค”)</li>
             <li>รหัสผ่านควรมีอย่างน้อย 8 ตัวอักษร ผสมตัวเลข และตัวอักษร</li>
           </ul>
+        </div>
+      </div>
+
+      <!-- แถวคำอธิบายการใช้ + สถิติโดยสรุป -->
+      <div class="grid-2" style="margin-top:20px;">
+        <div class="card">
+          <h3>📘 คำอธิบายการใช้ระบบ Login</h3>
+          <ol class="muted" style="padding-left:16px; margin-top:6px;">
+            <li>ถ้ามีรหัสอยู่แล้ว ให้ใช้ฟอร์ม <strong>🔐 Login สำหรับผู้มีรหัสแล้ว</strong> ด้านซ้าย</li>
+            <li>ถ้ายังไม่เคยลงทะเบียน ให้เลื่อนไปด้านล่างไปที่กล่อง <strong>📝 ลงทะเบียนใช้งาน</strong> แล้วกรอกข้อมูลให้ครบทุกช่อง</li>
+            <li>เมื่อส่งคำขอลงทะเบียน ระบบจะบันทึกคำขอใน <strong>fas-requests</strong> และรอให้ super_admin / admin / admin1 อนุมัติ</li>
+            <li>ถ้าลืมรหัสผ่าน ให้ใช้กล่อง <strong>❓ ลืมรหัสผ่าน</strong> ระบบจะสร้างคำขอรีเซ็ตรหัสรออนุมัติ</li>
+            <li>ถ้าจำรหัสเดิมได้ แต่อยากเปลี่ยน ให้ใช้กล่อง <strong>🔁 แก้ไขรหัสผ่าน</strong> ซึ่งจะเปลี่ยนได้ทันที</li>
+            <li>ทุกครั้งก่อนส่งข้อมูล จะมีหน้าต่างถามยืนยัน ให้ตรวจสอบข้อมูลให้เรียบร้อยก่อนกด “ตกลง”</li>
+          </ol>
+          <p class="muted" style="margin-top:8px;">
+            * ระบบนี้เป็นเดโม ทำงานบนเบราว์เซอร์ของผู้ใช้ โดยเก็บข้อมูลใน <strong>localStorage</strong> ได้แก่ fas-users, fas-requests, fas-session และ fas-login-stats
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>📈 สรุปสถิติการเข้าใช้งาน (มุมมองรวม)</h3>
+          <p class="muted">
+            ข้อมูลนี้ใช้เพื่อดูแนวโน้มการเข้าใช้งานในเครื่องนี้ เช่น มีการพยายามเข้าแล้วไม่ผ่านหลายครั้ง อาจสะท้อนปัญหารหัสผ่านหรือสิทธิ์ในการเข้าระบบ
+          </p>
+          <ul class="muted" style="padding-left:16px; margin-top:6px;">
+            <li><strong>ผ่าน (สำเร็จ)</strong> — เข้าระบบได้จริง (อีเมลมีอยู่, ผ่านอนุมัติ, รหัสถูกต้อง)</li>
+            <li><strong>ไม่ผ่าน</strong> — เช่น ไม่พบผู้ใช้, บัญชียังไม่อนุมัติ, รหัสผ่านไม่ถูกต้อง, ไม่ติ๊กยืนยันมนุษย์</li>
+            <li><strong>รวมทั้งหมด</strong> — สรุปจำนวนครั้งที่พยายามเข้าสู่ระบบทั้งหมด</li>
+          </ul>
+          <p class="muted" style="margin-top:6px;">
+            * สามารถล้างค่าสถิติได้โดยล้าง localStorage หรือ Clear Site Data ในเบราว์เซอร์
+          </p>
         </div>
       </div>
 
@@ -473,6 +533,70 @@
       }
     }
 
+    // ---------- Login statistics ----------
+    function loadLoginStats(){
+      try{
+        const raw = localStorage.getItem("fas-login-stats");
+        if(!raw) return { successTotal:0, failTotal:0, lastUpdated:null };
+        const obj = JSON.parse(raw);
+        return {
+          successTotal: obj.successTotal || 0,
+          failTotal: obj.failTotal || 0,
+          lastUpdated: obj.lastUpdated || null
+        };
+      }catch(e){
+        console.warn("โหลด fas-login-stats ไม่สำเร็จ", e);
+        return { successTotal:0, failTotal:0, lastUpdated:null };
+      }
+    }
+    function saveLoginStats(stats){
+      try{
+        localStorage.setItem("fas-login-stats", JSON.stringify(stats));
+      }catch(e){
+        console.warn("บันทึก fas-login-stats ไม่สำเร็จ", e);
+      }
+    }
+    function formatDateTime(dtStr){
+      if(!dtStr) return "-";
+      try{
+        const d = new Date(dtStr);
+        if(isNaN(d.getTime())) return "-";
+        const pad = n => (n<10 ? "0"+n : n);
+        const yyyy = d.getFullYear();
+        const mm = pad(d.getMonth()+1);
+        const dd = pad(d.getDate());
+        const hh = pad(d.getHours());
+        const mi = pad(d.getMinutes());
+        return `${dd}/${mm}/${yyyy} ${hh}:${mi} น.`;
+      }catch(e){
+        return "-";
+      }
+    }
+    function renderLoginStats(){
+      const stats = loadLoginStats();
+      const succEl = document.getElementById("loginSuccessCount");
+      const failEl = document.getElementById("loginFailCount");
+      const totalEl = document.getElementById("loginTotalCount");
+      const lastEl = document.getElementById("loginLastUpdate");
+      const total = (stats.successTotal || 0) + (stats.failTotal || 0);
+
+      if(succEl) succEl.textContent = stats.successTotal || 0;
+      if(failEl) failEl.textContent = stats.failTotal || 0;
+      if(totalEl) totalEl.textContent = total;
+      if(lastEl) lastEl.textContent = formatDateTime(stats.lastUpdated);
+    }
+    function recordLoginResult(isSuccess){
+      const stats = loadLoginStats();
+      if(isSuccess){
+        stats.successTotal = (stats.successTotal || 0) + 1;
+      }else{
+        stats.failTotal = (stats.failTotal || 0) + 1;
+      }
+      stats.lastUpdated = new Date().toISOString();
+      saveLoginStats(stats);
+      renderLoginStats();
+    }
+
     // session: fas-session = { email, loginAt, expiresAt, remember }
     function saveSession(email, remember){
       const now = Date.now();
@@ -526,6 +650,9 @@
       }
     }
 
+    // initial render stats
+    renderLoginStats();
+
     // ---------- Login ----------
     const loginForm = document.getElementById("loginForm");
     if(loginForm){
@@ -548,12 +675,14 @@
 
         if(!isHuman){
           msg.textContent = "กรุณายืนยันว่าไม่ใช่หุ่นยนต์";
+          recordLoginResult(false);
           return;
         }
 
         const user = store.users.find(u => u.email === email);
         if(!user){
           msg.textContent = "❌ ไม่พบผู้ใช้ในระบบ";
+          recordLoginResult(false);
           return;
         }
 
@@ -564,14 +693,17 @@
             statusEl.classList.add("status-pending");
             statusEl.textContent = "สถานะบัญชี: pending (รออนุมัติ)";
           }
+          recordLoginResult(false);
           return;
         }
 
         if(user.password !== password){
           msg.textContent = "❌ รหัสผ่านไม่ถูกต้อง";
+          recordLoginResult(false);
           return;
         }
 
+        // ผ่านทั้งหมด
         saveSession(user.email, remember);
         store.currentUser = user;
         msg.textContent = "✅ เข้าสู่ระบบสำเร็จ กำลังเปลี่ยนไปหน้าแรก...";
@@ -581,6 +713,8 @@
           statusEl.textContent =
             `เข้าสู่ระบบแล้ว: ${user.fullname || user.email} • role: ${user.role}`;
         }
+
+        recordLoginResult(true);
 
         setTimeout(() => {
           window.location.href = "index.html";
