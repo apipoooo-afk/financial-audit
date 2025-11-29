@@ -98,9 +98,8 @@
     .muted{color:var(--muted); font-size:12px;}
 
     .grid-2{display:grid; grid-template-columns:1.1fr .9fr; gap:18px;}
-    .grid-3{display:grid; grid-template-columns:1.1fr .9fr; gap:18px;}
     @media(max-width:900px){
-      .grid-2,.grid-3{grid-template-columns:1fr;}
+      .grid-2{grid-template-columns:1fr;}
     }
 
     .card{
@@ -317,7 +316,7 @@
         </div>
       </div>
 
-      <!-- Tabs: Admin accounts / Audit log (future) -->
+      <!-- Tabs -->
       <div class="pill-tabs">
         <div class="pill-tab active" data-tab="adminsTab">บัญชีแอดมิน</div>
         <div class="pill-tab" data-tab="futureTab">Audit Log (รอเชื่อมภายหลัง)</div>
@@ -389,7 +388,7 @@
       <!-- Tab: future (placeholder) -->
       <div id="futureTab" class="tab-panel" style="display:none;">
         <div class="card">
-          <h2>📜 Audit Log (ตัวอย่างพื้นที่ในอนาคต)</h2>
+          <h2>📜 Audit Log (พื้นที่ในอนาคต)</h2>
           <p class="muted">
             ส่วนนี้เตรียมไว้สำหรับเชื่อมระบบบันทึกการใช้งานแอดมินในอนาคต
             เช่น ใครสร้าง/แก้ไข/ลบบัญชีแอดมินคนไหน เมื่อเวลาใด
@@ -413,7 +412,7 @@
           fullName: "เจ้าของแพลตฟอร์ม",
           email: "root@example.com",
           username: "root",
-          password: "Admin123!",      // DEMO เท่านั้น – ของจริงต้องเก็บแบบ hash
+          password: "Admin123!",      // DEMO เท่านั้น – ของจริงต้องเก็บ hash
           role: "SUPER_ADMIN",
           status: "ACTIVE",
           lastLoginAt: null
@@ -432,9 +431,6 @@
       currentAdmin: null
     };
 
-    // ---------------------------
-    // SECTION TOGGLE
-    // ---------------------------
     const loginSection   = document.getElementById("loginSection");
     const consoleSection = document.getElementById("consoleSection");
     const loginMsg       = document.getElementById("adminLoginMsg");
@@ -454,7 +450,7 @@
     }
 
     // ---------------------------
-    // RENDER FUNCTIONS
+    // Render Functions
     // ---------------------------
     function renderCurrentAdminInfo(){
       const a = adminStore.currentAdmin;
@@ -525,16 +521,12 @@
           const admin = adminStore.admins.find(a=>a.id===id);
           if(!admin) return;
           const newRole = e.target.value;
-          // DEMO: เปลี่ยน role ตรง ๆ
           admin.role = newRole;
           renderAdminSummary();
-
-          // *** จุดสำหรับเชื่อม API จริง ***
-          // fetch("/api/admin/admins/"+id, { method:"PATCH", body: JSON.stringify({ role:newRole }) ... })
-
           if(adminStore.currentAdmin && adminStore.currentAdmin.id === id){
             renderCurrentAdminInfo();
           }
+          // *** จุดสำหรับเชื่อม API จริงในอนาคต ***
         });
       });
     }
@@ -552,7 +544,6 @@
         return;
       }
 
-      // DEMO: หาใน adminStore (ของจริงต้องไปเช็คที่ backend)
       const admin = adminStore.admins.find(a =>
         (a.username === username || a.email === username)
       );
@@ -570,7 +561,6 @@
         return;
       }
 
-      // login สำเร็จ
       admin.lastLoginAt = new Date().toISOString();
       adminStore.currentAdmin = admin;
       loginMsg.textContent = "";
@@ -578,10 +568,6 @@
       renderCurrentAdminInfo();
       renderAdminSummary();
       renderAdminsTable();
-
-      // *** จุดสำหรับเชื่อม API จริง ***
-      // fetch("/api/admin/login", { method:"POST", body: JSON.stringify({username,password}) ... })
-      //   .then(res => ... เก็บ token ใน localStorage แล้วใช้กับทุกคำสั่งถัดไป)
     });
 
     // Logout
@@ -624,17 +610,11 @@
       createAdminMsg.textContent = "✅ สร้างบัญชีแอดมินใหม่เรียบร้อย";
       renderAdminSummary();
       renderAdminsTable();
-
-      // *** จุดสำหรับเชื่อม API จริง ***
-      // fetch("/api/admin/admins", { method:"POST", body: JSON.stringify(newAdmin) ... })
-      //   .then(...)
-
-      // reset ฟอร์ม
       e.target.reset();
     });
 
     // ---------------------------
-    // Table actions (toggle status / reset pwd / delete)
+    // Table actions
     // ---------------------------
     adminsTableEl.addEventListener("click", function(e){
       const btn = e.target.closest("button");
@@ -651,7 +631,6 @@
         if(adminStore.currentAdmin && adminStore.currentAdmin.id === admin.id){
           renderCurrentAdminInfo();
         }
-        // API: PATCH /api/admin/admins/:id { status: ... }
       }
 
       if(action === "resetPwd"){
@@ -659,12 +638,10 @@
         if(!newPwd) return;
         admin.password = newPwd;
         alert("✅ รีเซ็ตรหัสผ่านเรียบร้อย (DEMO – ของจริงควรส่งลิงก์ reset ทางอีเมล)");
-        // API: POST /api/admin/admins/:id/reset-password
       }
 
       if(action === "deleteAdmin"){
         if(!confirm("ยืนยันการลบบัญชีแอดมินนี้หรือไม่?")) return;
-        // ไม่ควรให้ลบตัวเอง
         if(adminStore.currentAdmin && adminStore.currentAdmin.id === admin.id){
           alert("ไม่สามารถลบบัญชีที่กำลังเข้าสู่ระบบอยู่");
           return;
@@ -673,7 +650,6 @@
         if(idx !== -1) adminStore.admins.splice(idx,1);
         renderAdminSummary();
         renderAdminsTable();
-        // API: DELETE /api/admin/admins/:id
       }
     });
 
@@ -690,9 +666,7 @@
       });
     });
 
-    // ---------------------------
-    // Init (เริ่มต้นด้วยหน้า Login)
-    // ---------------------------
+    // Init
     showLogin();
   </script>
 </body>
