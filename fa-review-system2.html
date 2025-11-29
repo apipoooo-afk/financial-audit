@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>ระบบสอบทานประจำปี FA (ส่วนราชการ)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- ใช้สไตล์และ JS session แบบเดียวกับ system แรก ปรับสีเล็กน้อย -->
+  <style>
+    :root{--bg:#050816;--card:#101425;--muted:#a3acc7;}
+    *{box-sizing:border-box;}
+    body{
+      margin:0;font-family:"Segoe UI","Sarabun",Tahoma,sans-serif;
+      background:radial-gradient(circle at 100% 0%,rgba(56,189,248,0.18) 0,transparent 55%),#050816;
+      color:#f5f7ff;font-size:18px;
+    }
+    header{
+      padding:16px 14px;
+      background:linear-gradient(120deg,#22c55e,#0d47a1);
+      box-shadow:0 6px 18px rgba(0,0,0,0.7);
+    }
+    .head-row{
+      max-width:1100px;margin:0 auto;
+      display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;
+    }
+    .head-title h1{margin:0;font-size:24px;font-weight:800;}
+    .head-title h3{margin:0;font-size:13px;opacity:.9;}
+    .btn{
+      border-radius:999px;border:1px solid rgba(255,255,255,0.25);
+      padding:7px 14px;background:rgba(5,8,30,0.4);color:#f9fafb;
+      font-size:14px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;
+    }
+    .btn:hover{background:rgba(5,8,30,0.7);}
+    main{max-width:1100px;margin:20px auto 40px;padding:0 14px;}
+    .card{
+      background:var(--card);border-radius:18px;border:1px solid rgba(255,255,255,0.12);
+      padding:16px 18px;box-shadow:0 8px 24px rgba(0,0,0,0.85);margin-bottom:18px;
+    }
+    .card h2{margin:0 0 6px;font-size:20px;}
+    .muted{color:var(--muted);font-size:14px;margin:0 0 8px;}
+    table{width:100%;border-collapse:collapse;margin-top:10px;font-size:14px;}
+    th,td{border:1px solid rgba(148,163,184,0.4);padding:6px 8px;}
+    th{background:rgba(15,23,42,0.9);}
+  </style>
+  <script>
+    function getReviewSession(){
+      try{
+        const raw = localStorage.getItem("fas-review-session");
+        if(!raw) return null;
+        const data = JSON.parse(raw);
+        if(!data.email || !data.expiresAt) return null;
+        if(Date.now() > data.expiresAt){
+          localStorage.removeItem("fas-review-session");
+          return null;
+        }
+        return data;
+      }catch(e){return null;}
+    }
+    function requireReviewSession(){
+      const s = getReviewSession();
+      if(!s){
+        alert("Session หมดอายุหรือไม่พบ กรุณาเข้าสู่ระบบใหม่");
+        window.location.href = "fa-review-login.html?reason=no-session";
+      }
+      return s;
+    }
+    document.addEventListener("DOMContentLoaded", function(){
+      const s = requireReviewSession();
+      if(!s) return;
+      const el = document.getElementById("userEmail");
+      if(el) el.textContent = s.email;
+    });
+  </script>
+</head>
+<body>
+<header>
+  <div class="head-row">
+    <div class="head-title">
+      <h1>ระบบสอบทานประจำปี FA (ส่วนราชการ)</h1>
+      <h3>สอบทานงานตรวจประจำปีของส่วนราชการและหน่วยงานของรัฐ</h3>
+    </div>
+    <div class="head-actions">
+      <button class="btn" onclick="window.location.href='fa-review-menu.html'">⬅ เมนูสอบทาน</button>
+      <button class="btn" onclick="window.location.href='index.html'">🏠 หน้าหลัก</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="card">
+    <h2>ข้อมูลผู้สอบทาน</h2>
+    <p class="muted">ผู้เข้าสู่ระบบ: <span id="userEmail">-</span></p>
+  </div>
+
+  <div class="card">
+    <h2>บันทึกผลการสอบทานประจำปี (ส่วนราชการ)</h2>
+    <p class="muted">
+      ตารางตัวอย่างสำหรับบันทึกผลการสอบทานประจำปีของส่วนราชการ เช่น กระทรวง กรม หน่วยงานของรัฐ
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>ลำดับ</th>
+          <th>หน่วยรับตรวจ (ส่วนราชการ)</th>
+          <th>ปีงบประมาณ</th>
+          <th>สรุปประเด็นสำคัญ</th>
+          <th>สรุปการสอบทาน</th>
+          <th>สถานะ</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>กรมตัวอย่าง</td>
+          <td>2568</td>
+          <td>ปัญหาการกันงบประมาณโอนเปลี่ยนแปลง</td>
+          <td>สอบทานแล้ว มีข้อเสนอแนะด้านควบคุมภายใน</td>
+          <td>✔ สอบทานแล้ว</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</main>
+</body>
+</html>
