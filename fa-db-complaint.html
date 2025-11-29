@@ -1,1 +1,249 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>FA DB | ข้อมูลการร้องเรียน / สื่อออนไลน์</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{--bg:#060818;--card:#11152b;--muted:#a3acc7;}
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:"Segoe UI",Arial,sans-serif;background:var(--bg);color:#fff;}
+  header{padding:18px 10px;text-align:center;background:linear-gradient(120deg,#b91c1c,#0d47a1);box-shadow:0 4px 14px rgba(0,0,0,.6);}
+  header h1{margin:0;font-size:22px;font-weight:800;}
+  header p{margin:4px 0 0;font-size:13px;color:var(--muted);}
+  .wrap{max-width:1100px;margin:18px auto 30px;padding:0 16px;}
+  .top-row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;font-size:13px;color:var(--muted);margin-bottom:10px;}
+  .stat-box span{margin-right:10px;}
+  .card{background:var(--card);border-radius:16px;border:1px solid rgba(255,255,255,.14);padding:14px;margin-bottom:14px;box-shadow:0 8px 20px rgba(0,0,0,.55);}
+  h2{margin:0 0 8px;font-size:18px;}
+  label{display:block;font-size:12px;margin-top:6px;margin-bottom:3px;}
+  input,select,textarea{width:100%;padding:7px 8px;border-radius:8px;border:1px solid rgba(255,255,255,.18);background:#05081a;color:#fff;font-size:13px;outline:none;}
+  input:focus,select:focus,textarea:focus{border-color:#20c997;box-shadow:0 0 0 1px rgba(32,201,151,.4);}
+  textarea{min-height:60px;resize:vertical;}
+  .form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px 12px;}
+  .btn-row{margin-top:10px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;}
+  button{border:none;border-radius:999px;padding:8px 13px;font-size:12px;cursor:pointer;}
+  .btn-primary{background:#22c55e;color:#000;font-weight:700;}
+  .btn-secondary{background:#374151;color:#e5e7eb;}
+  .btn-danger{background:#b91c1c;color:#fff;}
+  .muted{font-size:12px;color:var(--muted);}
+  table{width:100%;border-collapse:collapse;font-size:12px;margin-top:6px;}
+  th,td{border:1px solid rgba(148,163,184,.4);padding:6px 5px;vertical-align:top;}
+  th{background:#020617;font-weight:600;position:sticky;top:0;z-index:1;}
+  tr:nth-child(even){background:rgba(15,23,42,.8);}
+  .actions button{margin-right:4px;margin-bottom:2px;}
+  a.nav{display:inline-block;margin-top:10px;margin-right:8px;color:#e0e7ff;text-decoration:none;font-size:13px;}
+  @media(max-width:720px){th,td{font-size:11px;}}
+</style>
+</head>
+<body>
+<header>
+  <h1>📣 FA DB – ข้อมูลการร้องเรียน / สื่อออนไลน์</h1>
+  <p>Complaints & Social / Online Media Intelligence</p>
+</header>
+
+<div class="wrap">
+  <div class="top-row">
+    <div>ผู้ใช้งาน (session): <strong id="userEmail">-</strong></div>
+    <div class="stat-box">
+      👁 รอบนี้: <strong id="statCurrent">0</strong>
+      🔄 สะสม: <strong id="statTotal">0</strong>
+    </div>
+  </div>
+
+  <!-- ฟอร์มบันทึก -->
+  <div class="card">
+    <h2>บันทึกข้อมูลการร้องเรียน / สัญญาณจากสื่อออนไลน์</h2>
+    <form id="dataForm">
+      <div class="form-grid">
+        <div>
+          <label>หน่วยรับตรวจ / พื้นที่ (entity)</label>
+          <input id="f-entity" required placeholder="เช่น อบต.ปรือใหญ่, รพ.สต.บ้าน...">
+        </div>
+        <div>
+          <label>วันที่พบ / วันที่ร้องเรียน (dateReported)</label>
+          <input id="f-dateReported" type="date">
+        </div>
+        <div>
+          <label>ช่องทางสื่อ (channelType)</label>
+          <select id="f-channelType">
+            <option value="">- เลือก -</option>
+            <option>Facebook</option>
+            <option>Facebook Page</option>
+            <option>Facebook Group</option>
+            <option>X (Twitter)</option>
+            <option>TikTok</option>
+            <option>LINE</option>
+            <option>YouTube</option>
+            <option>Website</option>
+            <option>ข่าวสื่อมวลชน</option>
+            <option>อื่น ๆ</option>
+          </select>
+        </div>
+        <div>
+          <label>ประเภทผู้ร้อง (complainantType)</label>
+          <select id="f-complainantType">
+            <option value="">- เลือก -</option>
+            <option>ไม่ระบุตัวตน</option>
+            <option>ประชาชนทั่วไป</option>
+            <option>เจ้าหน้าที่รัฐ</option>
+            <option>องค์กร/เครือข่าย</option>
+            <option>สื่อมวลชน</option>
+          </select>
+        </div>
+        <div>
+          <label>ประเภทประเด็น (issueType)</label>
+          <input id="f-issueType" placeholder="เช่น ทุจริตงบ, ฮั้วประมูล, เรียกรับผลประโยชน์">
+        </div>
+        <div>
+          <label>ระดับความเสี่ยง/ความรุนแรง (severity)</label>
+          <select id="f-severity">
+            <option value="">- เลือก -</option>
+            <option>ต่ำ</option>
+            <option>ปานกลาง</option>
+            <option>สูง</option>
+            <option>วิกฤต</option>
+          </select>
+        </div>
+        <div>
+          <label>ลิงก์ / URL โพสต์ (url)</label>
+          <input id="f-url" placeholder="https://...">
+        </div>
+      </div>
+
+      <label>สรุปเนื้อหา / ข้อกล่าวหา (summary)</label>
+      <textarea id="f-summary" placeholder="สรุปใจความสำคัญของเรื่องร้องเรียน / สิ่งที่พบจากสื่อออนไลน์"></textarea>
+
+      <label>หมายเหตุ / แนวทางดำเนินการ (remark)</label>
+      <textarea id="f-remark"></textarea>
+
+      <div class="btn-row">
+        <button type="submit" class="btn-primary" id="btnSave">บันทึกข้อมูล</button>
+        <button type="button" class="btn-secondary" id="btnClear">ล้างฟอร์ม</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- ตาราง + Import/Export -->
+  <div class="card">
+    <h2>ตารางข้อมูลการร้องเรียน / สื่อออนไลน์</h2>
+    <p class="muted">
+      • เก็บใน <code>localStorage["fa-db-data-complaint"]</code><br>
+      • นำเข้าได้จากไฟล์ CSV และจาก URL (กรณีเป็น CSV/JSON ที่เปิดสาธารณะ)
+    </p>
+    <div class="btn-row">
+      <label class="muted">
+        📥 Import CSV จากไฟล์:
+        <input type="file" id="csvFile" accept=".csv">
+      </label>
+      <div style="flex:1;min-width:220px;">
+        <label class="muted">📥 ดึงข้อมูลจาก URL (CSV/JSON สาธารณะ)</label>
+        <input id="onlineUrl" placeholder="เช่น https://....csv หรือ https://.../api?format=json">
+      </div>
+      <button type="button" class="btn-secondary" id="btnImportOnline">ดึงจาก URL</button>
+      <button type="button" class="btn-secondary" id="btnExport">📤 Export CSV</button>
+      <button type="button" class="btn-danger" id="btnDeleteAll">🗑 ลบทั้งหมด</button>
+    </div>
+    <p class="muted">
+      รูปแบบหัวตาราง CSV ที่แนะนำ:  
+      <code>entity,dateReported,channelType,complainantType,issueType,severity,url,summary,remark</code>
+    </p>
+
+    <div style="max-height:360px;overflow:auto;margin-top:6px;">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>หน่วยรับตรวจ</th>
+            <th>วันที่ร้องเรียน</th>
+            <th>ช่องทาง</th>
+            <th>ประเภทผู้ร้อง</th>
+            <th>ประเด็น</th>
+            <th>ระดับ</th>
+            <th>URL</th>
+            <th>สรุป</th>
+            <th>หมายเหตุ</th>
+            <th>จัดการ</th>
+          </tr>
+        </thead>
+        <tbody id="dataBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <a href="fa-database-menu.html" class="nav">⬅ กลับเมนูฐานข้อมูล</a>
+  <a href="index.html" class="nav">⬅ กลับหน้าแรก</a>
+</div>
+
+<script>
+const MODULE_KEY = "complaint";
+const STORAGE_KEY = "fa-db-data-" + MODULE_KEY;
+const TOTAL_KEY   = "fa-db-total-" + MODULE_KEY;
+const SESSION_KEY = "fa-db-session-" + MODULE_KEY;
+let data = [];
+let editIndex = -1;
+
+function checkSession(){
+  const raw = localStorage.getItem("fas-session");
+  if(!raw){ location.href="fa-database-login.html"; return; }
+  try{
+    const s = JSON.parse(raw);
+    if(Date.now()>s.expiresAt){ localStorage.removeItem("fas-session"); location.href="fa-database-login.html"; return; }
+    document.getElementById("userEmail").textContent = s.email || "-";
+  }catch{ location.href="fa-database-login.html"; }
+}
+function updateStatsOnLoad(){
+  const total = Number(localStorage.getItem(TOTAL_KEY)||"0")+1;
+  const curr  = Number(sessionStorage.getItem(SESSION_KEY)||"0")+1;
+  localStorage.setItem(TOTAL_KEY,String(total));
+  sessionStorage.setItem(SESSION_KEY,String(curr));
+  statTotal.textContent = total;
+  statCurrent.textContent = curr;
+}
+function loadData(){
+  try{ const raw = localStorage.getItem(STORAGE_KEY); data = raw?JSON.parse(raw):[]; }catch{ data=[]; }
+}
+function saveData(){ localStorage.setItem(STORAGE_KEY,JSON.stringify(data)); }
+function renderTable(){
+  const tbody = document.getElementById("dataBody");
+  tbody.innerHTML = "";
+  data.forEach((r,idx)=>{
+    const tr=document.createElement("tr");
+    tr.innerHTML = `
+      <td>${idx+1}</td>
+      <td>${r.entity||""}</td>
+      <td>${r.dateReported||""}</td>
+      <td>${r.channelType||""}</td>
+      <td>${r.complainantType||""}</td>
+      <td>${r.issueType||""}</td>
+      <td>${r.severity||""}</td>
+      <td>${r.url?`<a href="${r.url}" target="_blank">ลิงก์</a>`:""}</td>
+      <td>${r.summary||""}</td>
+      <td>${r.remark||""}</td>
+      <td class="actions">
+        <button type="button" onclick="editRow(${idx})">แก้ไข</button>
+        <button type="button" onclick="deleteRow(${idx})">ลบ</button>
+      </td>`;
+    tbody.appendChild(tr);
+  });
+  if(data.length===0){
+    const tr=document.createElement("tr");
+    tr.innerHTML=`<td colspan="11" style="text-align:center;color:#9ca3af;">ยังไม่มีข้อมูล</td>`;
+    tbody.appendChild(tr);
+  }
+}
+function clearForm(){
+  f-entity.value=""; f-dateReported.value=""; f-channelType.value="";
+  f-complainantType.value=""; f-issueType.value=""; f-severity.value="";
+  f-url.value=""; f-summary.value=""; f-remark.value="";
+  editIndex=-1; btnSave.textContent="บันทึกข้อมูล";
+}
+dataForm.addEventListener("submit",e=>{
+  e.preventDefault();
+  const row={
+    entity: f-entity.value.trim(),
+    dateReported: f-dateReported.value,
+    channelType: f-channelType.value,
+    complainantType: f-complainantType.value,
+    issueTyp
 
