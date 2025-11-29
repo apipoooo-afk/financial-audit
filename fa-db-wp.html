@@ -1,1 +1,72 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>FA DB | กระดาษทำการ FA (Working Paper)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{--bg:#060818;--card:#11152b;--muted:#a3acc7;}
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:"Segoe UI",Arial,sans-serif;background:var(--bg);color:#fff;}
+  header{padding:18px 10px;text-align:center;background:linear-gradient(120deg,#6d28d9,#0ea5e9);box-shadow:0 4px 14px rgba(0,0,0,.6);}
+  header h1{margin:0;font-size:22px;font-weight:800;}
+  header p{margin:4px 0 0;font-size:13px;color:var(--muted);}
+  .wrap{max-width:1100px;margin:18px auto 30px;padding:0 16px;}
+  .top-row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;font-size:13px;color:var(--muted);margin-bottom:10px;}
+  .stat-box span{margin-right:10px;}
+  .card{background:var(--card);border-radius:16px;border:1px solid rgba(255,255,255,.14);padding:14px;margin-bottom:14px;box-shadow:0 8px 20px rgba(0,0,0,.55);}
+  h2{margin:0 0 8px;font-size:18px;}
+  .muted{font-size:12px;color:var(--muted);}
+  label{display:block;font-size:12px;margin-top:6px;margin-bottom:3px;}
+  input,textarea{width:100%;padding:7px 8px;border-radius:8px;border:1px solid rgba(255,255,255,.18);background:#05081a;color:#fff;font-size:13px;outline:none;}
+  input:focus,textarea:focus{border-color:#38bdf8;box-shadow:0 0 0 1px rgba(56,189,248,.4);}
+  textarea{min-height:50px;resize:vertical;}
+  .form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px 12px;}
+  .btn-row{margin-top:10px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;}
+  button{border:none;border-radius:999px;padding:8px 13px;font-size:12px;cursor:pointer;}
+  .btn-primary{background:#38bdf8;color:#000;font-weight:700;}
+  .btn-secondary{background:#374151;color:#e5e7eb;}
+  .btn-danger{background:#b91c1c;color:#fff;}
+  table{width:100%;border-collapse:collapse;font-size:12px;margin-top:6px;}
+  th,td{border:1px solid rgba(148,163,184,.4);padding:6px 5px;vertical-align:top;}
+  th{background:#020617;font-weight:600;position:sticky;top:0;z-index:1;}
+  tr:nth-child(even){background:rgba(15,23,42,.8);}
+  .actions button{margin-right:4px;margin-bottom:2px;}
+  a.nav{display:inline-block;margin-top:10px;margin-right:8px;color:#e0e7ff;text-decoration:none;font-size:13px;}
+  @media(max-width:720px){th,td{font-size:11px;}}
+</style>
+</head>
+<body>
+<header>
+  <h1>📑 FA DB – กระดาษทำการ FA (Working Paper)</h1>
+  <p>Working Papers Index (เชื่อมโยงกับระบบตรวจสอบการเงิน)</p>
+</header>
+
+<div class="wrap">
+  <div class="top-row">
+    <div>ผู้ใช้งาน (session): <strong id="userEmail">-</strong></div>
+    <div class="stat-box">
+      👁 รอบนี้: <strong id="statCurrent">0</strong>
+      🔄 สะสม: <strong id="statTotal">0</strong>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>บันทึก / ปรับแก้กระดาษทำการ</h2>
+    <form id="dataForm">
+      <div class="form-grid">
+        <div>
+          <label>หน่วยรับตรวจ (entity)</label>
+          <input id="f-entity" required>
+        </div>
+        <div>
+          <label>ปีงบประมาณ (fy)</label>
+          <input id="f-fy" required>
+        </div>
+        <div>
+          <label>รหัส WP (wpCode)</label>
+          <input id="f-wpCode" placeholder="เช่น WP-FA-01">
+        </div>
+        <div>
+          <label>ชื่อกระดาษทำก
 
