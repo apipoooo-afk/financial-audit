@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>FA Database Login | Financial Audit System</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body{
+      margin:0;
+      font-family:"Segoe UI",Arial;
+      background:#060818;
+      color:#fff;
+    }
+    header{
+      text-align:center;
+      padding:24px;
+      background:linear-gradient(120deg,#7b1e3c,#0d47a1,#20c997);
+      box-shadow:0 4px 12px rgba(0,0,0,.35);
+    }
+    header h1{ margin:0;font-size:26px;font-weight:800; }
+    header h3{ margin:4px 0 0;font-size:14px;opacity:.8; }
+
+    .wrap{ max-width:420px;margin:40px auto;padding:0 16px; }
+    .card{
+      background:#11152b;
+      border-radius:14px;
+      padding:20px;
+      box-shadow:0 8px 20px rgba(0,0,0,.6);
+    }
+    input{
+      width:100%;padding:12px;margin-top:8px;border-radius:10px;
+      border:1px solid rgba(255,255,255,.22);background:#060818;
+      color:#fff;font-size:15px;
+    }
+    .btn{
+      width:100%;padding:14px;border:none;margin-top:20px;
+      border-radius:999px;background:linear-gradient(135deg,#f48fb1,#42a5f5);
+      color:#fff;font-size:18px;font-weight:700;cursor:pointer;
+    }
+    a.back{
+      display:block;text-align:center;color:#ccc;margin-top:18px;
+      text-decoration:none;font-size:14px;
+    }
+    .alert{
+      margin-top:12px;padding:10px;background:#7b1e3c;
+      border-radius:10px;font-size:14px;display:none;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>🗄 FA Database Login</h1>
+  <h3>ระบบฐานข้อมูลตรวจสอบการเงิน (Database Center)</h3>
+</header>
+
+<div class="wrap">
+<div class="card">
+
+  <h2>เข้าสู่ระบบ</h2>
+  <p style="opacity:.7;font-size:14px;">ใช้บัญชีเดียวกับระบบ FA</p>
+
+  <div class="alert" id="msgAlert"></div>
+
+  <form id="dbLoginForm">
+
+    <label>อีเมล</label>
+    <input type="email" id="email" required>
+
+    <label>รหัสผ่าน</label>
+    <input type="password" id="password" required>
+
+    <label>ยืนยันว่าเป็นมนุษย์</label>
+    <div id="humanQ" style="margin-bottom:6px;font-weight:700;"></div>
+    <input type="number" id="humanA" required>
+
+    <button class="btn">เข้าสู่ระบบฐานข้อมูล</button>
+
+  </form>
+
+  <a href="index.html" class="back">⬅ กลับหน้าหลัก</a>
+
+</div>
+</div>
+
+<script>
+let humanCorrect=0;
+function genQ(){
+  let a=Math.floor(Math.random()*9)+1;
+  let b=Math.floor(Math.random()*9)+1;
+  humanCorrect=a+b;
+  document.getElementById("humanQ").innerHTML=`${a} + ${b} = ?`;
+}
+genQ();
+
+document.getElementById("dbLoginForm").addEventListener("submit",e=>{
+  e.preventDefault();
+
+  let email=email.value.trim().toLowerCase();
+  let pass=password.value.trim();
+  let ans=humanA.value.trim();
+
+  if(Number(ans)!==humanCorrect){
+    msgAlert.style.display="block";
+    msgAlert.innerHTML="คำตอบไม่ถูกต้อง";
+    genQ();
+    return;
+  }
+
+  const raw=localStorage.getItem("fas-users");
+  const users=raw?JSON.parse(raw):[];
+  const u=users.find(x=>x.email.toLowerCase()==email);
+
+  if(!u){ alert("ไม่พบบัญชี"); return; }
+  if(u.password!==pass){ alert("รหัสผ่านผิด"); return; }
+  if(u.status!=="approved"){ alert("ยังไม่อนุมัติ"); return; }
+
+  const ttl=8*60*60*1000;
+  localStorage.setItem("fas-session",JSON.stringify({
+    email,
+    loginAt:Date.now(),
+    expiresAt:Date.now()+ttl
+  }));
+
+  location.href="fa-database-menu.html";
+});
+</script>
+
+</body>
+</html>
