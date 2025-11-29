@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>Financial Audit System – Main Menu</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    *{box-sizing:border-box;}
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      background: #060818;
+      color: #f5f7ff;
+    }
+
+    /* Header */
+    header {
+      padding: 18px 10px;
+      text-align: center;
+      background: linear-gradient(120deg, #7b1e3c, #0d47a1, #f48fb1);
+      color: #fff;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.45);
+      border-bottom: 1px solid rgba(255,255,255,0.15);
+    }
+    header h1 {
+      margin: 0;
+      font-size: 26px;
+      font-weight: 800;
+    }
+    header h3 {
+      margin: 4px 0 0;
+      font-size: 14px;
+      opacity: 0.9;
+    }
+    .subline{
+      font-size:12px;
+      opacity:.8;
+      margin-top:2px;
+    }
+
+    /* เมนูกลาง */
+    .menu-wrapper {
+      max-width: 900px;
+      margin: 32px auto;
+      padding: 0 18px 40px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    /* กล่องเมนู */
+    .menu-box {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 18px 18px;
+      border-radius: 18px;
+      text-decoration: none;
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.16);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+      transition: 0.18s ease-in-out;
+    }
+    .menu-box:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 26px rgba(255,255,255,0.25);
+      border-color: rgba(255,255,255,0.35);
+    }
+
+    /* สีพื้นหลังแต่ละระบบ */
+    .menu-lg-annual{
+      background: radial-gradient(circle at 0 0, rgba(66,165,245,0.35) 0, transparent 55%),
+                  #101632;
+    }
+    .menu-lg-mid{
+      background: radial-gradient(circle at 100% 0, rgba(76,175,80,0.35) 0, transparent 55%),
+                  #10231f;
+    }
+    .menu-gov-annual{
+      background: radial-gradient(circle at 0 100%, rgba(255,202,40,0.4) 0, transparent 55%),
+                  #2a1b0f;
+    }
+    .menu-gov-interim{
+      background: radial-gradient(circle at 100% 100%, rgba(244,143,177,0.4) 0, transparent 55%),
+                  #29142a;
+    }
+
+    /* สี่เหลี่ยม 40px */
+    .menu-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: rgba(0,0,0,0.28);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: bold;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .menu-text {
+      font-size: 14px;
+      line-height: 1.45;
+    }
+    .menu-text strong{
+      font-size:15px;
+    }
+    .menu-text small {
+      display: block;
+      margin-top: 3px;
+      opacity: 0.85;
+      font-size: 12px;
+    }
+
+    /* บรรทัด info ด้านล่าง */
+    .info-bar{
+      max-width:900px;
+      margin:0 auto 18px;
+      padding:0 18px;
+      font-size:13px;
+      color:#a3acc7;
+    }
+
+    @media (max-width: 620px) {
+      .menu-wrapper {
+        grid-template-columns: 1fr;
+      }
+      header h1 {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>📂 Financial Audit System</h1>
+  <h3>Main Menu – เมนูหลักของระบบตรวจสอบการเงิน</h3>
+  <div class="subline" id="userLine"></div>
+</header>
+
+<div class="info-bar">
+  เลือกโมดูลที่ต้องการตรวจสอบ หากต้องการเปลี่ยนบัญชีเข้าใช้งาน กรุณาออกจากระบบแล้ว Login ใหม่จากหน้า <code>fa-login.html</code>
+</div>
+
+<div class="menu-wrapper">
+
+  <!-- 1. Annual – Local Government -->
+  <a href="fa-lg-annual.html" class="menu-box menu-lg-annual">
+    <div class="menu-icon">🏛️</div>
+    <div class="menu-text">
+      <strong>ระบบตรวจสอบการเงินประจำปี ของ อปท.</strong>
+      <small>Annual Financial Audit – Local Government</small>
+    </div>
+  </a>
+
+  <!-- 2. Mid-Year – Local Government -->
+  <a href="fa-lg-midyear.html" class="menu-box menu-lg-mid">
+    <div class="menu-icon">📆</div>
+    <div class="menu-text">
+      <strong>ระบบตรวจสอบการเงินระหว่างปี ของ อปท.</strong>
+      <small>Mid-Year Financial Audit – Local Government</small>
+    </div>
+  </a>
+
+  <!-- 3. Annual – Government Agencies -->
+  <a href="fa-gov-annual.html" class="menu-box menu-gov-annual">
+    <div class="menu-icon">🏢</div>
+    <div class="menu-text">
+      <strong>ระบบตรวจสอบการเงินประจำปี ของ ส่วนราชการ</strong>
+      <small>Annual Financial Audit – Government Agencies</small>
+    </div>
+  </a>
+
+  <!-- 4. Interim – Government Agencies -->
+  <a href="fa-gov-interim.html" class="menu-box menu-gov-interim">
+    <div class="menu-icon">⏱️</div>
+    <div class="menu-text">
+      <strong>ระบบตรวจสอบการเงินระหว่างกาล ของ ส่วนราชการ</strong>
+      <small>Interim Financial Audit – Government Agencies</small>
+    </div>
+  </a>
+
+</div>
+
+<script>
+  // ==== ตรวจ session ถ้าไม่มีให้เด้งกลับ fa-login ====
+  function loadSession(){
+    try{
+      const raw = localStorage.getItem("fas-session");
+      if(!raw) return null;
+      const sess = JSON.parse(raw);
+      if(!sess || !sess.email || !sess.expiresAt) return null;
+      if(Date.now() > sess.expiresAt){
+        localStorage.removeItem("fas-session");
+        return null;
+      }
+      return sess;
+    }catch(e){
+      console.warn("โหลด fas-session ไม่สำเร็จ", e);
+      return null;
+    }
+  }
+
+  function loadUsersFromStorage(){
+    try{
+      const raw = localStorage.getItem("fas-users");
+      if(!raw) return [];
+      const data = JSON.parse(raw);
+      return Array.isArray(data) ? data : [];
+    }catch(e){
+      return [];
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", function(){
+    const sess = loadSession();
+    if(!sess){
+      alert("กรุณาเข้าสู่ระบบก่อนใช้งาน FA System");
+      window.location.href = "fa-login.html?reason=no-session";
+      return;
+    }
+
+    const users = loadUsersFromStorage();
+    const user = users.find(u => (u.email || "").toLowerCase() === (sess.email || "").toLowerCase());
+
+    const userLine = document.getElementById("userLine");
+    if(userLine){
+      if(user){
+        const roleText =
+          user.role === "super_admin" ? "Super Admin" :
+          user.role === "admin" ? "Admin" :
+          user.role === "admin1" ? "Admin1" : "User";
+        userLine.textContent = `ผู้ใช้ปัจจุบัน: ${user.fullname || user.email} • ${roleText}`;
+      }else{
+        userLine.textContent = `ผู้ใช้ปัจจุบัน: ${sess.email}`;
+      }
+    }
+  });
+</script>
+
+</body>
+</html>
