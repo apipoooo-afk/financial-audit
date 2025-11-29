@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>FA Database Login | Financial Audit System</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <style>
     :root{
       --bg:#060818;
@@ -11,28 +12,466 @@
       --border:#262b46;
       --pink:#f48fb1;
       --blue:#0d47a1;
+      --teal:#20c997;
       --muted:#a3acc7;
     }
     *{box-sizing:border-box;}
+
     body{
       margin:0;
       font-family:"Segoe UI",Arial,sans-serif;
       background:
         radial-gradient(circle at 10% 0%, rgba(123,30,60,0.36) 0, transparent 55%),
         radial-gradient(circle at 90% 100%, rgba(66,165,245,0.32) 0, transparent 55%),
+        radial-gradient(circle at 0% 100%, rgba(32,201,151,0.20) 0, transparent 55%),
         var(--bg);
       color:#f5f7ff;
+      min-height:100vh;
     }
+
     header{
       text-align:center;
       padding:22px 10px;
       background:linear-gradient(120deg,#7b1e3c,#0d47a1,#20c997);
       box-shadow:0 4px 14px rgba(0,0,0,.6);
+      position:sticky;
+      top:0;
+      z-index:10;
     }
-    header h1{margin:0;font-size:26px;font-weight:800;}
-    header h3{margin:4px 0 0;font-size:14px;opacity:.85;}
-    .wrap{max-width:420px;margin:40px auto;padding:0 16px;}
+    header h1{
+      margin:0;
+      font-size:24px;
+      font-weight:800;
+      letter-spacing:.03em;
+    }
+    header h3{
+      margin:4px 0 0;
+      font-size:13px;
+      opacity:.9;
+    }
+
+    .wrap{
+      max-width:880px;
+      margin:28px auto 32px;
+      padding:0 16px 24px;
+      display:grid;
+      grid-template-columns: minmax(0,1.2fr) minmax(0,1fr);
+      gap:18px;
+    }
+    @media(max-width:860px){
+      .wrap{
+        grid-template-columns:1fr;
+      }
+    }
+
     .card{
       background:var(--card);
-      border-radius:16px;
-      border:1px solid rgba(255,255,255,.
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.06);
+      box-shadow:0 12px 32px rgba(0,0,0,.8);
+      padding:20px 18px 18px;
+      position:relative;
+      overflow:hidden;
+    }
+    .card::before{
+      content:"";
+      position:absolute;
+      inset:-40%;
+      background:radial-gradient(circle at 0 0, rgba(244,143,177,0.22) 0, transparent 55%);
+      opacity:0;
+      transition:opacity .25s ease;
+      pointer-events:none;
+    }
+    .card:hover::before{
+      opacity:1;
+    }
+    .card > *{
+      position:relative;
+      z-index:1;
+    }
+
+    .card-main{
+      border-top:3px solid #42a5f5;
+    }
+    .card-info{
+      border-top:3px solid #20c997;
+    }
+
+    h2{
+      margin:0 0 6px;
+      font-size:19px;
+    }
+    .muted{
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.5;
+    }
+
+    label{
+      display:block;
+      margin-top:10px;
+      margin-bottom:4px;
+      font-size:13px;
+      font-weight:600;
+    }
+
+    input[type="email"],
+    input[type="password"]{
+      width:100%;
+      padding:10px 11px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,0.18);
+      background:rgba(5,8,26,0.92);
+      color:#fff;
+      font-size:14px;
+      outline:none;
+    }
+    input:focus{
+      border-color:var(--pink);
+      box-shadow:0 0 0 1px rgba(244,143,177,0.45);
+    }
+
+    .row-inline{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      margin-top:12px;
+      flex-wrap:wrap;
+    }
+
+    .checkbox-row{
+      display:flex;
+      align-items:center;
+      gap:6px;
+      font-size:12px;
+      color:var(--muted);
+    }
+
+    .btn-primary{
+      padding:10px 18px;
+      border-radius:999px;
+      border:none;
+      cursor:pointer;
+      font-size:14px;
+      font-weight:700;
+      color:#fff;
+      background:linear-gradient(135deg,#f48fb1,#42a5f5);
+      box-shadow:0 7px 22px rgba(13,71,161,0.7);
+      min-width:180px;
+    }
+    .btn-primary:hover{
+      filter:brightness(1.05);
+      box-shadow:0 0 18px rgba(66,165,245,0.9);
+    }
+
+    .btn-ghost{
+      padding:9px 14px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.28);
+      background:rgba(5,8,26,0.7);
+      cursor:pointer;
+      font-size:13px;
+      color:#f5f7ff;
+    }
+    .btn-ghost:hover{
+      background:rgba(255,255,255,0.08);
+    }
+
+    .badge-session{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:5px 10px;
+      border-radius:999px;
+      border:1px solid rgba(144,238,144,0.6);
+      background:rgba(76,175,80,0.12);
+      font-size:11px;
+      margin-top:8px;
+      color:#c8e6c9;
+    }
+    .dot-online{
+      width:8px;height:8px;border-radius:50%;
+      background:#69f0ae;
+      box-shadow:0 0 10px #69f0ae;
+    }
+
+    .msg{
+      margin-top:8px;
+      font-size:12px;
+      min-height:16px;
+    }
+    .msg-error{color:#ffb3b3;}
+    .msg-ok{color:#b2ffb2;}
+
+    ul.feature-list{
+      margin:10px 0 0;
+      padding-left:18px;
+      font-size:13px;
+      color:var(--muted);
+    }
+    ul.feature-list li{margin-bottom:4px;}
+
+    .mini-title{
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.11em;
+      color:#9fa7ff;
+      margin-bottom:6px;
+    }
+
+    .pill{
+      display:inline-block;
+      padding:3px 8px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.18);
+      font-size:11px;
+      margin-right:4px;
+      margin-top:4px;
+      color:#e0e4ff;
+    }
+
+    footer{
+      border-top:1px solid rgba(255,255,255,0.12);
+      padding:10px 18px 14px;
+      font-size:11px;
+      color:var(--muted);
+      text-align:center;
+      background:rgba(3,5,15,0.9);
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>🗄 FA Database Login</h1>
+  <h3>ระบบฐานข้อมูลการตรวจสอบการเงิน • ใช้บัญชีเดียวกับ Financial Audit System</h3>
+</header>
+
+<div class="wrap">
+
+  <!-- การ์ด Login ฐานข้อมูล -->
+  <div class="card card-main">
+    <h2>เข้าสู่ระบบฐานข้อมูล (FA Database)</h2>
+    <p class="muted">
+      ใช้อีเมลและรหัสผ่านเดียวกับที่ลงทะเบียนในระบบ <strong>Financial Audit System</strong><br>
+      เมื่อเข้าสู่ระบบแล้ว จะสามารถเข้าหน้าเมนูฐานข้อมูล (10 หมวด) เพื่อบันทึก / ค้นหา / วิเคราะห์ข้อมูลได้
+    </p>
+
+    <div id="sessionInfo" class="badge-session" style="display:none;">
+      <span class="dot-online"></span>
+      <span id="sessionText"></span>
+    </div>
+
+    <form id="dbLoginForm" style="margin-top:10px;">
+      <label for="dbEmail">อีเมล (Email)</label>
+      <input type="email" id="dbEmail" placeholder="เช่น apipoooo@gmail.com" required>
+
+      <label for="dbPassword">รหัสผ่าน (Password)</label>
+      <input type="password" id="dbPassword" placeholder="กรอกรหัสผ่านเดียวกับระบบหลัก" required>
+
+      <div class="checkbox-row" style="margin-top:10px;">
+        <input type="checkbox" id="dbRemember">
+        <label for="dbRemember" style="margin:0;">จำการเข้าสู่ระบบฐานข้อมูล (สูงสุด 4 ชั่วโมง)</label>
+      </div>
+
+      <div class="row-inline">
+        <button type="submit" class="btn-primary">เข้าสู่ระบบฐานข้อมูล</button>
+        <button type="button" class="btn-ghost" onclick="window.location.href='index.html'">
+          ⬅ กลับหน้าแรก (Home)
+        </button>
+      </div>
+
+      <div id="dbMsg" class="msg"></div>
+    </form>
+  </div>
+
+  <!-- การ์ดอธิบายการใช้งาน -->
+  <div class="card card-info">
+    <div class="mini-title">คู่มือสั้น ๆ ก่อนเข้าใช้งาน</div>
+    <h2>FA Database ใช้ทำอะไร?</h2>
+    <p class="muted">
+      ระบบฐานข้อมูลนี้ทำหน้าที่เป็น <strong>Data Center</strong> สำหรับงานตรวจสอบการเงินและการปฏิบัติงานของหน่วยรับตรวจ
+      เชื่อมโยงกับระบบ Login และระบบตรวจสอบการเงิน FA เดิมที่คุณใช้อยู่แล้ว
+    </p>
+
+    <p class="muted" style="margin-top:10px;"><strong>เมื่อเข้าสู่ระบบสำเร็จ คุณจะสามารถ:</strong></p>
+    <ul class="feature-list">
+      <li>เข้าถึงเมนูฐานข้อมูล 10 หมวด เช่น ข้อมูล อปท., ส่วนราชการ, กฎหมาย/ระเบียบ, รายงานการตรวจสอบ ฯลฯ</li>
+      <li>บันทึก / แก้ไข / ลบ (CRUD) ข้อมูลที่เกี่ยวข้องกับงานตรวจสอบ</li>
+      <li>นำเข้าข้อมูลจากไฟล์ เช่น Excel / CSV / PDF (ตามระบบย่อยที่จะพัฒนาเติม)</li>
+      <li>ดึงข้อมูลจากระบบตรวจสอบการเงิน FA เพื่อทำวิเคราะห์ต่อ (เชื่อมโยงกระดาษทำการ / รายงานรายได้ ฯลฯ)</li>
+      <li>ใช้เป็นคลังข้อมูลระยะยาวเพื่อรองรับการวิเคราะห์เชิงสถิติต่อไป</li>
+    </ul>
+
+    <p class="muted" style="margin-top:12px;"><strong>หมายเหตุด้านความปลอดภัย:</strong></p>
+    <ul class="feature-list">
+      <li>เฉพาะผู้ใช้ที่ได้รับการอนุมัติในระบบหลักเท่านั้นจึงจะเข้าสู่ระบบฐานข้อมูลได้</li>
+      <li>ข้อมูลผู้ใช้และสิทธิ์ถูกเก็บใน LocalStorage ชื่อ <code>fas-users</code> และ <code>fas-session</code></li>
+      <li>ระบบฐานข้อมูลสร้าง session แยกต่างหากในชื่อ <code>fa-db-session</code> เพื่อใช้ตรวจสิทธิ์ในหน้าถัดไป</li>
+    </ul>
+
+    <div style="margin-top:10px;">
+      <span class="pill">Shared Identity: fas-users</span>
+      <span class="pill">Module: FA Database</span>
+      <span class="pill">Scope: View &amp; Manage Data</span>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  © 2025 Financial Audit System • FA Database Module • Local demo using browser LocalStorage
+</footer>
+
+<script>
+  // ---------- CONFIG ----------
+  const USERS_KEY = "fas-users";        // users จากระบบหลัก
+  const MAIN_SESSION_KEY = "fas-session"; // session ระบบหลัก
+  const DB_SESSION_KEY = "fa-db-session"; // session เฉพาะระบบฐานข้อมูล
+
+  // ---------- Utility ----------
+  function loadJson(key){
+    try{
+      const raw = localStorage.getItem(key);
+      return raw ? JSON.parse(raw) : null;
+    }catch(e){
+      console.warn("อ่าน localStorage ผิดพลาด:", key, e);
+      return null;
+    }
+  }
+  function saveJson(key, value){
+    try{
+      localStorage.setItem(key, JSON.stringify(value));
+    }catch(e){
+      console.warn("บันทึก localStorage ผิดพลาด:", key, e);
+    }
+  }
+
+  function loadUsers(){
+    const data = loadJson(USERS_KEY);
+    return Array.isArray(data) ? data : [];
+  }
+
+  function loadMainSession(){
+    const sess = loadJson(MAIN_SESSION_KEY);
+    if(!sess) return null;
+    if(sess.expiresAt && Date.now() > sess.expiresAt){
+      // หมดอายุ ลบทิ้ง
+      localStorage.removeItem(MAIN_SESSION_KEY);
+      return null;
+    }
+    return sess;
+  }
+
+  function loadDbSession(){
+    const sess = loadJson(DB_SESSION_KEY);
+    if(!sess) return null;
+    if(sess.expiresAt && Date.now() > sess.expiresAt){
+      localStorage.removeItem(DB_SESSION_KEY);
+      return null;
+    }
+    return sess;
+  }
+
+  function createDbSession(email, remember){
+    const now = Date.now();
+    const FOUR_HOURS = 4 * 60 * 60 * 1000;
+    const TWO_HOURS  = 2 * 60 * 60 * 1000;
+    const session = {
+      email,
+      loginAt: now,
+      remember: !!remember,
+      expiresAt: now + (remember ? FOUR_HOURS : TWO_HOURS)
+    };
+    saveJson(DB_SESSION_KEY, session);
+  }
+
+  // ---------- Prefill & Session Display ----------
+  const dbEmailInput   = document.getElementById("dbEmail");
+  const sessionInfoBox = document.getElementById("sessionInfo");
+  const sessionText    = document.getElementById("sessionText");
+  const dbMsg          = document.getElementById("dbMsg");
+
+  (function initPrefill(){
+    const mainSess = loadMainSession();
+    const dbSess   = loadDbSession();
+    const users    = loadUsers();
+
+    // ถ้ามี session ฐานข้อมูลอยู่แล้ว + user ยัง approved -> สามารถไปเมนูได้เลย
+    if(dbSess && dbSess.email){
+      const u = users.find(x => (x.email || "").toLowerCase() === dbSess.email.toLowerCase());
+      if(u && u.status === "approved"){
+        sessionInfoBox.style.display = "inline-flex";
+        sessionText.textContent = `ล็อกอินฐานข้อมูลแล้วในชื่อ: ${u.fullname || u.email} • พร้อมเข้าเมนู`;
+        dbEmailInput.value = u.email;
+        dbMsg.className = "msg msg-ok";
+        dbMsg.textContent = "คุณมี session ฐานข้อมูลอยู่แล้ว สามารถเข้าสู่ระบบอีกครั้งเพื่อไปเมนูฐานข้อมูลได้ทันที";
+        return;
+      }
+    }
+
+    // ถ้ายังไม่มี db-session แต่มี main-session อยู่
+    if(mainSess && mainSess.email){
+      const u = users.find(x => (x.email || "").toLowerCase() === mainSess.email.toLowerCase());
+      if(u){
+        sessionInfoBox.style.display = "inline-flex";
+        sessionText.textContent = `ล็อกอินระบบหลักแล้วในชื่อ: ${u.fullname || u.email}`;
+        dbEmailInput.value = u.email;
+      }
+    }
+  })();
+
+  // ---------- Login Handler ----------
+  document.getElementById("dbLoginForm").addEventListener("submit", function(e){
+    e.preventDefault();
+
+    const email = dbEmailInput.value.trim().toLowerCase();
+    const pass  = document.getElementById("dbPassword").value.trim();
+    const remember = document.getElementById("dbRemember").checked;
+
+    dbMsg.textContent = "";
+    dbMsg.className = "msg";
+
+    if(!email || !pass){
+      dbMsg.textContent = "กรุณากรอกอีเมลและรหัสผ่านให้ครบถ้วน";
+      dbMsg.className = "msg msg-error";
+      return;
+    }
+
+    const users = loadUsers();
+    const user  = users.find(u => (u.email || "").toLowerCase() === email);
+
+    if(!user){
+      dbMsg.textContent = "ไม่พบบัญชีผู้ใช้ในระบบหลัก กรุณาลงทะเบียนที่หน้า Login หลักก่อน (login.html)";
+      dbMsg.className = "msg msg-error";
+      return;
+    }
+
+    if(user.password !== pass){
+      dbMsg.textContent = "รหัสผ่านไม่ถูกต้อง โปรดลองใหม่อีกครั้ง";
+      dbMsg.className = "msg msg-error";
+      return;
+    }
+
+    if(user.status !== "approved"){
+      dbMsg.textContent = "บัญชีของคุณยังไม่ได้รับการอนุมัติจากผู้ดูแลระบบ จึงยังไม่สามารถเข้าใช้ฐานข้อมูลได้";
+      dbMsg.className = "msg msg-error";
+      return;
+    }
+
+    // สร้าง session เฉพาะฐานข้อมูล
+    createDbSession(user.email, remember);
+
+    dbMsg.textContent = "เข้าสู่ระบบสำเร็จ กำลังไปยังเมนูฐานข้อมูล…";
+    dbMsg.className = "msg msg-ok";
+
+    setTimeout(()=>{
+      window.location.href = "fa-database-menu.html";
+    }, 800);
+  });
+</script>
+
+</body>
+</html>
