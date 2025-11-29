@@ -203,7 +203,7 @@
     }
 
     /* Sections */
-    #loginSection{max-width:420px; margin:32px auto;}
+    #loginSection{max-width:520px; margin:32px auto;}
     #consoleSection{display:none;}
 
     .pill-tabs{
@@ -260,7 +260,7 @@
   </header>
 
   <main class="container">
-    <!-- SECTION: LOGIN -->
+    <!-- SECTION: LOGIN + REQUEST ADMIN + RESET PASSWORD -->
     <section id="loginSection">
       <div class="card">
         <h1>เข้าสู่ระบบผู้จัดการแพลตฟอร์ม</h1>
@@ -275,12 +275,110 @@
           <label for="adminPassword">รหัสผ่าน</label>
           <input type="password" id="adminPassword" required placeholder="••••••••">
 
-          <div style="margin-top:12px; display:flex; gap:8px; align-items:center;">
+          <div style="margin-top:12px; display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
             <button type="submit">เข้าสู่ระบบผู้จัดการระบบ</button>
-            <span class="muted">Demo: root / Admin123!</span>
+            <span class="muted">
+              Demo: root / Admin123! หรือ apipoooo@gmail.com / Apiphu17122558
+            </span>
           </div>
         </form>
         <p id="adminLoginMsg" class="muted" style="margin-top:8px;"></p>
+      </div>
+
+      <!-- ฟอร์มขอเป็น Admin -->
+      <div class="card" style="margin-top:16px;">
+        <h2>ขอสิทธิ์เป็นผู้ดูแลระบบ (Admin Request)</h2>
+        <p class="muted">
+          สำหรับเจ้าหน้าที่ภาครัฐที่ได้รับมอบหมายในการดูแลระบบตรวจสอบการเงิน
+          กรุณากรอกข้อมูลให้ครบถ้วน และตั้งรหัสผ่านสำหรับบัญชีแอดมินของคุณเอง
+        </p>
+
+        <form id="adminRequestForm" style="margin-top:8px;">
+          <label for="reqFirstName">ชื่อ</label>
+          <input type="text" id="reqFirstName" required placeholder="เช่น สมชาย">
+
+          <label for="reqLastName">นามสกุล</label>
+          <input type="text" id="reqLastName" required placeholder="เช่น ใจดี">
+
+          <label for="reqCitizenId">เลขบัตรประชาชน 13 หลัก</label>
+          <input type="text" id="reqCitizenId" required maxlength="13" placeholder="เช่น 1234567890123">
+
+          <label for="reqGovId">รหัสข้าราชการ / รหัสพนักงานราชการ</label>
+          <input type="text" id="reqGovId" required placeholder="เช่น 987654">
+
+          <label for="reqPosition">ตำแหน่ง</label>
+          <input type="text" id="reqPosition" required placeholder="เช่น นักวิชาการตรวจเงินแผ่นดิน">
+
+          <label for="reqEmail">อีเมลราชการ</label>
+          <input type="email" id="reqEmail" required placeholder="เช่น somchai@oag.go.th">
+
+          <label for="reqReason">เหตุผลที่ขอเป็นผู้ดูแลระบบ</label>
+          <input type="text" id="reqReason" required placeholder="กรุณาอธิบายสั้น ๆ">
+
+          <label for="reqPassword">รหัสผ่านที่ต้องการใช้ (อย่างน้อย 8 ตัวอักษร)</label>
+          <input type="password" id="reqPassword" required placeholder="ตั้งรหัสผ่านของคุณเอง">
+
+          <label for="reqPasswordConfirm">ยืนยันรหัสผ่าน</label>
+          <input type="password" id="reqPasswordConfirm" required placeholder="พิมพ์รหัสผ่านซ้ำอีกครั้ง">
+
+          <!-- ระบบตรวจสอบว่าเป็นมนุษย์ -->
+          <label for="reqHumanCheck">ยืนยันว่าคุณเป็นมนุษย์</label>
+          <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+            <span id="captchaQuestion" style="font-size:14px; font-weight:600;"></span>
+            <input type="number" id="reqHumanCheck" required style="width:120px;" placeholder="คำตอบ">
+          </div>
+
+          <div style="margin-top:12px;">
+            <button type="submit">ส่งคำขอเป็น Admin</button>
+          </div>
+        </form>
+
+        <p id="adminRequestMsg" class="muted" style="margin-top:6px;"></p>
+      </div>
+
+      <!-- ฟอร์มลืมรหัสผ่าน -->
+      <div class="card" style="margin-top:16px;">
+        <h2>ลืมรหัสผ่าน (ขอรีเซ็ตรหัสผ่าน)</h2>
+        <p class="muted">
+          ถ้าคุณเป็นแอดมินเดิมแต่ลืมรหัสผ่าน
+          สามารถส่งคำขอรีเซ็ตรหัสผ่านได้ที่นี่
+          คำขอจะถูกส่งให้ SUPER_ADMIN พิจารณาอนุมัติ
+        </p>
+
+        <form id="resetRequestForm" style="margin-top:8px;">
+          <label for="resetFirstName">ชื่อ</label>
+          <input type="text" id="resetFirstName" required placeholder="เช่น สมชาย">
+
+          <label for="resetLastName">นามสกุล</label>
+          <input type="text" id="resetLastName" required placeholder="เช่น ใจดี">
+
+          <label for="resetCitizenId">เลขบัตรประชาชน 13 หลัก</label>
+          <input type="text" id="resetCitizenId" required maxlength="13" placeholder="เช่น 1234567890123">
+
+          <label for="resetGovId">รหัสข้าราชการ / รหัสพนักงานราชการ</label>
+          <input type="text" id="resetGovId" required placeholder="เช่น 987654">
+
+          <label for="resetPosition">ตำแหน่ง</label>
+          <input type="text" id="resetPosition" required placeholder="เช่น นักวิชาการตรวจเงินแผ่นดิน">
+
+          <label for="resetEmail">อีเมลที่ใช้เป็นแอดมิน</label>
+          <input type="email" id="resetEmail" required placeholder="เช่น somchai@oag.go.th">
+
+          <label for="resetNewPassword">รหัสผ่านใหม่ที่ต้องการใช้ (อย่างน้อย 8 ตัวอักษร)</label>
+          <input type="password" id="resetNewPassword" required placeholder="ตั้งรหัสผ่านใหม่">
+
+          <label for="resetNewPasswordConfirm">ยืนยันรหัสผ่านใหม่</label>
+          <input type="password" id="resetNewPasswordConfirm" required placeholder="พิมพ์รหัสผ่านใหม่ซ้ำอีกครั้ง">
+
+          <label for="resetHumanCheck">ยืนยันว่าคุณเป็นมนุษย์ (ตอบโจทย์เดียวกับด้านบน)</label>
+          <input type="number" id="resetHumanCheck" required style="width:120px;" placeholder="คำตอบ">
+
+          <div style="margin-top:12px;">
+            <button type="submit">ส่งคำขอรีเซ็ตรหัสผ่าน</button>
+          </div>
+        </form>
+
+        <p id="resetRequestMsg" class="muted" style="margin-top:6px;"></p>
       </div>
     </section>
 
@@ -319,6 +417,7 @@
       <!-- Tabs -->
       <div class="pill-tabs">
         <div class="pill-tab active" data-tab="adminsTab">บัญชีแอดมิน</div>
+        <div class="pill-tab" data-tab="requestsTab">คำขอเป็น Admin / รีเซ็ตรหัสผ่าน</div>
         <div class="pill-tab" data-tab="futureTab">Audit Log (รอเชื่อมภายหลัง)</div>
       </div>
 
@@ -348,6 +447,7 @@
               <label for="newRole">บทบาท (Role)</label>
               <select id="newRole">
                 <option value="ADMIN">ADMIN – จัดการข้อมูลทั่วไป</option>
+                <option value="ADMIN1">ADMIN 1 – อนุมัติผู้ใช้ระบบ</option>
                 <option value="VIEWER">VIEWER – อ่านอย่างเดียว</option>
                 <option value="SUPER_ADMIN">SUPER_ADMIN – สิทธิ์สูงสุด</option>
               </select>
@@ -381,6 +481,36 @@
                 <tbody id="adminsTable"></tbody>
               </table>
             </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab: Admin requests -->
+      <div id="requestsTab" class="tab-panel" style="display:none;">
+        <div class="card">
+          <h2>คำขอเป็นผู้ดูแลระบบ / รีเซ็ตรหัสผ่าน</h2>
+          <p class="muted">
+            แสดงคำขอที่ผู้ใช้ส่งจากหน้าแบบฟอร์มด้านบน
+            - NEW_ADMIN: ขอสิทธิ์เป็นแอดมินใหม่<br>
+            - RESET_PASSWORD: ขอรีเซ็ตรหัสผ่าน (เฉพาะ SUPER_ADMIN ที่อนุมัติได้)
+          </p>
+          <div style="max-height:360px; overflow:auto; margin-top:6px;">
+            <table>
+              <thead>
+                <tr>
+                  <th>ประเภทคำขอ</th>
+                  <th>ชื่อ–นามสกุล</th>
+                  <th>เลขบัตรประชาชน</th>
+                  <th>รหัสข้าราชการ</th>
+                  <th>ตำแหน่ง</th>
+                  <th>อีเมล</th>
+                  <th>เหตุผล</th>
+                  <th>วันที่ขอ</th>
+                  <th>จัดการ</th>
+                </tr>
+              </thead>
+              <tbody id="adminRequestsTable"></tbody>
+            </table>
           </div>
         </div>
       </div>
@@ -426,10 +556,29 @@
           role: "ADMIN",
           status: "ACTIVE",
           lastLoginAt: null
+        },
+        {
+          id: 3,
+          fullName: "apipoooo",
+          email: "apipoooo@gmail.com",
+          username: "apipoooo",
+          password: "Apiphu17122558", // SUPER_ADMIN ตามที่ระบุ
+          role: "SUPER_ADMIN",
+          status: "ACTIVE",
+          lastLoginAt: null
         }
       ],
-      currentAdmin: null
+      currentAdmin: null,
+      adminRequests: JSON.parse(localStorage.getItem("fas-admin-requests") || "[]")
     };
+
+    function saveAdminRequests(){
+      try{
+        localStorage.setItem("fas-admin-requests", JSON.stringify(adminStore.adminRequests));
+      }catch(e){
+        console.warn("บันทึก fas-admin-requests ไม่สำเร็จ", e);
+      }
+    }
 
     const loginSection   = document.getElementById("loginSection");
     const consoleSection = document.getElementById("consoleSection");
@@ -438,6 +587,38 @@
     const adminSummaryEl = document.getElementById("adminSummary");
     const adminsTableEl  = document.getElementById("adminsTable");
     const createAdminMsg = document.getElementById("createAdminMsg");
+    const adminRequestsTableEl = document.getElementById("adminRequestsTable");
+    const adminRequestMsg = document.getElementById("adminRequestMsg");
+    const resetRequestMsg = document.getElementById("resetRequestMsg");
+
+    // ---------------------------
+    // CAPTCHA + Thai ID
+    // ---------------------------
+    let captchaA = 0;
+    let captchaB = 0;
+
+    function generateCaptcha(){
+      captchaA = Math.floor(Math.random() * 9) + 1;  // 1–9
+      captchaB = Math.floor(Math.random() * 9) + 1;
+      const el = document.getElementById("captchaQuestion");
+      if(el){
+        el.textContent = `กรุณาคำนวณ: ${captchaA} + ${captchaB} = ?`;
+      }
+    }
+
+    function isValidThaiID(id){
+      if(!/^[0-9]{13}$/.test(id)) return false;
+      let sum = 0;
+      for(let i=0; i<12; i++){
+        sum += Number(id.charAt(i)) * (13 - i);
+      }
+      let checkDigit = (11 - (sum % 11)) % 10;
+      return checkDigit === Number(id.charAt(12));
+    }
+
+    function isCurrentSuperAdmin(){
+      return adminStore.currentAdmin && adminStore.currentAdmin.role === "SUPER_ADMIN";
+    }
 
     function showConsole(){
       loginSection.style.display = "none";
@@ -480,6 +661,7 @@
         <div style="margin-top:4px;">
           <span class="badge-small">SUPER_ADMIN: ${adminStore.admins.filter(a => a.role === "SUPER_ADMIN").length}</span>
           <span class="badge-small">ADMIN: ${adminStore.admins.filter(a => a.role === "ADMIN").length}</span>
+          <span class="badge-small">ADMIN1: ${adminStore.admins.filter(a => a.role === "ADMIN1").length}</span>
           <span class="badge-small">VIEWER: ${adminStore.admins.filter(a => a.role === "VIEWER").length}</span>
         </div>
       `;
@@ -499,6 +681,7 @@
             <select data-admin-id="${a.id}" class="role-select">
               <option value="SUPER_ADMIN" ${a.role==="SUPER_ADMIN"?"selected":""}>SUPER_ADMIN</option>
               <option value="ADMIN" ${a.role==="ADMIN"?"selected":""}>ADMIN</option>
+              <option value="ADMIN1" ${a.role==="ADMIN1"?"selected":""}>ADMIN 1 (อนุมัติผู้ใช้ระบบ)</option>
               <option value="VIEWER" ${a.role==="VIEWER"?"selected":""}>VIEWER</option>
             </select>
           </td>
@@ -507,14 +690,13 @@
             <button class="btn-secondary" data-action="toggleStatus" data-id="${a.id}">
               ${a.status === "ACTIVE" ? "ระงับ" : "ปลดระงับ"}
             </button>
-            <button class="btn-secondary" data-action="resetPwd" data-id="${a.id}">รีเซ็ตรหัสผ่าน</button>
+            <button class="btn-secondary" data-action="resetPwd" data-id="${a.id}">รีเซ็ตรหัสผ่าน (DEMO)</button>
             <button class="btn-danger" data-action="deleteAdmin" data-id="${a.id}">ลบ</button>
           </td>
         `;
         adminsTableEl.appendChild(tr);
       });
 
-      // handle change role
       document.querySelectorAll(".role-select").forEach(sel=>{
         sel.addEventListener("change", e=>{
           const id = Number(e.target.getAttribute("data-admin-id"));
@@ -526,8 +708,53 @@
           if(adminStore.currentAdmin && adminStore.currentAdmin.id === id){
             renderCurrentAdminInfo();
           }
-          // *** จุดสำหรับเชื่อม API จริงในอนาคต ***
         });
+      });
+    }
+
+    function renderAdminRequestsTable(){
+      adminRequestsTableEl.innerHTML = "";
+      if(adminStore.adminRequests.length === 0){
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td colspan="9" class="muted">ยังไม่มีคำขอเป็นผู้ดูแลระบบหรือรีเซ็ตรหัสผ่าน</td>`;
+        adminRequestsTableEl.appendChild(tr);
+        return;
+      }
+
+      adminStore.adminRequests.forEach(req => {
+        const type = req.requestType || "NEW_ADMIN";
+        const typeLabel = type === "RESET_PASSWORD" ? "รีเซ็ตรหัสผ่าน" : "ขอเป็น Admin";
+        const dateStr = req.createdAt ? new Date(req.createdAt).toLocaleString() : "-";
+
+        let actionButtons = "";
+        if(type === "NEW_ADMIN"){
+          actionButtons = `
+            <button class="btn-secondary" data-req-action="approveAdminFull" data-id="${req.id}">ADMIN</button>
+            <button class="btn-secondary" data-req-action="approveAdmin1" data-id="${req.id}">ADMIN 1</button>
+            <button class="btn-danger" data-req-action="reject" data-id="${req.id}">ปฏิเสธ</button>
+          `;
+        }else if(type === "RESET_PASSWORD"){
+          actionButtons = `
+            <button class="btn-secondary" data-req-action="approveReset" data-id="${req.id}">อนุมัติรีเซ็ตรหัสผ่าน</button>
+            <button class="btn-danger" data-req-action="reject" data-id="${req.id}">ปฏิเสธ</button>
+          `;
+        }
+
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${typeLabel}</td>
+          <td>${req.fullName || ""}</td>
+          <td>${req.citizenId || ""}</td>
+          <td>${req.govId || ""}</td>
+          <td>${req.position || ""}</td>
+          <td>${req.email || ""}</td>
+          <td class="muted">${req.reason || ""}</td>
+          <td class="muted">${dateStr}</td>
+          <td class="actions">
+            ${actionButtons}
+          </td>
+        `;
+        adminRequestsTableEl.appendChild(tr);
       });
     }
 
@@ -568,6 +795,7 @@
       renderCurrentAdminInfo();
       renderAdminSummary();
       renderAdminsTable();
+      renderAdminRequestsTable();
     });
 
     // Logout
@@ -614,7 +842,250 @@
     });
 
     // ---------------------------
-    // Table actions
+    // Admin Request FORM (ขอเป็น Admin)
+    // ---------------------------
+    document.getElementById("adminRequestForm").addEventListener("submit", function(e){
+      e.preventDefault();
+
+      const firstName  = document.getElementById("reqFirstName").value.trim();
+      const lastName   = document.getElementById("reqLastName").value.trim();
+      const citizenId  = document.getElementById("reqCitizenId").value.trim();
+      const govId      = document.getElementById("reqGovId").value.trim();
+      const position   = document.getElementById("reqPosition").value.trim();
+      const email      = document.getElementById("reqEmail").value.trim();
+      const reason     = document.getElementById("reqReason").value.trim();
+      const pwd        = document.getElementById("reqPassword").value;
+      const pwd2       = document.getElementById("reqPasswordConfirm").value;
+      const humanAns   = Number(document.getElementById("reqHumanCheck").value.trim());
+      adminRequestMsg.textContent = "";
+
+      if(!firstName || !lastName || !citizenId || !govId || !position || !email || !reason || !pwd || !pwd2){
+        adminRequestMsg.textContent = "❌ กรุณากรอกข้อมูลให้ครบถ้วน";
+        return;
+      }
+
+      if(!isValidThaiID(citizenId)){
+        adminRequestMsg.textContent = "❌ เลขบัตรประชาชนไม่ถูกต้อง";
+        return;
+      }
+
+      if(pwd.length < 8){
+        adminRequestMsg.textContent = "❌ รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร";
+        return;
+      }
+
+      if(pwd !== pwd2){
+        adminRequestMsg.textContent = "❌ รหัสผ่านและการยืนยันรหัสผ่านไม่ตรงกัน";
+        return;
+      }
+
+      if(humanAns !== (captchaA + captchaB)){
+        adminRequestMsg.textContent = "❌ คำตอบ CAPTCHA ไม่ถูกต้อง กรุณาลองใหม่";
+        generateCaptcha();
+        return;
+      }
+
+      if(adminStore.adminRequests.some(r => r.email === email && (r.requestType === "NEW_ADMIN" || !r.requestType))){
+        adminRequestMsg.textContent = "⚠️ คุณได้ส่งคำขอเป็น Admin ไปแล้ว กรุณารอผู้ดูแลพิจารณา";
+        return;
+      }
+
+      const newReq = {
+        id: adminStore.adminRequests.length ? Math.max(...adminStore.adminRequests.map(r=>r.id))+1 : 1,
+        requestType: "NEW_ADMIN",
+        fullName: `${firstName} ${lastName}`,
+        firstName,
+        lastName,
+        citizenId,
+        govId,
+        position,
+        email,
+        reason,
+        desiredPassword: pwd,
+        createdAt: new Date().toISOString()
+      };
+
+      adminStore.adminRequests.push(newReq);
+      saveAdminRequests();
+
+      adminRequestMsg.textContent = "✅ ส่งคำขอเป็น Admin สำเร็จ โปรดรอการอนุมัติจากผู้ดูแลระบบ";
+      e.target.reset();
+      generateCaptcha();
+      renderAdminRequestsTable();
+    });
+
+    // ---------------------------
+    // Reset Password Request FORM
+    // ---------------------------
+    document.getElementById("resetRequestForm").addEventListener("submit", function(e){
+      e.preventDefault();
+
+      const firstName  = document.getElementById("resetFirstName").value.trim();
+      const lastName   = document.getElementById("resetLastName").value.trim();
+      const citizenId  = document.getElementById("resetCitizenId").value.trim();
+      const govId      = document.getElementById("resetGovId").value.trim();
+      const position   = document.getElementById("resetPosition").value.trim();
+      const email      = document.getElementById("resetEmail").value.trim();
+      const newPwd     = document.getElementById("resetNewPassword").value;
+      const newPwd2    = document.getElementById("resetNewPasswordConfirm").value;
+      const humanAns   = Number(document.getElementById("resetHumanCheck").value.trim());
+      resetRequestMsg.textContent = "";
+
+      if(!firstName || !lastName || !citizenId || !govId || !position || !email || !newPwd || !newPwd2){
+        resetRequestMsg.textContent = "❌ กรุณากรอกข้อมูลให้ครบถ้วน";
+        return;
+      }
+
+      if(!isValidThaiID(citizenId)){
+        resetRequestMsg.textContent = "❌ เลขบัตรประชาชนไม่ถูกต้อง";
+        return;
+      }
+
+      if(newPwd.length < 8){
+        resetRequestMsg.textContent = "❌ รหัสผ่านใหม่ต้องมีอย่างน้อย 8 ตัวอักษร";
+        return;
+      }
+
+      if(newPwd !== newPwd2){
+        resetRequestMsg.textContent = "❌ รหัสผ่านใหม่และการยืนยันไม่ตรงกัน";
+        return;
+      }
+
+      if(humanAns !== (captchaA + captchaB)){
+        resetRequestMsg.textContent = "❌ คำตอบ CAPTCHA ไม่ถูกต้อง กรุณาลองใหม่";
+        generateCaptcha();
+        return;
+      }
+
+      const targetAdmin = adminStore.admins.find(a => a.email === email);
+      if(!targetAdmin){
+        resetRequestMsg.textContent = "❌ ไม่พบบัญชีแอดมินที่ใช้อีเมลนี้ในระบบ";
+        return;
+      }
+
+      if(adminStore.adminRequests.some(r => r.email === email && r.requestType === "RESET_PASSWORD")){
+        resetRequestMsg.textContent = "⚠️ คุณได้ส่งคำขอรีเซ็ตรหัสผ่านไปแล้ว กรุณารอผู้ดูแลพิจารณา";
+        return;
+      }
+
+      const newReq = {
+        id: adminStore.adminRequests.length ? Math.max(...adminStore.adminRequests.map(r=>r.id))+1 : 1,
+        requestType: "RESET_PASSWORD",
+        fullName: `${firstName} ${lastName}`,
+        firstName,
+        lastName,
+        citizenId,
+        govId,
+        position,
+        email,
+        reason: "ขอรีเซ็ตรหัสผ่านผู้ดูแลระบบ",
+        desiredPassword: newPwd,
+        createdAt: new Date().toISOString()
+      };
+
+      adminStore.adminRequests.push(newReq);
+      saveAdminRequests();
+
+      resetRequestMsg.textContent = "✅ ส่งคำขอรีเซ็ตรหัสผ่านสำเร็จ โปรดรอ SUPER_ADMIN พิจารณา";
+      e.target.reset();
+      generateCaptcha();
+      renderAdminRequestsTable();
+    });
+
+    // ---------------------------
+    // จัดการคำขอเป็น Admin / Reset Password (Approve / Reject)
+    // ---------------------------
+    adminRequestsTableEl.addEventListener("click", function(e){
+      const btn = e.target.closest("button");
+      if(!btn) return;
+      const action = btn.getAttribute("data-req-action");
+      const id = Number(btn.getAttribute("data-id"));
+      const req = adminStore.adminRequests.find(r => r.id === id);
+      if(!req) return;
+
+      const type = req.requestType || "NEW_ADMIN";
+
+      // ปฏิเสธ
+      if(action === "reject"){
+        if(!confirm("ยืนยันการปฏิเสธคำขอนี้หรือไม่?")) return;
+        adminStore.adminRequests = adminStore.adminRequests.filter(r => r.id !== id);
+        saveAdminRequests();
+        renderAdminRequestsTable();
+        return;
+      }
+
+      // อนุมัติรีเซ็ตรหัสผ่าน
+      if(action === "approveReset" && type === "RESET_PASSWORD"){
+        if(!isCurrentSuperAdmin()){
+          alert("⛔ เฉพาะ SUPER_ADMIN เท่านั้นที่สามารถอนุมัติการรีเซ็ตรหัสผ่านได้");
+          return;
+        }
+        const admin = adminStore.admins.find(a => a.email === req.email);
+        if(!admin){
+          alert("❌ ไม่พบบัญชีแอดมินสำหรับรีเซ็ตรหัสผ่าน");
+          return;
+        }
+        admin.password = req.desiredPassword || admin.password;
+        admin.status = "ACTIVE";
+        alert(`✅ รีเซ็ตรหัสผ่านให้ ${admin.fullName} เรียบร้อยแล้ว`);
+        adminStore.adminRequests = adminStore.adminRequests.filter(r => r.id !== id);
+        saveAdminRequests();
+        renderAdminsTable();
+        renderAdminSummary();
+        renderAdminRequestsTable();
+        return;
+      }
+
+      // อนุมัติเป็น ADMIN / ADMIN1 (NEW_ADMIN เท่านั้น)
+      if(type !== "NEW_ADMIN") return;
+
+      let roleToAssign;
+      if(action === "approveAdminFull"){
+        roleToAssign = "ADMIN";
+      }else if(action === "approveAdmin1"){
+        roleToAssign = "ADMIN1";
+      }else{
+        return;
+      }
+
+      let admin = adminStore.admins.find(a => a.email === req.email);
+      if(admin){
+        admin.role = roleToAssign;
+        admin.status = "ACTIVE";
+        if(req.desiredPassword){
+          admin.password = req.desiredPassword;
+        }
+      }else{
+        const usernameFromEmail = req.email.split("@")[0] || ("admin" + id);
+        const desiredPassword = req.desiredPassword || ("ChangeMe" + id + "!");
+        admin = {
+          id: adminStore.admins.length ? Math.max(...adminStore.admins.map(a=>a.id))+1 : 1,
+          fullName: req.fullName,
+          email: req.email,
+          username: usernameFromEmail,
+          password: desiredPassword,
+          role: roleToAssign,
+          status: "ACTIVE",
+          lastLoginAt: null
+        };
+        alert(
+          `✅ อนุมัติคำขอแล้ว\n` +
+          `Role: ${roleToAssign}\n` +
+          `Username: ${admin.username}\n` +
+          `Password: ${desiredPassword}`
+        );
+        adminStore.admins.push(admin);
+      }
+
+      adminStore.adminRequests = adminStore.adminRequests.filter(r => r.id !== id);
+      saveAdminRequests();
+      renderAdminSummary();
+      renderAdminsTable();
+      renderAdminRequestsTable();
+    });
+
+    // ---------------------------
+    // Table actions (แอดมิน)
     // ---------------------------
     adminsTableEl.addEventListener("click", function(e){
       const btn = e.target.closest("button");
@@ -637,7 +1108,7 @@
         const newPwd = prompt("กำหนดรหัสผ่านใหม่ (DEMO):", "");
         if(!newPwd) return;
         admin.password = newPwd;
-        alert("✅ รีเซ็ตรหัสผ่านเรียบร้อย (DEMO – ของจริงควรส่งลิงก์ reset ทางอีเมล)");
+        alert("✅ รีเซ็ตรหัสผ่านเรียบร้อย (DEMO – ของจริงควรใช้ workflow ขอรีเซ็ต)");
       }
 
       if(action === "deleteAdmin"){
@@ -668,6 +1139,8 @@
 
     // Init
     showLogin();
+    generateCaptcha();
+    renderAdminRequestsTable();
   </script>
 </body>
 </html>
