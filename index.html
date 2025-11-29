@@ -35,6 +35,7 @@
         radial-gradient(circle at 0% 100%, rgba(244,143,177,0.25) 0, transparent 55%),
         var(--bg);
       color:var(--text);
+      transition:background .25s ease,color .25s ease;
     }
     a{color:var(--pink); text-decoration:none}
     a:hover{text-decoration:underline}
@@ -89,6 +90,33 @@
     nav a:hover{
       background:rgba(255,255,255,0.18);
       box-shadow:0 0 12px rgba(255,255,255,0.35);
+    }
+
+    .header-right{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .theme-toggle{
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.4);
+      background:rgba(0,0,0,0.15);
+      color:#fff;
+      padding:6px 10px;
+      font-size:11px;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      cursor:pointer;
+      backdrop-filter:blur(12px);
+    }
+    .theme-toggle span.icon{
+      font-size:14px;
+    }
+    .theme-toggle:hover{
+      background:rgba(0,0,0,0.3);
     }
 
     /* HERO */
@@ -309,15 +337,55 @@
       background:rgba(11,16,40,0.9);
     }
 
+    /* Sparkline */
+    .sparkline{
+      width:100%;
+      height:160px;
+      border-radius:10px;
+      background:radial-gradient(circle at 0 0, rgba(244,143,177,0.18) 0, transparent 60%),
+                 radial-gradient(circle at 100% 100%, rgba(66,165,245,0.18) 0, transparent 60%),
+                 rgba(5,8,26,0.85);
+    }
+
+    /* LIGHT THEME OVERRIDE */
+    body[data-theme="light"]{
+      --text:#11152b;
+      --muted:#5c647a;
+      background:#f4f5fb;
+    }
+    body[data-theme="light"] header{
+      background:linear-gradient(120deg,#f48fb1,#42a5f5,#ffffff);
+      box-shadow:0 8px 18px rgba(0,0,0,0.18);
+    }
+    body[data-theme="light"] .card{
+      background:#ffffff;
+      color:#11152b;
+      border:1px solid #e2e5f2;
+      box-shadow:0 8px 22px rgba(15,23,42,0.1);
+    }
+    body[data-theme="light"] .card::before{display:none;}
+    body[data-theme="light"] .muted{color:#6b7280;}
+    body[data-theme="light"] footer{
+      background:#0f172a;
+      color:#9ca3af;
+    }
+    body[data-theme="light"] th{
+      background:linear-gradient(90deg,#0d47a1,#7b1e3c);
+    }
+    body[data-theme="light"] .sparkline{
+      background:linear-gradient(180deg,#ffffff,#e5edff);
+    }
+
     /* RESPONSIVE */
     @media (max-width:980px){
       .hero-inner{grid-template-columns:1fr}
       .grid-2,.grid-3{grid-template-columns:1fr}
       nav ul{justify-content:flex-start}
+      .header-inner{flex-wrap:wrap;}
     }
     @media (max-width:640px){
-      .header-inner{flex-direction:column; align-items:flex-start;}
       .hero h1{font-size:24px;}
+      .header-inner{align-items:flex-start;}
     }
   </style>
 </head>
@@ -332,22 +400,28 @@
           <span class="small">Digital • AI • Compliance by OAG</span>
         </div>
       </div>
-      <nav>
-        <ul>
-          <li><a href="#home">หน้าแรก</a></li>
-          <li><a href="#login">Login</a></li>
-          <li><a href="#register">ลงทะเบียน</a></li>
-          <li><a href="#guidelines">แนวทางตรวจสอบ</a></li>
-          <li><a href="#tips">ข้อแนะนำ</a></li>
-          <li><a href="#fa-system">ระบบตรวจสอบการเงิน</a></li>
-          <li><a href="#financial-exam">ระบบการสอบ</a></li>
-          <li><a href="#tracking">ติดตามงบการเงิน</a></li>
-          <li><a href="#dashboard">Cash board</a></li>
-          <li><a href="#database">ฐานข้อมูล</a></li>
-          <li><a href="#chatbot">Chatbot</a></li>
-          <li><a href="#contact">ติดต่อ</a></li>
-        </ul>
-      </nav>
+      <div class="header-right">
+        <button class="theme-toggle" id="themeToggle">
+          <span class="icon">🌙</span>
+          <span>Dark</span>
+        </button>
+        <nav>
+          <ul>
+            <li><a href="#home">🏠 หน้าแรก</a></li>
+            <li><a href="#login">🔐 Login</a></li>
+            <li><a href="#register">📝 ลงทะเบียน</a></li>
+            <li><a href="#guidelines">📑 แนวทาง</a></li>
+            <li><a href="#tips">💡 ข้อแนะนำ</a></li>
+            <li><a href="#fa-system">📊 ตรวจสอบการเงิน</a></li>
+            <li><a href="#financial-exam">🧮 การสอบ</a></li>
+            <li><a href="#tracking">📌 ติดตามงบ</a></li>
+            <li><a href="#dashboard">📈 Cash board</a></li>
+            <li><a href="#database">🗄 ฐานข้อมูล</a></li>
+            <li><a href="#chatbot">🤖 Chatbot</a></li>
+            <li><a href="#contact">📬 ติดต่อ</a></li>
+          </ul>
+        </nav>
+      </div>
     </div>
   </header>
 
@@ -372,7 +446,7 @@
         <div class="hero-kpi-row">
           <div class="kpi-pill"><strong>Realtime</strong> • สถานะผู้ใช้ &amp; งานตรวจ</div>
           <div class="kpi-pill"><strong>Digital Trail</strong> • Audit Log พร้อมสอบย้อนกลับ</div>
-          <div class="kpi-pill"><strong>AI Ready</strong> • สามารถต่อยอดเชื่อม API / AI Engine ได้</div>
+          <div class="kpi-pill"><strong>AI Ready</strong> • พร้อมต่อยอดเชื่อม API / AI Engine</div>
         </div>
       </div>
 
@@ -397,7 +471,7 @@
       <div class="container">
         <div class="section-header">
           <div>
-            <h2>ระบบ Login</h2>
+            <h2>🔐 ระบบ Login</h2>
             <div class="section-tagline">เข้าใช้งานด้วยบัญชีที่ผ่านการอนุมัติจาก Admin แล้วเท่านั้น</div>
           </div>
         </div>
@@ -410,12 +484,12 @@
               <input type="password" id="loginPassword" required>
               <div style="margin-top:12px;">
                 <button type="submit">เข้าสู่ระบบ</button>
-              </div>
+            </div>
             </form>
             <p id="loginMsg" class="muted"></p>
           </div>
           <div class="card">
-            <h3 style="margin-top:0;">นโยบายความปลอดภัย</h3>
+            <h3 style="margin-top:0;">🛡 นโยบายความปลอดภัย</h3>
             <ul class="muted">
               <li>บัญชีต้องผ่านการอนุมัติจาก Admin ก่อนเข้าใช้งาน</li>
               <li>รหัสผ่านควรถูกเก็บแบบเข้ารหัส (ระบบนี้เป็นเดโมฝั่งหน้าเว็บ)</li>
@@ -432,7 +506,7 @@
       <div class="container">
         <div class="section-header">
           <div>
-            <h2>ระบบลงทะเบียน</h2>
+            <h2>📝 ระบบลงทะเบียน</h2>
             <div class="section-tagline">เก็บข้อมูลพื้นฐานผู้ใช้ และส่งคำขอให้ Admin ตรวจสอบ</div>
           </div>
         </div>
@@ -455,7 +529,7 @@
             </div>
           </div>
           <div class="card">
-            <h3 style="margin-top:0;">ขั้นตอนอนุมัติ</h3>
+            <h3 style="margin-top:0;">📌 ขั้นตอนอนุมัติ</h3>
             <ol class="muted">
               <li>ผู้ใช้กรอกข้อมูลและส่งคำขอลงทะเบียน</li>
               <li>Admin ตรวจสอบตัวตน / สิทธิ์ / หน่วยรับตรวจ</li>
@@ -471,7 +545,7 @@
     <section id="guidelines">
       <div class="container">
         <div class="card">
-          <h2>แนวทางการตรวจสอบการเงิน</h2>
+          <h2>📑 แนวทางการตรวจสอบการเงิน</h2>
           <p class="muted">
             เอกสารแนวทางการปฏิบัติงานตรวจสอบรายงานการเงิน พ.ศ. 2567 (ไฟล์ PDF)
             ใช้เป็นมาตรฐานกลางสำหรับการปฏิบัติงานตรวจสอบ
@@ -492,7 +566,7 @@
       <div class="container">
         <div class="section-header">
           <div>
-            <h2>ข้อแนะนำการใช้โปรแกรม</h2>
+            <h2>💡 ข้อแนะนำการใช้โปรแกรม</h2>
             <div class="section-tagline">แนวทางใช้งานให้รองรับ Audit Trail และลดความเสี่ยงผิดพลาด</div>
           </div>
         </div>
@@ -530,7 +604,7 @@
       <div class="container">
         <div class="section-header">
           <div>
-            <h2>ระบบการตรวจสอบการเงิน</h2>
+            <h2>📊 ระบบการตรวจสอบการเงิน</h2>
             <div class="section-tagline">ออกแบบให้ครอบคลุมวงจรการตรวจสอบรายงานการเงินครบชุด</div>
           </div>
         </div>
@@ -567,7 +641,7 @@
       <div class="container">
         <div class="section-header">
           <div>
-            <h2>ระบบการสอบทางการเงิน</h2>
+            <h2>🧮 ระบบการสอบทางการเงิน</h2>
             <div class="section-tagline">รองรับแบบสอบถามและ Test of Detail/Test of Control</div>
           </div>
         </div>
@@ -603,7 +677,7 @@
       <div class="container">
         <div class="section-header">
           <div>
-            <h2>ระบบการติดตามงบการเงิน</h2>
+            <h2>📌 ระบบการติดตามงบการเงิน</h2>
             <div class="section-tagline">โฟกัสการปิดประเด็นและติดตามข้อเสนอแนะอย่างเป็นระบบ</div>
           </div>
         </div>
@@ -649,7 +723,7 @@
     <section id="admin" style="display:none;">
       <div class="container">
         <div class="card">
-          <h2>ระบบ Admin</h2>
+          <h2>🧑‍💼 ระบบ Admin</h2>
           <p class="muted">
             ผู้ดูแลสามารถอนุมัติ/ปฏิเสธผู้สมัคร และจัดการสถานะผู้ใช้
             (ตัวอย่างนี้เป็นการจำลองฝั่งหน้าเว็บ)
@@ -676,7 +750,7 @@
       <div class="container">
         <div class="section-header">
           <div>
-            <h2>ระบบตอบถามอัตโนมัติ</h2>
+            <h2>🤖 ระบบตอบถามอัตโนมัติ</h2>
             <div class="section-tagline">ใช้ถามแนวทางการตรวจสอบและการใช้งานหน้าเว็บนี้แบบรวดเร็ว</div>
           </div>
         </div>
@@ -711,12 +785,13 @@
       <div class="container">
         <div class="section-header">
           <div>
-            <h2>Cash board</h2>
+            <h2>📈 Cash board</h2>
             <div class="section-tagline">สรุปภาพรวมสถานะผู้ใช้และงานตรวจสอบในมุมมอง Dashboard</div>
           </div>
         </div>
         <div class="grid-3">
           <div class="card">
+            <h3 style="margin-top:0;">ภาพรวมการตรวจสอบ</h3>
             <p class="muted">
               แดชบอร์ดภาพรวมสถานะงานตรวจสอบและติดตามข้อเสนอแนะ
               สามารถต่อยอดเชื่อม BI/Power BI/Excel Dashboard ได้
@@ -734,11 +809,8 @@
             </div>
           </div>
           <div class="card">
-            <h3 style="margin-top:0;">กราฟสถานะ (Placeholder)</h3>
-            <div style="height:160px; border:1px dashed rgba(255,255,255,0.18); border-radius:10px;
-                        display:flex; align-items:center; justify-content:center; color:var(--muted); font-size:12px;">
-              พื้นที่แสดงกราฟ (เชื่อม BI/Chart ภายหลัง)
-            </div>
+            <h3 style="margin-top:0;">กราฟสถานะ (Sparkline)</h3>
+            <svg id="statusSparkline" viewBox="0 0 100 40" class="sparkline"></svg>
           </div>
         </div>
       </div>
@@ -749,7 +821,7 @@
       <div class="container">
         <div class="section-header">
           <div>
-            <h2>ระบบฐานข้อมูล</h2>
+            <h2>🗄 ระบบฐานข้อมูล</h2>
             <div class="section-tagline">ตัวอย่างการจัดเก็บข้อมูลผู้ใช้งานในรูปแบบตาราง</div>
           </div>
         </div>
@@ -794,7 +866,7 @@
       <div class="container">
         <div class="section-header">
           <div>
-            <h2>ติดต่อผู้สร้าง</h2>
+            <h2>📬 ติดต่อผู้สร้าง</h2>
             <div class="section-tagline">สำหรับต่อยอดเชื่อม API/ฐานข้อมูลจริง และระบบ AI Audit เพิ่มเติม</div>
           </div>
         </div>
@@ -847,11 +919,37 @@
       chatHistory: []
     };
 
+    // THEME TOGGLE
+    const themeToggleBtn = document.getElementById("themeToggle");
+    function applyTheme(theme){
+      document.body.dataset.theme = theme;
+      if(themeToggleBtn){
+        const icon = themeToggleBtn.querySelector(".icon");
+        const text = themeToggleBtn.querySelector("span:nth-child(2)");
+        if(theme === "light"){
+          icon.textContent = "🌙";
+          text.textContent = "Dark";
+        }else{
+          icon.textContent = "☀️";
+          text.textContent = "Light";
+        }
+      }
+      localStorage.setItem("fas-theme", theme);
+    }
+    const savedTheme = localStorage.getItem("fas-theme") || "dark";
+    applyTheme(savedTheme);
+    if(themeToggleBtn){
+      themeToggleBtn.addEventListener("click", () => {
+        const current = document.body.dataset.theme || "dark";
+        applyTheme(current === "dark" ? "light" : "dark");
+      });
+    }
+
     // Admin visibility control
     function updateAdminVisibility(){
       const adminSection = document.getElementById("admin");
       const isAdmin = store.currentUser && store.currentUser.role === "admin";
-      adminSection.style.display = isAdmin ? "block" : "none";
+      if(adminSection) adminSection.style.display = isAdmin ? "block" : "none";
     }
 
     // Render Admin table
@@ -886,6 +984,7 @@
       renderAdminTable();
       updateUserSummary();
       renderDbTable();
+      renderSparkline();
     }
 
     function rejectUser(email){
@@ -896,6 +995,7 @@
       renderAdminTable();
       updateUserSummary();
       renderDbTable();
+      renderSparkline();
     }
 
     // Register
@@ -919,6 +1019,7 @@
       renderAdminTable();
       updateUserSummary();
       renderDbTable();
+      renderSparkline();
     });
 
     // Login
@@ -1034,7 +1135,67 @@
         renderAdminTable();
         renderDbTable();
         updateUserSummary();
+        renderSparkline();
       });
+    }
+
+    // Sparkline renderer (ใช้จำนวนผู้ใช้ approved/pending/rejected)
+    function renderSparkline(){
+      const svg = document.getElementById("statusSparkline");
+      if(!svg) return;
+      const approved = store.users.filter(u => u.status === "approved").length;
+      const pending = store.users.filter(u => u.status === "pending").length;
+      const rejected = store.users.filter(u => u.status === "rejected").length;
+      let points = [approved, pending, rejected];
+
+      if(points.every(v => v === 0)){
+        points = [1,1,1]; // กันกรณีไม่มีข้อมูล
+      }
+
+      const max = Math.max(...points) || 1;
+      const paddingX = 5;
+      const paddingY = 5;
+      const width = 100;
+      const height = 40;
+      const innerH = height - paddingY * 2;
+      const stepX = (width - paddingX * 2) / (points.length - 1 || 1);
+
+      let d = "";
+      points.forEach((v, i) => {
+        const x = paddingX + stepX * i;
+        const ratio = v / max;
+        const y = height - paddingY - ratio * innerH;
+        d += (i === 0 ? "M" : " L") + x + "," + y;
+      });
+
+      svg.innerHTML = `
+        <defs>
+          <linearGradient id="sparkLineGrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#f48fb1"/>
+            <stop offset="100%" stop-color="#42a5f5"/>
+          </linearGradient>
+          <linearGradient id="sparkFillGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="rgba(244,143,177,0.45)"/>
+            <stop offset="100%" stop-color="rgba(6,8,24,0.0)"/>
+          </linearGradient>
+        </defs>
+        <path d="${d}"
+              fill="none"
+              stroke="url(#sparkLineGrad)"
+              stroke-width="1.8"
+              stroke-linejoin="round"
+              stroke-linecap="round"/>
+        <path d="${d} L ${paddingX + stepX * (points.length - 1)},${height - paddingY}
+                 L ${paddingX},${height - paddingY} Z"
+              fill="url(#sparkFillGrad)"
+              opacity="0.45"/>
+        ${points.map((v,i)=>{
+          const x = paddingX + stepX * i;
+          const ratio = v / max;
+          const y = height - paddingY - ratio * innerH;
+          return `<circle cx="${x}" cy="${y}" r="1.6" fill="#ffffff"/>`;
+        }).join("")}
+      `;
     }
 
     // Init
@@ -1042,6 +1203,7 @@
     updateAdminVisibility();
     updateUserSummary();
     renderDbTable();
+    renderSparkline();
   </script>
 </body>
 </html>
