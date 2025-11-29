@@ -1,1194 +1,415 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8" />
-  <title>Financial Audit System</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8">
+  <title>Financial Audit System | Digital • AI • Compliance by OAG</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <style>
-    :root{
-      --primary:#0d47a1;
-      --primary-2:#42a5f5;
-      --accent:#ffd54f;
-      --bg:#060818;
-      --bg-soft:#0b1024;
-      --card:#11152b;
-      --card-soft:#171c33;
-      --text:#f5f7ff;
-      --muted:#a3acc7;
-      --green:#2e7d32;
-      --red:#c62828;
-      --border:#262b46;
-      --maroon:#7b1e3c;
-      --pink:#f48fb1;
-      --chip-bg:rgba(244,143,177,0.12);
-      --chip-border:rgba(244,143,177,0.5);
-      --glow:0 0 18px rgba(66,165,245,0.55);
+    :root {
+      --bg-main: #f4f6fb;
+      --bg-header: linear-gradient(120deg,#004b8d,#1967b3,#20a36b);
+      --bg-card: #ffffff;
+      --text-main: #111827;
+      --text-sub: #4b5563;
+      --accent: #2563eb;
+      --radius-lg: 18px;
+      --shadow-soft: 0 6px 18px rgba(15,23,42,0.18);
     }
 
-    *{box-sizing:border-box;}
+    * { box-sizing:border-box; }
 
-    body{
+    body {
       margin:0;
-      font-family:"Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      font-size:18px; /* ใหญ่ขึ้นจากเดิม ~80% */
-      background:
-        radial-gradient(circle at 10% 0%, rgba(123,30,60,0.36) 0, transparent 55%),
-        radial-gradient(circle at 90% 100%, rgba(66,165,245,0.32) 0, transparent 55%),
-        radial-gradient(circle at 0% 100%, rgba(244,143,177,0.25) 0, transparent 55%),
-        var(--bg);
-      color:var(--text);
-      transition:background .25s ease,color .25s ease;
+      padding:0;
+      font-family:"Sarabun","Segoe UI",system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
+      background:var(--bg-main);
+      color:var(--text-main);
+      font-size:20px; /* ขยายตัวหนังสือใหญ่ขึ้น ~80% จาก default 11–12px */
     }
-
-    a{color:var(--pink); text-decoration:none;}
-    a:hover{text-decoration:underline;}
 
     /* HEADER */
-    header{
-      position:sticky; top:0; z-index:50;
-      background:linear-gradient(120deg,var(--maroon),var(--primary),var(--pink));
-      box-shadow:0 10px 28px rgba(0,0,0,.55);
-      border-bottom:1px solid rgba(255,255,255,0.06);
-      backdrop-filter:blur(16px);
+    header {
+      background:var(--bg-header);
+      color:#fff;
+      padding:20px 16px 18px;
+      box-shadow:0 2px 10px rgba(15,23,42,0.35);
+      position:sticky;
+      top:0;
+      z-index:10;
     }
-    .container{max-width:1180px; margin:0 auto; padding:0 24px;}
-    .header-inner{
-      display:flex; align-items:center; justify-content:space-between;
-      padding:12px 0;
-      gap:24px;
+
+    .header-top {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
     }
-    .brand{
-      display:flex; align-items:center; gap:14px;
+
+    .brand-block {
+      display:flex;
+      flex-direction:column;
+      gap:4px;
     }
-    .brand img{
-      height:56px;
-      border-radius:50%;
-      background:rgba(255,255,255,0.9);
-      padding:5px;
-      box-shadow:0 4px 10px rgba(0,0,0,0.4);
+
+    .brand-title {
+      font-size:1.8rem;
+      font-weight:700;
+      letter-spacing:0.03em;
     }
-    .brand-text-main{
-      font-weight:800;
-      font-size:30px;       /* หัว Financial Audit System ใหญ่ขึ้น */
-      letter-spacing:0.04em;
+
+    .brand-sub {
+      font-size:1rem;
+      opacity:0.9;
     }
-    .brand-text-sub{
-      display:block;
-      font-size:16px;       /* Digital • AI • Compliance by OAG */
-      font-weight:500;
-      opacity:.9;
+
+    .theme-toggle {
+      display:flex;
+      align-items:center;
+      gap:8px;
+      font-size:1rem;
+      background:rgba(15,23,42,0.35);
+      padding:6px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.25);
+    }
+
+    .theme-toggle span {
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    /* MAIN LAYOUT */
+    main {
+      max-width:1100px;
+      margin:22px auto 40px;
+      padding:0 14px 24px;
+    }
+
+    .hero-card {
+      background:var(--bg-card);
+      border-radius:var(--radius-lg);
+      padding:18px 18px 16px;
+      box-shadow:var(--shadow-soft);
+      margin-bottom:18px;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+
+    .hero-title {
+      font-size:1.4rem;
+      font-weight:700;
+      margin-bottom:2px;
+    }
+
+    .hero-text {
+      font-size:0.98rem;
+      color:var(--text-sub);
+      line-height:1.5;
+    }
+
+    /* MENU GRID */
+    .menu-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+      gap:16px;
+      margin-top:18px;
+    }
+
+    .menu-card {
+      background:var(--bg-card);
+      border-radius:var(--radius-lg);
+      padding:14px 15px;
+      box-shadow:var(--shadow-soft);
+      display:flex;
+      align-items:flex-start;
+      gap:12px;
+      text-decoration:none;
+      color:inherit;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .menu-card::after {
+      content:"";
+      position:absolute;
+      inset:auto -60px -60px auto;
+      width:120px;
+      height:120px;
+      opacity:0.14;
+      border-radius:999px;
+      transform:translate(24px,24px);
+    }
+
+    .menu-icon {
+      font-size:1.8rem;
+      flex-shrink:0;
       margin-top:2px;
     }
 
-    nav ul{
-      list-style:none; display:flex; gap:10px;
-      padding:0; margin:0; flex-wrap:wrap;
-    }
-    nav a{
-      color:#fff;
-      padding:8px 14px;
-      border-radius:999px;
-      font-weight:700;
-      font-size:18px;   /* เมนูใหญ่ขึ้น ~80% */
-      border:1px solid rgba(255,255,255,0.18);
-      background:rgba(0,0,0,0.12);
-      backdrop-filter:blur(12px);
-      white-space:nowrap;
-    }
-    nav a:hover{
-      background:rgba(255,255,255,0.22);
-      box-shadow:0 0 12px rgba(255,255,255,0.35);
-    }
-
-    .header-right{
+    .menu-body {
       display:flex;
-      align-items:center;
-      gap:12px;
-      flex-wrap:wrap;
-      justify-content:flex-end;
+      flex-direction:column;
+      gap:2px;
     }
 
-    .theme-toggle{
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,0.4);
-      background:rgba(0,0,0,0.18);
-      color:#fff;
-      padding:7px 14px;
-      font-size:16px;
+    .menu-title {
+      font-size:1.1rem;
+      font-weight:700;
+      margin-bottom:1px;
+    }
+
+    .menu-desc {
+      font-size:0.9rem;
+      color:var(--text-sub);
+      line-height:1.4;
+    }
+
+    .menu-tag {
+      margin-top:4px;
       display:inline-flex;
       align-items:center;
-      gap:8px;
-      cursor:pointer;
-      backdrop-filter:blur(12px);
-    }
-    .theme-toggle span.icon{
-      font-size:20px;
-    }
-    .theme-toggle:hover{
-      background:rgba(0,0,0,0.3);
-    }
-
-    .current-user-badge{
-      font-size:14px;
-      padding:4px 12px;
+      gap:4px;
+      font-size:0.78rem;
+      padding:2px 8px;
       border-radius:999px;
-      border:1px solid rgba(255,255,255,0.25);
-      background:rgba(0,0,0,0.22);
-      max-width:220px;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
+      background:rgba(15,23,42,0.05);
+      color:#374151;
     }
 
-    /* HERO */
-    .hero{
-      border-bottom:1px solid var(--border);
-      background:radial-gradient(circle at 0 0, rgba(244,143,177,0.15) 0, transparent 55%),
-                 radial-gradient(circle at 100% 100%, rgba(13,71,161,0.6) 0, transparent 65%),
-                 var(--bg-soft);
-    }
-    .hero-inner{
-      display:grid; grid-template-columns:1.25fr .75fr;
-      gap:28px; align-items:center; padding:46px 0 40px;
-    }
-    .hero h1{
-      margin:10px 0 10px 0;
-      font-size:40px;      /* ใหญ่ขึ้นจากเดิม */
-      color:#ffffff;
-      letter-spacing:0.03em;
-    }
-    .hero p{
-      margin:0 0 18px 0;
-      color:var(--muted);
-      max-width:620px;
-      font-size:18px;
-    }
-    .hero-kpi-row{
-      display:flex; flex-wrap:wrap;
-      gap:12px; margin-top:16px;
-    }
-    .kpi-pill{
-      padding:8px 12px;
-      border-radius:12px;
-      background:rgba(17,21,43,0.85);
-      border:1px solid rgba(255,255,255,0.12);
-      font-size:16px;
-      color:var(--muted);
-    }
-    .kpi-pill strong{color:#fff;}
+    /* สีแต่ละเมนู */
+    .m-home     { border-left:5px solid #0ea5e9; }
+    .m-login    { border-left:5px solid #6366f1; }
+    .m-admin    { border-left:5px solid #7c3aed; }
+    .m-guide    { border-left:5px solid #22c55e; }
+    .m-tips     { border-left:5px solid #14b8a6; }
+    .m-audit    { border-left:5px solid #f97316; }
+    .m-review   { border-left:5px solid #10b981; }
+    .m-tracking { border-left:5px solid #ec4899; }
+    .m-board    { border-left:5px solid #8b5cf6; }
+    .m-db       { border-left:5px solid #f59e0b; }
+    .m-bot      { border-left:5px solid #0ea5e9; }
+    .m-contact  { border-left:5px solid #6b7280; }
 
-    .chip{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:8px 14px; border-radius:999px;
-      background:var(--chip-bg);
-      border:1px solid var(--chip-border);
-      color:#ffebf3;
-      font-weight:600; font-size:16px;
-      backdrop-filter:blur(16px);
-    }
-    .chip span.dot{
-      width:10px; height:10px; border-radius:50%;
-      background:#69f0ae;
-      box-shadow:0 0 8px #69f0ae;
+    .m-home::after     { background:#0ea5e9; }
+    .m-login::after    { background:#6366f1; }
+    .m-admin::after    { background:#7c3aed; }
+    .m-guide::after    { background:#22c55e; }
+    .m-tips::after     { background:#14b8a6; }
+    .m-audit::after    { background:#f97316; }
+    .m-review::after   { background:#10b981; }
+    .m-tracking::after { background:#ec4899; }
+    .m-board::after    { background:#8b5cf6; }
+    .m-db::after       { background:#f59e0b; }
+    .m-bot::after      { background:#0ea5e9; }
+    .m-contact::after  { background:#6b7280; }
+
+    .menu-card:hover {
+      transform:translateY(-2px);
+      box-shadow:0 8px 18px rgba(15,23,42,0.24);
+      transition:all 0.16s ease-out;
     }
 
-    .btn{
-      display:inline-flex; align-items:center; justify-content:center;
-      padding:12px 20px; border-radius:999px;
-      font-weight:800; font-size:18px;
-      border:none; cursor:pointer;
-      background:linear-gradient(135deg,var(--pink),var(--primary-2));
-      color:#fff;
-      box-shadow:0 6px 20px rgba(244,143,177,0.6);
-      transition:transform .18s ease, box-shadow .18s ease, filter .18s ease;
-      text-decoration:none;
-      gap:8px;
-    }
-    .btn:hover{
-      transform:translateY(-1px);
-      filter:brightness(1.05);
-      box-shadow:0 0 22px rgba(66,165,245,0.85);
-    }
-    .btn-outline{
-      background:rgba(8,12,32,0.85);
-      border:1px solid rgba(244,143,177,0.7);
-      color:var(--pink);
-      box-shadow:none;
-    }
-    .btn-outline:hover{
-      box-shadow:0 0 18px rgba(244,143,177,0.75);
-    }
-
-    .hero-right.card{
-      position:relative;
-      overflow:hidden;
-    }
-    .hero-right-card-bg{
-      position:absolute; inset:-40%;
-      background:
-        radial-gradient(circle at 0 0, rgba(244,143,177,0.25) 0, transparent 55%),
-        radial-gradient(circle at 100% 100%, rgba(66,165,245,0.35) 0, transparent 55%);
-      opacity:0.85;
-      filter:blur(12px);
-      z-index:0;
-    }
-    .hero-right-inner{position:relative; z-index:1;}
-
-    /* MAIN LAYOUT */
-    main section{padding:34px 0;}
-    h2{
-      color:#ffffff;
-      margin:0 0 14px 0;
-      font-size:28px;
-      letter-spacing:0.02em;
-    }
-    h3{
-      color:#e0e5ff;
-      font-size:20px;
-      margin-top:0;
-    }
-    .section-header{
-      margin-bottom:14px;
-      display:flex;
-      justify-content:space-between;
-      align-items:flex-end;
-      gap:12px;
-    }
-    .section-tagline{
-      font-size:16px;
-      color:var(--muted);
-    }
-
-    .card{
-      background:linear-gradient(145deg,rgba(17,21,43,0.98),rgba(25,31,60,0.98));
-      border:1px solid rgba(255,255,255,0.06);
-      border-radius:16px; padding:22px;
-      box-shadow:0 14px 34px rgba(0,0,0,.8);
-      position:relative;
-      overflow:hidden;
-      font-size:16px;
-    }
-    .card::before{
-      content:"";
-      position:absolute; inset:-40%;
-      background:radial-gradient(circle at 0 0, rgba(244,143,177,0.18) 0, transparent 55%);
-      opacity:0; pointer-events:none;
-      transition:opacity .25s ease;
-    }
-    .card:hover::before{opacity:1;}
-    .card > *{position:relative; z-index:1;}
-
-    .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:22px;}
-    .grid-3{display:grid; grid-template-columns:repeat(3, 1fr); gap:22px;}
-    .grid-auto{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:22px;}
-
-    label{
-      display:block; font-weight:600; margin:10px 0 6px; font-size:16px;
-    }
-    input[type="text"], input[type="email"], input[type="password"], textarea{
-      width:100%; padding:10px 12px; border-radius:10px; font-size:16px;
-      border:1px solid rgba(255,255,255,0.10);
-      background:rgba(5,8,26,0.85); color:#fff;
-      outline:none;
-    }
-    input:focus, textarea:focus{
-      border-color:var(--pink);
-      box-shadow:0 0 0 1px rgba(244,143,177,0.4);
-    }
-    button{
-      padding:10px 16px; border:none; border-radius:999px;
-      font-weight:700; cursor:pointer;
-      background:linear-gradient(135deg,var(--primary-2),var(--maroon));
-      color:#fff; font-size:16px;
-      box-shadow:0 6px 16px rgba(13,71,161,0.7);
-    }
-    button:hover{
-      filter:brightness(1.04);
-      box-shadow:0 0 16px rgba(66,165,245,0.85);
-    }
-
-    .muted{color:var(--muted); font-size:16px;}
-
-    .status{
-      padding:6px 10px; border-radius:999px;
-      font-size:14px; font-weight:700; display:inline-block;
-    }
-    .status-pending{
-      background:rgba(255,213,79,0.1); color:#ffca28;
-      border:1px solid rgba(255,213,79,0.55);
-    }
-    .status-approved{
-      background:rgba(129,199,132,0.12); color:#69f0ae;
-      border:1px solid rgba(129,199,132,0.6);
-    }
-    .status-rejected{
-      background:rgba(239,83,80,0.12); color:#ff8a80;
-      border:1px solid rgba(239,83,80,0.6);
-    }
-
-    table{
-      width:100%; border-collapse:collapse; margin-top:10px;
-      font-size:16px;
-    }
-    th, td{
-      border:1px solid rgba(255,255,255,0.08);
-      padding:8px 10px; text-align:left;
-    }
-    th{
-      background:linear-gradient(90deg,rgba(13,71,161,0.85),rgba(123,30,60,0.75));
-      color:#ffffff;
-    }
-
-    .actions{display:flex; gap:6px; flex-wrap:wrap;}
-
-    footer{
-      padding:20px 0;
-      background:#050714;
-      color:var(--muted);
-      border-top:1px solid rgba(255,255,255,0.10);
-      margin-top:26px;
-      font-size:14px;
-    }
-    .footer-inner{
-      display:flex; justify-content:space-between; align-items:center; gap:12px;
-      flex-wrap:wrap;
-    }
-
-    /* Chat cards */
-    #chatLog .card{
-      margin-top:8px;
-      padding:12px 14px;
-      border-radius:12px;
-      box-shadow:none;
-      background:rgba(11,16,40,0.9);
-    }
-
-    .sparkline{
-      width:100%;
-      height:200px;
-      border-radius:10px;
-      background:radial-gradient(circle at 0 0, rgba(244,143,177,0.18) 0, transparent 60%),
-                 radial-gradient(circle at 100% 100%, rgba(66,165,245,0.18) 0, transparent 60%),
-                 rgba(5,8,26,0.85);
-    }
-
-    /* Light theme */
-    body[data-theme="light"]{
-      --text:#11152b;
-      --muted:#5c647a;
-      background:#f4f5fb;
-    }
-    body[data-theme="light"] header{
-      background:linear-gradient(120deg,#f48fb1,#42a5f5,#ffffff);
-      box-shadow:0 8px 18px rgba(0,0,0,0.18);
-    }
-    body[data-theme="light"] .card{
-      background:#ffffff;
-      color:#11152b;
-      border:1px solid #e2e5f2;
-      box-shadow:0 8px 22px rgba(15,23,42,0.1);
-    }
-    body[data-theme="light"] .card::before{display:none;}
-    body[data-theme="light"] .muted{color:#6b7280;}
-    body[data-theme="light"] footer{
-      background:#0f172a;
-      color:#9ca3af;
-    }
-    body[data-theme="light"] th{
-      background:linear-gradient(90deg,#0d47a1,#7b1e3c);
-    }
-    body[data-theme="light"] .sparkline{
-      background:linear-gradient(180deg,#ffffff,#e5edff);
-    }
-
-    /* Responsive */
-    @media (max-width:980px){
-      .hero-inner{grid-template-columns:1fr;}
-      .grid-2,.grid-3{grid-template-columns:1fr;}
-      nav ul{justify-content:flex-start;}
-      .header-inner{flex-wrap:wrap;}
-      .brand-text-main{font-size:26px;}
-      nav a{font-size:16px;}
-    }
-    @media (max-width:640px){
-      .hero h1{font-size:32px;}
-      .header-inner{align-items:flex-start;}
+    /* RESPONSIVE */
+    @media (max-width:640px) {
+      .brand-title { font-size:1.5rem; }
+      .hero-card { padding:14px 13px; }
+      .menu-card { padding:12px 11px; }
+      body { font-size:18px; }
     }
   </style>
 </head>
+
 <body>
-  <!-- Header -->
-  <header>
-    <div class="container header-inner">
-      <div class="brand">
-        <img src="images/oag-logo.png" alt="สำนักงานการตรวจเงินแผ่นดิน">
-        <div>
-          <div class="brand-text-main">Financial Audit System</div>
-          <span class="brand-text-sub">Digital • AI • Compliance by OAG</span>
-        </div>
-      </div>
-      <div class="header-right">
-        <div id="currentUserBadge" class="current-user-badge" style="display:none;"></div>
-        <button class="theme-toggle" id="themeToggle">
-          <span class="icon">☀️</span>
-          <span>Light</span>
-        </button>
-        <nav>
-          <ul>
-            <li><a href="#home">🏠 หน้าแรก</a></li>
-            <li><a href="login.html">🔐 Login</a></li>
-            <li><a href="#guidelines">📑 แนวทางตรวจสอบ</a></li>
-            <li><a href="#tips">💡 ข้อแนะนำใช้ระบบ</a></li>
-            <!-- ปรับเมนูนี้ให้ไปหน้าใหม่ของระบบตรวจสอบการเงิน -->
-            <li><a href="fa-login.html">📊 ระบบตรวจสอบการเงิน</a></li>
-            <li><a href="#financial-exam">🧮 ระบบสอบทาน</a></li>
-            <li><a href="#tracking">📌 ระบบติดตามงานตรวจ</a></li>
-            <li><a href="#dashboard">📈 Cash board</a></li>
-            <li><a href="#database">🗄 ฐานข้อมูล</a></li>
-            <li><a href="#chatbot">🤖 Chatbot</a></li>
-            <li><a href="#contact">📬 ติดต่อ</a></li>
-            <li><a href="admin.html" target="_blank">🧑‍💼 Admin</a></li>
-          </ul>
-        </nav>
-      </div>
-    </div>
-  </header>
 
-  <!-- Hero -->
-  <section id="home" class="hero">
-    <div class="container hero-inner">
-      <div>
-        <div class="chip">
-          <span class="dot"></span>
-          มาตรฐาน สตง. • โปร่งใส • ตรวจสอบย้อนกลับได้
-        </div>
-        <h1>แพลตฟอร์มตรวจสอบการเงินยุค AI สำหรับงาน สตง. ดิจิทัล</h1>
-        <p>
-          รองรับ Workflow ตรวจสอบการเงินครบวงจร — ตั้งแต่ลงทะเบียนผู้ใช้ อนุมัติสิทธิ์
-          วางแผนตรวจ เก็บหลักฐาน สอบทางการเงิน ติดตามข้อเสนอแนะ
-          และสรุปผลบนแดชบอร์ดเดียว
-        </p>
-        <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:10px;">
-          <a class="btn" href="#guidelines">📑 เปิดดูแนวทางตรวจสอบ</a>
-          <a class="btn btn-outline" href="login.html#register-section">📝 เริ่มลงทะเบียนใช้งาน</a>
-        </div>
-        <div class="hero-kpi-row">
-          <div class="kpi-pill"><strong>Realtime</strong> • สถานะผู้ใช้ &amp; งานตรวจ</div>
-          <div class="kpi-pill"><strong>Digital Trail</strong> • Audit Log พร้อมสอบย้อนกลับ</div>
-          <div class="kpi-pill"><strong>AI Ready</strong> • พร้อมต่อยอดเชื่อม API / AI Engine</div>
-        </div>
-      </div>
-
-      <div class="card hero-right">
-        <div class="hero-right-card-bg"></div>
-        <div class="hero-right-inner">
-          <h3>ภาพรวมระบบตรวจสอบการเงินดิจิทัล</h3>
-          <p class="muted">FinTech • Analytics • Risk • Compliance</p>
-          <img src="images/fintech-banner.png" alt="เทคโนโลยีการเงิน"
-               style="width:100%; border-radius:14px; box-shadow:var(--glow); margin-bottom:12px;">
-          <p class="muted" style="font-size:14px;">
-            โมดูลหลัก: Login / Register / Admin / Financial Examination / Tracking / Dashboard / Database / Chatbot
-          </p>
-        </div>
-      </div>
+<header>
+  <div class="header-top">
+    <div class="brand-block">
+      <div class="brand-title">Financial Audit System</div>
+      <div class="brand-sub">Digital • AI • Compliance by OAG</div>
     </div>
+
+    <div class="theme-toggle">
+      <span>☀️</span>
+      <span>Light</span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- HERO / SUMMARY -->
+  <section class="hero-card">
+    <div class="hero-title">ศูนย์กลางระบบตรวจสอบ & สอบทาน</div>
+    <p class="hero-text">
+      เลือกเมนูด้านล่างเพื่อเข้าสู่ระบบต่าง ๆ ของศูนย์ตรวจสอบการเงินดิจิทัล
+      ระบบ Login เดียวสามารถใช้งานได้ทุกระบบ ยกเว้น Admin
+      (ต้องมีสิทธิ์เฉพาะ) ส่วนระบบตรวจสอบการเงินและระบบสอบทาน
+      ใช้โครงสร้างข้อมูลและมาตรฐานเดียวกัน แยกหน้าที่ตามหลักการควบคุมภายใน
+    </p>
   </section>
 
-  <main>
-    <!-- แนวทางตรวจสอบ -->
-    <section id="guidelines">
-      <div class="container">
-        <div class="card">
-          <h2>📑 แนวทางตรวจสอบการเงิน</h2>
-          <p class="muted">
-            เอกสารแนวทางการปฏิบัติงานตรวจสอบรายงานการเงิน พ.ศ. 2567 (ไฟล์ PDF)
-            ใช้เป็นมาตรฐานกลางสำหรับการปฏิบัติงานตรวจสอบ
-          </p>
-          <a class="btn" target="_blank"
-             href="documents/00 แนวทางการปฏิบัติงานตรวจสอบรายงานการเงิน 2567.pdf">
-            🔗 เปิดดูเอกสาร PDF
-          </a>
-          <p class="muted" style="margin-top:10px;">
-            นำไฟล์ PDF ไปไว้ในโฟลเดอร์ <code>documents/</code> แล้วปรับลิงก์ให้ตรงกับชื่อไฟล์จริง
-          </p>
+  <!-- MENU GRID -->
+  <section class="menu-grid">
+
+    <!-- หน้าแรก -->
+    <a href="index.html" class="menu-card m-home">
+      <div class="menu-icon">🏠</div>
+      <div class="menu-body">
+        <div class="menu-title">หน้าแรก</div>
+        <div class="menu-desc">
+          ภาพรวมของระบบทั้งหมด ใช้เป็นจุดเริ่มต้นสำหรับผู้ใช้งานใหม่และผู้บริหาร
         </div>
+        <div class="menu-tag">Entry Point</div>
       </div>
-    </section>
+    </a>
+
+    <!-- Login รวม (ใช้สำหรับทุกระบบ ยกเว้น Admin) -->
+    <a href="login.html" class="menu-card m-login">
+      <div class="menu-icon">🔐</div>
+      <div class="menu-body">
+        <div class="menu-title">Login</div>
+        <div class="menu-desc">
+          เข้าสู่ระบบหลักเพื่อใช้งาน ระบบตรวจสอบการเงิน ระบบสอบทาน
+          ระบบติดตามงานตรวจ Cash board และฐานข้อมูล
+        </div>
+        <div class="menu-tag">Single Sign-On (SSO) ภายในระบบ</div>
+      </div>
+    </a>
+
+    <!-- Admin -->
+    <a href="admin.html" class="menu-card m-admin">
+      <div class="menu-icon">🛡️</div>
+      <div class="menu-body">
+        <div class="menu-title">Admin</div>
+        <div class="menu-desc">
+          จัดการสิทธิ์ผู้ใช้งาน อนุมัติคำขอเป็น Admin ตรวจสอบ Log
+          และตั้งค่าระบบ (สงวนสิทธิ์เฉพาะ Super Admin / Admin)
+        </div>
+        <div class="menu-tag">Access Control & Compliance</div>
+      </div>
+    </a>
+
+    <!-- แนวทางตรวจสอบ -->
+    <a href="guideline.html" class="menu-card m-guide">
+      <div class="menu-icon">📑</div>
+      <div class="menu-body">
+        <div class="menu-title">แนวทางตรวจสอบ</div>
+        <div class="menu-desc">
+          รวบรวมคู่มือ CA/PA แนวทางการตรวจสอบ ตัวอย่างกระดาษทำการ
+          และมาตรฐานการสอบทานสำหรับผู้ตรวจ
+        </div>
+        <div class="menu-tag">Guideline • Manual</div>
+      </div>
+    </a>
 
     <!-- ข้อแนะนำใช้ระบบ -->
-    <section id="tips">
-      <div class="container">
-        <div class="section-header">
-          <div>
-            <h2>💡 ข้อแนะนำใช้ระบบ</h2>
-            <div class="section-tagline">แนวทางใช้งานให้รองรับ Audit Trail และลดความเสี่ยงผิดพลาด</div>
-          </div>
+    <a href="tips.html" class="menu-card m-tips">
+      <div class="menu-icon">💡</div>
+      <div class="menu-body">
+        <div class="menu-title">ข้อแนะนำใช้ระบบ</div>
+        <div class="menu-desc">
+          วิดีโอสั้น คู่มือ Step-by-step และ FAQ สำหรับการใช้งานระบบดิจิทัลทุกโมดูล
         </div>
-        <div class="grid-auto">
-          <div class="card">
-            <h3>แนวทางทั่วไป</h3>
-            <ul class="muted">
-              <li>ใช้ข้อมูลจริงและอีเมลที่ใช้งานได้สำหรับการลงทะเบียน</li>
-              <li>เก็บหลักฐานและบันทึก Audit Log ให้ครบทุกขั้นตอน</li>
-              <li>ตรวจสอบเวอร์ชันเอกสารก่อนใช้อ้างอิงทุกครั้ง</li>
-            </ul>
-          </div>
-          <div class="card">
-            <h3>ข้อควรระวัง</h3>
-            <ul class="muted">
-              <li>อย่าแชร์รหัสผ่านให้ผู้อื่น</li>
-              <li>หลีกเลี่ยงการอัปโหลดข้อมูลส่วนบุคคลที่ไม่จำเป็นต่อการตรวจสอบ</li>
-              <li>ปฏิบัติตามกฎหมายและระเบียบที่เกี่ยวข้องอย่างเคร่งครัด</li>
-            </ul>
-          </div>
-          <div class="card">
-            <h3>ทิปส์ทำงานเร็วขึ้น</h3>
-            <ul class="muted">
-              <li>ใช้เทมเพลตรายงานและตารางมาตรฐาน</li>
-              <li>จัดหมวดหมู่เอกสารตั้งแต่ต้น — งบ / สัญญา / หลักฐานประกอบ</li>
-              <li>ใช้แดชบอร์ดดูภาพรวมก่อนลงรายละเอียดเชิงลึก</li>
-            </ul>
-          </div>
-        </div>
+        <div class="menu-tag">How-to & FAQ</div>
       </div>
-    </section>
+    </a>
 
-    <!-- ระบบตรวจสอบการเงิน: อธิบาย + ปุ่มเข้า FA System ใหม่ -->
-    <section id="fa-system">
-      <div class="container">
-        <div class="section-header">
-          <div>
-            <h2>📊 ระบบตรวจสอบการเงิน (Financial Audit System)</h2>
-            <div class="section-tagline">
-              ระบบหลักสำหรับตรวจสอบการเงินของ อปท. และส่วนราชการ แยกเป็น 4 โมดูลหลัก
-            </div>
-          </div>
+    <!-- ระบบตรวจสอบการเงิน -->
+    <a href="fa-login.html" class="menu-card m-audit">
+      <div class="menu-icon">📊</div>
+      <div class="menu-body">
+        <div class="menu-title">ระบบตรวจสอบการเงิน</div>
+        <div class="menu-desc">
+          เข้าสู่ระบบตรวจสอบการเงิน (Financial Audit) ผ่านหน้า Login ของระบบตรวจสอบ
+          จากนั้นไปยังเมนู fa-menu และ 4 ระบบตรวจสอบจริง
         </div>
-        <div class="grid-3">
-          <div class="card">
-            <h3>โครงสร้างระบบ (Modules)</h3>
-            <ul class="muted">
-              <li>1) ระบบตรวจสอบการเงินประจำปี ของ อปท.<br><small>Annual Financial Audit – Local Government</small></li>
-              <li>2) ระบบตรวจสอบการเงินระหว่างปี ของ อปท.<br><small>Mid-Year Financial Audit – Local Government</small></li>
-              <li>3) ระบบตรวจสอบการเงินประจำปี ของ ส่วนราชการ<br><small>Annual Financial Audit – Government Agencies</small></li>
-              <li>4) ระบบตรวจสอบการเงินระหว่างกาล ของ ส่วนราชการ<br><small>Interim Financial Audit – Government Agencies</small></li>
-            </ul>
-          </div>
-          <div class="card">
-            <h3>การเข้าระบบ</h3>
-            <ul class="muted">
-              <li>ใช้รหัสผู้ใช้และรหัสผ่านจากระบบลงทะเบียนหลัก (หน้า Login)</li>
-              <li>รองรับการบันทึกจำรหัส (Remember me) ได้ไม่เกิน 3 เดือน</li>
-              <li>มีระบบตรวจสอบว่าเป็นมนุษย์ (Human Verification)</li>
-              <li>หลัง Login จะเข้าสู่หน้าเมนู 4 ระบบด้านบน</li>
-            </ul>
-            <div style="margin-top:14px;">
-              <a href="fa-login.html" class="btn">
-                🚀 เข้าสู่ระบบตรวจสอบการเงิน (FA System)
-              </a>
-            </div>
-          </div>
-          <div class="card">
-            <h3>เอกสารและ Workflow ที่เกี่ยวข้อง</h3>
-            <ul class="muted">
-              <li>Audit Plan / Audit Program</li>
-              <li>Working Papers &amp; Sampling Sheets</li>
-              <li>Risk &amp; Materiality Assessment Forms</li>
-              <li>Financial Statement Review &amp; Management Letter</li>
-            </ul>
-            <p class="muted" style="margin-top:8px;">
-              * ระบบ FA System อยู่บนหน้าใหม่ (ไฟล์ <code>fa-login.html</code> และ <code>fa-menu.html</code>)
-              เพื่อแยก UI การทำงานจริงออกจากหน้า index หลัก
-            </p>
-          </div>
-        </div>
+        <div class="menu-tag">Financial Audit</div>
       </div>
-    </section>
+    </a>
 
-    <!-- ระบบสอบทานทางการเงิน -->
-    <section id="financial-exam">
-      <div class="container">
-        <div class="section-header">
-          <div>
-            <h2>🧮 ระบบสอบทาน</h2>
-            <div class="section-tagline">รองรับแบบสอบถามและ Test of Detail / Test of Control</div>
-          </div>
+    <!-- ระบบสอบทาน -->
+    <a href="fa-review-login.html" class="menu-card m-review">
+      <div class="menu-icon">🧮</div>
+      <div class="menu-body">
+        <div class="menu-title">ระบบสอบทาน</div>
+        <div class="menu-desc">
+          ระบบสอบทานกระดาษทำการและผลการตรวจสอบ แยกสิทธิ์จากผู้ตรวจ
+          ใช้สถาปัตยกรรมเดียวกับระบบตรวจสอบการเงิน (fa-review-*) 
         </div>
-        <div class="grid-2">
-          <div class="card">
-            <p class="muted">
-              รวมเครื่องมือและแบบสอบถามเพื่อทดสอบความถูกต้องและความเชื่อถือได้ของข้อมูลทางการเงิน
-            </p>
-            <ul class="muted">
-              <li>แบบสอบถามการควบคุมภายใน (Internal Control Questionnaire)</li>
-              <li>แบบทดสอบความสอดคล้อง (Compliance Test)</li>
-              <li>การยืนยันยอดและการสอบทาน (Confirmation &amp; Review)</li>
-            </ul>
-          </div>
-          <div class="card">
-            <h3>ตัวอย่างแบบฟอร์ม</h3>
-            <form>
-              <label>หัวข้อที่สอบทาน</label>
-              <input type="text" placeholder="เช่น กระบวนการรายงานรายได้">
-              <label>หมายเหตุ</label>
-              <textarea rows="4" placeholder="บันทึกผลการสอบทาน"></textarea>
-              <div style="margin-top:10px;">
-                <button type="button">บันทึกข้อมูลตัวอย่าง</button>
-              </div>
-            </form>
-          </div>
-        </div>
+        <div class="menu-tag">Review • Second Layer</div>
       </div>
-    </section>
+    </a>
 
     <!-- ระบบติดตามงานตรวจ -->
-    <section id="tracking">
-      <div class="container">
-        <div class="section-header">
-          <div>
-            <h2>📌 ระบบติดตามงานตรวจ</h2>
-            <div class="section-tagline">โฟกัสการปิดประเด็นและติดตามข้อเสนอแนะอย่างเป็นระบบ</div>
-          </div>
+    <a href="tracking.html" class="menu-card m-tracking">
+      <div class="menu-icon">📌</div>
+      <div class="menu-body">
+        <div class="menu-title">ระบบติดตามงานตรวจ</div>
+        <div class="menu-desc">
+          ติดตามผลการตรวจ ข้อเสนอแนะ และการตอบรับจากหน่วยรับตรวจ
+          เชื่อมโยงกับเลขที่รายงานและสถานะการปิดประเด็น
         </div>
-        <div class="grid-2">
-          <div class="card">
-            <p class="muted">
-              ติดตามสถานะการดำเนินการตามข้อเสนอแนะ
-              และความคืบหน้าการแก้ไขประเด็นสำคัญของหน่วยรับตรวจ
-            </p>
-            <ul class="muted">
-              <li>สถานะ: รอดำเนินการ / กำลังดำเนินการ / เสร็จสิ้น</li>
-              <li>ระบุผู้รับผิดชอบและกำหนดเสร็จ</li>
-              <li>แนบหลักฐานการดำเนินการ (เอกสาร/ภาพ/ไฟล์)</li>
-            </ul>
-          </div>
-          <div class="card">
-            <h3>รายการติดตาม (ตัวอย่าง)</h3>
-            <table>
-              <thead>
-                <tr><th>ประเด็น</th><th>ผู้รับผิดชอบ</th><th>สถานะ</th><th>กำหนดเสร็จ</th></tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>การปรับปรุงกระบวนการรับรู้รายได้</td>
-                  <td>สมชาย</td>
-                  <td><span class="status status-pending">รอดำเนินการ</span></td>
-                  <td>2026-01-15</td>
-                </tr>
-                <tr>
-                  <td>ทบทวนการตั้งสำรองหนี้สูญ</td>
-                  <td>สุดา</td>
-                  <td><span class="status status-approved">กำลังดำเนินการ</span></td>
-                  <td>2026-02-10</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+        <div class="menu-tag">Follow-up & Status</div>
       </div>
-    </section>
+    </a>
+
+    <!-- Cash board -->
+    <a href="cashboard.html" class="menu-card m-board">
+      <div class="menu-icon">📈</div>
+      <div class="menu-body">
+        <div class="menu-title">Cash board</div>
+        <div class="menu-desc">
+          แผงควบคุมสรุปผลตัวเลขสำคัญแบบเรียลไทม์ รายได้ รายจ่าย
+          ตัวชี้วัดความเสี่ยง และ Performance ของทีมตรวจ
+        </div>
+        <div class="menu-tag">Dashboard • KPI</div>
+      </div>
+    </a>
+
+    <!-- ฐานข้อมูล -->
+    <a href="database.html" class="menu-card m-db">
+      <div class="menu-icon">🗄</div>
+      <div class="menu-body">
+        <div class="menu-title">ฐานข้อมูล</div>
+        <div class="menu-desc">
+          ศูนย์ข้อมูลสำหรับเชื่อมต่อ Big Data, ฐานข้อมูลน้ำบาดาล,
+          ข้อมูลงบประมาณท้องถิ่น และข้อมูลเสริมการตรวจสอบอื่น ๆ
+        </div>
+        <div class="menu-tag">Data Hub</div>
+      </div>
+    </a>
 
     <!-- Chatbot -->
-    <section id="chatbot">
-      <div class="container">
-        <div class="section-header">
-          <div>
-            <h2>🤖 Chatbot</h2>
-            <div class="section-tagline">ใช้ถามแนวทางการตรวจสอบและการใช้งานหน้าเว็บนี้แบบรวดเร็ว</div>
-          </div>
+    <a href="chatbot.html" class="menu-card m-bot">
+      <div class="menu-icon">🤖</div>
+      <div class="menu-body">
+        <div class="menu-title">Chatbot</div>
+        <div class="menu-desc">
+          ผู้ช่วยอัจฉริยะสำหรับตอบคำถามเกี่ยวกับระเบียบ กฎหมาย ขั้นตอนการตรวจสอบ
+          และสรุปข้อมูลจากฐานข้อมูลตรวจสอบ
         </div>
-        <div class="grid-2">
-          <div class="card">
-            <p class="muted">
-              พิมพ์คำถามเกี่ยวกับแนวทางการตรวจสอบ ระบบจะตอบกลับอัตโนมัติ (ตัวอย่างจำลอง)
-            </p>
-            <form id="chatForm">
-              <label for="chatInput">คำถามของคุณ</label>
-              <input type="text" id="chatInput" placeholder="เช่น วิธีบันทึกหลักฐานการตรวจสอบ" required>
-              <div style="margin-top:10px;">
-                <button type="submit">ส่งคำถาม</button>
-              </div>
-            </form>
-            <div id="chatLog" style="margin-top:12px;"></div>
-          </div>
-          <div class="card">
-            <h3>ขอบเขตคำตอบ</h3>
-            <ul class="muted">
-              <li>แนวทางการตรวจสอบและการจัดทำเอกสาร</li>
-              <li>ขั้นตอนการใช้งานระบบในหน้าเว็บนี้</li>
-              <li>ข้อมูลทั่วไปด้านมาตรฐานการเงิน</li>
-            </ul>
-          </div>
-        </div>
+        <div class="menu-tag">AI Assistant</div>
       </div>
-    </section>
+    </a>
 
-    <!-- Dashboard -->
-    <section id="dashboard">
-      <div class="container">
-        <div class="section-header">
-          <div>
-            <h2>📈 Cash board</h2>
-            <div class="section-tagline">สรุปภาพรวมสถานะผู้ใช้และงานตรวจสอบในมุมมอง Dashboard</div>
-          </div>
+    <!-- ติดต่อ -->
+    <a href="contact.html" class="menu-card m-contact">
+      <div class="menu-icon">📬</div>
+      <div class="menu-body">
+        <div class="menu-title">ติดต่อ</div>
+        <div class="menu-desc">
+          ช่องทางติดต่อผู้ดูแลระบบ ทีมพัฒนา และทีมตรวจสอบ
+          เพื่อแจ้งปัญหา ขอเพิ่มฟีเจอร์ หรือประสานงาน
         </div>
-        <div class="grid-3">
-          <div class="card">
-            <h3>ภาพรวมการตรวจสอบ</h3>
-            <p class="muted">
-              แดชบอร์ดภาพรวมสถานะงานตรวจสอบและติดตามข้อเสนอแนะ
-              สามารถต่อยอดเชื่อม BI/Power BI/Excel Dashboard ได้
-            </p>
-            <ul class="muted">
-              <li>ผู้ใช้ที่รออนุมัติ</li>
-              <li>รายการติดตามที่ค้าง</li>
-              <li>ความคืบหน้ารายไตรมาส</li>
-            </ul>
-          </div>
-          <div class="card">
-            <h3>สรุปผู้ใช้</h3>
-            <div id="userSummary" class="muted">
-              รวมผู้ใช้: 0 • รออนุมัติ: 0 • อนุมัติแล้ว: 0
-            </div>
-          </div>
-          <div class="card">
-            <h3>กราฟสถานะ (Sparkline)</h3>
-            <svg id="statusSparkline" viewBox="0 0 100 40" class="sparkline"></svg>
-          </div>
-        </div>
+        <div class="menu-tag">Support & Coordination</div>
       </div>
-    </section>
+    </a>
 
-    <!-- Database -->
-    <section id="database">
-      <div class="container">
-        <div class="section-header">
-          <div>
-            <h2>🗄 ฐานข้อมูล</h2>
-            <div class="section-tagline">ตัวอย่างการจัดเก็บข้อมูลผู้ใช้งานในรูปแบบตาราง</div>
-          </div>
-        </div>
-        <div class="grid-2">
-          <div class="card">
-            <h3>ตารางผู้ใช้งาน</h3>
-            <table>
-              <thead>
-                <tr>
-                  <th>ชื่อ-นามสกุล</th>
-                  <th>อีเมล</th>
-                  <th>สถานะ</th>
-                </tr>
-              </thead>
-              <tbody id="dbTable"></tbody>
-            </table>
-          </div>
-          <div class="card">
-            <h3>เพิ่มข้อมูลใหม่ (เดโม)</h3>
-            <form id="dbForm">
-              <label>ชื่อ-นามสกุล</label>
-              <input type="text" id="dbName" required>
-              <label>อีเมล</label>
-              <input type="email" id="dbEmail" required>
-              <label>สถานะ</label>
-              <input type="text" id="dbStatus" placeholder="เช่น approved / pending / rejected" required>
-              <div style="margin-top:10px;">
-                <button type="submit">เพิ่มข้อมูล</button>
-              </div>
-            </form>
-            <p id="dbMsg" class="muted"></p>
-            <p class="muted" style="margin-top:8px;">
-              * ข้อมูลที่เพิ่มจากฟอร์มนี้จะเชื่อมกับ Cash board และฐานผู้ใช้ (เดโมในเบราว์เซอร์)
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
+  </section>
+</main>
 
-    <!-- Contact -->
-    <section id="contact">
-      <div class="container">
-        <div class="section-header">
-          <div>
-            <h2>📬 ติดต่อ</h2>
-            <div class="section-tagline">สำหรับต่อยอดเชื่อม API/ฐานข้อมูลจริง และระบบ AI Audit เพิ่มเติม</div>
-          </div>
-        </div>
-        <div class="grid-2">
-          <div class="card">
-            <p>เจ้าของระบบ: apipoooo-afk</p>
-            <p>GitHub Pages:
-              <a href="https://apipoooo-afk.github.io/financial-audit/" target="_blank">เปิดหน้าเว็บ</a>
-            </p>
-            <p>Repository:
-              <a href="https://github.com/apipoooo-afk/financial-audit" target="_blank">
-                apipoooo-afk/financial-audit
-              </a>
-            </p>
-            <p class="muted">
-              ระบบนี้เป็นเดโมฝั่งหน้าเว็บ สามารถต่อยอดเชื่อม API / ฐานข้อมูลจริง
-              และระบบแจ้งเตือนอีเมล/LINE/AI Chatbot ได้ในอนาคต
-            </p>
-          </div>
-          <div class="card">
-            <h3>ลิงก์ด่วน</h3>
-            <ul class="muted">
-              <li><a href="login.html#register-section">ลงทะเบียนใช้งาน (ระบบหลัก)</a></li>
-              <li><a href="login.html">เข้าสู่ระบบทั่วไป</a></li>
-              <li><a href="fa-login.html">เข้าสู่ระบบตรวจสอบการเงิน (FA System)</a></li>
-              <li><a href="admin.html" target="_blank">ระบบ Admin</a></li>
-              <li><a href="#dashboard">ดู Cash board</a></li>
-              <li><a href="#database">ฐานข้อมูลผู้ใช้</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <div class="container footer-inner">
-      <div>© 2025 Financial Audit • สำนักงานการตรวจเงินแผ่นดิน</div>
-      <div class="muted">Demo UX/UI • AI-inspired • Maroon–Blue–White–Pink Palette</div>
-    </div>
-  </footer>
-
-  <script>
-    // ===== Theme toggle =====
-    const themeToggleBtn = document.getElementById("themeToggle");
-    function applyTheme(theme){
-      document.body.dataset.theme = theme;
-      if(themeToggleBtn){
-        const icon = themeToggleBtn.querySelector(".icon");
-        const text = themeToggleBtn.querySelector("span:nth-child(2)");
-        if(theme === "light"){
-          icon.textContent = "🌙";
-          text.textContent = "Dark";
-        }else{
-          icon.textContent = "☀️";
-          text.textContent = "Light";
-        }
-      }
-      localStorage.setItem("fas-theme", theme);
-    }
-    const savedTheme = localStorage.getItem("fas-theme") || "dark";
-    applyTheme(savedTheme);
-    if(themeToggleBtn){
-      themeToggleBtn.addEventListener("click", () => {
-        const current = document.body.dataset.theme || "dark";
-        applyTheme(current === "dark" ? "light" : "dark");
-      });
-    }
-
-    // ===== Shared user storage (ใช้ร่วมกับ login.html / admin.html) =====
-    function loadUsersFromStorage(){
-      try{
-        const raw = localStorage.getItem("fas-users");
-        if(!raw) return null;
-        return JSON.parse(raw);
-      }catch(e){
-        console.warn("โหลด fas-users ไม่สำเร็จ", e);
-        return null;
-      }
-    }
-    function saveUsersToStorage(users){
-      try{
-        localStorage.setItem("fas-users", JSON.stringify(users));
-      }catch(e){
-        console.warn("บันทึก fas-users ไม่สำเร็จ", e);
-        return null;
-      }
-    }
-
-    function seedDefaultUsersIfNeeded(){
-      const existing = loadUsersFromStorage();
-      if(existing && Array.isArray(existing) && existing.length > 0){
-        return existing;
-      }
-      const seed = [
-        {
-          id:"super-admin-1",
-          firstName:"Apiphuthanadet",
-          lastName:"SuperAdmin",
-          fullname:"Apiphuthanadet SuperAdmin",
-          citizenId:"",
-          govId:"",
-          position:"ผู้ดูแลระบบสูงสุด",
-          email:"apipoooo@gmail.com",
-          phone:"",
-          password:"Apiphu17122558",
-          status:"approved",
-          role:"super_admin",
-          createdAt:new Date().toISOString()
-        },
-        {
-          id:"admin-1",
-          firstName:"สมชาย",
-          lastName:"ใจดี",
-          fullname:"สมชาย ใจดี",
-          citizenId:"",
-          govId:"",
-          position:"Admin กลุ่มตรวจสอบ",
-          email:"somchai@example.com",
-          phone:"",
-          password:"12345678",
-          status:"approved",
-          role:"admin",
-          createdAt:new Date().toISOString()
-        },
-        {
-          id:"admin-2",
-          firstName:"Admin",
-          lastName:"One",
-          fullname:"Admin1 กลุ่มตรวจสอบ",
-          citizenId:"",
-          govId:"",
-          position:"Admin1",
-          email:"admin1@example.com",
-          phone:"",
-          password:"admin001",
-          status:"approved",
-          role:"admin1",
-          createdAt:new Date().toISOString()
-        },
-        {
-          id:"user-1",
-          firstName:"สุดา",
-          lastName:"สายใจ",
-          fullname:"สุดา สายใจ",
-          citizenId:"",
-          govId:"",
-          position:"ผู้ใช้ทั่วไป",
-          email:"suda@example.com",
-          phone:"",
-          password:"abcdef12",
-          status:"pending",
-          role:"user",
-          createdAt:new Date().toISOString()
-        }
-      ];
-      saveUsersToStorage(seed);
-      return seed;
-    }
-
-    // session: fas-session = { email, loginAt, expiresAt, remember }
-    function loadSession(){
-      try{
-        const raw = localStorage.getItem("fas-session");
-        if(!raw) return null;
-        const sess = JSON.parse(raw);
-        if(sess.expiresAt && Date.now() > sess.expiresAt){
-          localStorage.removeItem("fas-session");
-          return null;
-        }
-        return sess;
-      }catch(e){
-        console.warn("โหลด fas-session ไม่สำเร็จ", e);
-        return null;
-      }
-    }
-
-    const store = {
-      users: seedDefaultUsersIfNeeded(),
-      chatHistory: [],
-      currentUser: null
-    };
-
-    const currentSession = loadSession();
-    if(currentSession){
-      const u = store.users.find(x => x.email === currentSession.email);
-      if(u){
-        store.currentUser = u;
-      }
-    }
-
-    function updateCurrentUserBadge(){
-      const badge = document.getElementById("currentUserBadge");
-      if(!badge) return;
-      if(store.currentUser){
-        badge.style.display = "inline-block";
-        const roleText =
-          store.currentUser.role === "super_admin" ? "Super Admin" :
-          store.currentUser.role === "admin" ? "Admin" :
-          store.currentUser.role === "admin1" ? "Admin1" : "User";
-        badge.textContent = `${store.currentUser.fullname || store.currentUser.email} • ${roleText}`;
-      }else{
-        badge.style.display = "none";
-      }
-    }
-
-    // ===== Chatbot (demo) =====
-    function demoAnswer(q){
-      const lower = q.toLowerCase();
-      if(lower.includes("หลักฐาน") || lower.includes("evidence")) return "ควรเก็บหลักฐานเชิงเอกสารและดิจิทัล พร้อมบันทึก Audit Log ทุกขั้นตอน";
-      if(lower.includes("risk") || lower.includes("ความเสี่ยง")) return "เริ่มจาก Risk assessment ระบุความมีสาระสำคัญ และจัดลำดับความเสี่ยงตามผลกระทบ";
-      if(lower.includes("แนวทาง") || lower.includes("guidelines")) return "ดูเอกสารแนวทางการตรวจสอบ 2567 ในเมนู 'แนวทางตรวจสอบ'";
-      return "คำถามได้รับแล้ว: โปรดระบุหัวข้อให้ชัดเจน (เช่น แนวทาง, หลักฐาน, ความเสี่ยง) เพื่อคำตอบที่แม่นยำ";
-    }
-
-    const chatForm = document.getElementById("chatForm");
-    if(chatForm){
-      chatForm.addEventListener("submit", function(e){
-        e.preventDefault();
-        const inputEl = document.getElementById("chatInput");
-        const text = (inputEl.value || "").trim();
-        if(!text) return;
-        const ans = demoAnswer(text);
-        store.chatHistory.push({ q:text, a:ans });
-        renderChat();
-        inputEl.value = "";
-      });
-    }
-
-    function renderChat(){
-      const log = document.getElementById("chatLog");
-      if(!log) return;
-      log.innerHTML = "";
-      store.chatHistory.slice().reverse().forEach(item => {
-        const card = document.createElement("div");
-        card.className = "card";
-        card.innerHTML = `<strong>ถาม:</strong> ${item.q}<br><strong>ตอบ:</strong> ${item.a}`;
-        log.appendChild(card);
-      });
-    }
-
-    // ===== Dashboard / Database =====
-    function updateUserSummary(){
-      const el = document.getElementById("userSummary");
-      if(!el) return;
-      const total = store.users.length;
-      const pending = store.users.filter(u => u.status === "pending").length;
-      const approved = store.users.filter(u => u.status === "approved").length;
-      el.innerText = `รวมผู้ใช้: ${total} • รออนุมัติ: ${pending} • อนุมัติแล้ว: ${approved}`;
-    }
-
-    function renderDbTable(){
-      const tbody = document.getElementById("dbTable");
-      if(!tbody) return;
-      tbody.innerHTML = "";
-      store.users.forEach(u => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td>${u.fullname || (u.firstName || "") + " " + (u.lastName || "")}</td>
-          <td>${u.email}</td>
-          <td><span class="status ${
-            u.status === "approved" ? "status-approved" :
-            u.status === "rejected" ? "status-rejected" : "status-pending"
-          }">${u.status}</span></td>
-        `;
-        tbody.appendChild(tr);
-      });
-    }
-
-    const dbForm = document.getElementById("dbForm");
-    if(dbForm){
-      dbForm.addEventListener("submit", function(e){
-        e.preventDefault();
-        if(!confirm("คุณต้องการยืนยันการส่งข้อมูลใช่หรือไม่?")) return;
-
-        const name = document.getElementById("dbName").value.trim();
-        const email = document.getElementById("dbEmail").value.trim();
-        const status = document.getElementById("dbStatus").value.trim() || "pending";
-        const msgEl = document.getElementById("dbMsg");
-
-        msgEl.textContent = "";
-
-        if(!name || !email){
-          msgEl.textContent = "กรุณากรอกข้อมูลให้ครบถ้วน";
-          return;
-        }
-
-        let user = store.users.find(u => u.email === email);
-        if(user){
-          user.fullname = name;
-          user.status = status;
-        }else{
-          user = {
-            id: "manual-" + Date.now(),
-            firstName: name,
-            lastName: "",
-            fullname: name,
-            citizenId:"",
-            govId:"",
-            position:"เพิ่มจากหน้า index",
-            email,
-            phone:"",
-            password:"",
-            status,
-            role:"user",
-            createdAt:new Date().toISOString()
-          };
-          store.users.push(user);
-        }
-
-        saveUsersToStorage(store.users);
-        msgEl.textContent = "✅ บันทึกข้อมูลผู้ใช้แล้ว (เดโม)";
-        renderDbTable();
-        updateUserSummary();
-        renderSparkline();
-      });
-    }
-
-    function renderSparkline(){
-      const svg = document.getElementById("statusSparkline");
-      if(!svg) return;
-      const approved = store.users.filter(u => u.status === "approved").length;
-      const pending = store.users.filter(u => u.status === "pending").length;
-      const rejected = store.users.filter(u => u.status === "rejected").length;
-      let points = [approved, pending, rejected];
-      if(points.every(v => v === 0)){
-        points = [1,1,1];
-      }
-      const max = Math.max(...points) || 1;
-      const paddingX = 5;
-      const paddingY = 5;
-      const width = 100;
-      const height = 40;
-      const innerH = height - paddingY * 2;
-      const stepX = (width - paddingX * 2) / (points.length - 1 || 1);
-
-      let d = "";
-      points.forEach((v, i) => {
-        const x = paddingX + stepX * i;
-        const ratio = v / max;
-        const y = height - paddingY - ratio * innerH;
-        d += (i === 0 ? "M" : " L") + x + "," + y;
-      });
-
-      svg.innerHTML = `
-        <defs>
-          <linearGradient id="sparkLineGrad" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stop-color="#f48fb1"/>
-            <stop offset="100%" stop-color="#42a5f5"/>
-          </linearGradient>
-          <linearGradient id="sparkFillGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="rgba(244,143,177,0.45)"/>
-            <stop offset="100%" stop-color="rgba(6,8,24,0.0)"/>
-          </linearGradient>
-        </defs>
-        <path d="${d}"
-              fill="none"
-              stroke="url(#sparkLineGrad)"
-              stroke-width="1.8"
-              stroke-linejoin="round"
-              stroke-linecap="round"/>
-        <path d="${d} L ${paddingX + stepX * (points.length - 1)},${height - paddingY}
-                 L ${paddingX},${height - paddingY} Z"
-              fill="url(#sparkFillGrad)"
-              opacity="0.45"/>
-        ${points.map((v,i)=>{
-          const x = paddingX + stepX * i;
-          const ratio = v / max;
-          const y = height - paddingY - ratio * innerH;
-          return `<circle cx="${x}" cy="${y}" r="1.6" fill="#ffffff"/>`;
-        }).join("")}
-      `;
-    }
-
-    // init
-    updateCurrentUserBadge();
-    updateUserSummary();
-    renderDbTable();
-    renderSparkline();
-  </script>
 </body>
 </html>
