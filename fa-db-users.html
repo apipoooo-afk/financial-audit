@@ -1,1 +1,463 @@
 
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>FA DB | ข้อมูลผู้ลงทะเบียนเข้าใช้งาน</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    --bg:#060818;
+    --card:#11152b;
+    --muted:#a3acc7;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Segoe UI",Arial,sans-serif;
+    background:var(--bg);
+    color:#fff;
+  }
+  header{
+    padding:18px 10px;
+    text-align:center;
+    background:linear-gradient(120deg,#0d47a1,#20c997);
+    box-shadow:0 4px 14px rgba(0,0,0,.6);
+  }
+  header h1{margin:0;font-size:22px;font-weight:800;}
+  header p{margin:4px 0 0;font-size:13px;color:var(--muted);}
+  .wrap{max-width:1100px;margin:18px auto 30px;padding:0 16px;}
+
+  .top-row{
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:8px;
+    font-size:13px;
+    color:var(--muted);
+    margin-bottom:10px;
+  }
+  .stat-box span{margin-right:10px;}
+
+  .card{
+    background:var(--card);
+    border-radius:16px;
+    border:1px solid rgba(255,255,255,.14);
+    padding:14px 14px 12px;
+    margin-bottom:14px;
+    box-shadow:0 8px 20px rgba(0,0,0,.55);
+  }
+  h2{margin:0 0 8px;font-size:18px;}
+  .muted{font-size:12px;color:var(--muted);}
+
+  .summary-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:10px;
+    margin-top:8px;
+  }
+  .summary-item{
+    padding:8px 10px;
+    border-radius:12px;
+    background:rgba(15,23,42,.9);
+    border:1px solid rgba(148,163,184,.45);
+    font-size:12px;
+  }
+  .summary-item strong{font-size:18px;display:block;margin-bottom:2px;}
+
+  table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:12px;
+    margin-top:6px;
+  }
+  th,td{
+    border:1px solid rgba(148,163,184,.4);
+    padding:6px 5px;
+    vertical-align:top;
+  }
+  th{
+    background:#020617;
+    font-weight:600;
+    position:sticky;
+    top:0;
+    z-index:1;
+  }
+  tr:nth-child(even){background:rgba(15,23,42,.8);}
+
+  .btn-row{
+    margin-top:8px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    align-items:center;
+  }
+  button,.nav-btn{
+    border:none;
+    border-radius:999px;
+    padding:7px 12px;
+    font-size:12px;
+    cursor:pointer;
+  }
+  .btn-secondary{background:#374151;color:#e5e7eb;}
+  .btn-danger{background:#b91c1c;color:#fff;}
+
+  a.nav{
+    display:inline-block;
+    margin-top:10px;
+    margin-right:8px;
+    color:#e0e7ff;
+    text-decoration:none;
+    font-size:13px;
+  }
+
+  @media(max-width:720px){
+    th,td{font-size:11px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>👥 FA DB – ข้อมูลผู้ลงทะเบียนเข้าใช้งาน</h1>
+  <p>Registered Users & Requests (จากระบบ Login: fas-users / fas-requests)</p>
+</header>
+
+<div class="wrap">
+
+  <div class="top-row">
+    <div>ผู้ใช้งาน (session): <strong id="userEmail">-</strong></div>
+    <div class="stat-box">
+      👁 รอบนี้: <strong id="statCurrent">0</strong>
+      🔄 สะสม: <strong id="statTotal">0</strong>
+    </div>
+  </div>
+
+  <!-- สรุปภาพรวม -->
+  <div class="card">
+    <h2>ภาพรวมผู้ใช้ในระบบ</h2>
+    <p class="muted">
+      ข้อมูลในส่วนนี้ดึงจาก <code>localStorage["fas-users"]</code> ที่ใช้ร่วมกับหน้า <code>login.html</code><br>
+      * การแก้ไขสิทธิ์/อนุมัติ/เปลี่ยนรหัส ให้ทำในหน้า <strong>admin.html</strong> เท่านั้น (หน้านี้เน้นดูข้อมูลและ Export เพื่อวิเคราะห์)
+    </p>
+
+    <div class="summary-grid">
+      <div class="summary-item">
+        <span>ผู้ใช้ทั้งหมด (ทุกสถานะ)</span>
+        <strong id="sumTotalUsers">0</strong>
+      </div>
+      <div class="summary-item">
+        <span>อนุมัติแล้ว (status=approved)</span>
+        <strong id="sumApproved">0</strong>
+      </div>
+      <div class="summary-item">
+        <span>รออนุมัติ (status=pending)</span>
+        <strong id="sumPending">0</strong>
+      </div>
+      <div class="summary-item">
+        <span>Super Admin / Admin / Admin1</span>
+        <strong id="sumAdmins">0</strong>
+      </div>
+      <div class="summary-item">
+        <span>ผู้ใช้ทั่วไป (role=user)</span>
+        <strong id="sumUsers">0</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- ตารางผู้ใช้ -->
+  <div class="card">
+    <h2>ตารางข้อมูลผู้ใช้ (fas-users)</h2>
+    <p class="muted">
+      แสดงรายละเอียดผู้ใช้ทั้งหมดจากระบบ Login ปัจจุบัน • ใช้เพื่อวิเคราะห์/ตรวจสอบผู้มีสิทธิ์เข้าใช้งานระบบต่าง ๆ
+    </p>
+
+    <div class="btn-row">
+      <button type="button" class="btn-secondary" id="btnExportUsers">📤 Export Users CSV</button>
+      <span class="muted">หัวตาราง CSV: id,firstName,lastName,fullname,citizenId,govId,position,email,phone,status,role,createdAt</span>
+    </div>
+
+    <div style="max-height:320px;overflow:auto;margin-top:6px;">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>ชื่อ-สกุล</th>
+            <th>อีเมล</th>
+            <th>ตำแหน่ง</th>
+            <th>เลขบัตร ปชช./ข้าราชการ</th>
+            <th>เบอร์โทร</th>
+            <th>สถานะ (status)</th>
+            <th>บทบาท (role)</th>
+            <th>สร้างเมื่อ</th>
+          </tr>
+        </thead>
+        <tbody id="userBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ตารางคำขอลงทะเบียน / ลืมรหัส -->
+  <div class="card">
+    <h2>คำขอลงทะเบียน / ลืมรหัส (fas-requests)</h2>
+    <p class="muted">
+      ดึงจาก <code>localStorage["fas-requests"]</code> ที่ถูกบันทึกจากหน้า <code>login.html</code><br>
+      type = <code>register</code> (ลงทะเบียนใหม่), <code>reset-password</code> (ลืมรหัสผ่าน)
+    </p>
+
+    <div class="btn-row">
+      <button type="button" class="btn-secondary" id="btnExportRequests">📤 Export Requests CSV</button>
+      <span class="muted">หัวตาราง CSV: id,type,email,status,createdAt,extra</span>
+    </div>
+
+    <div style="max-height:260px;overflow:auto;margin-top:6px;">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>ประเภทคำขอ</th>
+            <th>อีเมล</th>
+            <th>รายละเอียดเพิ่มเติม</th>
+            <th>สถานะคำขอ</th>
+            <th>วันที่บันทึก</th>
+          </tr>
+        </thead>
+        <tbody id="reqBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <a href="fa-database-menu.html" class="nav">⬅ กลับเมนูฐานข้อมูล</a>
+  <a href="index.html" class="nav">⬅ กลับหน้าแรก</a>
+
+</div>
+
+<script>
+/* ========== CONFIG ========== */
+const MODULE_KEY   = "users";
+const TOTAL_KEY    = "fa-db-total-" + MODULE_KEY;
+const SESSION_KEY  = "fa-db-session-" + MODULE_KEY;
+
+/* ========== SESSION CHECK ========== */
+function checkSession(){
+  const raw = localStorage.getItem("fas-session");
+  if(!raw){
+    location.href = "fa-database-login.html";
+    return;
+  }
+  try{
+    const s = JSON.parse(raw);
+    if(Date.now() > s.expiresAt){
+      localStorage.removeItem("fas-session");
+      location.href = "fa-database-login.html";
+      return;
+    }
+    document.getElementById("userEmail").textContent = s.email || "-";
+  }catch{
+    location.href = "fa-database-login.html";
+  }
+}
+
+/* ========== MENU STATS ========== */
+function updateStatsOnLoad(){
+  const total = Number(localStorage.getItem(TOTAL_KEY) || "0") + 1;
+  const curr  = Number(sessionStorage.getItem(SESSION_KEY) || "0") + 1;
+  localStorage.setItem(TOTAL_KEY, String(total));
+  sessionStorage.setItem(SESSION_KEY, String(curr));
+  document.getElementById("statTotal").textContent   = total;
+  document.getElementById("statCurrent").textContent = curr;
+}
+
+/* ========== LOAD DATA FROM LOGIN SYSTEM ========== */
+let users = [];
+let requests = [];
+
+function loadUsers(){
+  try{
+    const raw = localStorage.getItem("fas-users");
+    users = raw ? JSON.parse(raw) : [];
+    if(!Array.isArray(users)) users = [];
+  }catch{
+    users = [];
+  }
+}
+function loadRequests(){
+  try{
+    const raw = localStorage.getItem("fas-requests");
+    requests = raw ? JSON.parse(raw) : [];
+    if(!Array.isArray(requests)) requests = [];
+  }catch{
+    requests = [];
+  }
+}
+
+/* ========== SUMMARY ========== */
+function renderSummary(){
+  const total = users.length;
+  const approved = users.filter(u => u.status === "approved").length;
+  const pending  = users.filter(u => u.status === "pending").length;
+  const admins   = users.filter(u => ["super_admin","admin","admin1"].includes(u.role)).length;
+  const normal   = users.filter(u => u.role === "user").length;
+
+  document.getElementById("sumTotalUsers").textContent = total;
+  document.getElementById("sumApproved").textContent   = approved;
+  document.getElementById("sumPending").textContent    = pending;
+  document.getElementById("sumAdmins").textContent     = admins;
+  document.getElementById("sumUsers").textContent      = normal;
+}
+
+/* ========== RENDER USERS TABLE ========== */
+function renderUsersTable(){
+  const tbody = document.getElementById("userBody");
+  tbody.innerHTML = "";
+
+  users.forEach((u, idx) => {
+    const tr = document.createElement("tr");
+    const fullName = u.fullname || ((u.firstName||"") + " " + (u.lastName||"")).trim();
+    const citizenStr = (u.citizenId||"") + (u.govId ? " / " + u.govId : "");
+    const created = u.createdAt ? new Date(u.createdAt).toLocaleString("th-TH") : "";
+
+    tr.innerHTML = `
+      <td>${idx+1}</td>
+      <td>${fullName || "-"}</td>
+      <td>${u.email || "-"}</td>
+      <td>${u.position || "-"}</td>
+      <td>${citizenStr || "-"}</td>
+      <td>${u.phone || "-"}</td>
+      <td>${u.status || "-"}</td>
+      <td>${u.role || "-"}</td>
+      <td>${created}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  if(users.length === 0){
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td colspan="9" style="text-align:center;color:#9ca3af;">ไม่มีข้อมูลผู้ใช้ใน fas-users</td>`;
+    tbody.appendChild(tr);
+  }
+}
+
+/* ========== RENDER REQUESTS TABLE ========== */
+function renderRequestsTable(){
+  const tbody = document.getElementById("reqBody");
+  tbody.innerHTML = "";
+
+  requests.forEach((r, idx) => {
+    const created = r.createdAt ? new Date(r.createdAt).toLocaleString("th-TH") : "";
+    let typeName = r.type || "-";
+    if(typeName === "register") typeName = "ลงทะเบียนใหม่ (register)";
+    else if(typeName === "reset-password") typeName = "ลืมรหัสผ่าน (reset-password)";
+
+    let extra = "";
+    if(r.type === "register" && r.payload){
+      extra = `ชื่อ:${r.payload.firstName||""} ${r.payload.lastName||""} ` +
+              `ตำแหน่ง:${r.payload.position||""} โทร:${r.payload.phone||""}`;
+    }else if(r.type === "reset-password"){
+      extra = "คำขอลืมรหัสผ่าน (มี requestedPassword ใน fas-requests)";
+    }
+
+    const status = r.status || "pending";
+
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${idx+1}</td>
+      <td>${typeName}</td>
+      <td>${r.email || "-"}</td>
+      <td>${extra || "-"}</td>
+      <td>${status}</td>
+      <td>${created}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  if(requests.length === 0){
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td colspan="6" style="text-align:center;color:#9ca3af;">ยังไม่มีคำขอใน fas-requests</td>`;
+    tbody.appendChild(tr);
+  }
+}
+
+/* ========== EXPORT USERS CSV ========== */
+function usersToCSV(){
+  const header = ["id","firstName","lastName","fullname","citizenId","govId","position","email","phone","status","role","createdAt"];
+  const lines = [header.join(",")];
+
+  users.forEach(u=>{
+    const row = header.map(k=>{
+      const v = (u[k] || "").toString().replace(/"/g,'""');
+      return `"${v}"`;
+    });
+    lines.push(row.join(","));
+  });
+  return lines.join("\r\n");
+}
+
+document.getElementById("btnExportUsers").addEventListener("click", ()=>{
+  const csv = usersToCSV();
+  const blob = new Blob([csv], {type:"text/csv;charset=utf-8;"});
+  const url  = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "fa-db-users-from-fas-users.csv";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+});
+
+/* ========== EXPORT REQUESTS CSV ========== */
+function requestsToCSV(){
+  const header = ["id","type","email","status","createdAt","extra"];
+  const lines = [header.join(",")];
+
+  requests.forEach(r=>{
+    let extra = "";
+    if(r.type === "register" && r.payload){
+      extra = `firstName=${r.payload.firstName||""};lastName=${r.payload.lastName||""};position=${r.payload.position||""};phone=${r.payload.phone||""}`;
+    }else if(r.type === "reset-password"){
+      extra = "reset-password request";
+    }
+    const obj = {
+      id:r.id||"",
+      type:r.type||"",
+      email:r.email||"",
+      status:r.status||"",
+      createdAt:r.createdAt||"",
+      extra:extra
+    };
+    const row = header.map(k=>{
+      const v = (obj[k] || "").toString().replace(/"/g,'""');
+      return `"${v}"`;
+    });
+    lines.push(row.join(","));
+  });
+
+  return lines.join("\r\n");
+}
+
+document.getElementById("btnExportRequests").addEventListener("click", ()=>{
+  const csv = requestsToCSV();
+  const blob = new Blob([csv], {type:"text/csv;charset=utf-8;"});
+  const url  = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "fa-db-users-requests.csv";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+});
+
+/* ========== INIT ========== */
+checkSession();
+updateStatsOnLoad();
+loadUsers();
+loadRequests();
+renderSummary();
+renderUsersTable();
+renderRequestsTable();
+</script>
+
+</body>
+</html>
