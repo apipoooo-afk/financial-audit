@@ -5,82 +5,195 @@
 <title>FA Database Menu</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
-  body{font-family:"Segoe UI";margin:0;background:#060818;color:#fff;}
-  header{
-    padding:20px;text-align:center;
-    background:linear-gradient(120deg,#0d47a1,#6f42c1,#20c997);
+  :root{
+    --bg:#060818;
+    --card:#11152b;
+    --muted:#a3acc7;
   }
-  .wrap{max-width:900px;margin:20px auto;padding:0 16px;}
+  *{box-sizing:border-box;}
+  body{font-family:"Segoe UI",Arial;margin:0;background:var(--bg);color:#fff;}
+  header{
+    padding:20px 10px;
+    text-align:center;
+    background:linear-gradient(120deg,#0d47a1,#6f42c1,#20c997);
+    box-shadow:0 4px 14px rgba(0,0,0,.6);
+  }
+  header h1{margin:0;font-size:24px;font-weight:800;}
+  header p{margin:4px 0 0;font-size:13px;color:var(--muted);}
+  .wrap{max-width:1000px;margin:20px auto 30px;padding:0 16px;}
+  .top-info{
+    display:flex;justify-content:space-between;flex-wrap:wrap;
+    gap:10px;font-size:13px;color:var(--muted);margin-bottom:10px;
+  }
+  .top-info strong{color:#fff;}
   .grid{
-    display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
     gap:16px;
   }
   .item{
-    background:#11152b;border-radius:16px;padding:18px;
-    cursor:pointer;transition:.1s;border:1px solid rgba(255,255,255,.1);
+    background:var(--card);
+    border-radius:16px;
+    padding:14px 14px 12px;
+    text-decoration:none;
+    color:#fff;
+    border:1px solid rgba(255,255,255,.12);
+    box-shadow:0 8px 20px rgba(0,0,0,.55);
+    display:flex;
+    flex-direction:column;
+    gap:4px;
   }
   .item:hover{
-    transform:translateY(-3px);
     border-color:#20c997;
+    transform:translateY(-2px);
+    transition:.1s;
   }
-  .stats{font-size:12px;margin-top:10px;color:#bbb;}
-  a.back{display:block;margin-top:20px;color:#ccc;text-align:center;text-decoration:none;}
+  .item-title{font-size:15px;font-weight:700;}
+  .item-sub{font-size:12px;color:var(--muted);}
+  .stats{font-size:12px;margin-top:6px;color:#e0e7ff;}
+  .stats span{margin-right:12px;}
+  a.back{
+    display:block;margin-top:20px;text-align:center;
+    color:#e0e0ff;text-decoration:none;font-size:14px;
+  }
 </style>
 </head>
 <body>
 
 <header>
   <h1>🗄 FA Database Center</h1>
+  <p>ศูนย์รวมฐานข้อมูลเพื่องานตรวจสอบการเงิน OAG</p>
 </header>
 
 <div class="wrap">
 
-<h2>เมนูฐานข้อมูล</h2>
+  <div class="top-info">
+    <div>ผู้ใช้งาน: <strong id="userEmail">-</strong></div>
+    <div>Session: <span id="sessionInfo">-</span></div>
+  </div>
 
-<div class="grid">
+  <div class="grid">
+    <a class="item" href="fa-db-local.html" data-key="local">
+      <div class="item-title">🏘️ ข้อมูล อปท.</div>
+      <div class="item-sub">Local Government Entities</div>
+      <div class="stats">
+        <span>👁 รอบนี้: <strong class="s-current">0</strong></span>
+        <span>🔄 สะสม: <strong class="s-total">0</strong></span>
+      </div>
+    </a>
 
-  <a class="item" href="fa-db-local.html">🏘️ ข้อมูล อปท.
-    <div class="stats">สถิติการใช้งาน</div>
-  </a>
+    <a class="item" href="fa-db-gov.html" data-key="gov">
+      <div class="item-title">🏛️ ข้อมูลส่วนราชการ</div>
+      <div class="item-sub">Central Government Agencies</div>
+      <div class="stats">
+        <span>👁 รอบนี้: <strong class="s-current">0</strong></span>
+        <span>🔄 สะสม: <strong class="s-total">0</strong></span>
+      </div>
+    </a>
 
-  <a class="item" href="fa-db-gov.html">🏛️ ข้อมูลส่วนราชการ
-    <div class="stats"></div>
-  </a>
+    <a class="item" href="fa-db-law.html" data-key="law">
+      <div class="item-title">📚 กฎหมาย ระเบียบ คำสั่ง</div>
+      <div class="item-sub">Laws & Regulations</div>
+      <div class="stats">
+        <span>👁 รอบนี้: <strong class="s-current">0</strong></span>
+        <span>🔄 สะสม: <strong class="s-total">0</strong></span>
+      </div>
+    </a>
 
-  <a class="item" href="fa-db-law.html">📚 กฎหมาย/ระเบียบ</a>
+    <a class="item" href="fa-db-report.html" data-key="report">
+      <div class="item-title">📑 รายงานการตรวจสอบการเงิน</div>
+      <div class="item-sub">Financial Audit Reports</div>
+      <div class="stats">
+        <span>👁 รอบนี้: <strong class="s-current">0</strong></span>
+        <span>🔄 สะสม: <strong class="s-total">0</strong></span>
+      </div>
+    </a>
 
-  <a class="item" href="fa-db-report.html">📑 รายงานการตรวจสอบ</a>
+    <a class="item" href="fa-db-users.html" data-key="users">
+      <div class="item-title">👥 ข้อมูลผู้ลงทะเบียนเข้าใช้งาน</div>
+      <div class="item-sub">Registered Users (Analytical)</div>
+      <div class="stats">
+        <span>👁 รอบนี้: <strong class="s-current">0</strong></span>
+        <span>🔄 สะสม: <strong class="s-total">0</strong></span>
+      </div>
+    </a>
 
-  <a class="item" href="fa-db-users.html">👥 ผู้ลงทะเบียน</a>
+    <a class="item" href="fa-db-adminreq.html" data-key="adminreq">
+      <div class="item-title">🛡️ ผู้ขอเป็น Admin และการอนุมัติ</div>
+      <div class="item-sub">Admin Requests & Approvals</div>
+      <div class="stats">
+        <span>👁 รอบนี้: <strong class="s-current">0</strong></span>
+        <span>🔄 สะสม: <strong class="s-total">0</strong></span>
+      </div>
+    </a>
 
-  <a class="item" href="fa-db-adminreq.html">🛡️ ผู้ขอเป็นแอดมิน</a>
+    <a class="item" href="fa-db-complaint.html" data-key="complaint">
+      <div class="item-title">🚨 การร้องเรียนทุจริต ฉ้อโกง ยักยอก</div>
+      <div class="item-sub">Fraud & Misconduct Complaints</div>
+      <div class="stats">
+        <span>👁 รอบนี้: <strong class="s-current">0</strong></span>
+        <span>🔄 สะสม: <strong class="s-total">0</strong></span>
+      </div>
+    </a>
 
-  <a class="item" href="fa-db-complaint.html">🚨 ร้องเรียนทุจริต</a>
+    <a class="item" href="fa-db-finance.html" data-key="finance">
+      <div class="item-title">📊 รายงานการเงิน (เชื่อม FA)</div>
+      <div class="item-sub">Financial Statements</div>
+      <div class="stats">
+        <span>👁 รอบนี้: <strong class="s-current">0</strong></span>
+        <span>🔄 สะสม: <strong class="s-total">0</strong></span>
+      </div>
+    </a>
 
-  <a class="item" href="fa-db-finance.html">📊 รายงานการเงิน</a>
+    <a class="item" href="fa-db-wp.html" data-key="wp">
+      <div class="item-title">🧾 กระดาษทำการ FA</div>
+      <div class="item-sub">Working Papers</div>
+      <div class="stats">
+        <span>👁 รอบนี้: <strong class="s-current">0</strong></span>
+        <span>🔄 สะสม: <strong class="s-total">0</strong></span>
+      </div>
+    </a>
 
-  <a class="item" href="fa-db-wp.html">🧾 กระดาษทำการ FA</a>
+    <a class="item" href="fa-db-other.html" data-key="other">
+      <div class="item-title">📂 ข้อมูลอื่น ๆ</div>
+      <div class="item-sub">Other Data</div>
+      <div class="stats">
+        <span>👁 รอบนี้: <strong class="s-current">0</strong></span>
+        <span>🔄 สะสม: <strong class="s-total">0</strong></span>
+      </div>
+    </a>
+  </div>
 
-  <a class="item" href="fa-db-other.html">📂 ข้อมูลอื่นๆ</a>
-
-</div>
-
-<a href="index.html" class="back">⬅ กลับหน้าแรก</a>
+  <a href="index.html" class="back">⬅ กลับหน้าแรก</a>
 
 </div>
 
 <script>
 function checkSession(){
-  let raw=localStorage.getItem("fas-session");
+  let raw = localStorage.getItem("fas-session");
   if(!raw){ location.href="fa-database-login.html"; return; }
-  let s=JSON.parse(raw);
-  if(Date.now()>s.expiresAt){
-    localStorage.removeItem("fas-session");
+  try{
+    const s = JSON.parse(raw);
+    if(Date.now()>s.expiresAt){
+      localStorage.removeItem("fas-session");
+      location.href="fa-database-login.html";
+      return;
+    }
+    document.getElementById("userEmail").textContent = s.email || "-";
+    document.getElementById("sessionInfo").textContent =
+      "หมดอายุ " + new Date(s.expiresAt).toLocaleString("th-TH");
+  }catch{
     location.href="fa-database-login.html";
   }
 }
 checkSession();
-</script>
 
-</body>
-</html>
+/* โหลดสถิติของแต่ละหมวดจาก localStorage/sessionStorage */
+const cards = document.querySelectorAll(".item");
+cards.forEach(card=>{
+  const key = card.getAttribute("data-key");
+  if(!key) return;
+  const totalKey = "fa-db-total-" + key;
+  const currKey  = "fa-db-session-" + key;
+
+  const total = Number(localS
