@@ -7,16 +7,20 @@
 
   <style>
     *{box-sizing:border-box;}
+
     body {
       margin: 0;
       font-family: "Segoe UI", Tahoma, sans-serif;
       background: #060818;
       color: #f5f7ff;
+
+      /* เพิ่มขนาดตัวอักษร 20% */
+      font-size: 120%;
     }
 
     /* Header */
     header {
-      padding: 18px 10px;
+      padding: 20px 10px;
       text-align: center;
       background: linear-gradient(120deg, #7b1e3c, #0d47a1, #f48fb1);
       color: #fff;
@@ -25,34 +29,50 @@
     }
     header h1 {
       margin: 0;
-      font-size: 26px;
+      font-size: 32px;
       font-weight: 800;
     }
     header h3 {
       margin: 4px 0 0;
-      font-size: 14px;
+      font-size: 18px;
       opacity: 0.9;
     }
-    .subline{
-      font-size:12px;
-      opacity:.8;
-      margin-top:2px;
+
+    /* ปุ่มกลับหน้าแรก */
+    .back-home {
+      display: inline-block;
+      margin: 20px auto;
+      padding: 10px 18px;
+      background: rgba(255,255,255,0.12);
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.2);
+      text-decoration: none;
+      color: #fff;
+      font-size: 18px;
+      font-weight: 700;
+      display: flex;
+      align-items:center;
+      gap:10px;
+      width: fit-content;
+    }
+    .back-home:hover {
+      background: rgba(255,255,255,0.22);
     }
 
     .menu-wrapper {
       max-width: 900px;
-      margin: 32px auto;
-      padding: 0 18px 40px;
+      margin: 10px auto 50px;
+      padding: 0 18px;
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 20px;
+      gap: 22px;
     }
 
     .menu-box {
       display: flex;
       align-items: center;
       gap: 14px;
-      padding: 18px 18px;
+      padding: 20px 20px;
       border-radius: 18px;
       text-decoration: none;
       color: #fff;
@@ -67,65 +87,49 @@
     }
 
     .menu-lg-annual{
-      background: radial-gradient(circle at 0 0, rgba(66,165,245,0.35) 0, transparent 55%),
+      background: radial-gradient(circle at 0 0, rgba(66,165,245,0.45) 0, transparent 55%),
                   #101632;
     }
     .menu-lg-mid{
-      background: radial-gradient(circle at 100% 0, rgba(76,175,80,0.35) 0, transparent 55%),
+      background: radial-gradient(circle at 100% 0, rgba(76,175,80,0.45) 0, transparent 55%),
                   #10231f;
     }
     .menu-gov-annual{
-      background: radial-gradient(circle at 0 100%, rgba(255,202,40,0.4) 0, transparent 55%),
+      background: radial-gradient(circle at 0 100%, rgba(255,202,40,0.55) 0, transparent 55%),
                   #2a1b0f;
     }
     .menu-gov-interim{
-      background: radial-gradient(circle at 100% 100%, rgba(244,143,177,0.4) 0, transparent 55%),
+      background: radial-gradient(circle at 100% 100%, rgba(244,143,177,0.5) 0, transparent 55%),
                   #29142a;
     }
 
     .menu-icon {
-      width: 40px;
-      height: 40px;
+      width: 46px;
+      height: 46px;
       border-radius: 10px;
-      background: rgba(0,0,0,0.28);
+      background: rgba(0,0,0,0.33);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 20px;
-      font-weight: bold;
-      color: #fff;
+      font-size: 26px;
       flex-shrink: 0;
     }
 
     .menu-text {
-      font-size: 14px;
+      font-size: 18px;
       line-height: 1.45;
-    }
-    .menu-text strong{
-      font-size:15px;
     }
     .menu-text small {
       display: block;
-      margin-top: 3px;
+      margin-top: 4px;
       opacity: 0.85;
-      font-size: 12px;
+      font-size: 14px;
     }
-
-    .info-bar{
-      max-width:900px;
-      margin:0 auto 18px;
-      padding:0 18px;
-      font-size:13px;
-      color:#a3acc7;
-    }
-
-    @media (max-width: 620px) {
-      .menu-wrapper {
-        grid-template-columns: 1fr;
-      }
-      header h1 {
-        font-size: 24px;
-      }
+    .stats {
+      margin-top: 6px;
+      font-size: 14px;
+      color: #ffd;
+      opacity: 0.9;
     }
   </style>
 </head>
@@ -134,103 +138,107 @@
 
 <header>
   <h1>📂 Financial Audit System</h1>
-  <h3>Main Menu – เมนูหลักของระบบตรวจสอบการเงิน</h3>
-  <div class="subline" id="userLine"></div>
+  <h3>Main Menu – ระบบตรวจสอบการเงิน</h3>
 </header>
 
-<div class="info-bar">
-  เลือกโมดูลที่ต้องการตรวจสอบ หากต้องการเปลี่ยนบัญชีเข้าใช้งาน กรุณาออกจากระบบแล้ว Login ใหม่จากหน้า <code>fa-login.html</code>
+<!-- ปุ่มกลับหน้าแรก -->
+<div style="text-align:center;">
+  <a href="index.html" class="back-home">⬅ กลับหน้าแรก (Home)</a>
 </div>
 
 <div class="menu-wrapper">
 
-  <a href="fa-lg-annual.html" class="menu-box menu-lg-annual">
+  <!-- 1 -->
+  <a href="fa-lg-annual.html" class="menu-box menu-lg-annual" onclick="track('lgAnnual')">
     <div class="menu-icon">🏛️</div>
     <div class="menu-text">
-      <strong>ระบบตรวจสอบการเงินประจำปี ของ อปท.</strong>
-      <small>Annual Financial Audit – Local Government</small>
+      ระบบตรวจสอบการเงินประจำปี ของ อปท.
+      <small>Annual Audit – Local Government</small>
+      <div class="stats" id="lgAnnualStats"></div>
     </div>
   </a>
 
-  <a href="fa-lg-midyear.html" class="menu-box menu-lg-mid">
+  <!-- 2 -->
+  <a href="fa-lg-midyear.html" class="menu-box menu-lg-mid" onclick="track('lgMid')">
     <div class="menu-icon">📆</div>
     <div class="menu-text">
-      <strong>ระบบตรวจสอบการเงินระหว่างปี ของ อปท.</strong>
-      <small>Mid-Year Financial Audit – Local Government</small>
+      ระบบตรวจสอบการเงินระหว่างปี ของ อปท.
+      <small>Mid-Year Audit – Local Government</small>
+      <div class="stats" id="lgMidStats"></div>
     </div>
   </a>
 
-  <a href="fa-gov-annual.html" class="menu-box menu-gov-annual">
+  <!-- 3 -->
+  <a href="fa-gov-annual.html" class="menu-box menu-gov-annual" onclick="track('govAnnual')">
     <div class="menu-icon">🏢</div>
     <div class="menu-text">
-      <strong>ระบบตรวจสอบการเงินประจำปี ของ ส่วนราชการ</strong>
-      <small>Annual Financial Audit – Government Agencies</small>
+      ระบบตรวจสอบการเงินประจำปี ของ ส่วนราชการ
+      <small>Annual Audit – Gov Agencies</small>
+      <div class="stats" id="govAnnualStats"></div>
     </div>
   </a>
 
-  <a href="fa-gov-interim.html" class="menu-box menu-gov-interim">
+  <!-- 4 -->
+  <a href="fa-gov-interim.html" class="menu-box menu-gov-interim" onclick="track('govInterim')">
     <div class="menu-icon">⏱️</div>
     <div class="menu-text">
-      <strong>ระบบตรวจสอบการเงินระหว่างกาล ของ ส่วนราชการ</strong>
-      <small>Interim Financial Audit – Government Agencies</small>
+      ระบบตรวจสอบการเงินระหว่างกาล ของ ส่วนราชการ
+      <small>Interim Audit – Gov Agencies</small>
+      <div class="stats" id="govInterimStats"></div>
     </div>
   </a>
 
 </div>
 
 <script>
-  function loadSession(){
-    try{
-      const raw = localStorage.getItem("fas-session");
-      if(!raw) return null;
-      const sess = JSON.parse(raw);
-      if(!sess || !sess.email || !sess.expiresAt) return null;
-      if(Date.now() > sess.expiresAt){
-        localStorage.removeItem("fas-session");
-        return null;
-      }
-      return sess;
-    }catch(e){
-      console.warn("โหลด fas-session ไม่สำเร็จ", e);
-      return null;
-    }
-  }
+/* ระบบนับจำนวนผู้เข้าใช้งานของแต่ละระบบ */
 
-  function loadUsersFromStorage(){
-    try{
-      const raw = localStorage.getItem("fas-users");
-      if(!raw) return [];
-      const data = JSON.parse(raw);
-      return Array.isArray(data) ? data : [];
-    }catch(e){
-      return [];
-    }
-  }
+function initStats() {
+  const systems = ["lgAnnual","lgMid","govAnnual","govInterim"];
 
-  document.addEventListener("DOMContentLoaded", function(){
-    const sess = loadSession();
-    if(!sess){
-      alert("กรุณาเข้าสู่ระบบก่อนใช้งาน FA System");
-      window.location.href = "fa-login.html?reason=no-session";
-      return;
-    }
+  systems.forEach(sys => {
+    let data = JSON.parse(localStorage.getItem("fa_stats_" + sys) || "{}");
 
-    const users = loadUsersFromStorage();
-    const user = users.find(u => (u.email || "").toLowerCase() === (sess.email || "").toLowerCase());
+    // ถ้ายังไม่มีค่า → ตั้งค่าเริ่มต้น
+    if (!data.total) data.total = 0;
+    if (!data.active) data.active = 0;
 
-    const userLine = document.getElementById("userLine");
-    if(userLine){
-      if(user){
-        const roleText =
-          user.role === "super_admin" ? "Super Admin" :
-          user.role === "admin" ? "Admin" :
-          user.role === "admin1" ? "Admin1" : "User";
-        userLine.textContent = `ผู้ใช้ปัจจุบัน: ${user.fullname || user.email} • ${roleText}`;
-      }else{
-        userLine.textContent = `ผู้ใช้ปัจจุบัน: ${sess.email}`;
-      }
+    // แสดงบนหน้าจอ
+    const el = document.getElementById(sys + "Stats");
+    if (el) {
+      el.textContent = `Active: ${data.active} | Total: ${data.total}`;
     }
   });
+}
+
+/* เมื่อคลิกเมนู → บันทึกการเข้าใช้งาน */
+function track(sys) {
+  let data = JSON.parse(localStorage.getItem("fa_stats_" + sys) || "{}");
+
+  if (!data.total) data.total = 0;
+  if (!data.active) data.active = 0;
+
+  data.total += 1;
+  data.active += 1;
+
+  localStorage.setItem("fa_stats_" + sys, JSON.stringify(data));
+}
+
+/* เมื่อออกจากหน้าเมนู → active ลดลง */
+window.addEventListener("beforeunload", () => {
+  const systems = ["lgAnnual","lgMid","govAnnual","govInterim"];
+  systems.forEach(sys => {
+    let data = JSON.parse(localStorage.getItem("fa_stats_" + sys) || "{}");
+    if (data.active && data.active > 0) {
+      data.active -= 1;
+    }
+    localStorage.setItem("fa_stats_" + sys, JSON.stringify(data));
+  });
+});
+
+// เริ่มทำงาน
+initStats();
+
 </script>
 
 </body>
