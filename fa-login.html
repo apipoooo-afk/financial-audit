@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>FA Login | Financial Audit System</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    :root{
+      --bg:#060818;
+      --card:#11152b;
+      --border:#262b46;
+      --pink:#f48fb1;
+      --blue:#0d47a1;
+      --muted:#a3acc7;
+    }
+    *{box-sizing:border-box;}
+    body{
+      margin:0;
+      font-family:"Segoe UI",Tahoma,sans-serif;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(123,30,60,0.36) 0, transparent 55%),
+        radial-gradient(circle at 90% 100%, rgba(66,165,245,0.32) 0, transparent 55%),
+        var(--bg);
+      color:#f5f7ff;
+    }
+    header{
+      padding:18px 10px;
+      text-align:center;
+      background:linear-gradient(120deg,#7b1e3c,#0d47a1,#f48fb1);
+      box-shadow:0 6px 18px rgba(0,0,0,0.6);
+      border-bottom:1px solid rgba(255,255,255,0.12);
+    }
+    header h1{
+      margin:0;
+      font-size:26px;
+      font-weight:800;
+    }
+    header h3{
+      margin:4px 0 0;
+      font-size:14px;
+      opacity:.9;
+    }
+    .wrap{
+      max-width:480px;
+      margin:36px auto;
+      padding:0 16px;
+    }
+    .card{
+      background:var(--card);
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,0.12);
+      padding:20px 20px 22px;
+      box-shadow:0 10px 28px rgba(0,0,0,0.7);
+      /* ให้กล่องย่อ–ขยายได้ */
+      resize:both;
+      overflow:auto;
+      min-width:260px;
+      min-height:260px;
+    }
+    h2{
+      margin:0 0 4px;
+      font-size:22px;
+    }
+    .muted{
+      color:var(--muted);
+      font-size:14px;
+      margin:0 0 12px;
+    }
+    label{
+      display:block;
+      margin:10px 0 4px;
+      font-size:15px;
+      font-weight:600;
+    }
+    input[type="email"],
+    input[type="password"],
+    input[type="number"]{
+      width:100%;
+      padding:9px 11px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,0.12);
+      background:rgba(5,8,26,0.9);
+      color:#fff;
+      font-size:15px;
+      outline:none;
+    }
+    input:focus{
+      border-color:var(--pink);
+      box-shadow:0 0 0 1px rgba(244,143,177,0.4);
+    }
+    .row-remember{
+      margin-top:8px;
+      font-size:14px;
+    }
+    .row-remember input{
+      width:auto;
+      margin-right:6px;
+    }
+    .human-box{
+      margin-top:12px;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid rgba(66,165,245,0.5);
+      background:rgba(13,71,161,0.25);
+      font-size:14px;
+    }
+    .human-q{
+      font-weight:700;
+      margin-bottom:6px;
+    }
+    .btn-primary{
+      margin-top:14px;
+      width:100%;
+      padding:11px 16px;
+      border-radius:999px;
+      border:none;
+      cursor:pointer;
+      font-size:16px;
+      font-weight:800;
+      color:#fff;
+      background:linear-gradient(135deg,#f48fb1,#42a5f5);
+      box-shadow:0 6px 20px rgba(244,143,177,0.6);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+    }
+    .btn-primary:hover{
+      filter:brightness(1.05);
+      box-shadow:0 0 20px rgba(66,165,245,0.9);
+    }
+    .help{
+      margin-top:14px;
+      font-size:13px;
+      color:var(--muted);
+    }
+    .help a{
+      color:var(--pink);
+    }
+    .alert{
+      margin-top:10px;
+      padding:8px 10px;
+      border-radius:10px;
+      background:rgba(198,40,40,0.16);
+      border:1px solid rgba(198,40,40,0.7);
+      font-size:13px;
+      color:#ffb3b3;
+      display:none;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>🔐 Financial Audit – FA Login</h1>
+  <h3>เข้าสู่ระบบตรวจสอบการเงิน (FA System)</h3>
+</header>
+
+<div class="wrap">
+  <div class="card">
+    <h2>เข้าสู่ระบบตรวจสอบการเงิน</h2>
+    <p class="muted">
+      ใช้บัญชีที่ลงทะเบียนแล้วในระบบหลัก (หน้า <code>login.html</code>)<br>
+      หากยังไม่มีบัญชี ให้กลับไปลงทะเบียนก่อน
+    </p>
+
+    <div id="msgAlert" class="alert"></div>
+
+    <form id="faLoginForm">
+      <label for="faEmail">อีเมลที่ใช้ลงทะเบียน (Email)</label>
+      <input type="email" id="faEmail" required placeholder="เช่น apipoooo@gmail.com">
+
+      <label for="faPass">รหัสผ่าน (Password)</label>
+      <input type="password" id="faPass" required placeholder="กรอกรหัสผ่าน">
+
+      <div class="row-remember">
+        <label>
+          <input type="checkbox" id="rememberUser">
+          จำอีเมลผู้ใช้ (ไม่เกิน 3 เดือน)
+        </label>
+      </div>
+
+      <div class="human-box">
+        <div id="humanQ" class="human-q"></div>
+        <input type="number" id="humanA" placeholder="กรอกคำตอบเพื่อยืนยันว่าเป็นมนุษย์" required>
+        <div class="muted" style="margin-top:4px;">
+          ระบบนี้ใช้แบบทดสอบง่าย ๆ เพื่อป้องกันบอทอัตโนมัติ
+        </div>
+      </div>
+
+      <button type="submit" class="btn-primary">
+        ✅ เข้าสู่ระบบ FA System
+      </button>
+    </form>
+
+    <div class="help">
+      หาก Login ไม่ผ่าน ระบบจะพาคุณกลับไปหน้า
+      <a href="login.html#register-section">ลงทะเบียนผู้ใช้ในระบบหลัก</a>
+      เพื่อยืนยัน / สร้างบัญชีใหม่ก่อนใช้งาน FA System
+    </div>
+  </div>
+</div>
+
+<script>
+  // ==== Helper: โหลด / บันทึกผู้ใช้จาก fas-users ====
+  function loadUsersFromStorage(){
+    try{
+      const raw = localStorage.getItem("fas-users");
+      if(!raw) return [];
+      const data = JSON.parse(raw);
+      return Array.isArray(data) ? data : [];
+    }catch(e){
+      console.warn("โหลด fas-users ไม่สำเร็จ", e);
+      return [];
+    }
+  }
+
+  // ==== จำอีเมล 3 เดือน ====
+  const REMEMBER_KEY = "fa-remember-email";
+  function rememberEmail(email){
+    const threeMonthsMs = 90 * 24 * 60 * 60 * 1000;
+    const payload = { email, expiresAt: Date.now() + threeMonthsMs };
+    localStorage.setItem(REMEMBER_KEY, JSON.stringify(payload));
+  }
+  function loadRememberedEmail(){
+    try{
+      const raw = localStorage.getItem(REMEMBER_KEY);
+      if(!raw) return;
+      const data = JSON.parse(raw);
+      if(!data || !data.email || !data.expiresAt) return;
+      if(Date.now() > data.expiresAt){
+        localStorage.removeItem(REMEMBER_KEY);
+        return;
+      }
+      const emailInput = document.getElementById("faEmail");
+      const chk = document.getElementById("rememberUser");
+      if(emailInput) emailInput.value = data.email;
+      if(chk) chk.checked = true;
+    }catch(e){
+      console.warn("โหลด email ที่จำไว้ไม่สำเร็จ", e);
+    }
+  }
+
+  // ==== Session (fas-session) ====
+  function createSession(email){
+    // ให้ session อยู่ได้ 8 ชั่วโมง
+    const ttlMs = 8 * 60 * 60 * 1000;
+    const session = {
+      email,
+      loginAt: Date.now(),
+      expiresAt: Date.now() + ttlMs,
+      remember: true
+    };
+    localStorage.setItem("fas-session", JSON.stringify(session));
+  }
+
+  // ==== Human check ====
+  let humanCorrect = 0;
+  function genHumanQuestion(){
+    const a = Math.floor(Math.random()*9)+1;
+    const b = Math.floor(Math.random()*9)+1;
+    humanCorrect = a + b;
+    const qEl = document.getElementById("humanQ");
+    if(qEl){
+      qEl.textContent = `ยืนยันว่าเป็นมนุษย์: ${a} + ${b} = ?`;
+    }
+    const ansEl = document.getElementById("humanA");
+    if(ansEl) ansEl.value = "";
+  }
+
+  function showError(msg){
+    const box = document.getElementById("msgAlert");
+    if(!box) return;
+    box.textContent = msg;
+    box.style.display = "block";
+  }
+
+  document.addEventListener("DOMContentLoaded", function(){
+    genHumanQuestion();
+    loadRememberedEmail();
+
+    // ถ้าเข้าหน้านี้เพราะไม่มี session จาก fa-menu.html
+    if(window.location.search.indexOf("reason=no-session") !== -1){
+      showError("กรุณาเข้าสู่ระบบก่อนใช้งาน FA System");
+    }
+
+    const form = document.getElementById("faLoginForm");
+    form.addEventListener("submit", function(e){
+      e.preventDefault();
+      const email = (document.getElementById("faEmail").value || "").trim().toLowerCase();
+      const pass = (document.getElementById("faPass").value || "").trim();
+      const ans = (document.getElementById("humanA").value || "").trim();
+      const remember = document.getElementById("rememberUser").checked;
+
+      if(!email || !pass){
+        showError("กรุณากรอกอีเมลและรหัสผ่านให้ครบถ้วน");
+        return;
+      }
+      if(ans === "" || Number(ans) !== humanCorrect){
+        showError("คำตอบยืนยันความเป็นมนุษย์ไม่ถูกต้อง");
+        genHumanQuestion();
+        return;
+      }
+
+      const users = loadUsersFromStorage();
+      const user = users.find(u => (u.email || "").toLowerCase() === email);
+
+      if(!user){
+        alert("ไม่พบบัญชีผู้ใช้นี้ในระบบหลัก กรุณาลงทะเบียนใหม่");
+        window.location.href = "login.html#register-section";
+        return;
+      }
+
+      if(user.password !== pass){
+        alert("รหัสผ่านไม่ถูกต้อง กรุณาลองใหม่ หรือลงทะเบียนใหม่หากจำไม่ได้");
+        window.location.href = "login.html#register-section";
+        return;
+      }
+
+      if(user.status && user.status !== "approved"){
+        alert("บัญชีของคุณยังไม่ได้รับการอนุมัติ กรุณาตรวจสอบกับผู้ดูแลระบบ");
+        window.location.href = "login.html#register-section";
+        return;
+      }
+
+      // จำอีเมล (ไม่เกิน 3 เดือน)
+      if(remember){
+        rememberEmail(email);
+      }else{
+        localStorage.removeItem(REMEMBER_KEY);
+      }
+
+      // สร้าง session แล้วไปหน้าเมนู FA
+      createSession(email);
+      window.location.href = "fa-menu.html";
+    });
+  });
+</script>
+</body>
+</html>
