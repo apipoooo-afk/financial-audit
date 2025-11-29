@@ -39,7 +39,6 @@
       margin-top:2px;
     }
 
-    /* เมนูกลาง */
     .menu-wrapper {
       max-width: 900px;
       margin: 32px auto;
@@ -49,7 +48,6 @@
       gap: 20px;
     }
 
-    /* กล่องเมนู */
     .menu-box {
       display: flex;
       align-items: center;
@@ -68,7 +66,6 @@
       border-color: rgba(255,255,255,0.35);
     }
 
-    /* สีพื้นหลังแต่ละระบบ */
     .menu-lg-annual{
       background: radial-gradient(circle at 0 0, rgba(66,165,245,0.35) 0, transparent 55%),
                   #101632;
@@ -86,7 +83,6 @@
                   #29142a;
     }
 
-    /* สี่เหลี่ยม 40px */
     .menu-icon {
       width: 40px;
       height: 40px;
@@ -115,7 +111,6 @@
       font-size: 12px;
     }
 
-    /* บรรทัด info ด้านล่าง */
     .info-bar{
       max-width:900px;
       margin:0 auto 18px;
@@ -149,7 +144,6 @@
 
 <div class="menu-wrapper">
 
-  <!-- 1. Annual – Local Government -->
   <a href="fa-lg-annual.html" class="menu-box menu-lg-annual">
     <div class="menu-icon">🏛️</div>
     <div class="menu-text">
@@ -158,7 +152,6 @@
     </div>
   </a>
 
-  <!-- 2. Mid-Year – Local Government -->
   <a href="fa-lg-midyear.html" class="menu-box menu-lg-mid">
     <div class="menu-icon">📆</div>
     <div class="menu-text">
@@ -167,7 +160,6 @@
     </div>
   </a>
 
-  <!-- 3. Annual – Government Agencies -->
   <a href="fa-gov-annual.html" class="menu-box menu-gov-annual">
     <div class="menu-icon">🏢</div>
     <div class="menu-text">
@@ -176,7 +168,6 @@
     </div>
   </a>
 
-  <!-- 4. Interim – Government Agencies -->
   <a href="fa-gov-interim.html" class="menu-box menu-gov-interim">
     <div class="menu-icon">⏱️</div>
     <div class="menu-text">
@@ -188,7 +179,6 @@
 </div>
 
 <script>
-  // ==== ตรวจ session ถ้าไม่มีให้เด้งกลับ fa-login ====
   function loadSession(){
     try{
       const raw = localStorage.getItem("fas-session");
