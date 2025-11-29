@@ -24,7 +24,7 @@
       color:#f5f7ff;
     }
     header{
-      padding:18px 10px;
+      padding:20px 10px;
       text-align:center;
       background:linear-gradient(120deg,#7b1e3c,#0d47a1,#f48fb1);
       border-bottom:1px solid rgba(255,255,255,0.12);
@@ -32,32 +32,31 @@
     }
     header h1{
       margin:0;
-      font-size:26px;
+      font-size:28px;
       font-weight:800;
     }
     header h3{
       margin:4px 0 0;
-      font-size:14px;
-      opacity:.9;
+      font-size:16px;
+      opacity:.92;
     }
+
     .wrap{
       max-width:480px;
-      margin:36px auto;
-      padding:0 16px;
+      margin:40px auto;
+      padding:0 20px;
     }
     .card{
       background:var(--card);
       border-radius:18px;
       border:1px solid rgba(255,255,255,0.12);
-      padding:20px;
+      padding:24px;
       box-shadow:0 10px 28px rgba(0,0,0,0.7);
       resize:both;
       overflow:auto;
-      min-width:260px;
-      min-height:260px;
     }
-    h2{margin:0 0 6px;font-size:22px;}
-    .muted{color:var(--muted);font-size:14px;margin-bottom:16px;}
+    h2{margin:0 0 6px;font-size:24px;}
+    .muted{color:var(--muted);font-size:15px;margin-bottom:18px;}
 
     label{display:block;margin:10px 0 6px;font-weight:600;}
 
@@ -65,13 +64,13 @@
     input[type="password"],
     input[type="number"]{
       width:100%;
-      padding:10px 12px;
+      padding:12px 14px;
       border-radius:10px;
       border:1px solid rgba(255,255,255,0.12);
-      background:rgba(5,8,26,0.9);
+      background:rgba(5,8,26,0.92);
       color:#fff;
       outline:none;
-      font-size:15px;
+      font-size:16px;
     }
     input:focus{
       border-color:var(--pink);
@@ -84,39 +83,34 @@
     }
     .toggle-pass{
       position:absolute;
-      right:10px;
+      right:12px;
       top:50%;
       transform:translateY(-50%);
-      font-size:20px;
+      font-size:22px;
       cursor:pointer;
       color:#f48fb1;
       opacity:0.9;
     }
     .toggle-pass:hover{ opacity:1; }
 
-    .row-remember{
-      margin-top:8px;
-      font-size:14px;
-    }
-
     .human-box{
-      margin-top:12px;
-      padding:10px 12px;
+      margin-top:18px;
+      padding:12px 14px;
       border-radius:12px;
       border:1px solid rgba(66,165,245,0.5);
       background:rgba(13,71,161,0.25);
-      font-size:14px;
+      font-size:15px;
     }
 
     .btn-primary{
       width:100%;
-      padding:12px 16px;
+      padding:14px 18px;
       border:none;
       border-radius:999px;
-      font-size:16px;
+      font-size:18px;
       color:#fff;
       cursor:pointer;
-      margin-top:16px;
+      margin-top:18px;
       background:linear-gradient(135deg,#f48fb1,#42a5f5);
       box-shadow:0 6px 20px rgba(244,143,177,0.6);
       font-weight:800;
@@ -129,9 +123,10 @@
     .btn-back{
       display:block;
       text-align:center;
-      padding:10px;
-      margin-top:18px;
+      padding:12px;
+      margin-top:20px;
       color:#fff;
+      font-size:16px;
       font-weight:700;
       text-decoration:none;
       border-radius:12px;
@@ -143,12 +138,12 @@
     }
 
     .alert{
-      margin-top:10px;
-      padding:8px;
+      margin-top:12px;
+      padding:10px;
       border-radius:10px;
       background:rgba(198,40,40,0.15);
       border:1px solid rgba(198,40,40,0.7);
-      font-size:13px;
+      font-size:14px;
       color:#ffb3b3;
       display:none;
     }
@@ -159,14 +154,14 @@
 
 <header>
   <h1>🔐 Financial Audit – FA Login</h1>
-  <h3>ระบบตรวจสอบการเงิน</h3>
+  <h3>ระบบตรวจสอบการเงิน (FA System)</h3>
 </header>
 
 <div class="wrap">
   <div class="card">
 
     <h2>เข้าสู่ระบบ</h2>
-    <p class="muted">กรอกอีเมลและรหัสผ่านที่ลงทะเบียนในระบบหลัก (หน้า login.html)</p>
+    <p class="muted">ใช้บัญชีจากระบบลงทะเบียนหลัก (หน้า login.html)</p>
 
     <div id="msgAlert" class="alert"></div>
 
@@ -187,7 +182,7 @@
 
       <div class="human-box">
         <div id="humanQ" style="font-weight:800;margin-bottom:6px;"></div>
-        <input type="number" id="humanA" placeholder="กรอกคำตอบเพื่อยืนยันว่าเป็นมนุษย์" required>
+        <input type="number" id="humanA" placeholder="กรอกคำตอบยืนยันว่าเป็นมนุษย์" required>
       </div>
 
       <button type="submit" class="btn-primary">เข้าสู่ระบบ FA System</button>
@@ -215,7 +210,7 @@ document.getElementById("togglePass").addEventListener("click", () => {
   }
 });
 
-/* ============ ยืนยันความเป็นมนุษย์ ============ */
+/* ============ Human validation ============ */
 let humanCorrect = 0;
 function genHumanQuestion(){
   const a = Math.floor(Math.random()*9)+1;
@@ -229,7 +224,7 @@ genHumanQuestion();
 const REMEMBER_KEY = "fa-remember-email";
 
 function rememberEmail(email){
-  const ttl = 90 * 24 * 60 * 60 * 1000;
+  const ttl = 90*24*60*60*1000;
   localStorage.setItem(REMEMBER_KEY, JSON.stringify({
     email, expiresAt: Date.now() + ttl
   }));
@@ -242,23 +237,22 @@ function loadRememberedEmail(){
     localStorage.removeItem(REMEMBER_KEY);
     return;
   }
-  document.getElementById("faEmail").value = data.email;
-  document.getElementById("rememberUser").checked = true;
+  faEmail.value = data.email;
+  rememberUser.checked = true;
 }
 loadRememberedEmail();
 
-/* ============ โหลด users จากระบบหลัก ============ */
+/* ============ โหลดผู้ใช้จากระบบหลัก ============ */
 function loadUsers(){
   try{
     const raw = localStorage.getItem("fas-users");
-    if(!raw) return [];
-    return JSON.parse(raw);
+    return raw ? JSON.parse(raw) : [];
   }catch{ return []; }
 }
 
 /* ============ สร้าง session ============ */
 function createSession(email){
-  const ttl = 8 * 60 * 60 * 1000;
+  const ttl = 8*60*60*1000;
   localStorage.setItem("fas-session", JSON.stringify({
     email,
     loginAt: Date.now(),
@@ -266,13 +260,13 @@ function createSession(email){
   }));
 }
 
-/* ============ Submit Login ============ */
+/* ============ Login ตรวจสอบสิทธิ์ ============ */
 document.getElementById("faLoginForm").addEventListener("submit", e=>{
   e.preventDefault();
 
   const email = faEmail.value.trim().toLowerCase();
-  const pass = faPass.value.trim();
-  const ans  = humanA.value.trim();
+  const pass  = faPass.value.trim();
+  const ans   = humanA.value.trim();
 
   if(Number(ans) !== humanCorrect){
     msgAlert.style.display = "block";
@@ -282,27 +276,29 @@ document.getElementById("faLoginForm").addEventListener("submit", e=>{
   }
 
   const users = loadUsers();
-  const user = users.find(u => (u.email||"").toLowerCase() === email);
+  const user  = users.find(u => (u.email||"").toLowerCase() === email);
 
   if(!user){
-    alert("ไม่พบบัญชีนี้ในระบบหลัก กรุณาลงทะเบียนใหม่");
+    alert("ไม่พบบัญชีนี้ กรุณาลงทะเบียนใหม่");
     location.href = "login.html#register-section";
     return;
   }
+
   if(user.password !== pass){
     alert("รหัสผ่านไม่ถูกต้อง");
     location.href = "login.html#register-section";
     return;
   }
+
   if(user.status !== "approved"){
-    alert("บัญชียังไม่ได้รับการอนุมัติ");
+    alert("บัญชียังไม่ได้รับอนุมัติ");
     location.href = "login.html#register-section";
     return;
   }
 
   if(rememberUser.checked){
     rememberEmail(email);
-  } else {
+  }else{
     localStorage.removeItem(REMEMBER_KEY);
   }
 
