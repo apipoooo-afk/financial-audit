@@ -148,6 +148,11 @@
       color:#ffb3b3;
       display:none;
     }
+    .debug{
+      margin-top:8px;
+      font-size:11px;
+      color:#9fa8da;
+    }
   </style>
 </head>
 <body>
@@ -199,11 +204,13 @@
       <a href="login.html#register-section">ลงทะเบียนผู้ใช้ในระบบหลัก</a>
       เพื่อยืนยัน / สร้างบัญชีใหม่ก่อนใช้งาน FA System
     </div>
+
+    <div id="debugInfo" class="debug"></div>
   </div>
 </div>
 
 <script>
-  // ==== Helper: โหลด / บันทึกผู้ใช้จาก fas-users ====
+  // ==== Helper: โหลดผู้ใช้จาก fas-users (ระบบหลัก) ====
   function loadUsersFromStorage(){
     try{
       const raw = localStorage.getItem("fas-users");
@@ -244,13 +251,12 @@
 
   // ==== Session (fas-session) ====
   function createSession(email){
-    // ให้ session อยู่ได้ 8 ชั่วโมง
-    const ttlMs = 8 * 60 * 60 * 1000;
+    const ttlMs = 8 * 60 * 60 * 1000; // 8 ชม.
     const session = {
       email,
       loginAt: Date.now(),
       expiresAt: Date.now() + ttlMs,
-      remember: true
+      from: "fa-login"
     };
     localStorage.setItem("fas-session", JSON.stringify(session));
   }
@@ -279,6 +285,12 @@
   document.addEventListener("DOMContentLoaded", function(){
     genHumanQuestion();
     loadRememberedEmail();
+
+    const users = loadUsersFromStorage();
+    const dbg = document.getElementById("debugInfo");
+    if(dbg){
+      dbg.textContent = `พบผู้ใช้ใน fas-users: ${users.length} บัญชี`;
+    }
 
     // ถ้าเข้าหน้านี้เพราะไม่มี session จาก fa-menu.html
     if(window.location.search.indexOf("reason=no-session") !== -1){
