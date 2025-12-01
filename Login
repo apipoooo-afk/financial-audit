@@ -3,45 +3,509 @@
 <head>
   <meta charset="UTF-8">
   <title>ระบบ Login - Financial Audit</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    *{box-sizing:border-box;}
+    body{
+      margin:0;
+      font-family:"Segoe UI",Tahoma,Arial,sans-serif;
+      background:#0b1020;
+      color:#f5f7ff;
+    }
+    h1,h2,h3{margin:0;}
+    a{color:#ffb3d1;text-decoration:none;}
+    a:hover{text-decoration:underline;}
+
+    header{
+      padding:12px 16px;
+      background:linear-gradient(120deg,#0d47a1,#7b1e3c);
+      color:#fff;
+      box-shadow:0 4px 12px rgba(0,0,0,0.45);
+    }
+    header h1{font-size:20px;}
+    header p{margin:4px 0 0;font-size:12px;opacity:.85;}
+
+    main{
+      max-width:1100px;
+      margin:0 auto;
+      padding:20px 12px 32px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:16px;
+      margin-top:16px;
+    }
+    @media(max-width:1024px){
+      .grid{grid-template-columns:repeat(2,1fr);}
+    }
+    @media(max-width:700px){
+      .grid{grid-template-columns:1fr;}
+    }
+
+    .card{
+      background:linear-gradient(145deg,#101632,#171d3d);
+      border-radius:14px;
+      padding:14px 14px 16px;
+      border:1px solid rgba(255,255,255,0.08);
+      box-shadow:0 10px 26px rgba(0,0,0,0.75);
+    }
+    .card h2,.card h3{font-size:16px;margin-bottom:6px;}
+    .muted{font-size:12px;color:#a3acc7;}
+    label{
+      display:block;
+      font-size:12px;
+      margin-top:8px;
+      margin-bottom:2px;
+      font-weight:600;
+    }
+    input[type="email"],
+    input[type="password"],
+    input[type="text"]{
+      width:100%;
+      padding:7px 9px;
+      border-radius:8px;
+      border:1px solid rgba(255,255,255,0.18);
+      background:#050819;
+      color:#fff;
+      font-size:13px;
+      outline:none;
+    }
+    input:focus{
+      border-color:#f48fb1;
+      box-shadow:0 0 0 1px rgba(244,143,177,0.55);
+    }
+    button{
+      margin-top:10px;
+      padding:8px 12px;
+      border-radius:999px;
+      border:none;
+      cursor:pointer;
+      font-size:13px;
+      font-weight:600;
+      color:#fff;
+      background:linear-gradient(135deg,#42a5f5,#7b1e3c);
+      box-shadow:0 6px 16px rgba(0,0,0,0.7);
+    }
+    button:hover{
+      filter:brightness(1.05);
+      box-shadow:0 0 14px rgba(66,165,245,0.9);
+    }
+    .btn-ghost{
+      background:rgba(0,0,0,0.3);
+      border:1px solid rgba(255,255,255,0.25);
+      box-shadow:none;
+      margin-left:6px;
+    }
+    .msg{
+      font-size:11px;
+      margin-top:6px;
+      min-height:14px;
+    }
+    .msg-ok{color:#9be7ff;}
+    .msg-err{color:#ff8a80;}
+    .hint-list{
+      padding-left:18px;
+      margin:2px 0 0;
+      font-size:12px;
+    }
+
+    .section-title{
+      font-size:14px;
+      font-weight:bold;
+      margin-top:12px;
+    }
+
+    .tag{
+      display:inline-block;
+      padding:3px 8px;
+      border-radius:999px;
+      font-size:11px;
+      border:1px solid rgba(255,255,255,0.25);
+      margin-top:4px;
+    }
+
+  </style>
 </head>
 <body>
-  <h2>เข้าสู่ระบบ</h2>
-  <form id="loginForm">
-    <label>อีเมล</label>
-    <input type="email" id="email" required><br><br>
+  <header>
+    <h1>Financial Audit System – Login Center</h1>
+    <p>ระบบเข้าสู่ระบบ • ลงทะเบียน • ลืมรหัส • ขอเปลี่ยนรหัส (Demo ในเบราว์เซอร์เดียวกัน)</p>
+  </header>
 
-    <label>รหัสผ่าน</label>
-    <input type="password" id="password" required><br><br>
+  <main>
+    <!-- แถวบน: แนวทางการใช้ระบบทั้งหมด -->
+    <div class="card">
+      <h2>📘 แนวทางการใช้งานระบบ Login</h2>
+      <div class="section-title">ขั้นตอนหลัก</div>
+      <ol class="hint-list">
+        <li>ถ้ามีรหัสแล้ว → ใช้กล่อง <strong>เข้าสู่ระบบ</strong> ด้านล่างซ้าย</li>
+        <li>ถ้ายังไม่เคยมีรหัส → ไปที่กล่อง <strong>ลงทะเบียนใช้งาน</strong> เพื่อสร้างบัญชี</li>
+        <li>ถ้าจำรหัสไม่ได้ → ไปที่กล่อง <strong>ลืมรหัสผ่าน</strong> แล้วตั้งรหัสใหม่</li>
+        <li>ถ้าจำรหัสเดิมได้ แต่อยากเปลี่ยน → ไปกล่อง <strong>ขอเปลี่ยนรหัสผ่าน</strong></li>
+      </ol>
+      <div class="section-title">การเชื่อมโยงข้อมูล</div>
+      <ul class="hint-list">
+        <li>ผู้ใช้ทั้งหมดเก็บในชุดข้อมูลกลางชื่อ <code>fa-demo-users</code> (localStorage)</li>
+        <li>ลงทะเบียนสำเร็จ → บัญชีใหม่ถูกเพิ่มเข้า <code>fa-demo-users</code> และสร้าง “คำขอผู้ใช้ใหม่” ใน <code>fa-user-requests</code> เพื่อให้ Admin อนุมัติ</li>
+        <li>ลืมรหัส → ระบบจะอัปเดตรหัสใหม่ให้บัญชีใน <code>fa-demo-users</code></li>
+        <li>ขอเปลี่ยนรหัส → ต้องกรอกรหัสเดิมถูกต้องก่อน จึงจะเปลี่ยนใน <code>fa-demo-users</code> ได้</li>
+      </ul>
+      <p class="muted" style="margin-top:6px;">
+        * ตัวอย่างนี้เป็น Demo เก็บข้อมูลใน <strong>localStorage</strong> ภายในเบราว์เซอร์เครื่องนี้เท่านั้น  
+        * คำขอลงทะเบียนผู้ใช้ถูกเก็บในคีย์ <strong>fa-user-requests</strong> เพื่อให้ระบบ admin console ในอนาคตนำไปอนุมัติได้
+      </p>
+    </div>
 
-    <button type="submit">เข้าสู่ระบบ</button>
-  </form>
+    <!-- แถวหลักแบบคอลัมน์ 4 ระบบ -->
+    <div class="grid" style="margin-top:18px;">
 
-  <p id="message"></p>
+      <!-- 1) เข้าสู่ระบบ -->
+      <div class="card" id="login-column">
+        <h2>🔐 เข้าสู่ระบบ</h2>
+        <p class="muted">
+          สำหรับผู้ที่มีบัญชีแล้ว หากระบบไม่พบบัญชี จะพาไปที่ฟอร์มลงทะเบียนอัตโนมัติ
+        </p>
+        <form id="loginForm">
+          <label for="loginEmail">อีเมล</label>
+          <input type="email" id="loginEmail" required>
+
+          <label for="loginPassword">รหัสผ่าน</label>
+          <input type="password" id="loginPassword" required>
+
+          <button type="submit">เข้าสู่ระบบ</button>
+          <button type="button" class="btn-ghost" onclick="scrollToSection('register-section')">
+            ยังไม่มีรหัส? ลงทะเบียน
+          </button>
+          <button type="button" class="btn-ghost" onclick="scrollToSection('forgot-section')">
+            ลืมรหัสผ่าน
+          </button>
+
+          <p id="loginMessage" class="msg"></p>
+        </form>
+        <span class="tag">ใช้ฐานข้อมูล users เดียวกับฟอร์มอื่นทั้งหมด</span>
+      </div>
+
+      <!-- 2) ลงทะเบียนใช้งาน -->
+      <div class="card" id="register-section">
+        <h2>📝 ลงทะเบียนใช้งาน</h2>
+        <p class="muted">
+          สร้างบัญชีใหม่ หากอีเมลเคยใช้แล้ว ระบบจะแจ้งเตือนให้กลับไป Login หรือใช้เมนูลืมรหัสแทน
+        </p>
+        <form id="registerForm">
+          <label for="regEmail">อีเมล</label>
+          <input type="email" id="regEmail" required>
+
+          <label for="regPassword">รหัสผ่าน</label>
+          <input type="password" id="regPassword" required>
+
+          <label for="regPassword2">ยืนยันรหัสผ่าน</label>
+          <input type="password" id="regPassword2" required>
+
+          <button type="submit">ลงทะเบียน</button>
+          <button type="button" class="btn-ghost" onclick="scrollToSection('login-column')">
+            กลับไปหน้าเข้าสู่ระบบ
+          </button>
+
+          <p id="registerMessage" class="msg"></p>
+        </form>
+        <span class="tag">
+          สร้าง user ใหม่ + ส่งคำขอไปยังระบบ Admin (fa-user-requests) เพื่อรออนุมัติ
+        </span>
+      </div>
+
+      <!-- 3) ลืมรหัสผ่าน -->
+      <div class="card" id="forgot-section">
+        <h2>❓ ลืมรหัสผ่าน</h2>
+        <p class="muted">
+          ใช้ในกรณีจำรหัสเดิมไม่ได้ ระบบจะเปลี่ยนรหัสใหม่ให้บัญชีที่มีอยู่แล้ว
+        </p>
+        <form id="forgotForm">
+          <label for="forgotEmail">อีเมลที่ลงทะเบียนไว้</label>
+          <input type="email" id="forgotEmail" required>
+
+          <label for="forgotNewPassword">รหัสผ่านใหม่</label>
+          <input type="password" id="forgotNewPassword" required>
+
+          <label for="forgotNewPassword2">ยืนยันรหัสผ่านใหม่</label>
+          <input type="password" id="forgotNewPassword2" required>
+
+          <button type="submit">ตั้งรหัสใหม่</button>
+          <button type="button" class="btn-ghost" onclick="scrollToSection('login-column')">
+            กลับไปหน้าเข้าสู่ระบบ
+          </button>
+
+          <p id="forgotMessage" class="msg"></p>
+        </form>
+        <span class="tag">แก้ไข password ของ user ที่มีอยู่</span>
+      </div>
+
+      <!-- 4) ขอเปลี่ยนรหัสผ่าน -->
+      <div class="card" id="change-section">
+        <h2>🔁 ขอเปลี่ยนรหัสผ่าน</h2>
+        <p class="muted">
+          ใช้เมื่อยังจำรหัสเดิมได้ ต้องกรอกรหัสเดิมให้ถูกต้องก่อน จึงจะเปลี่ยนรหัสใหม่
+        </p>
+        <form id="changeForm">
+          <label for="changeEmail">อีเมลที่ลงทะเบียนไว้</label>
+          <input type="email" id="changeEmail" required>
+
+          <label for="changeOldPassword">รหัสผ่านเดิม</label>
+          <input type="password" id="changeOldPassword" required>
+
+          <label for="changeNewPassword">รหัสผ่านใหม่</label>
+          <input type="password" id="changeNewPassword" required>
+
+          <label for="changeNewPassword2">ยืนยันรหัสผ่านใหม่</label>
+          <input type="password" id="changeNewPassword2" required>
+
+          <button type="submit">เปลี่ยนรหัสผ่าน</button>
+          <button type="button" class="btn-ghost" onclick="scrollToSection('login-column')">
+            กลับไปหน้าเข้าสู่ระบบ
+          </button>
+
+          <p id="changeMessage" class="msg"></p>
+        </form>
+        <span class="tag">ตรวจสอบรหัสเดิมก่อนทุกครั้ง</span>
+      </div>
+
+    </div>
+  </main>
 
   <script>
-    // จำลองฐานข้อมูลผู้ใช้
-    const users = [
-      { email: "somchai@example.com", password: "123456", status: "approved" },
-      { email: "suda@example.com", password: "abcdef", status: "pending" }
-    ];
+    // --------- Helper เลื่อนหน้าจอไปยัง section ----------
+    function scrollToSection(id){
+      const el = document.getElementById(id);
+      if(el){
+        el.scrollIntoView({behavior:'smooth',block:'start'});
+      }
+    }
 
+    // --------- จัดการ users ด้วย localStorage ----------
+    const STORAGE_KEY = "fa-demo-users";
+    const USER_REQUESTS_KEY = "fa-user-requests"; // เก็บคำขอให้ admin อนุมัติ
+
+    function loadUsers(){
+      try{
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if(!raw){
+          // ถ้ายังไม่มี ให้ seed ข้อมูลตัวอย่าง
+          const seed = [
+            { email:"somchai@example.com", password:"123456", status:"approved" },
+            { email:"suda@example.com",   password:"abcdef", status:"pending"  }
+          ];
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(seed));
+          return seed;
+        }
+        return JSON.parse(raw);
+      }catch(e){
+        console.warn("โหลด users ไม่สำเร็จ", e);
+        return [];
+      }
+    }
+
+    function saveUsers(users){
+      try{
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(users));
+      }catch(e){
+        console.warn("บันทึก users ไม่สำเร็จ", e);
+      }
+    }
+
+    function loadUserRequests(){
+      try{
+        const raw = localStorage.getItem(USER_REQUESTS_KEY);
+        if(!raw) return [];
+        return JSON.parse(raw);
+      }catch(e){
+        console.warn("โหลด fa-user-requests ไม่สำเร็จ", e);
+        return [];
+      }
+    }
+
+    function saveUserRequests(requests){
+      try{
+        localStorage.setItem(USER_REQUESTS_KEY, JSON.stringify(requests));
+      }catch(e){
+        console.warn("บันทึก fa-user-requests ไม่สำเร็จ", e);
+      }
+    }
+
+    let users = loadUsers();
+    let userRequests = loadUserRequests();
+
+    // --------- เข้าสู่ระบบ ----------
     document.getElementById("loginForm").addEventListener("submit", function(event){
       event.preventDefault();
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
+      const email = document.getElementById("loginEmail").value.trim();
+      const password = document.getElementById("loginPassword").value;
+      const msg = document.getElementById("loginMessage");
+      msg.className = "msg";
 
       const user = users.find(u => u.email === email);
 
       if(!user){
-        document.getElementById("message").innerText = "❌ ไม่พบผู้ใช้งาน";
-      } else if(user.status !== "approved"){
-        document.getElementById("message").innerText = "⚠️ บัญชีนี้ยังไม่ได้รับการอนุมัติจาก Admin";
-      } else if(user.password === password){
-        document.getElementById("message").innerText = "✅ เข้าสู่ระบบสำเร็จ!";
+        msg.textContent = "❌ ไม่พบบัญชีผู้ใช้งานในระบบ โปรดลงทะเบียนก่อน";
+        msg.classList.add("msg-err");
+        // ชี้ทางไปลงทะเบียน
+        scrollToSection("register-section");
+        return;
+      }
+
+      if(user.status && user.status !== "approved"){
+        msg.textContent = "⚠️ บัญชีนี้ยังไม่ได้รับการอนุมัติจาก Admin (status: " + user.status + ")";
+        msg.classList.add("msg-err");
+        return;
+      }
+
+      if(user.password === password){
+        msg.textContent = "✅ เข้าสู่ระบบสำเร็จ!";
+        msg.classList.add("msg-ok");
       } else {
-        document.getElementById("message").innerText = "❌ รหัสผ่านไม่ถูกต้อง";
+        msg.textContent = "❌ รหัสผ่านไม่ถูกต้อง หากจำไม่ได้ให้ใช้เมนู 'ลืมรหัสผ่าน'";
+        msg.classList.add("msg-err");
       }
     });
+
+    // --------- ลงทะเบียนใช้งาน ----------
+    document.getElementById("registerForm").addEventListener("submit", function(event){
+      event.preventDefault();
+      const email = document.getElementById("regEmail").value.trim();
+      const pw1 = document.getElementById("regPassword").value;
+      const pw2 = document.getElementById("regPassword2").value;
+      const msg = document.getElementById("registerMessage");
+      msg.className = "msg";
+
+      if(!email || !pw1 || !pw2){
+        msg.textContent = "กรุณากรอกข้อมูลให้ครบ";
+        msg.classList.add("msg-err");
+        return;
+      }
+      if(pw1 !== pw2){
+        msg.textContent = "รหัสผ่านและยืนยันรหัสผ่านไม่ตรงกัน";
+        msg.classList.add("msg-err");
+        return;
+      }
+
+      const exists = users.find(u => u.email === email);
+      if(exists){
+        msg.textContent = "อีเมลนี้มีบัญชีอยู่แล้ว กรุณาใช้เมนู 'เข้าสู่ระบบ' หรือ 'ลืมรหัสผ่าน'";
+        msg.classList.add("msg-err");
+        return;
+      }
+
+      // สร้าง user ใหม่ (สถานะ pending)
+      const newUser = { email, password:pw1, status:"pending" };
+      users.push(newUser);
+      saveUsers(users);
+
+      // 👉 สร้างคำขอไปยังระบบ admin (เก็บไว้ใน fa-user-requests)
+      const newReq = {
+        id: Date.now(),
+        type: "NEW_USER",
+        email: email,
+        status: "pending",
+        createdAt: new Date().toISOString(),
+        note: "คำขอลงทะเบียนผู้ใช้ระบบ Financial Audit (User ปกติ)"
+      };
+      userRequests.push(newReq);
+      saveUserRequests(userRequests);
+
+      msg.textContent =
+        "✅ ลงทะเบียนสำเร็จ ระบบได้ส่งคำขอไปให้ Admin พิจารณาอนุมัติแล้ว " +
+        "เมื่ออนุมัติแล้ว ให้กลับมาเข้าสู่ระบบด้วยอีเมลและรหัสผ่านนี้อีกครั้ง";
+      msg.classList.add("msg-ok");
+
+      // เติมอีเมลในช่อง Login ให้เลย
+      const loginEmailInput = document.getElementById("loginEmail");
+      if(loginEmailInput){
+        loginEmailInput.value = email;
+      }
+
+      // เลื่อนกลับไปคอลัมน์ Login อัตโนมัติ
+      setTimeout(() => {
+        scrollToSection("login-column");
+      }, 900);
+    });
+
+    // --------- ลืมรหัสผ่าน ----------
+    document.getElementById("forgotForm").addEventListener("submit", function(event){
+      event.preventDefault();
+      const email = document.getElementById("forgotEmail").value.trim();
+      const pw1 = document.getElementById("forgotNewPassword").value;
+      const pw2 = document.getElementById("forgotNewPassword2").value;
+      const msg = document.getElementById("forgotMessage");
+      msg.className = "msg";
+
+      if(!email || !pw1 || !pw2){
+        msg.textContent = "กรุณากรอกข้อมูลให้ครบ";
+        msg.classList.add("msg-err");
+        return;
+      }
+      if(pw1 !== pw2){
+        msg.textContent = "รหัสผ่านใหม่และยืนยันไม่ตรงกัน";
+        msg.classList.add("msg-err");
+        return;
+      }
+
+      const user = users.find(u => u.email === email);
+      if(!user){
+        msg.textContent = "❌ ไม่พบบัญชีในระบบ กรุณาลงทะเบียนใหม่ก่อน";
+        msg.classList.add("msg-err");
+        scrollToSection("register-section");
+        return;
+      }
+
+      user.password = pw1;
+      saveUsers(users);
+
+      msg.textContent = "✅ ตั้งรหัสผ่านใหม่เรียบร้อยแล้ว โปรดกลับไปเข้าสู่ระบบ";
+      msg.classList.add("msg-ok");
+      setTimeout(() => scrollToSection("login-column"), 700);
+    });
+
+    // --------- ขอเปลี่ยนรหัสผ่าน (จำรหัสเดิมได้) ----------
+    document.getElementById("changeForm").addEventListener("submit", function(event){
+      event.preventDefault();
+      const email = document.getElementById("changeEmail").value.trim();
+      const oldPw = document.getElementById("changeOldPassword").value;
+      const pw1 = document.getElementById("changeNewPassword").value;
+      const pw2 = document.getElementById("changeNewPassword2").value;
+      const msg = document.getElementById("changeMessage");
+      msg.className = "msg";
+
+      if(!email || !oldPw || !pw1 || !pw2){
+        msg.textContent = "กรุณากรอกข้อมูลให้ครบ";
+        msg.classList.add("msg-err");
+        return;
+      }
+      if(pw1 !== pw2){
+        msg.textContent = "รหัสผ่านใหม่และยืนยันไม่ตรงกัน";
+        msg.classList.add("msg-err");
+        return;
+      }
+
+      const user = users.find(u => u.email === email);
+      if(!user){
+        msg.textContent = "❌ ไม่พบบัญชีในระบบ กรุณาตรวจสอบอีเมล หรือใช้เมนูลงทะเบียน";
+        msg.classList.add("msg-err");
+        return;
+      }
+      if(user.password !== oldPw){
+        msg.textContent = "❌ รหัสผ่านเดิมไม่ถูกต้อง";
+        msg.classList.add("msg-err");
+        return;
+      }
+
+      user.password = pw1;
+      saveUsers(users);
+
+      msg.textContent = "✅ เปลี่ยนรหัสผ่านสำเร็จ สามารถใช้รหัสใหม่ในการเข้าสู่ระบบ";
+      msg.classList.add("msg-ok");
+      setTimeout(() => scrollToSection("login-column"), 700);
+    });
+
   </script>
 </body>
 </html>
