@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>FA Tracking System | เมนูติดตามผล</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    --bg:#060818;
+    --card:#11152b;
+    --border:#262b46;
+    --muted:#a3acc7;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:"Segoe UI",Arial,sans-serif;
+    background:radial-gradient(circle at 0 0,rgba(66,165,245,.35) 0,transparent 60%),
+               radial-gradient(circle at 100% 100%,rgba(244,143,177,.35) 0,transparent 60%),
+               var(--bg);
+    color:#fff;
+  }
+  header{
+    padding:18px 10px;
+    text-align:center;
+    background:linear-gradient(120deg,#0d47a1,#7b1e3c,#20c997);
+    box-shadow:0 6px 20px rgba(0,0,0,.7);
+  }
+  header h1{margin:0;font-size:24px;font-weight:800;}
+  header p{margin:4px 0;font-size:13px;color:var(--muted);}
+  .wrap{
+    max-width:960px;
+    margin:18px auto 30px;
+    padding:0 14px;
+  }
+  .top-bar{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:10px;
+    flex-wrap:wrap;
+    font-size:12px;
+    color:var(--muted);
+    margin-bottom:12px;
+  }
+  .top-links a{
+    margin-left:6px;
+    font-size:12px;
+    color:#e5edff;
+    text-decoration:none;
+  }
+  .top-links a:hover{text-decoration:underline;}
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:14px;
+    margin-top:6px;
+  }
+  .card{
+    background:var(--card);
+    border-radius:16px;
+    padding:14px 14px 12px;
+    border:1px solid var(--border);
+    box-shadow:0 8px 22px rgba(0,0,0,.65);
+    text-decoration:none;
+    color:#fff;
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    transition:.15s;
+  }
+  .card:hover{
+    transform:translateY(-3px);
+    box-shadow:0 14px 28px rgba(0,0,0,.8);
+    border-color:#38bdf8;
+  }
+  .icon{
+    font-size:28px;
+    flex-shrink:0;
+  }
+  .body h2{
+    font-size:15px;
+    margin:0 0 2px;
+  }
+  .body small{
+    font-size:12px;
+    color:var(--muted);
+  }
+  .stats{
+    margin-top:6px;
+    font-size:11px;
+    color:#e5e7eb;
+  }
+  .nav-buttons{
+    margin-top:14px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    font-size:12px;
+  }
+  .nav-buttons a{
+    text-decoration:none;
+    padding:6px 10px;
+    border-radius:999px;
+    border:1px solid var(--border);
+    background:#020617;
+    color:var(--muted);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>FA Tracking System – ระบบติดตามผลการตรวจสอบ</h1>
+  <p>เข้าระบบติดตามผลด้วยบัญชีเดียวกับระบบลงทะเบียนใช้งาน (FA Login)</p>
+</header>
+
+<div class="wrap">
+  <div class="top-bar">
+    <div>
+      ผู้ใช้: <strong id="userEmail">-</strong><br>
+      Session: <span id="sessionInfo">-</span>
+    </div>
+    <div class="top-links">
+      <a href="index.html">🏠 กลับหน้า Index</a>
+      <a href="fa-login.html">🔐 ไปหน้า Login / ลงทะเบียนใช้งาน</a>
+    </div>
+  </div>
+
+  <div style="font-size:13px;color:var(--muted);margin-bottom:8px;">
+    เลือกประเภทงานเพื่อติดตามผลการตรวจสอบ: แยกเป็น อปท. / ส่วนราชการ และประจำปี / ระหว่างปี
+  </div>
+
+  <div class="grid">
+    <a href="fa-tracking-lg-annual.html" class="card">
+      <div class="icon">🏘️</div>
+      <div class="body">
+        <h2>การตรวจสอบ FA ประจำปี ของ อปท.</h2>
+        <small>Annual FA – Local Governments</small>
+        <div class="stats">
+          ติดตามความคืบหน้าการตรวจสอบ อปท. ประจำปี แยกตามปี–จังหวัด–อำเภอ–หน่วยงาน
+        </div>
+      </div>
+    </a>
+
+    <a href="fa-tracking-lg-mid.html" class="card">
+      <div class="icon">📆</div>
+      <div class="body">
+        <h2>การตรวจสอบ FA ระหว่างปี ของ อปท.</h2>
+        <small>Mid-year FA – Local Governments</small>
+        <div class="stats">
+          ใช้สำหรับงานตรวจสอบระหว่างปี เช่น ตรวจเฉพาะส่วน หรือเรื่องเร่งด่วนของ อปท.
+        </div>
+      </div>
+    </a>
+
+    <a href="fa-tracking-gov-annual.html" class="card">
+      <div class="icon">🏢</div>
+      <div class="body">
+        <h2>การตรวจสอบ FA ประจำปี ของหน่วยราชการ</h2>
+        <small>Annual FA – Gov Agencies</small>
+        <div class="stats">
+          แสดงสถานะการตรวจสอบหน่วยงานราชการส่วนกลาง/ภูมิภาค ในลักษณะประจำปี
+        </div>
+      </div>
+    </a>
+
+    <a href="fa-tracking-gov-mid.html" class="card">
+      <div class="icon">⏱️</div>
+      <div class="body">
+        <h2>การตรวจสอบ FA ระหว่างปี ของหน่วยราชการ</h2>
+        <small>Mid-year FA – Gov Agencies</small>
+        <div class="stats">
+          ใช้รองรับภารกิจตรวจสอบระหว่างปีหรือโครงการเฉพาะของหน่วยราชการ
+        </div>
+      </div>
+    </a>
+  </div>
+
+  <div class="nav-buttons">
+    <a href="index.html">⬅ กลับหน้า Index</a>
+    <a href="fa-login.html">🔐 ไปหน้า Login</a>
+  </div>
+</div>
+
+<script>
+function checkSession(){
+  let raw = localStorage.getItem("fas-session");
+  if(!raw){
+    // ยังไม่ Login → ส่งไปหน้า Login ระบบลงทะเบียนใช้งาน
+    location.href="fa-login.html";
+    return;
+  }
+  try{
+    const s = JSON.parse(raw);
+    if(Date.now()>s.expiresAt){
+      localStorage.removeItem("fas-session");
+      location.href="fa-login.html";
+      return;
+    }
+    document.getElementById("userEmail").textContent = s.email || "-";
+    document.getElementById("sessionInfo").textContent =
+      "หมดอายุ " + new Date(s.expiresAt).toLocaleString("th-TH");
+  }catch{
+    location.href="fa-login.html";
+  }
+}
+checkSession();
+</script>
+
+</body>
+</html>
