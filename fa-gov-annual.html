@@ -2,18 +2,7 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8">
-  <title>FA Annual LG | ภาพรวมประจำปี อปท.</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <style>
-    :root{
-      --bg:#060818;
-      --card:#11152b;
-<!DOCTYPE html>
-<html lang="th">
-<head>
-  <meta charset="UTF-8">
-  <title>FA – Annual Audit Local Government</title>
+  <title>FA – Annual Audit Government Agencies</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <style>
@@ -21,11 +10,10 @@
       --bg:#060818;
       --card:#11152b;
       --border:#262b46;
-      --accent:#42a5f5;
-      --accent2:#26c6da;
+      --accent:#ffca28;
+      --accent2:#ffb300;
       --muted:#a3acc7;
       --text:#f5f7ff;
-      --pink:#f48fb1;
     }
     *{box-sizing:border-box;}
 
@@ -33,9 +21,8 @@
       margin:0;
       font-family:"Segoe UI", Tahoma, sans-serif;
       background:
-        radial-gradient(circle at 10% 0%, rgba(123,30,60,0.36) 0, transparent 55%),
-        radial-gradient(circle at 90% 100%, rgba(66,165,245,0.32) 0, transparent 55%),
-        radial-gradient(circle at 0% 100%, rgba(38,198,218,0.22) 0, transparent 55%),
+        radial-gradient(circle at 10% 0%, rgba(255,202,40,0.36) 0, transparent 55%),
+        radial-gradient(circle at 90% 100%, rgba(255,179,0,0.32) 0, transparent 55%),
         var(--bg);
       color:var(--text);
       min-height:100vh;
@@ -44,7 +31,7 @@
     header{
       padding:16px 10px 12px;
       text-align:center;
-      background:linear-gradient(120deg,#0d47a1,#42a5f5,#26c6da);
+      background:linear-gradient(120deg,#ff8f00,#ffb300,#ffca28);
       box-shadow:0 4px 16px rgba(0,0,0,0.7);
       position:sticky;
       top:0;
@@ -91,33 +78,31 @@
     }
     .menu-card:hover{
       transform:translateY(-2px);
-      border-color:rgba(244,143,177,0.6);
+      border-color:rgba(255,202,40,0.7);
       box-shadow:0 12px 32px rgba(0,0,0,0.9);
     }
 
-    /* Glow effect */
     .menu-card::before{
       content:"";
       position:absolute; inset:-40%;
-      background:radial-gradient(circle at 0 0, rgba(66,165,245,0.22) 0, transparent 55%);
+      background:radial-gradient(circle at 0 0, rgba(255,202,40,0.24) 0, transparent 55%);
       opacity:0; transition:opacity .2s;
     }
     .menu-card:hover::before{ opacity:1; }
 
-    /* Tooltip */
     .menu-card .tooltip {
       position:absolute;
       top:-10px;
       left:50%;
       transform:translateX(-50%);
-      background:#111a3a;
+      background:#3a2503;
       color:#fff;
       padding:8px 12px;
       border-radius:10px;
       font-size:12px;
       opacity:0;
       white-space:normal;
-      width:220px;
+      width:230px;
       text-align:center;
       pointer-events:none;
       transition:opacity 0.2s ease-out, top 0.2s ease-out;
@@ -127,7 +112,7 @@
     }
     .menu-card:hover .tooltip{
       opacity:1;
-      top:-42px;
+      top:-44px;
     }
 
     .menu-icon{ font-size:22px; margin-bottom:6px; }
@@ -145,509 +130,115 @@
       font-size:11px; background:rgba(0,0,0,0.35);
     }
     .step-label{ opacity:.8; }
+
   </style>
 </head>
 <body>
 
 <header>
-  <h2>🏛️ ระบบตรวจสอบการเงินประจำปี ของ อปท.</h2>
-  <div class="sub">Annual Financial Audit – Local Government (FA – Annual LG)</div>
+  <h2>🏢 ระบบตรวจสอบการเงินประจำปี ของ ส่วนราชการ</h2>
+  <div class="sub">Annual Financial Audit – Government Agencies (FA – Gov Annual)</div>
 </header>
 
 <main>
 
   <div class="intro">
-    ระบบบริหารงานตรวจสอบประจำปีของ อปท. ครบทุกขั้นตอน:
-    วางแผน → ปฏิบัติ → รายงาน → ชี้แจง → แจ้งผล → ติดตามผล
+    รองรับการตรวจสอบรายงานการเงินประจำปีของส่วนราชการทุกประเภท
+    ตั้งแต่การวางแผนจนถึงการติดตามผล ตามกรอบมาตรฐานของ สตง.
   </div>
 
   <div class="nav-top">
-    <a href="fa-menu.html" class="btn-nav"><span>⬅</span> กลับเมนู FA System</a>
+    <a href="fa-menu.html" class="btn-nav"><span>⬅</span> กลับเมนู FA Main</a>
     <a href="index.html" class="btn-nav"><span>🏠</span> กลับหน้าหลัก</a>
   </div>
 
   <section class="menu-grid">
 
-    <!-- 1 -->
-    <a href="fa-lg-plan.html" class="menu-card">
-      <div class="tooltip">กำหนดความเสี่ยง ขอบเขต ทีมตรวจ และปฏิทินตรวจสอบเพื่อเริ่มต้นเคส</div>
+    <a href="fa-gov-annual-plan.html" class="menu-card">
+      <div class="tooltip">กำหนดหน่วยงานที่จะตรวจ ขอบเขต และระดับความเสี่ยงของภาคราชการ</div>
       <div class="menu-icon">🧭</div>
-      <div class="menu-title">1. การวางแผนการตรวจสอบ</div>
-      <div class="menu-en">1. Planning</div>
-      <div class="menu-desc">ตั้งค่าแผนตรวจ รองรับการประเมินความเสี่ยงและกำหนดทีมตรวจ</div>
+      <div class="menu-title">1. การวางแผนการตรวจสอบ FA ของ ส่วนราชการ</div>
+      <div class="menu-en">1. Planning of Annual FA (Gov)</div>
+      <div class="menu-desc">
+        วางแผนตรวจส่วนราชการตามนโยบาย ระดับความเสี่ยง และความสำคัญของงบประมาณ
+      </div>
       <div class="menu-footer">
-        <span class="tag">Step 1</span>
-        <span class="step-label">วางแผน ▸</span>
+        <span class="tag">Step 1 – Planning</span>
+        <span class="step-label">เข้าสู่ระบบวางแผน ▸</span>
       </div>
     </a>
 
-    <!-- 2 -->
-    <a href="fa-lg-fieldwork.html" class="menu-card">
-      <div class="tooltip">ดำเนินการตรวจ เก็บหลักฐาน ทำสมุดทำการ และบันทึกข้อสังเกต</div>
+    <a href="fa-gov-annual-fieldwork.html" class="menu-card">
+      <div class="tooltip">บันทึกขั้นตอนตรวจสอบ การทดสอบรายการ และผลตรวจของแต่ละกรม/หน่วยงาน</div>
       <div class="menu-icon">📋</div>
-      <div class="menu-title">2. การปฏิบัติการตรวจสอบ</div>
-      <div class="menu-en">2. Fieldwork</div>
-      <div class="menu-desc">โปรแกรมตรวจสอบ หลักฐาน และ working papers</div>
+      <div class="menu-title">2. การปฏิบัติการตรวจสอบ FA ของ ส่วนราชการ</div>
+      <div class="menu-en">2. Execution / Fieldwork (Gov)</div>
+      <div class="menu-desc">
+        บริหารโปรแกรมตรวจสอบและสมุดทำการของแต่ละส่วนราชการอย่างเป็นระบบ
+      </div>
       <div class="menu-footer">
-        <span class="tag">Step 2</span>
-        <span class="step-label">ปฏิบัติ ▸</span>
+        <span class="tag">Step 2 – Fieldwork</span>
+        <span class="step-label">เข้าสู่ระบบปฏิบัติ ▸</span>
       </div>
     </a>
 
-    <!-- 3 -->
-    <a href="fa-lg-report.html" class="menu-card">
-      <div class="tooltip">จัดทำรายงาน ตรวจทานข้อค้นพบ ข้อเสนอแนะ และจัดการเวอร์ชัน</div>
+    <a href="fa-gov-annual-report.html" class="menu-card">
+      <div class="tooltip">จัดทำและรวมรายงานผลตรวจส่วนราชการ เพื่อเสนอต่อผู้บริหารและผู้เกี่ยวข้อง</div>
       <div class="menu-icon">📝</div>
-      <div class="menu-title">3. การจัดทำรายงาน</div>
-      <div class="menu-en">3. Reporting</div>
-      <div class="menu-desc">สรุปข้อค้นพบ จัดโครงสร้างรายงาน และเสนออนุมัติ</div>
+      <div class="menu-title">3. การจัดทำรายงานการตรวจสอบ FA ของ ส่วนราชการ</div>
+      <div class="menu-en">3. Reporting (Gov)</div>
+      <div class="menu-desc">
+        สรุปข้อค้นพบด้านการเงิน การควบคุมภายใน และการปฏิบัติตามระเบียบของส่วนราชการ
+      </div>
       <div class="menu-footer">
-        <span class="tag">Step 3</span>
-        <span class="step-label">รายงาน ▸</span>
+        <span class="tag">Step 3 – Reporting</span>
+        <span class="step-label">เข้าสู่ระบบรายงาน ▸</span>
       </div>
     </a>
 
-    <!-- 4 -->
-    <a href="fa-lg-response.html" class="menu-card">
-      <div class="tooltip">ส่งข้อค้นพบให้ อปท. ชี้แจง บันทึกคำชี้แจงและผลพิจารณา</div>
+    <a href="fa-gov-annual-response.html" class="menu-card">
+      <div class="tooltip">รับคำชี้แจงจากส่วนราชการ บันทึกข้อโต้แย้ง และพิจารณาคำชี้แจง</div>
       <div class="menu-icon">💬</div>
-      <div class="menu-title">4. การชี้แจง</div>
-      <div class="menu-en">4. Response</div>
-      <div class="menu-desc">คำชี้แจงรายข้อ เอกสารประกอบ และการประชุมชี้แจง</div>
+      <div class="menu-title">4. การเปิดโอกาสให้หน่วยรับตรวจชี้แจง FA ของ ส่วนราชการ</div>
+      <div class="menu-en">4. Response & Clarification (Gov)</div>
+      <div class="menu-desc">
+        เก็บคำชี้แจงและเอกสารประกอบจากหน่วยงานภาครัฐในแต่ละประเด็นที่ตรวจพบ
+      </div>
       <div class="menu-footer">
-        <span class="tag">Step 4</span>
-        <span class="step-label">ชี้แจง ▸</span>
+        <span class="tag">Step 4 – Response</span>
+        <span class="step-label">เข้าสู่ระบบชี้แจง ▸</span>
       </div>
     </a>
 
-    <!-- 5 -->
-    <a href="fa-lg-communication.html" class="menu-card">
-      <div class="tooltip">ออกหนังสือแจ้งผล ส่งรายงานแก่ผู้มีส่วนเกี่ยวข้อง และประชุมสรุปผล</div>
+    <a href="fa-gov-annual-communication.html" class="menu-card">
+      <div class="tooltip">แจ้งผลการตรวจอย่างเป็นทางการต่อหน่วยงานและผู้มีอำนาจกำกับดูแล</div>
       <div class="menu-icon">📨</div>
-      <div class="menu-title">5. การแจ้งผล</div>
-      <div class="menu-en">5. Communication</div>
-      <div class="menu-desc">แจ้งผลอย่างเป็นทางการแก่ อปท. และหน่วยงานที่เกี่ยวข้อง</div>
+      <div class="menu-title">5. การแจ้งผลการตรวจสอบ FA ของ ส่วนราชการ</div>
+      <div class="menu-en">5. Communication of Results (Gov)</div>
+      <div class="menu-desc">
+        จัดทำหนังสือแจ้งผล และแนบรายงานให้หน่วยงานและผู้กำกับดูแลในสายบังคับบัญชา
+      </div>
       <div class="menu-footer">
-        <span class="tag">Step 5</span>
-        <span class="step-label">แจ้งผล ▸</span>
+        <span class="tag">Step 5 – Communication</span>
+        <span class="step-label">เข้าสู่ระบบแจ้งผล ▸</span>
       </div>
     </a>
 
-    <!-- 6 -->
-    <a href="fa-lg-followup.html" class="menu-card">
-      <div class="tooltip">ติดตามการแก้ไขตามข้อเสนอแนะ บันทึกผล และปิดเคส</div>
+    <a href="fa-gov-annual-followup.html" class="menu-card">
+      <div class="tooltip">ติดตามการดำเนินการแก้ไขข้อเสนอแนะของส่วนราชการในรอบปีนั้น</div>
       <div class="menu-icon">🔁</div>
-      <div class="menu-title">6. การติดตามผล</div>
-      <div class="menu-en">6. Follow-up</div>
-      <div class="menu-desc">ติดตาม Action Plan รายข้อจนงานตรวจสอบเสร็จสิ้น</div>
+      <div class="menu-title">6. การติดตามผลการตรวจสอบ FA ของ ส่วนราชการ</div>
+      <div class="menu-en">6. Follow-up of Recommendations (Gov)</div>
+      <div class="menu-desc">
+        บริหาร Action Plan ของหน่วยงานรัฐ และบันทึกผลติดตามจนข้อสังเกตได้รับการแก้ไข
+      </div>
       <div class="menu-footer">
-        <span class="tag">Step 6</span>
-        <span class="step-label">ติดตามผล ▸</span>
+        <span class="tag">Step 6 – Follow-up</span>
+        <span class="step-label">เข้าสู่ระบบติดตามผล ▸</span>
       </div>
     </a>
 
   </section>
 </main>
-</body>
-</html>
-      --accent:#42a5f5;
-      --accent2:#26c6da;
-      --muted:#a3acc7;
-      --text:#f5f7ff;
-    }
-    *{box-sizing:border-box;}
-
-    body{
-      margin:0;
-      font-family:"Segoe UI",Arial,sans-serif;
-      background:
-        radial-gradient(circle at 10% 0%, rgba(123,30,60,0.36) 0, transparent 55%),
-        radial-gradient(circle at 90% 100%, rgba(66,165,245,0.32) 0, transparent 55%),
-        radial-gradient(circle at 0% 100%, rgba(38,198,218,0.22) 0, transparent 55%),
-        var(--bg);
-      color:var(--text);
-      min-height:100vh;
-    }
-
-    header{
-      background:linear-gradient(120deg,#0d47a1,#26c6da);
-      box-shadow:0 4px 16px rgba(0,0,0,.7);
-      padding:10px 14px;
-      position:sticky;
-      top:0;
-      z-index:10;
-    }
-    .header-inner{
-      max-width:1080px;
-      margin:0 auto;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      flex-wrap:wrap;
-    }
-    .brand{
-      font-weight:700;
-      font-size:17px;
-    }
-    .brand small{
-      display:block;
-      font-size:11px;
-      opacity:.88;
-    }
-    .header-right{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-      align-items:center;
-      font-size:12px;
-    }
-    .pill{
-      display:inline-flex;
-      align-items:center;
-      gap:6px;
-      padding:5px 10px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,0.4);
-      background:rgba(0,0,0,0.18);
-      font-size:11px;
-    }
-    .dot{
-      width:8px;height:8px;border-radius:50%;
-      background:#69f0ae;
-      box-shadow:0 0 10px #69f0ae;
-    }
-    .btn-link{
-      padding:6px 10px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,0.45);
-      background:rgba(0,0,0,0.25);
-      color:#fff;
-      text-decoration:none;
-      font-size:11px;
-    }
-    .btn-link:hover{
-      background:rgba(0,0,0,0.45);
-    }
-
-    main{
-      max-width:1080px;
-      margin:20px auto 28px;
-      padding:0 16px 20px;
-    }
-
-    h1{
-      margin:0 0 8px;
-      font-size:22px;
-    }
-    .muted{
-      font-size:13px;
-      color:var(--muted);
-    }
-
-    .card{
-      background:var(--card);
-      border-radius:16px;
-      border:1px solid rgba(255,255,255,.06);
-      box-shadow:0 10px 28px rgba(0,0,0,.8);
-      padding:16px 14px 14px;
-      position:relative;
-      overflow:hidden;
-      margin-bottom:16px;
-    }
-    .card::before{
-      content:"";
-      position:absolute;
-      inset:-40%;
-      background:radial-gradient(circle at 0 0, rgba(66,165,245,0.22) 0, transparent 55%);
-      opacity:0;
-      transition:opacity .25s ease;
-      pointer-events:none;
-    }
-    .card:hover::before{opacity:1;}
-    .card > *{position:relative;z-index:1;}
-    .card-header{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      margin-bottom:10px;
-      gap:8px;
-      flex-wrap:wrap;
-    }
-    .card-title{
-      font-size:16px;
-      font-weight:600;
-    }
-
-    .filters{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      margin-top:6px;
-      align-items:center;
-    }
-    label{
-      font-size:12px;
-      color:var(--muted);
-    }
-    select, input{
-      background:#060818;
-      border-radius:999px;
-      border:1px solid var(--border);
-      padding:5px 10px;
-      color:var(--text);
-      font-size:12px;
-      outline:none;
-    }
-    select:focus, input:focus{
-      border-color:var(--accent);
-    }
-
-    table{
-      width:100%;
-      border-collapse:collapse;
-      font-size:13px;
-      margin-top:8px;
-    }
-    th, td{
-      border-bottom:1px solid rgba(255,255,255,0.06);
-      padding:6px 4px;
-      text-align:left;
-    }
-    th{
-      font-size:12px;
-      color:var(--muted);
-      font-weight:500;
-    }
-    tr:hover td{
-      background:rgba(255,255,255,0.02);
-    }
-
-    .badge{
-      display:inline-flex;
-      align-items:center;
-      padding:2px 8px;
-      border-radius:999px;
-      font-size:11px;
-      border:1px solid rgba(255,255,255,0.18);
-    }
-    .badge-plan{background:rgba(66,165,245,0.12);}
-    .badge-field{background:rgba(129,199,132,0.12);}
-    .badge-report{background:rgba(255,241,118,0.12);}
-    .badge-response{background:rgba(244,143,177,0.12);}
-    .badge-comm{background:rgba(255,183,77,0.12);}
-    .badge-follow{background:rgba(161,136,127,0.12);}
-    .badge-closed{background:rgba(100,255,218,0.12);}
-
-    .btn-sm{
-      padding:4px 10px;
-      border-radius:999px;
-      border:1px solid var(--border);
-      background:rgba(0,0,0,0.45);
-      color:#fff;
-      font-size:11px;
-      cursor:pointer;
-    }
-    .btn-sm:hover{
-      background:rgba(0,0,0,0.7);
-      border-color:var(--accent);
-    }
-
-    .layout{
-      display:grid;
-      grid-template-columns:minmax(0,1.4fr) minmax(0,0.9fr);
-      gap:16px;
-    }
-    @media(max-width:880px){
-      .layout{grid-template-columns:1fr;}
-    }
-
-    .kpi-list{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
-      gap:10px;
-      margin-top:6px;
-    }
-    .kpi{
-      background:rgba(0,0,0,0.35);
-      border-radius:12px;
-      padding:8px 10px;
-      border:1px solid rgba(255,255,255,0.06);
-      font-size:12px;
-    }
-    .kpi-label{
-      color:var(--muted);
-      font-size:11px;
-    }
-    .kpi-value{
-      font-size:16px;
-      font-weight:600;
-      margin-top:2px;
-    }
-  </style>
-</head>
-<body>
-<header>
-  <div class="header-inner">
-    <div class="brand">
-      FA Annual LG
-      <small>ระบบตรวจสอบรายงานการเงิน อปท. – ระดับปี</small>
-    </div>
-    <div class="header-right">
-      <span class="pill">
-        <span class="dot"></span>
-        ระบบออนไลน์
-      </span>
-      <a href="index.html" class="btn-link">กลับหน้าหลักระบบ</a>
-    </div>
-  </div>
-</header>
-
-<main>
-  <h1>ภาพรวมการตรวจสอบประจำปีของ อปท.</h1>
-  <div class="muted">
-    เลือกปีงบประมาณและหน่วยรับตรวจ เพื่อเข้าจัดการขั้นตอน FA 6 ขั้นตอนของแต่ละเคส
-  </div>
-
-  <div class="layout">
-    <!-- LEFT: CASE TABLE -->
-    <section class="card">
-      <div class="card-header">
-        <div class="card-title">รายการเคสตรวจสอบประจำปี</div>
-      </div>
-      <div class="filters">
-        <div>
-          <label>ปีงบประมาณ</label><br>
-          <select id="yearSelect">
-            <option value="2568">2568</option>
-            <option value="2569">2569</option>
-            <option value="2570">2570</option>
-          </select>
-        </div>
-        <div>
-          <label>จังหวัด</label><br>
-          <input id="provFilter" placeholder="ค้นหาจังหวัด...">
-        </div>
-        <div>
-          <label>หน่วยรับตรวจ</label><br>
-          <input id="lgFilter" placeholder="ค้นหา อปท....">
-        </div>
-      </div>
-
-      <table id="caseTable">
-        <thead>
-        <tr>
-          <th>รหัสเคส</th>
-          <th>หน่วยรับตรวจ (อปท.)</th>
-          <th>จังหวัด</th>
-          <th>ประเภท</th>
-          <th>ขั้นตอนปัจจุบัน</th>
-          <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        <!-- ตัวอย่างข้อมูลจำลอง (ในงานจริงดึงจากฐานข้อมูล) -->
-        <tr data-year="2568">
-          <td>CASE001</td>
-          <td>อบจ.ศรีสะเกษ</td>
-          <td>ศรีสะเกษ</td>
-          <td>อบจ.</td>
-          <td>
-            <span class="badge badge-field" data-status="FIELDWORK">ขั้นที่ 2: ปฏิบัติ</span>
-          </td>
-          <td>
-            <button class="btn-sm" onclick="openCase('CASE001','FIELDWORK')">
-              เข้าไปทำงาน
-            </button>
-          </td>
-        </tr>
-        <tr data-year="2568">
-          <td>CASE002</td>
-          <td>ทน.ศรีสะเกษ</td>
-          <td>ศรีสะเกษ</td>
-          <td>ทน.</td>
-          <td>
-            <span class="badge badge-plan" data-status="PLAN">ขั้นที่ 1: วางแผน</span>
-          </td>
-          <td>
-            <button class="btn-sm" onclick="openCase('CASE002','PLAN')">
-              เข้าไปทำงาน
-            </button>
-          </td>
-        </tr>
-        <tr data-year="2569">
-          <td>CASE003</td>
-          <td>อบต.ตัวอย่าง</td>
-          <td>ยโสธร</td>
-          <td>อบต.</td>
-          <td>
-            <span class="badge badge-report" data-status="REPORT">ขั้นที่ 3: รายงาน</span>
-          </td>
-          <td>
-            <button class="btn-sm" onclick="openCase('CASE003','REPORT')">
-              เข้าไปทำงาน
-            </button>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-    </section>
-
-    <!-- RIGHT: KPI SUMMARY -->
-    <aside class="card">
-      <div class="card-header">
-        <div class="card-title">ตัวชี้วัดภาพรวม (สาธิต)</div>
-      </div>
-      <div class="kpi-list">
-        <div class="kpi">
-          <div class="kpi-label">จำนวนเคสทั้งหมดปีนี้</div>
-          <div class="kpi-value" id="kpiTotal">3</div>
-        </div>
-        <div class="kpi">
-          <div class="kpi-label">เคสอยู่ขั้นวางแผน</div>
-          <div class="kpi-value" id="kpiPlan">1</div>
-        </div>
-        <div class="kpi">
-          <div class="kpi-label">เคสอยู่ขั้นปฏิบัติ</div>
-          <div class="kpi-value" id="kpiField">1</div>
-        </div>
-        <div class="kpi">
-          <div class="kpi-label">เคสอยู่ขั้นรายงาน</div>
-          <div class="kpi-value" id="kpiReport">1</div>
-        </div>
-      </div>
-      <div class="muted" style="margin-top:10px;">
-        หมายเหตุ: ตัวเลขด้านบนเป็นข้อมูลตัวอย่างสำหรับโครงสร้างหน้า ในระบบจริงจะดึงจากฐานข้อมูล FA
-      </div>
-    </aside>
-  </div>
-</main>
-
-<script>
-  function openCase(caseId, status){
-    const year = document.getElementById('yearSelect').value || '';
-    let target = 'fa-lg-plan.html';
-    switch(status){
-      case 'PLAN': target = 'fa-lg-plan.html'; break;
-      case 'FIELDWORK': target = 'fa-lg-fieldwork.html'; break;
-      case 'REPORT': target = 'fa-lg-report.html'; break;
-      case 'RESPONSE': target = 'fa-lg-response.html'; break;
-      case 'COMMUNICATION': target = 'fa-lg-communication.html'; break;
-      case 'FOLLOWUP': target = 'fa-lg-followup.html'; break;
-      case 'CLOSED': target = 'fa-lg-followup.html'; break;
-    }
-    window.location.href = target + '?case=' + encodeURIComponent(caseId) + '&year=' + encodeURIComponent(year);
-  }
-
-  // Filter by year (demo-level filter)
-  document.getElementById('yearSelect').addEventListener('change', function(){
-    const year = this.value;
-    const rows = document.querySelectorAll('#caseTable tbody tr');
-    rows.forEach(r=>{
-      const rYear = r.getAttribute('data-year');
-      r.style.display = (year === '' || year === rYear) ? '' : 'none';
-    });
-  });
-</script>
 </body>
 </html>
