@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>FA Tracking – ระหว่างปี อปท.</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    --bg:#041016;
+    --border:#1c1917;
+    --muted:#e5e7eb;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:"Segoe UI",Arial,sans-serif;
+    background:radial-gradient(circle at 0 0,rgba(249,115,22,.4) 0,transparent 55%),
+               radial-gradient(circle at 100% 100%,rgba(234,179,8,.25) 0,transparent 55%),
+               #0b1120;
+    color:#f9fafb;
+  }
+  header{
+    padding:16px 12px;
+    background:linear-gradient(120deg,#7c2d12,#ea580c,#facc15);
+    box-shadow:0 8px 24px rgba(0,0,0,.8);
+  }
+  .h-inner{
+    max-width:1180px;margin:0 auto;
+    display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;
+  }
+  .h-left h1{margin:0;font-size:20px;font-weight:800;}
+  .h-left p{margin:2px 0;font-size:12px;color:#ffedd5;}
+  .h-right{font-size:11px;text-align:right;color:#fed7aa;}
+  .h-right a{color:#fef3c7;text-decoration:none;margin-left:6px;}
+  .wrap{max-width:1180px;margin:16px auto 26px;padding:0 12px 20px;}
+  .summary{font-size:12px;color:#fed7aa;margin-bottom:10px;}
+  .filters{display:flex;flex-wrap:wrap;gap:8px;font-size:11px;margin-bottom:10px;}
+  .filters label{display:flex;flex-direction:column;gap:2px;}
+  .filters select,.filters input{
+    padding:4px 6px;border-radius:999px;border:1px solid var(--border);
+    background:#0f172a;color:#f9fafb;font-size:11px;
+  }
+  .summary-box{
+    margin-bottom:8px;padding:7px 9px;border-radius:10px;
+    border:1px solid var(--border);background:#0f172a;font-size:11px;color:#fed7aa;
+  }
+  .table-wrap{
+    border-radius:10px;border:1px solid var(--border);
+    overflow:auto;background:#020617;max-height:460px;
+  }
+  table{width:100%;border-collapse:collapse;font-size:11px;}
+  th,td{padding:4px 6px;border-bottom:1px solid #111827;white-space:nowrap;}
+  th{position:sticky;top:0;background:#020617;z-index:1;}
+  tr:hover td{background:#111827;}
+  .step-col{text-align:center;font-variant-numeric:tabular-nums;}
+  .badge-done{color:#4ade80;}
+  .badge-current{color:#facc15;}
+  .badge-none{color:#6b7280;}
+  .nav-buttons{margin-top:10px;display:flex;flex-wrap:wrap;gap:8px;font-size:11px;}
+  .nav-buttons a{
+    text-decoration:none;padding:5px 10px;border-radius:999px;
+    border:1px solid var(--border);background:#0f172a;color:#fed7aa;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="h-inner">
+    <div class="h-left">
+      <h1>FA Tracking – การตรวจสอบ FA ระหว่างปี ของ อปท.</h1>
+      <p>Mid-year Financial Audit – Local Governments (2562–2590)</p>
+    </div>
+    <div class="h-right">
+      ผู้ใช้: <span id="userEmail">-</span><br>
+      Session: <span id="sessionInfo">-</span><br>
+      <a href="index.html">🏠 Index</a>
+      <a href="fa-tracking.html">📌 เมนูติดตามผล</a>
+      <a href="fa-login.html">🔐 Login</a>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="summary">
+    ระบบติดตามงานตรวจสอบระหว่างปีของ อปท. ใช้ตัวกรองเพื่อดูสถานะรายหน่วยและขั้นตอนล่าสุด
+  </div>
+
+  <div class="filters">
+    <label>ปีงบประมาณ
+      <select id="filterYear"></select>
+    </label>
+    <label>จังหวัด
+      <select id="filterProvince"></select>
+    </label>
+    <label>อำเภอ
+      <select id="filterAmphoe"></select>
+    </label>
+    <label>ค้นหา (ชื่อหน่วย/ตำบล)
+      <input type="text" id="searchText" placeholder="พิมพ์คำค้น...">
+    </label>
+  </div>
+
+  <div class="summary-box" id="hoverSummary">
+    นำเมาส์ไปวางบนแถวข้อมูล เพื่อดูสรุปรายการตรวจสอบระหว่างปีของหน่วยนั้นแบบย่อ
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>ลำดับ</th>
+          <th>ปี</th>
+          <th>ชื่อหน่วย (อปท.)</th>
+          <th>ตำบล</th>
+          <th>อำเภอ</th>
+          <th>จังหวัด</th>
+          <th>เปิดการตรวจ</th>
+          <th>ตรวจเอกสาร</th>
+          <th>กระดาษทำการ</th>
+          <th>ประชุมปิดตรวจ</th>
+          <th>ชี้แจง</th>
+          <th>รายงานผล</th>
+          <th>ส่ง ผอก สอบทาน</th>
+          <th>แจ้งผล</th>
+          <th>ติดตามผล</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+
+  <div class="nav-buttons">
+    <a href="index.html">⬅ กลับหน้า Index</a>
+    <a href="fa-tracking.html">📌 กลับหน้าเมนูติดตามผล</a>
+    <a href="fa-login.html">🔐 ไปหน้า Login</a>
+  </div>
+</div>
+
+<script>
+function checkSession(){
+  let raw = localStorage.getItem("fas-session");
+  if(!raw){ location.href="fa-login.html"; return; }
+  try{
+    const s = JSON.parse(raw);
+    if(Date.now()>s.expiresAt){
+      localStorage.removeItem("fas-session");
+      location.href="fa-login.html";
+      return;
+    }
+    document.getElementById("userEmail").textContent = s.email || "-";
+    document.getElementById("sessionInfo").textContent =
+      "หมดอายุ " + new Date(s.expiresAt).toLocaleString("th-TH");
+  }catch{
+    location.href="fa-login.html";
+  }
+}
+checkSession();
+
+/* MOCK DATA – Mid-year LG */
+const allData = [
+  {year:2568,name:"ทต.หนองครก",tambon:"หนองครก",amphoe:"เมืองศรีสะเกษ",province:"ศรีสะเกษ",stage:3},
+  {year:2568,name:"อบต.ชำ",tambon:"ชำ",amphoe:"กันทรลักษ์",province:"ศรีสะเกษ",stage:2},
+  {year:2567,name:"อบต.ดูน",tambon:"ดูน",amphoe:"กันทรารมย์",province:"ศรีสะเกษ",stage:5},
+  {year:2567,name:"ทน.วารินชำราบ",tambon:"วารินชำราบ",amphoe:"วารินชำราบ",province:"อุบลราชธานี",stage:1},
+  {year:2566,name:"อบต.เชียงเพ็ง",tambon:"เชียงเพ็ง",amphoe:"คำเขื่อนแก้ว",province:"ยโสธร",stage:0},
+];
+
+const YEARS=[];for(let y=2562;y<=2590;y++)YEARS.push(y);
+const selYear=document.getElementById("filterYear");
+const selProv=document.getElementById("filterProvince");
+const selAmph=document.getElementById("filterAmphoe");
+const search=document.getElementById("searchText");
+const tbody=document.getElementById("tbody");
+const hoverSummary=document.getElementById("hoverSummary");
+
+function initFilters(){
+  YEARS.forEach(y=>{
+    const o=document.createElement("option");
+    o.value=y;o.textContent=y;selYear.appendChild(o);
+  });
+  selYear.value=new Date().getFullYear()+543;
+
+  const provSet=new Set(allData.map(d=>d.province));
+  selProv.innerHTML=`<option value="ALL">ทุกจังหวัด</option>`;
+  [...provSet].sort().forEach(p=>{
+    const o=document.createElement("option");
+    o.value=p;o.textContent=p;selProv.appendChild(o);
+  });
+  updateAmphoe();
+}
+function updateAmphoe(){
+  const p=selProv.value;
+  let data=allData;
+  if(p!=="ALL")data=data.filter(d=>d.province===p);
+  const amph=new Set(data.map(d=>d.amphoe));
+  selAmph.innerHTML=`<option value="ALL">ทุกอำเภอ</option>`;
+  [...amph].sort().forEach(a=>{
+    const o=document.createElement("option");
+    o.value=a;o.textContent=a;selAmph.appendChild(o);
+  });
+}
+function filtered(){
+  const y=Number(selYear.value||0);
+  const p=selProv.value;
+  const a=selAmph.value;
+  const q=(search.value||"").toLowerCase();
+  return allData.filter(d=>{
+    if(y && d.year!==y)return false;
+    if(p!=="ALL" && d.province!==p)return false;
+    if(a!=="ALL" && d.amphoe!==a)return false;
+    if(q){
+      const text=(d.name+d.tambon).toLowerCase();
+      if(!text.includes(q))return false;
+    }
+    return true;
+  });
+}
+function stepLabel(stage,idx){
+  if(idx===0){
+    return stage>=0?'<span class="badge-done">เปิดตรวจ</span>':
+                    '<span class="badge-none">ยังไม่เปิด</span>';
+  }
+  if(stage>idx)return'<span class="badge-done">✓</span>';
+  if(stage===idx)return'<span class="badge-current">●</span>';
+  return'<span class="badge-none">–</span>';
+}
+function currentStageText(stage){
+  const names=[
+    "เปิดการตรวจแล้ว","ตรวจสอบเอกสาร","จัดทำกระดาษทำการ",
+    "ประชุมปิดตรวจ","ให้หน่วยรับตรวจชี้แจง",
+    "จัดทำรายงานผลการตรวจสอบ","ส่ง ผอก สอบทานรายงาน",
+    "แจ้งผลการตรวจสอบ","ติดตามผลการตรวจสอบ"
+  ];
+  return names[stage]||"ไม่ระบุ";
+}
+function render(){
+  const data=filtered();
+  tbody.innerHTML="";
+  data.forEach((d,i)=>{
+    const tr=document.createElement("tr");
+    tr.innerHTML=`
+      <td>${i+1}</td>
+      <td>${d.year}</td>
+      <td>${d.name}</td>
+      <td>${d.tambon}</td>
+      <td>${d.amphoe}</td>
+      <td>${d.province}</td>
+      <td class="step-col">${stepLabel(d.stage,0)}</td>
+      <td class="step-col">${stepLabel(d.stage,1)}</td>
+      <td class="step-col">${stepLabel(d.stage,2)}</td>
+      <td class="step-col">${stepLabel(d.stage,3)}</td>
+      <td class="step-col">${stepLabel(d.stage,4)}</td>
+      <td class="step-col">${stepLabel(d.stage,5)}</td>
+      <td class="step-col">${stepLabel(d.stage,6)}</td>
+      <td class="step-col">${stepLabel(d.stage,7)}</td>
+      <td class="step-col">${stepLabel(d.stage,8)}</td>
+    `;
+    tr.addEventListener("mouseenter",()=>{
+      hoverSummary.textContent=
+        `ปี ${d.year} | ${d.name} (${d.tambon}, ${d.amphoe}, ${d.province}) `+
+        `ขั้นตอนล่าสุด: ${currentStageText(d.stage)}`;
+    });
+    tbody.appendChild(tr);
+  });
+  if(!data.length){
+    hoverSummary.textContent="ไม่พบข้อมูลตามตัวกรองที่เลือก";
+  }
+}
+selProv.addEventListener("change",()=>{updateAmphoe();render();});
+selAmph.addEventListener("change",render);
+selYear.addEventListener("change",render);
+search.addEventListener("input",render);
+
+initFilters();render();
+</script>
+
+</body>
+</html>
