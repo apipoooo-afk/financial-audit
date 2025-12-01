@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8">
-  <title>FA – Annual Audit Local Government</title>
+  <title>FA – Mid-Year Audit Local Government (LG)</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <style>
@@ -10,8 +10,8 @@
       --bg:#060818;
       --card:#11152b;
       --border:#262b46;
-      --accent:#42a5f5;
-      --accent2:#26c6da;
+      --accent:#4caf50;
+      --accent2:#8bc34a;
       --muted:#a3acc7;
       --text:#f5f7ff;
       --pink:#f48fb1;
@@ -22,9 +22,8 @@
       margin:0;
       font-family:"Segoe UI", Tahoma, sans-serif;
       background:
-        radial-gradient(circle at 10% 0%, rgba(123,30,60,0.36) 0, transparent 55%),
-        radial-gradient(circle at 90% 100%, rgba(66,165,245,0.32) 0, transparent 55%),
-        radial-gradient(circle at 0% 100%, rgba(38,198,218,0.22) 0, transparent 55%),
+        radial-gradient(circle at 10% 0%, rgba(76,175,80,0.36) 0, transparent 55%),
+        radial-gradient(circle at 90% 100%, rgba(139,195,74,0.32) 0, transparent 55%),
         var(--bg);
       color:var(--text);
       min-height:100vh;
@@ -33,7 +32,7 @@
     header{
       padding:16px 10px 12px;
       text-align:center;
-      background:linear-gradient(120deg,#0d47a1,#42a5f5,#26c6da);
+      background:linear-gradient(120deg,#1b5e20,#4caf50,#8bc34a);
       box-shadow:0 4px 16px rgba(0,0,0,0.7);
       position:sticky;
       top:0;
@@ -80,33 +79,31 @@
     }
     .menu-card:hover{
       transform:translateY(-2px);
-      border-color:rgba(244,143,177,0.6);
+      border-color:rgba(139,195,74,0.7);
       box-shadow:0 12px 32px rgba(0,0,0,0.9);
     }
 
-    /* Glow effect */
     .menu-card::before{
       content:"";
       position:absolute; inset:-40%;
-      background:radial-gradient(circle at 0 0, rgba(66,165,245,0.22) 0, transparent 55%);
+      background:radial-gradient(circle at 0 0, rgba(139,195,74,0.24) 0, transparent 55%);
       opacity:0; transition:opacity .2s;
     }
     .menu-card:hover::before{ opacity:1; }
 
-    /* Tooltip */
     .menu-card .tooltip {
       position:absolute;
       top:-10px;
       left:50%;
       transform:translateX(-50%);
-      background:#111a3a;
+      background:#123018;
       color:#fff;
       padding:8px 12px;
       border-radius:10px;
       font-size:12px;
       opacity:0;
       white-space:normal;
-      width:220px;
+      width:230px;
       text-align:center;
       pointer-events:none;
       transition:opacity 0.2s ease-out, top 0.2s ease-out;
@@ -116,7 +113,7 @@
     }
     .menu-card:hover .tooltip{
       opacity:1;
-      top:-42px;
+      top:-44px;
     }
 
     .menu-icon{ font-size:22px; margin-bottom:6px; }
@@ -134,104 +131,110 @@
       font-size:11px; background:rgba(0,0,0,0.35);
     }
     .step-label{ opacity:.8; }
+
   </style>
 </head>
 <body>
 
 <header>
-  <h2>🏛️ ระบบตรวจสอบการเงินประจำปี ของ อปท.</h2>
-  <div class="sub">Annual Financial Audit – Local Government (FA – Annual LG)</div>
+  <h2>📆 ระบบตรวจสอบการเงินระหว่างปี ของ อปท.</h2>
+  <div class="sub">Mid-Year Financial Audit – Local Government (FA – LG Mid-Year)</div>
 </header>
 
 <main>
 
   <div class="intro">
-    ระบบบริหารงานตรวจสอบประจำปีของ อปท. ครบทุกขั้นตอน:
-    วางแผน → ปฏิบัติ → รายงาน → ชี้แจง → แจ้งผล → ติดตามผล
+    ใช้สำหรับงานตรวจสอบระหว่างปีของ อปท. ที่มุ่งเน้นการติดตามความเสี่ยงและรายการสำคัญ ก่อนปิดงบการเงินสิ้นปี
   </div>
 
   <div class="nav-top">
-    <a href="fa-menu.html" class="btn-nav"><span>⬅</span> กลับเมนู FA System</a>
+    <a href="fa-menu.html" class="btn-nav"><span>⬅</span> กลับเมนู FA Main</a>
     <a href="index.html" class="btn-nav"><span>🏠</span> กลับหน้าหลัก</a>
   </div>
 
   <section class="menu-grid">
 
-    <!-- 1 -->
-    <a href="fa-lg-plan.html" class="menu-card">
-      <div class="tooltip">กำหนดความเสี่ยง ขอบเขต ทีมตรวจ และปฏิทินตรวจสอบเพื่อเริ่มต้นเคส</div>
+    <a href="fa-lg-midyear-plan.html" class="menu-card">
+      <div class="tooltip">กำหนดประเด็นเสี่ยงระหว่างปี เลือก อปท. และช่วงเวลาที่จะเข้าตรวจ</div>
       <div class="menu-icon">🧭</div>
-      <div class="menu-title">1. การวางแผนการตรวจสอบ</div>
-      <div class="menu-en">1. Planning</div>
-      <div class="menu-desc">ตั้งค่าแผนตรวจ รองรับการประเมินความเสี่ยงและกำหนดทีมตรวจ</div>
+      <div class="menu-title">1. การวางแผนการตรวจสอบ FA ของ อปท.</div>
+      <div class="menu-en">1. Planning of Mid-Year FA (LG)</div>
+      <div class="menu-desc">
+        วางแผนเข้าตรวจระหว่างปี เพื่อโฟกัสจุดเสี่ยงก่อนรอบปิดงบการเงินประจำปี
+      </div>
       <div class="menu-footer">
-        <span class="tag">Step 1</span>
-        <span class="step-label">วางแผน ▸</span>
+        <span class="tag">Step 1 – Planning</span>
+        <span class="step-label">เข้าสู่ระบบวางแผน ▸</span>
       </div>
     </a>
 
-    <!-- 2 -->
-    <a href="fa-lg-fieldwork.html" class="menu-card">
-      <div class="tooltip">ดำเนินการตรวจ เก็บหลักฐาน ทำสมุดทำการ และบันทึกข้อสังเกต</div>
+    <a href="fa-lg-midyear-fieldwork.html" class="menu-card">
+      <div class="tooltip">บันทึกการทดสอบรายการสำคัญระหว่างปี เช่น รายรับ-รายจ่าย และเงินสด</div>
       <div class="menu-icon">📋</div>
-      <div class="menu-title">2. การปฏิบัติการตรวจสอบ</div>
-      <div class="menu-en">2. Fieldwork</div>
-      <div class="menu-desc">โปรแกรมตรวจสอบ หลักฐาน และ working papers</div>
+      <div class="menu-title">2. การปฏิบัติการตรวจสอบ FA ของ อปท.</div>
+      <div class="menu-en">2. Execution / Fieldwork (LG Mid-Year)</div>
+      <div class="menu-desc">
+        ลงสมุดทำการระหว่างปี ตรวจสอบธุรกรรมสำคัญ และติดตามเหตุการณ์ผิดปกติ
+      </div>
       <div class="menu-footer">
-        <span class="tag">Step 2</span>
-        <span class="step-label">ปฏิบัติ ▸</span>
+        <span class="tag">Step 2 – Fieldwork</span>
+        <span class="step-label">เข้าสู่ระบบปฏิบัติ ▸</span>
       </div>
     </a>
 
-    <!-- 3 -->
-    <a href="fa-lg-report.html" class="menu-card">
-      <div class="tooltip">จัดทำรายงาน ตรวจทานข้อค้นพบ ข้อเสนอแนะ และจัดการเวอร์ชัน</div>
+    <a href="fa-lg-midyear-report.html" class="menu-card">
+      <div class="tooltip">สรุปผลตรวจระหว่างปี แจ้งประเด็นที่ต้องเร่งแก้ไข ก่อนถึงรอบตรวจประจำปี</div>
       <div class="menu-icon">📝</div>
-      <div class="menu-title">3. การจัดทำรายงาน</div>
-      <div class="menu-en">3. Reporting</div>
-      <div class="menu-desc">สรุปข้อค้นพบ จัดโครงสร้างรายงาน และเสนออนุมัติ</div>
+      <div class="menu-title">3. การจัดทำรายงานการตรวจสอบ FA ของ อปท.</div>
+      <div class="menu-en">3. Mid-Year Reporting (LG)</div>
+      <div class="menu-desc">
+        สรุปข้อค้นพบระหว่างปี พร้อมข้อเสนอแนะเฉพาะหน้า เพื่อใช้เตรียมพร้อมรอบตรวจประจำปี
+      </div>
       <div class="menu-footer">
-        <span class="tag">Step 3</span>
-        <span class="step-label">รายงาน ▸</span>
+        <span class="tag">Step 3 – Reporting</span>
+        <span class="step-label">เข้าสู่ระบบรายงาน ▸</span>
       </div>
     </a>
 
-    <!-- 4 -->
-    <a href="fa-lg-response.html" class="menu-card">
-      <div class="tooltip">ส่งข้อค้นพบให้ อปท. ชี้แจง บันทึกคำชี้แจงและผลพิจารณา</div>
+    <a href="fa-lg-midyear-response.html" class="menu-card">
+      <div class="tooltip">เปิดช่องให้ อปท. ชี้แจงประเด็นที่พบในช่วงระหว่างปี และแนวทางแก้ไขเบื้องต้น</div>
       <div class="menu-icon">💬</div>
-      <div class="menu-title">4. การชี้แจง</div>
-      <div class="menu-en">4. Response</div>
-      <div class="menu-desc">คำชี้แจงรายข้อ เอกสารประกอบ และการประชุมชี้แจง</div>
+      <div class="menu-title">4. การเปิดโอกาสให้หน่วยรับตรวจชี้แจง FA ของ อปท.</div>
+      <div class="menu-en">4. Response & Clarification (LG Mid-Year)</div>
+      <div class="menu-desc">
+        รับคำชี้แจงระหว่างปี เก็บหลักฐานประกอบ และบันทึกผลพิจารณาของผู้ตรวจสอบ
+      </div>
       <div class="menu-footer">
-        <span class="tag">Step 4</span>
-        <span class="step-label">ชี้แจง ▸</span>
+        <span class="tag">Step 4 – Response</span>
+        <span class="step-label">เข้าสู่ระบบชี้แจง ▸</span>
       </div>
     </a>
 
-    <!-- 5 -->
-    <a href="fa-lg-communication.html" class="menu-card">
-      <div class="tooltip">ออกหนังสือแจ้งผล ส่งรายงานแก่ผู้มีส่วนเกี่ยวข้อง และประชุมสรุปผล</div>
+    <a href="fa-lg-midyear-communication.html" class="menu-card">
+      <div class="tooltip">แจ้งผลตรวจระหว่างปีแก่ผู้บริหาร อปท. เพื่อประกอบการตัดสินใจและวางแผน</div>
       <div class="menu-icon">📨</div>
-      <div class="menu-title">5. การแจ้งผล</div>
-      <div class="menu-en">5. Communication</div>
-      <div class="menu-desc">แจ้งผลอย่างเป็นทางการแก่ อปท. และหน่วยงานที่เกี่ยวข้อง</div>
+      <div class="menu-title">5. การแจ้งผลการตรวจสอบ FA ของ อปท.</div>
+      <div class="menu-en">5. Communication of Mid-Year Results (LG)</div>
+      <div class="menu-desc">
+        จัดทำหนังสือแจ้งผล และบันทึกการสื่อสารเพื่อใช้เทียบเคียงกับผลการตรวจประจำปี
+      </div>
       <div class="menu-footer">
-        <span class="tag">Step 5</span>
-        <span class="step-label">แจ้งผล ▸</span>
+        <span class="tag">Step 5 – Communication</span>
+        <span class="step-label">เข้าสู่ระบบแจ้งผล ▸</span>
       </div>
     </a>
 
-    <!-- 6 -->
-    <a href="fa-lg-followup.html" class="menu-card">
-      <div class="tooltip">ติดตามการแก้ไขตามข้อเสนอแนะ บันทึกผล และปิดเคส</div>
+    <a href="fa-lg-midyear-followup.html" class="menu-card">
+      <div class="tooltip">ติดตามการดำเนินการระหว่างปี ว่าตรงตามข้อเสนอแนะของผู้ตรวจสอบหรือไม่</div>
       <div class="menu-icon">🔁</div>
-      <div class="menu-title">6. การติดตามผล</div>
-      <div class="menu-en">6. Follow-up</div>
-      <div class="menu-desc">ติดตาม Action Plan รายข้อจนงานตรวจสอบเสร็จสิ้น</div>
+      <div class="menu-title">6. การติดตามผลการตรวจสอบ FA ของ อปท.</div>
+      <div class="menu-en">6. Follow-up of Mid-Year Actions (LG)</div>
+      <div class="menu-desc">
+        ตรวจสอบการปรับปรุงของ อปท. ตามข้อเสนอแนะระหว่างปี ก่อนเข้าสู่รอบตรวจประจำปี
+      </div>
       <div class="menu-footer">
-        <span class="tag">Step 6</span>
-        <span class="step-label">ติดตามผล ▸</span>
+        <span class="tag">Step 6 – Follow-up</span>
+        <span class="step-label">เข้าสู่ระบบติดตามผล ▸</span>
       </div>
     </a>
 
