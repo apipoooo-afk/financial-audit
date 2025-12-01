@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8">
-  <title>FA Database | ข้อมูลส่วนราชการ</title>
+  <title>FA Annual LG | ภาพรวมประจำปี อปท.</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <style>
@@ -13,6 +13,7 @@
       --accent:#42a5f5;
       --accent2:#26c6da;
       --muted:#a3acc7;
+      --text:#f5f7ff;
     }
     *{box-sizing:border-box;}
 
@@ -24,7 +25,7 @@
         radial-gradient(circle at 90% 100%, rgba(66,165,245,0.32) 0, transparent 55%),
         radial-gradient(circle at 0% 100%, rgba(38,198,218,0.22) 0, transparent 55%),
         var(--bg);
-      color:#f5f7ff;
+      color:var(--text);
       min-height:100vh;
     }
 
@@ -104,16 +105,6 @@
       color:var(--muted);
     }
 
-    .layout{
-      display:grid;
-      grid-template-columns:minmax(0,1.3fr) minmax(0,0.8fr);
-      gap:16px;
-      margin-top:16px;
-    }
-    @media(max-width:880px){
-      .layout{grid-template-columns:1fr;}
-    }
-
     .card{
       background:var(--card);
       border-radius:16px;
@@ -122,6 +113,7 @@
       padding:16px 14px 14px;
       position:relative;
       overflow:hidden;
+      margin-bottom:16px;
     }
     .card::before{
       content:"";
@@ -134,9 +126,288 @@
     }
     .card:hover::before{opacity:1;}
     .card > *{position:relative;z-index:1;}
+    .card-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:10px;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .card-title{
+      font-size:16px;
+      font-weight:600;
+    }
 
-    .card-main{border-top:3px solid var(--accent);}
-    .card-info{border-top:3px solid var(--accent2);}
+    .filters{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:6px;
+      align-items:center;
+    }
+    label{
+      font-size:12px;
+      color:var(--muted);
+    }
+    select, input{
+      background:#060818;
+      border-radius:999px;
+      border:1px solid var(--border);
+      padding:5px 10px;
+      color:var(--text);
+      font-size:12px;
+      outline:none;
+    }
+    select:focus, input:focus{
+      border-color:var(--accent);
+    }
 
-    h2{
-      margin
+    table{
+      width:100%;
+      border-collapse:collapse;
+      font-size:13px;
+      margin-top:8px;
+    }
+    th, td{
+      border-bottom:1px solid rgba(255,255,255,0.06);
+      padding:6px 4px;
+      text-align:left;
+    }
+    th{
+      font-size:12px;
+      color:var(--muted);
+      font-weight:500;
+    }
+    tr:hover td{
+      background:rgba(255,255,255,0.02);
+    }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      padding:2px 8px;
+      border-radius:999px;
+      font-size:11px;
+      border:1px solid rgba(255,255,255,0.18);
+    }
+    .badge-plan{background:rgba(66,165,245,0.12);}
+    .badge-field{background:rgba(129,199,132,0.12);}
+    .badge-report{background:rgba(255,241,118,0.12);}
+    .badge-response{background:rgba(244,143,177,0.12);}
+    .badge-comm{background:rgba(255,183,77,0.12);}
+    .badge-follow{background:rgba(161,136,127,0.12);}
+    .badge-closed{background:rgba(100,255,218,0.12);}
+
+    .btn-sm{
+      padding:4px 10px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background:rgba(0,0,0,0.45);
+      color:#fff;
+      font-size:11px;
+      cursor:pointer;
+    }
+    .btn-sm:hover{
+      background:rgba(0,0,0,0.7);
+      border-color:var(--accent);
+    }
+
+    .layout{
+      display:grid;
+      grid-template-columns:minmax(0,1.4fr) minmax(0,0.9fr);
+      gap:16px;
+    }
+    @media(max-width:880px){
+      .layout{grid-template-columns:1fr;}
+    }
+
+    .kpi-list{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
+      gap:10px;
+      margin-top:6px;
+    }
+    .kpi{
+      background:rgba(0,0,0,0.35);
+      border-radius:12px;
+      padding:8px 10px;
+      border:1px solid rgba(255,255,255,0.06);
+      font-size:12px;
+    }
+    .kpi-label{
+      color:var(--muted);
+      font-size:11px;
+    }
+    .kpi-value{
+      font-size:16px;
+      font-weight:600;
+      margin-top:2px;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <div class="brand">
+      FA Annual LG
+      <small>ระบบตรวจสอบรายงานการเงิน อปท. – ระดับปี</small>
+    </div>
+    <div class="header-right">
+      <span class="pill">
+        <span class="dot"></span>
+        ระบบออนไลน์
+      </span>
+      <a href="index.html" class="btn-link">กลับหน้าหลักระบบ</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <h1>ภาพรวมการตรวจสอบประจำปีของ อปท.</h1>
+  <div class="muted">
+    เลือกปีงบประมาณและหน่วยรับตรวจ เพื่อเข้าจัดการขั้นตอน FA 6 ขั้นตอนของแต่ละเคส
+  </div>
+
+  <div class="layout">
+    <!-- LEFT: CASE TABLE -->
+    <section class="card">
+      <div class="card-header">
+        <div class="card-title">รายการเคสตรวจสอบประจำปี</div>
+      </div>
+      <div class="filters">
+        <div>
+          <label>ปีงบประมาณ</label><br>
+          <select id="yearSelect">
+            <option value="2568">2568</option>
+            <option value="2569">2569</option>
+            <option value="2570">2570</option>
+          </select>
+        </div>
+        <div>
+          <label>จังหวัด</label><br>
+          <input id="provFilter" placeholder="ค้นหาจังหวัด...">
+        </div>
+        <div>
+          <label>หน่วยรับตรวจ</label><br>
+          <input id="lgFilter" placeholder="ค้นหา อปท....">
+        </div>
+      </div>
+
+      <table id="caseTable">
+        <thead>
+        <tr>
+          <th>รหัสเคส</th>
+          <th>หน่วยรับตรวจ (อปท.)</th>
+          <th>จังหวัด</th>
+          <th>ประเภท</th>
+          <th>ขั้นตอนปัจจุบัน</th>
+          <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- ตัวอย่างข้อมูลจำลอง (ในงานจริงดึงจากฐานข้อมูล) -->
+        <tr data-year="2568">
+          <td>CASE001</td>
+          <td>อบจ.ศรีสะเกษ</td>
+          <td>ศรีสะเกษ</td>
+          <td>อบจ.</td>
+          <td>
+            <span class="badge badge-field" data-status="FIELDWORK">ขั้นที่ 2: ปฏิบัติ</span>
+          </td>
+          <td>
+            <button class="btn-sm" onclick="openCase('CASE001','FIELDWORK')">
+              เข้าไปทำงาน
+            </button>
+          </td>
+        </tr>
+        <tr data-year="2568">
+          <td>CASE002</td>
+          <td>ทน.ศรีสะเกษ</td>
+          <td>ศรีสะเกษ</td>
+          <td>ทน.</td>
+          <td>
+            <span class="badge badge-plan" data-status="PLAN">ขั้นที่ 1: วางแผน</span>
+          </td>
+          <td>
+            <button class="btn-sm" onclick="openCase('CASE002','PLAN')">
+              เข้าไปทำงาน
+            </button>
+          </td>
+        </tr>
+        <tr data-year="2569">
+          <td>CASE003</td>
+          <td>อบต.ตัวอย่าง</td>
+          <td>ยโสธร</td>
+          <td>อบต.</td>
+          <td>
+            <span class="badge badge-report" data-status="REPORT">ขั้นที่ 3: รายงาน</span>
+          </td>
+          <td>
+            <button class="btn-sm" onclick="openCase('CASE003','REPORT')">
+              เข้าไปทำงาน
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- RIGHT: KPI SUMMARY -->
+    <aside class="card">
+      <div class="card-header">
+        <div class="card-title">ตัวชี้วัดภาพรวม (สาธิต)</div>
+      </div>
+      <div class="kpi-list">
+        <div class="kpi">
+          <div class="kpi-label">จำนวนเคสทั้งหมดปีนี้</div>
+          <div class="kpi-value" id="kpiTotal">3</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">เคสอยู่ขั้นวางแผน</div>
+          <div class="kpi-value" id="kpiPlan">1</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">เคสอยู่ขั้นปฏิบัติ</div>
+          <div class="kpi-value" id="kpiField">1</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">เคสอยู่ขั้นรายงาน</div>
+          <div class="kpi-value" id="kpiReport">1</div>
+        </div>
+      </div>
+      <div class="muted" style="margin-top:10px;">
+        หมายเหตุ: ตัวเลขด้านบนเป็นข้อมูลตัวอย่างสำหรับโครงสร้างหน้า ในระบบจริงจะดึงจากฐานข้อมูล FA
+      </div>
+    </aside>
+  </div>
+</main>
+
+<script>
+  function openCase(caseId, status){
+    const year = document.getElementById('yearSelect').value || '';
+    let target = 'fa-lg-plan.html';
+    switch(status){
+      case 'PLAN': target = 'fa-lg-plan.html'; break;
+      case 'FIELDWORK': target = 'fa-lg-fieldwork.html'; break;
+      case 'REPORT': target = 'fa-lg-report.html'; break;
+      case 'RESPONSE': target = 'fa-lg-response.html'; break;
+      case 'COMMUNICATION': target = 'fa-lg-communication.html'; break;
+      case 'FOLLOWUP': target = 'fa-lg-followup.html'; break;
+      case 'CLOSED': target = 'fa-lg-followup.html'; break;
+    }
+    window.location.href = target + '?case=' + encodeURIComponent(caseId) + '&year=' + encodeURIComponent(year);
+  }
+
+  // Filter by year (demo-level filter)
+  document.getElementById('yearSelect').addEventListener('change', function(){
+    const year = this.value;
+    const rows = document.querySelectorAll('#caseTable tbody tr');
+    rows.forEach(r=>{
+      const rYear = r.getAttribute('data-year');
+      r.style.display = (year === '' || year === rYear) ? '' : 'none';
+    });
+  });
+</script>
+</body>
+</html>
