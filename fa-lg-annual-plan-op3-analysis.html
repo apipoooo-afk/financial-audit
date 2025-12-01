@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>FA – LG Annual | ห้องวิเคราะห์แบบ อปท. 3 (Analysis Room)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    :root{
+      --bg:#060818;
+      --card:#11152b;
+      --border:#262b46;
+      --accent:#42a5f5;
+      --accent2:#26c6da;
+      --muted:#a3acc7;
+      --text:#f5f7ff;
+      --pink:#f48fb1;
+    }
+    *{box-sizing:border-box;}
+
+    body{
+      margin:0;
+      font-family:"Segoe UI", Tahoma, sans-serif;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(123,30,60,0.36) 0, transparent 55%),
+        radial-gradient(circle at 90% 100%, rgba(66,165,245,0.32) 0, transparent 55%),
+        radial-gradient(circle at 0% 100%, rgba(38,198,218,0.22) 0, transparent 55%),
+        var(--bg);
+      color:var(--text);
+      min-height:100vh;
+    }
+
+    header{
+      padding:14px 10px 10px;
+      text-align:center;
+      background:linear-gradient(120deg,#7b1e3c,#0d47a1,#f48fb1);
+      box-shadow:0 4px 16px rgba(0,0,0,0.7);
+      position:sticky;
+      top:0;
+      z-index:10;
+    }
+    header h2{margin:0;font-size:19px;}
+    header .sub{font-size:13px;opacity:.9;}
+
+    main{
+      max-width:980px;
+      margin:16px auto 30px;
+      padding:0 14px 20px;
+    }
+
+    .breadcrumb{
+      font-size:11px;
+      color:var(--muted);
+      margin-bottom:8px;
+    }
+
+    .intro{
+      font-size:13px;
+      color:var(--muted);
+      margin-bottom:10px;
+      line-height:1.5;
+    }
+
+    .card{
+      background:var(--card);
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,0.15);
+      box-shadow:0 8px 24px rgba(0,0,0,0.9);
+      padding:12px 12px 10px;
+      position:relative;
+      overflow:hidden;
+      margin-bottom:12px;
+    }
+    .card::before{
+      content:"";
+      position:absolute;
+      inset:-40%;
+      background:radial-gradient(circle at 0 0, rgba(244,143,177,0.3) 0, transparent 55%);
+      opacity:0;
+      transition:opacity .2s;
+      pointer-events:none;
+    }
+    .card:hover::before{opacity:.6;}
+    .card > *{position:relative;z-index:1;}
+
+    .card-title{
+      font-size:15px;
+      font-weight:600;
+      margin-bottom:4px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .card-sub{
+      font-size:11px;
+      color:var(--muted);
+      margin-bottom:8px;
+    }
+
+    label{
+      font-size:12px;
+      display:block;
+      margin:4px 0 2px;
+    }
+    input[type="text"],
+    input[type="url"],
+    textarea{
+      width:100%;
+      padding:6px 8px;
+      border-radius:8px;
+      border:1px solid rgba(255,255,255,0.25);
+      background:#060818;
+      color:var(--text);
+      font-size:12px;
+    }
+    textarea{
+      min-height:90px;
+      resize:vertical;
+    }
+    input::file-selector-button{
+      padding:4px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.35);
+      background:rgba(0,0,0,0.5);
+      color:#fff;
+      font-size:11px;
+      margin-right:8px;
+      cursor:pointer;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:5px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.45);
+      background:rgba(0,0,0,0.45);
+      color:#fff;
+      font-size:11px;
+      cursor:pointer;
+      text-decoration:none;
+      margin-top:4px;
+    }
+    .btn:hover{
+      background:rgba(0,0,0,0.75);
+    }
+    .btn-small{
+      padding:3px 8px;
+      font-size:10px;
+    }
+    .btn-primary{
+      border-color:var(--accent2);
+      background:rgba(38,198,218,0.18);
+    }
+
+    .status{
+      font-size:11px;
+      color:var(--muted);
+      margin-top:6px;
+    }
+
+    .badge{
+      display:inline-block;
+      padding:1px 6px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.3);
+      font-size:10px;
+      opacity:.9;
+    }
+
+    ul{
+      margin:4px 0 4px 18px;
+      padding:0;
+      font-size:12px;
+      color:var(--muted);
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h2>ห้องวิเคราะห์ข้อมูล – แบบ อปท. 3 (Analysis Room)</h2>
+  <div class="sub">FA – LG Annual | เชื่อมต่อ AI / Data Analytics ภายนอก</div>
+</header>
+
+<main>
+
+  <div class="breadcrumb">
+    FA Annual (LG) ▸ Planning ▸ แบบ อปท.3 ▸ <strong>Analysis Room</strong>
+  </div>
+
+  <div class="intro">
+    หน้านี้ออกแบบให้เป็น “ห้องวิเคราะห์ (2.3)” สำหรับแบบ อปท.3
+    คุณสามารถใช้ข้อมูลจากลิงก์และไฟล์ต่าง ๆ ประมวลผลด้วย AI หรือ Script ภายนอก
+    จากนั้นบันทึกผลสรุปกลับไปใช้ในแบบฟอร์ม A4 ของ อปท.3 ได้
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      1. Context หน่วยรับตรวจ
+      <span class="badge">อ่านจากหน้า อปท.3 อัตโนมัติ</span>
+    </div>
+    <div class="card-sub">
+      ข้อมูลนี้ถูกอ่านมาจาก <strong>fa-lg-annual-plan-op3.html</strong> ผ่าน localStorage (ถ้าผูกไว้แล้ว)
+    </div>
+
+    <label>ปีงบประมาณ (อ่านอย่างเดียว)</label>
+    <input type="text" id="ctxYear" readonly>
+
+    <label>หน่วยรับตรวจ (อ่านอย่างเดียว)</label>
+    <input type="text" id="ctxEntity" readonly>
+
+    <div class="status" id="ctxStatus"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      2. สิ่งที่ต้องการวิเคราะห์ (Analysis Question)
+    </div>
+    <div class="card-sub">
+      ระบุโจทย์วิเคราะห์ให้ชัด เพื่อให้ AI / Script ภายนอก หรือผู้วิเคราะห์คน พอจะรู้ว่าต้องสรุปอะไร
+      เช่น
+      <ul>
+        <li>สรุปโครงสร้างองค์กร ภารกิจหลัก และระบบงานสำคัญของหน่วยรับตรวจ</li>
+        <li>ดึงข้อมูลรายได้หลัก 3 ปีย้อนหลัง พร้อมวิเคราะห์แนวโน้ม</li>
+        <li>ตรวจหาประเด็นเสี่ยงเชิงระบบจากข้อมูล new e-LAAS</li>
+      </ul>
+    </div>
+
+    <label>สิ่งที่ต้องการวิเคราะห์</label>
+    <textarea id="analysisQuestion" placeholder="ระบุโจทย์วิเคราะห์ที่ต้องการ"></textarea>
+
+    <label>Context เพิ่มเติม / สมมติฐาน / หมายเหตุ</label>
+    <textarea id="analysisContext" placeholder="เช่น ใช้ข้อมูลจาก URL A + ไฟล์ B, ให้เน้นด้านควบคุมภายใน และทุจริต"></textarea>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      3. เลือกไฟล์/ข้อมูลที่ใช้วิเคราะห์
+      <span class="badge">ต้นทางข้อมูล</span>
+    </div>
+    <div class="card-sub">
+      สามารถเลือกไฟล์ข้อมูลใหม่เพื่อใช้วิเคราะห์ หรือใช้ร่วมกับข้อมูลจากหน้า อปท.3 (เก็บชื่อไฟล์เป็น metadata)
+    </div>
+
+    <label>เลือกไฟล์ข้อมูลที่ใช้วิเคราะห์ (ไม่อัปโหลดขึ้นเซิร์ฟเวอร์)</label>
+    <input type="file" id="analysisFile" multiple>
+
+    <div class="status" id="fileStatus">* ใช้สำหรับอ้างอิงในผลการวิเคราะห์เท่านั้น (ตัวอย่าง)</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      4. ผลการวิเคราะห์ (Analysis Result)
+      <span class="badge">จะถูกส่งกลับไป อปท.3</span>
+    </div>
+    <div class="card-sub">
+      ส่วนนี้คือ “สรุปรายงาน” ที่จะถูกบันทึกไปแสดงใน “ส่วนที่ 4 : สรุปผลการวิเคราะห์ข้อมูลเบื้องต้น”
+      บนแบบฟอร์ม A4 ของ อปท.3
+    </div>
+
+    <label>ผลการวิเคราะห์</label>
+    <textarea id="analysisResult" placeholder="วางผลสรุปจาก AI / จากการวิเคราะห์ของคุณที่นี่"></textarea>
+
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;">
+      <button type="button" class="btn btn-small btn-primary" onclick="demoGenerate()">
+        ✨ ตัวอย่าง: สร้างโครงสรุปเบื้องต้น
+      </button>
+      <button type="button" class="btn btn-small" onclick="copyResult()">
+        📋 Copy ผลการวิเคราะห์
+      </button>
+      <button type="button" class="btn btn-small btn-primary" onclick="saveToMain()">
+        ⬆ บันทึกผลไปยังแบบฟอร์ม อปท.3
+      </button>
+    </div>
+
+    <div class="status" id="analysisStatus"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      5. การเชื่อมต่อ AI ภายนอก (ช่องสำหรับต่อยอด)
+    </div>
+    <div class="card-sub">
+      ในส่วนนี้ คุณสามารถเพิ่ม Script เรียกใช้ OpenAI / Gemini / ฯลฯ ที่ฝั่ง Frontend/Backend ของคุณเอง
+      โดยใช้ค่าในช่อง:
+      <ul>
+        <li><code>analysisQuestion</code> – โจทย์วิเคราะห์</li>
+        <li><code>analysisContext</code> – Context เพิ่มเติม</li>
+        <li>ไฟล์จาก <code>analysisFile</code> – สามารถอัปโหลดผ่าน API ของคุณเอง</li>
+      </ul>
+      จากนั้นเขียนผลตอบกลับมาใส่ใน <strong>analysisResult</strong> แล้วกดปุ่ม “บันทึกผลไปยังแบบฟอร์ม อปท.3”
+    </div>
+  </div>
+
+</main>
+
+<script>
+  // อ่าน context จากหน้า op3 หลัก (ถ้ามี)
+  (function initContext(){
+    const ctxStatus = document.getElementById('ctxStatus');
+    try{
+      const raw = localStorage.getItem('fa_op3_context');
+      if(!raw){
+        ctxStatus.textContent = '⚠ ยังไม่พบ context จากหน้า อปท.3 (fa-lg-annual-plan-op3.html)';
+        return;
+      }
+      const ctx = JSON.parse(raw);
+      document.getElementById('ctxYear').value = ctx.year || '';
+      document.getElementById('ctxEntity').value = ctx.entityName || '';
+      ctxStatus.textContent = '✅ โหลด context จากหน้า อปท.3 เรียบร้อยแล้ว';
+    }catch(e){
+      ctxStatus.textContent = '⚠ โหลด context ไม่สำเร็จ (โครงสร้างข้อมูลไม่ถูกต้อง)';
+    }
+  })();
+
+  document.getElementById('analysisFile').addEventListener('change', (e)=>{
+    const files = Array.from(e.target.files || []);
+    if(files.length === 0){
+      document.getElementById('fileStatus').textContent = '* ยังไม่ได้เลือกไฟล์';
+    }else{
+      const names = files.map(f=>f.name).join(', ');
+      document.getElementById('fileStatus').textContent = `ไฟล์ที่เลือก: ${names}`;
+    }
+  });
+
+  function demoGenerate(){
+    const year = document.getElementById('ctxYear').value || 'XXXX';
+    const entity = document.getElementById('ctxEntity').value || 'หน่วยรับตรวจ';
+    const q = document.getElementById('analysisQuestion').value || 'ยังไม่ได้กำหนดโจทย์วิเคราะห์';
+
+    const template = [
+      `สรุปผลการวิเคราะห์เบื้องต้น หน่วยรับตรวจ: ${entity} ปีงบประมาณ พ.ศ. ${year}`,
+      '',
+      `1. โจทย์วิเคราะห์`,
+      `   - ${q}`,
+      '',
+      `2. ภาพรวมโครงสร้างและระบบงาน`,
+      `   - (ใส่รายละเอียดโครงสร้างองค์กร ระบบงานหลัก ระบบบัญชี/งบประมาณ)`,
+      '',
+      `3. ประเด็นความเสี่ยง/จุดอ่อนที่พบ`,
+      `   - (ระบุประเด็นที่เกี่ยวข้องกับการนำเสนอข้อมูลในงบการเงิน และการควบคุมภายใน)`,
+      '',
+      `4. ข้อเสนอแนะในเชิงการสอบบัญชี`,
+      `   - (สรุปว่าควรเน้นตรวจด้านใดเป็นพิเศษในขั้น Fieldwork)`,
+      '',
+      `*** หมายเหตุ: ข้อความนี้เป็นเพียงโครงร่างตัวอย่าง สามารถแก้ไข/เพิ่มเติมรายละเอียดได้ตามการวิเคราะห์จริง ***`
+    ].join('\n');
+
+    document.getElementById('analysisResult').value = template;
+    document.getElementById('analysisStatus').textContent = '✅ สร้างโครงร่างผลการวิเคราะห์ตัวอย่างแล้ว';
+  }
+
+  function copyResult(){
+    const text = document.getElementById('analysisResult').value;
+    if(!text) return;
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(()=>{
+        document.getElementById('analysisStatus').textContent = '✅ คัดลอกผลการวิเคราะห์ไปยัง Clipboard แล้ว';
+      }).catch(()=>{
+        alert('ไม่สามารถคัดลอกอัตโนมัติได้');
+      });
+    }else{
+      alert('เบราว์เซอร์นี้ไม่รองรับการคัดลอกอัตโนมัติ');
+    }
+  }
+
+  function saveToMain(){
+    const result = document.getElementById('analysisResult').value;
+    const q = document.getElementById('analysisQuestion').value;
+    const ctx = document.getElementById('analysisContext').value;
+
+    const payload = { question:q, context:ctx, result };
+    localStorage.setItem('fa_op3_analysis_result', JSON.stringify(payload));
+    document.getElementById('analysisStatus').textContent =
+      '✅ บันทึกผลการวิเคราะห์ลง localStorage แล้ว กลับไปหน้า อปท.3 แล้วกด “โหลดผลจากห้องวิเคราะห์” เพื่อดึงผลไปใส่แบบฟอร์ม';
+  }
+</script>
+
+</body>
+</html>
