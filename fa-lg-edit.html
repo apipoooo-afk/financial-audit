@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>FA DB | ระบบแก้ไขข้อมูล อปท.</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+  :root{
+    --bg:#060818;
+    --card:#11152b;
+    --border:#262b46;
+    --accent:#42a5f5;
+    --accent2:#26c6da;
+    --muted:#a3acc7;
+    --text:#f5f7ff;
+    --success:#22c55e;
+    --danger:#ef4444;
+  }
+  *{box-sizing:border-box;}
+
+  body{
+    margin:0;
+    font-family:"Segoe UI", Tahoma;
+    background:var(--bg);
+    color:var(--text);
+  }
+
+  header{
+    padding:16px 12px;
+    text-align:center;
+    background:linear-gradient(120deg,#0d47a1,#6f42c1,#26c6da);
+    box-shadow:0 4px 14px rgba(0,0,0,.6);
+  }
+
+  header h1{margin:0;font-size:22px;font-weight:800;}
+  header p{margin:4px 0 0;font-size:13px;color:var(--muted);}
+
+  .wrap{
+    max-width:1200px;
+    margin:20px auto;
+    padding:0 16px;
+  }
+
+  .card{
+    background:var(--card);
+    border-radius:16px;
+    border:1px solid rgba(255,255,255,.15);
+    padding:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,.65);
+    margin-bottom:18px;
+  }
+
+  h2{
+    margin:0 0 10px;
+    font-size:18px;
+    font-weight:700;
+  }
+
+  table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:12px;
+    margin-top:10px;
+  }
+
+  th,td{
+    border:1px solid #374151;
+    padding:6px 6px;
+  }
+
+  th{background:#020617;}
+  tr:nth-child(even){background:#111827;}
+
+  input, select{
+    width:100%;
+    padding:8px;
+    border-radius:8px;
+    background:#05081a;
+    border:1px solid #374151;
+    font-size:13px;
+    color:var(--text);
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:10px;
+  }
+
+  .btn{
+    padding:8px 14px;
+    border:none;
+    border-radius:999px;
+    cursor:pointer;
+    font-size:13px;
+    margin-right:6px;
+  }
+
+  .btn-primary{background:var(--success);color:#0f2c12;font-weight:bold;}
+  .btn-secondary{background:#374151;color:#fff;}
+  .btn-danger{background:var(--danger);color:#fff;}
+
+  .nav{
+    text-decoration:none;
+    background:#374151;
+    padding:8px 14px;
+    border-radius:999px;
+    color:#fff;
+    margin-right:10px;
+    display:inline-block;
+  }
+
+  .edit-box{
+    background:#0b1120;
+    padding:14px;
+    border-radius:14px;
+    border:1px solid #374151;
+    margin-top:10px;
+  }
+
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>ระบบแก้ไขข้อมูล อปท.</h1>
+  <p>ปรับปรุง/แก้ไขข้อมูลในฐานกลาง fa-db-data-gov</p>
+</header>
+
+<div class="wrap">
+
+  <!-- CLOCK -->
+  <div style="color:var(--muted);font-size:13px;margin-bottom:10px;">
+    ⏱ เวลา: <span id="clock">-</span>
+  </div>
+
+  <!-- SEARCH BLOCK -->
+  <div class="card">
+    <h2>ค้นหาในฐานข้อมูล</h2>
+
+    <div class="grid">
+      <div>
+        <label>หน่วยรับตรวจ</label>
+        <input id="q-unit" placeholder="พิมพ์ชื่อหน่วยรับตรวจ">
+      </div>
+
+      <div>
+        <label>จังหวัด</label>
+        <input id="q-province" placeholder="จังหวัด">
+      </div>
+
+      <div>
+        <label>อำเภอ</label>
+        <input id="q-district" placeholder="อำเภอ">
+      </div>
+
+      <div>
+        <label>ตำบล</label>
+        <input id="q-subdistrict" placeholder="ตำบล">
+      </div>
+
+    </div>
+
+    <br>
+    <button class="btn btn-primary" id="btnSearch">ค้นหา</button>
+    <button class="btn btn-secondary" id="btnShowAll">แสดงทั้งหมด</button>
+    <button class="btn btn-secondary" id="btnClear">ล้าง</button>
+
+    <div id="stat" style="color:var(--muted);margin-top:6px;font-size:13px;">
+      ยังไม่ได้ค้นหา
+    </div>
+  </div>
+
+  <!-- TABLE -->
+  <div class="card">
+    <h2>รายการข้อมูล</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>เลือก</th>
+          <th>#</th>
+          <th>รหัส</th>
+          <th>ชื่อ</th>
+          <th>จังหวัด</th>
+          <th>อำเภอ</th>
+          <th>ตำบล</th>
+          <th>จัดการ</th>
+        </tr>
+      </thead>
+      <tbody id="dataBody"></tbody>
+    </table>
+
+    <br>
+    <button class="btn btn-danger" id="btnDeleteSelected">🗑 ลบที่เลือก</button>
+  </div>
+
+  <!-- EDIT BOX -->
+  <div class="card">
+    <h2>แก้ไขข้อมูล</h2>
+
+    <div class="edit-box">
+
+      <div class="grid">
+        <div>
+          <label>รหัส</label>
+          <input id="e-code">
+        </div>
+
+        <div>
+          <label>ชื่อหน่วยงาน</label>
+          <input id="e-name">
+        </div>
+
+        <div>
+          <label>จังหวัด</label>
+          <input id="e-province">
+        </div>
+
+        <div>
+          <label>อำเภอ</label>
+          <input id="e-district">
+        </div>
+
+        <div>
+          <label>ตำบล</label>
+          <input id="e-subdistrict">
+        </div>
+
+        <div>
+          <label>หมู่บ้าน</label>
+          <input id="e-village">
+        </div>
+
+      </div>
+
+      <br>
+      <button class="btn btn-primary" id="btnSave">บันทึกการแก้ไข</button>
+
+    </div>
+
+  </div>
+
+  <!-- NAV -->
+  <br>
+  <a href="fa-db-local.html" class="nav">⬅ เมนูฐานข้อมูล</a>
+  <a href="fa-db-data-gov.html" class="nav">📊 ฐานข้อมูลกลาง</a>
+  <a href="fa-lg-add.html" class="nav">➕ เพิ่มข้อมูล</a>
+  <a href="fa-lg-search.html" class="nav">🔍 ค้นหาข้อมูล</a>
+
+</div>
+
+<script>
+/* CLOCK */
+function updateClock(){
+  document.getElementById("clock").textContent =
+    new Date().toLocaleString("th-TH");
+}
+setInterval(updateClock,1000); updateClock();
+
+/* LOAD MASTER DB */
+const KEY = "fa-db-data-gov";
+let DB = [];
+let editIndex = -1;
+
+function loadDB(){
+  DB = JSON.parse(localStorage.getItem(KEY) || "[]");
+}
+
+function saveDB(){
+  localStorage.setItem(KEY, JSON.stringify(DB));
+}
+
+/* TABLE RENDER */
+function renderTable(rows){
+  const tb = document.getElementById("dataBody");
+  tb.innerHTML = "";
+
+  rows.forEach((r,i)=>{
+    const tr = document.createElement("tr");
+
+    tr.innerHTML = `
+      <td><input type="checkbox" class="chk-del" data-index="${r._idx}"></td>
+      <td>${i+1}</td>
+      <td>${r.code||""}</td>
+      <td>${r.name||""}</td>
+      <td>${r.province||""}</td>
+      <td>${r.district||""}</td>
+      <td>${r.subdistrict||""}</td>
+      <td><button class="btn btn-secondary btn-small" onclick="editRow(${r._idx})">แก้ไข</button></td>
+    `;
+
+    tb.appendChild(tr);
+  });
+}
+
+/* SEARCH */
+function normalize(s){return (s||"").toLowerCase().trim();}
+
+function search(showAll=false){
+  let result = DB.map((r,idx)=>({...r,_idx:idx}));
+
+  if(!showAll){
+    const qUnit = normalize(document.getElementById("q-unit").value);
+    const qProv = normalize(document.getElementById("q-province").value);
+    const qDist = normalize(document.getElementById("q-district").value);
+    const qSub  = normalize(document.getElementById("q-subdistrict").value);
+
+    if(qUnit){
+      result = result.filter(r=> normalize(r.name).includes(qUnit));
+    }
+    if(qProv){
+      result = result.filter(r=> normalize(r.province).includes(qProv));
+    }
+    if(qDist){
+      result = result.filter(r=> normalize(r.district).includes(qDist));
+    }
+    if(qSub){
+      result = result.filter(r=> normalize(r.subdistrict).includes(qSub));
+    }
+  }
+
+  renderTable(result);
+
+  document.getElementById("stat").textContent =
+    `พบทั้งหมด ${result.length} รายการ`;
+}
+
+/* LOAD EDIT */
+window.editRow=function(idx){
+  editIndex = idx;
+  const r = DB[idx];
+
+  e-code.value       = r.code || "";
+  e-name.value       = r.name || "";
+  e-province.value   = r.province || "";
+  e-district.value   = r.district || "";
+  e-subdistrict.value= r.subdistrict || "";
+  e-village.value    = r.village || "";
+
+  window.scrollTo({top: document.body.scrollHeight,behavior:"smooth"});
+};
+
+/* SAVE EDIT */
+document.getElementById("btnSave").addEventListener("click",()=>{
+  if(editIndex < 0){ alert("ยังไม่ได้เลือกข้อมูล"); return;}
+
+  DB[editIndex].code       = e-code.value.trim();
+  DB[editIndex].name       = e-name.value.trim();
+  DB[editIndex].province   = e-province.value.trim();
+  DB[editIndex].district   = e-district.value.trim();
+  DB[editIndex].subdistrict= e-subdistrict.value.trim();
+  DB[editIndex].village    = e-village.value.trim();
+
+  saveDB();
+  alert("บันทึกข้อมูลเรียบร้อย");
+});
+
+/* DELETE SELECTED */
+document.getElementById("btnDeleteSelected").addEventListener("click",()=>{
+  const chks = document.querySelectorAll(".chk-del:checked");
+  if(chks.length===0){ alert("ไม่มีข้อมูลที่เลือก"); return;}
+
+  if(!confirm("ยืนยันลบข้อมูลที่เลือก?")) return;
+
+  const delIndex = [...chks].map(ch=>Number(ch.dataset.index));
+
+  DB = DB.filter((r,idx)=> !delIndex.includes(idx));
+
+  saveDB();
+  alert("ลบข้อมูลสำเร็จ");
+  search(true);
+});
+
+/* CLEAR */
+document.getElementById("btnClear").addEventListener("click",()=>{
+  document.getElementById("q-unit").value = "";
+  document.getElementById("q-province").value = "";
+  document.getElementById("q-district").value = "";
+  document.getElementById("q-subdistrict").value = "";
+  document.getElementById("stat").textContent = "ยังไม่ได้ค้นหา";
+  document.getElementById("dataBody").innerHTML = "";
+});
+
+/* INIT */
+loadDB();
+
+document.getElementById("btnSearch").addEventListener("click",()=>search(false));
+document.getElementById("btnShowAll").addEventListener("click",()=>search(true));
+</script>
+
+</body>
+</html>
