@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>FA – LG Annual | อปท. 11.1.3 / 11.1.4 Internal Control</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    :root{
+      --bg:#060818;
+      --card:#11152b;
+      --border:#262b46;
+      --accent:#42a5f5;
+      --accent2:#26c6da;
+      --muted:#a3acc7;
+      --text:#f5f7ff;
+      --pink:#f48fb1;
+      --danger:#ef5350;
+      --warn:#ffb300;
+      --ok:#66bb6a;
+    }
+    *{box-sizing:border-box;}
+
+    body{
+      margin:0;
+      font-family:"Segoe UI", Tahoma, sans-serif;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(123,30,60,0.36) 0, transparent 55%),
+        radial-gradient(circle at 90% 100%, rgba(66,165,245,0.32) 0, transparent 55%),
+        radial-gradient(circle at 0% 100%, rgba(38,198,218,0.22) 0, transparent 55%),
+        var(--bg);
+      color:var(--text);
+      min-height:100vh;
+      font-size:140%;
+    }
+
+    header{
+      padding:16px 10px 12px;
+      text-align:center;
+      background:linear-gradient(120deg,#0d47a1,#42a5f5,#26c6da);
+      box-shadow:0 4px 16px rgba(0,0,0,0.7);
+      position:sticky;
+      top:0;
+      z-index:20;
+    }
+    header h2{ margin:0; font-size:20px; }
+    header .sub{ font-size:13px; opacity:.9; }
+
+    main{
+      max-width:980px;
+      margin:20px auto 28px;
+      padding:0 16px 20px;
+    }
+
+    .nav-top{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-bottom:14px;
+    }
+    .btn-nav{
+      padding:6px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.45);
+      background:rgba(0,0,0,0.35);
+      color:#fff;
+      font-size:12px;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+    }
+    .btn-nav:hover{ background:rgba(0,0,0,0.6); }
+
+    .card{
+      background:var(--card);
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,0.12);
+      padding:16px 14px 16px;
+      box-shadow:0 10px 30px rgba(0,0,0,0.9);
+      margin-bottom:16px;
+    }
+    .card-header{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:flex-start;
+      margin-bottom:10px;
+    }
+    .card-title{
+      font-size:16px;
+      font-weight:600;
+    }
+    .card-sub{
+      font-size:12px;
+      color:var(--muted);
+    }
+    .chip{
+      padding:4px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.2);
+      font-size:11px;
+      background:rgba(0,0,0,0.35);
+      white-space:nowrap;
+    }
+
+    .form-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:10px 14px;
+      margin-top:4px;
+    }
+
+    label{
+      font-size:12px;
+      display:block;
+      margin-bottom:2px;
+      color:#e3f2fd;
+    }
+    .input, select, textarea{
+      width:100%;
+      padding:6px 8px;
+      border-radius:10px;
+      border:1px solid var(--border);
+      background:#080c1b;
+      color:var(--text);
+      font-size:12px;
+    }
+    textarea{
+      min-height:80px;
+      resize:vertical;
+    }
+    .input:focus, select:focus, textarea:focus{
+      outline:none;
+      border-color:var(--accent2);
+      box-shadow:0 0 0 1px rgba(38,198,218,0.5);
+    }
+
+    .section-title{
+      font-size:14px;
+      font-weight:600;
+      margin:10px 0 6px;
+    }
+    .hint{
+      font-size:11px;
+      color:var(--muted);
+      margin-bottom:6px;
+    }
+
+    .ic-table{
+      width:100%;
+      border-collapse:collapse;
+      font-size:12px;
+      margin-top:4px;
+    }
+    .ic-table th,
+    .ic-table td{
+      border:1px solid rgba(255,255,255,0.08);
+      padding:6px 6px;
+      vertical-align:top;
+    }
+    .ic-table th{
+      background:#0b1024;
+      font-weight:600;
+    }
+    .ic-name{
+      font-weight:600;
+    }
+
+    .pill-select{
+      width:100%;
+      padding:5px 8px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.3);
+      background:#080c1b;
+      color:var(--text);
+      font-size:12px;
+    }
+
+    .flex-between{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:center;
+      margin-top:8px;
+      flex-wrap:wrap;
+    }
+
+    .status-pill{
+      padding:4px 10px;
+      border-radius:999px;
+      font-size:11px;
+      border:1px solid rgba(255,255,255,0.25);
+      background:rgba(0,0,0,0.45);
+    }
+    .status-ok{ border-color:var(--ok); color:var(--ok); }
+    .status-warn{ border-color:var(--warn); color:var(--warn); }
+    .status-danger{ border-color:var(--danger); color:var(--danger); }
+
+    .btn-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:10px;
+    }
+    .btn{
+      padding:6px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.4);
+      background:rgba(0,0,0,0.4);
+      color:#fff;
+      font-size:12px;
+      cursor:pointer;
+    }
+    .btn-primary{
+      border-color:var(--accent);
+      background:linear-gradient(120deg,#0d47a1,#42a5f5);
+    }
+    .btn:hover{
+      background:rgba(0,0,0,0.7);
+    }
+    .btn-primary:hover{
+      filter:brightness(1.1);
+    }
+
+    .footer-note{
+      font-size:10px;
+      color:var(--muted);
+      margin-top:6px;
+    }
+
+    @media (max-width:600px){
+      .card-header{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h2>🛡️ อปท. 11.1.3 / 11.1.4 – การประเมินองค์ประกอบการควบคุมภายใน</h2>
+  <div class="sub">
+    Forms 11.1.3 / 11.1.4 – Internal Control Components | FA – Local Government (Annual)
+  </div>
+</header>
+
+<main>
+
+  <div class="nav-top">
+    <a href="fa-lg-annual-plan.html" class="btn-nav">
+      <span>↩</span> กลับเมนูแบบฟอร์มการวางแผน
+    </a>
+    <a href="fa-lg-annual.html" class="btn-nav">
+      <span>📅</span> กลับหน้าเลือกปี / หน่วยรับตรวจ
+    </a>
+    <a href="fa-menu.html" class="btn-nav">
+      <span>📂</span> FA Main Menu
+    </a>
+    <a href="index.html" class="btn-nav">
+      <span>🏠</span> หน้าหลักระบบ
+    </a>
+  </div>
+
+  <!-- CARD 1: ข้อมูลพื้นฐาน -->
+  <section class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">ส่วนที่ 1 – ข้อมูลพื้นฐานและอ้างอิงการประเมินควบคุมภายใน</div>
+        <div class="card-sub">
+          ผูกข้อมูลปีงบประมาณ หน่วยรับตรวจ และฟอร์มที่เกี่ยวข้องกับการประเมิน Internal Control ตาม มาตรฐานสอบบัญชี 315
+        </div>
+      </div>
+      <div class="chip">Internal Control • Overview</div>
+    </div>
+
+    <div class="form-grid">
+      <div>
+        <label for="fiscalYear">ปีงบประมาณ</label>
+        <select id="fiscalYear" class="input">
+          <option value="">— เลือกปีงบประมาณ —</option>
+          <option>2567</option>
+          <option>2568</option>
+          <option>2569</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="auditeeName">ชื่อหน่วยรับตรวจ (อปท.)</label>
+        <input id="auditeeName" class="input" type="text" placeholder="เช่น องค์การบริหารส่วนตำบลตัวอย่าง">
+      </div>
+
+      <div>
+        <label for="amphoe">อำเภอ</label>
+        <input id="amphoe" class="input" type="text" placeholder="อำเภอ">
+      </div>
+
+      <div>
+        <label for="province">จังหวัด</label>
+        <input id="province" class="input" type="text" placeholder="จังหวัด">
+      </div>
+
+      <div>
+        <label for="auditPeriod">งวดที่ประเมิน</label>
+        <input id="auditPeriod" class="input" type="text" placeholder="เช่น สำหรับปีสิ้นสุดวันที่ 30 กันยายน 2567">
+      </div>
+
+      <div>
+        <label for="preparedBy">ผู้จัดทำ</label>
+        <input id="preparedBy" class="input" type="text" placeholder="ชื่อผู้จัดทำแบบฟอร์ม">
+      </div>
+
+      <div>
+        <label for="reviewedBy">ผู้สอบทาน</label>
+        <input id="reviewedBy" class="input" type="text" placeholder="ชื่อผู้สอบทาน / ผตจ.">
+      </div>
+
+      <div>
+        <label for="refForms">อ้างอิงแบบฟอร์มที่ใช้ร่วมในการประเมิน</label>
+        <input id="refForms" class="input" type="text"
+               placeholder="เช่น อปท.3, 3.1, 11.1.5, อปท.4, ฟอร์ม 3.5–3.6">
+      </div>
+    </div>
+
+    <div class="footer-note">
+      * ในการพัฒนาระบบจริง ช่องปีงบประมาณและหน่วยรับตรวจสามารถดึงจากฐานข้อมูลกลางของ FA – LG ได้โดยอัตโนมัติ
+    </div>
+  </section>
+
+  <!-- CARD 2: 5 องค์ประกอบการควบคุมภายใน -->
+  <section class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">ส่วนที่ 2 – การประเมิน 5 องค์ประกอบการควบคุมภายใน</div>
+        <div class="card-sub">
+          ประเมินระดับความเข้มแข็งของระบบควบคุมภายในในแต่ละองค์ประกอบ พร้อมระบุจุดแข็ง จุดอ่อน และข้อสังเกตสำคัญ
+        </div>
+      </div>
+      <div class="chip">5 Components of Internal Control</div>
+    </div>
+
+    <div class="hint">
+      เกณฑ์ระดับ: ดีมาก / พอใช้ / ต้องปรับปรุงเร่งด่วน – ใช้เป็นแนวทางเบื้องต้น สามารถกำหนดเกณฑ์ละเอียดในคู่มือปฏิบัติงานได้
+    </div>
+
+    <table class="ic-table">
+      <thead>
+      <tr>
+        <th style="width:26%;">องค์ประกอบ</th>
+        <th style="width:18%;">ระดับการประเมิน</th>
+        <th>จุดแข็ง / จุดอ่อน / ข้อสังเกต</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td class="ic-name">
+          1) Control Environment – สภาพแวดล้อมการควบคุม
+          <div class="hint">
+            เช่น โครงสร้างองค์กร ค่านิยมผู้บริหาร วัฒนธรรมองค์กร ระเบียบปฏิบัติ ความชัดเจนของบทบาทหน้าที่
+          </div>
+        </td>
+        <td>
+          <select id="icEnvLevel" class="pill-select">
+            <option value="">— เลือก —</option>
+            <option value="ok">ดีมาก / เหมาะสม</option>
+            <option value="warn">พอใช้ / มีจุดอ่อนบางส่วน</option>
+            <option value="danger">ต้องปรับปรุงเร่งด่วน</option>
+          </select>
+        </td>
+        <td>
+          <textarea id="icEnvNote" class="input"
+                    placeholder="สรุปจุดแข็ง จุดอ่อนที่เกี่ยวข้องกับโครงสร้างองค์กร วัฒนธรรม กฎระเบียบ และภาวะผู้นำ"></textarea>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="ic-name">
+          2) Risk Assessment – การประเมินความเสี่ยง
+          <div class="hint">
+            เช่น มีการระบุ วิเคราะห์ และประเมินความเสี่ยงอย่างเป็นระบบหรือไม่ มีการทบทวนความเสี่ยงเป็นระยะหรือไม่
+          </div>
+        </td>
+        <td>
+          <select id="icRiskLevel" class="pill-select">
+            <option value="">— เลือก —</option>
+            <option value="ok">ดีมาก / เหมาะสม</option>
+            <option value="warn">พอใช้ / มีจุดอ่อนบางส่วน</option>
+            <option value="danger">ต้องปรับปรุงเร่งด่วน</option>
+          </select>
+        </td>
+        <td>
+          <textarea id="icRiskNote" class="input"
+                    placeholder="สรุปกระบวนการประเมินความเสี่ยง การระบุกิจกรรมเสี่ยง จุดอ่อนของการจัดการความเสี่ยง ฯลฯ"></textarea>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="ic-name">
+          3) Control Activities – กิจกรรมควบคุม
+          <div class="hint">
+            เช่น การแบ่งแยกหน้าที่ การอนุมัติ การตรวจสอบ การกระทบยอด การควบคุมเอกสาร การควบคุมทาง IT ฯลฯ
+          </div>
+        </td>
+        <td>
+          <select id="icActLevel" class="pill-select">
+            <option value="">— เลือก —</option>
+            <option value="ok">ดีมาก / เหมาะสม</option>
+            <option value="warn">พอใช้ / มีจุดอ่อนบางส่วน</option>
+            <option value="danger">ต้องปรับปรุงเร่งด่วน</option>
+          </select>
+        </td>
+        <td>
+          <textarea id="icActNote" class="input"
+                    placeholder="ระบุว่ากิจกรรมควบคุมถูกออกแบบ/ปฏิบัติได้ผลเพียงใด มีช่องโหว่ใดที่ส่งผลต่อความเสี่ยงการผิดพลาด/ทุจริต"></textarea>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="ic-name">
+          4) Information & Communication – สารสนเทศและการสื่อสาร
+          <div class="hint">
+            เช่น ความครบถ้วนถูกต้องของข้อมูล ระบบสารสนเทศที่ใช้ (รวม e-LAAS) ช่องทางการสื่อสารภายใน/ภายนอก
+          </div>
+        </td>
+        <td>
+          <select id="icInfoLevel" class="pill-select">
+            <option value="">— เลือก —</option>
+            <option value="ok">ดีมาก / เหมาะสม</option>
+            <option value="warn">พอใช้ / มีจุดอ่อนบางส่วน</option>
+            <option value="danger">ต้องปรับปรุงเร่งด่วน</option>
+          </select>
+        </td>
+        <td>
+          <textarea id="icInfoNote" class="input"
+                    placeholder="สรุประบบข้อมูล รายงาน การสื่อสารคำสั่ง/นโยบาย ความทันเวลาในการส่งข้อมูล ฯลฯ"></textarea>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="ic-name">
+          5) Monitoring Activities – การติดตามและประเมินผล
+          <div class="hint">
+            เช่น การติดตามผลการควบคุม การตรวจสอบภายใน การทบทวนโดยผู้บริหาร การแก้ไขข้อบกพร่อง ฯลฯ
+          </div>
+        </td>
+        <td>
+          <select id="icMonLevel" class="pill-select">
+            <option value="">— เลือก —</option>
+            <option value="ok">ดีมาก / เหมาะสม</option>
+            <option value="warn">พอใช้ / มีจุดอ่อนบางส่วน</option>
+            <option value="danger">ต้องปรับปรุงเร่งด่วน</option>
+          </select>
+        </td>
+        <td>
+          <textarea id="icMonNote" class="input"
+                    placeholder="อธิบายว่ามีกลไกติดตามผลอย่างไร สม่ำเสมอหรือไม่ มีการแก้ไขจุดอ่อนอย่างจริงจังหรือไม่"></textarea>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+    <div class="footer-note">
+      * ช่องระดับการประเมินสามารถเชื่อมกับเกณฑ์คะแนนใน Excel/ฐานข้อมูล เพื่อใช้วิเคราะห์ระดับความเสี่ยงภายในเชิงตัวเลขได้ภายหลัง
+    </div>
+  </section>
+
+  <!-- CARD 3: สรุปภาพรวมและผลกระทบต่อการวางแผนตรวจ -->
+  <section class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">ส่วนที่ 3 – สรุประดับความเชื่อมั่นในระบบควบคุมภายใน และผลต่อการวางแผนสอบบัญชี</div>
+        <div class="card-sub">
+          ระบุข้อสรุปภาพรวม ความเสี่ยงที่ยังเหลืออยู่ และผลต่อการออกแบบขั้นตอนการตรวจสอบเพิ่มเติม (Test of Controls / Substantive Tests)
+        </div>
+      </div>
+      <div class="chip">Conclusion • Link to RMM</div>
+    </div>
+
+    <div class="section-title">3.1 ระดับความเชื่อมั่นโดยรวมในระบบควบคุมภายใน</div>
+    <div class="hint">
+      ใช้ประกอบการกำหนดระดับความเสี่ยงที่ยอมรับได้ และการตัดสินใจว่าจะ “พึ่งพิงการควบคุม” มากน้อยเพียงใด
+    </div>
+
+    <div class="form-grid">
+      <div>
+        <label for="icOverallLevel">เลือกสรุประดับความเชื่อมั่น</label>
+        <select id="icOverallLevel" class="input">
+          <option value="">— เลือก —</option>
+          <option value="high">สูง – ระบบควบคุมภายในเชื่อถือได้โดยรวม</option>
+          <option value="medium">ปานกลาง – มีทั้งจุดแข็งและจุดอ่อน ต้องประเมินเป็นรายพื้นที่</option>
+          <option value="low">ต่ำ – ระบบควบคุมภายในอ่อนแอ ต้องพึ่งพาการทดสอบเนื้อหาเป็นหลัก</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="icKeyWeakness">จุดอ่อนสำคัญที่ต้องนำไปใส่ใน RMM / อปท.4</label>
+        <textarea id="icKeyWeakness" class="input"
+                  placeholder="ระบุจุดอ่อนหลักที่เกี่ยวข้องกับแต่ละองค์ประกอบ ซึ่งควรเชื่อมไปที่แบบฟอร์ม อปท.4 ในส่วน RMM"></textarea>
+      </div>
+    </div>
+
+    <div class="section-title">3.2 ผลกระทบต่อการออกแบบขั้นตอนการตรวจสอบ</div>
+    <textarea id="icImpact" class="input"
+              placeholder="เช่น เลือกที่จะทดสอบควบคุมเฉพาะบางส่วน / หรือไม่พึ่งพาควบคุมแต่เพิ่มการทดสอบเนื้อหา / เพิ่มการสุ่มตัวอย่าง ฯลฯ"></textarea>
+
+    <div class="flex-between">
+      <div>
+        <div class="section-title" style="margin-top:10px;">สรุประดับความเสี่ยงด้านระบบควบคุมภายใน (ช่วยประเมินเบื้องต้น)</div>
+        <div id="icStatusPill" class="status-pill">
+          ยังไม่ประเมิน
+        </div>
+      </div>
+      <div class="btn-row">
+        <button type="button" class="btn" onclick="clearIcForm()">ล้างข้อมูลชั่วคราว</button>
+        <button type="button" class="btn btn-primary" onclick="computeIcLevel()">
+          ประเมินระดับความเสี่ยงโดยสังเขป
+        </button>
+      </div>
+    </div>
+
+    <div class="footer-note">
+      * เกณฑ์ในฟังก์ชันช่วยประเมินเป็นเพียง Logic เบื้องต้น – ในการใช้งานจริงสามารถกำหนดสูตร/คะแนนถ่วงน้ำหนักให้ละเอียดได้ตามคู่มือของหน่วยงาน
+    </div>
+  </section>
+
+</main>
+
+<script>
+  function computeIcLevel(){
+    const vals = [
+      document.getElementById('icEnvLevel')?.value,
+      document.getElementById('icRiskLevel')?.value,
+      document.getElementById('icActLevel')?.value,
+      document.getElementById('icInfoLevel')?.value,
+      document.getElementById('icMonLevel')?.value
+    ].filter(Boolean);
+
+    const pill = document.getElementById('icStatusPill');
+    if(!pill) return;
+
+    if(vals.length === 0){
+      pill.textContent = 'ยังไม่มีข้อมูลเพียงพอสำหรับการประเมินแบบอัตโนมัติ';
+      pill.className = 'status-pill';
+      return;
+    }
+
+    // ถ้ามี danger อย่างน้อย 1 องค์ประกอบ → ความเสี่ยงควบคุมภายในสูง
+    if(vals.includes('danger')){
+      pill.textContent = 'ผลช่วยประเมินเบื้องต้น: ระบบควบคุมภายในมีจุดอ่อนสำคัญ – ควรถือว่าความเสี่ยงที่เหลืออยู่สูง และพึ่งพาการควบคุมได้จำกัด';
+      pill.className = 'status-pill status-danger';
+      return;
+    }
+
+    // ไม่มี danger แต่มี warn → ความเสี่ยงระดับปานกลาง
+    if(vals.includes('warn')){
+      pill.textContent = 'ผลช่วยประเมินเบื้องต้น: ระบบควบคุมภายในมีทั้งจุดแข็งและจุดอ่อน – ควรกำหนดวิธีตรวจแบบผสม (Test of Controls + Substantive)';
+      pill.className = 'status-pill status-warn';
+      return;
+    }
+
+    // ทุกองค์ประกอบเป็น ok
+    pill.textContent = 'ผลช่วยประเมินเบื้องต้น: ระบบควบคุมภายในโดยรวมแข็งแรง – สามารถพิจารณาพึ่งพิงการควบคุมได้มากขึ้น (ภายใต้การทดสอบและสอบทานเพิ่มเติม)';
+    pill.className = 'status-pill status-ok';
+  }
+
+  function clearIcForm(){
+    const inputs = document.querySelectorAll('input.input, textarea.input, select.input, .pill-select');
+    inputs.forEach(el => {
+      if(el.tagName === 'SELECT'){
+        el.selectedIndex = 0;
+      }else{
+        el.value = '';
+      }
+    });
+
+    const pill = document.getElementById('icStatusPill');
+    if(pill){
+      pill.textContent = 'ยังไม่ประเมิน';
+      pill.className = 'status-pill';
+    }
+  }
+</script>
+
+</body>
+</html>
