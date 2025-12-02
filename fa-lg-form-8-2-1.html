@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <title>แบบ อปท. 8.2.1 – หนังสือรับรองเงินสด | FA Digital</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root{
+      --bg:#060818;
+      --card:#11152b;
+      --border:#262b46;
+      --pink:#f48fb1;
+      --blue:#0d47a1;
+      --muted:#a3acc7;
+      --green:#4caf50;
+      --danger:#ef5350;
+    }
+    *{box-sizing:border-box;}
+    body{
+      margin:0;
+      font-family:"Segoe UI",Tahoma,sans-serif;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(123,30,60,0.36) 0, transparent 55%),
+        radial-gradient(circle at 90% 100%, rgba(66,165,245,0.32) 0, transparent 55%),
+        var(--bg);
+      color:#f5f7ff;
+    }
+    h1,h2,h3,h4{margin:0;}
+
+    .page{
+      max-width:1100px;
+      margin:24px auto 40px;
+      padding:0 16px 32px;
+    }
+
+    header{
+      background:linear-gradient(120deg,#7b1e3c,#0d47a1,#f48fb1);
+      border-radius:18px;
+      padding:18px 20px;
+      box-shadow:0 10px 30px rgba(0,0,0,0.55);
+      margin-bottom:18px;
+      border:1px solid rgba(255,255,255,0.15);
+    }
+    header h1{
+      font-size:22px;
+      font-weight:800;
+    }
+    header h2{
+      font-size:16px;
+      font-weight:400;
+      opacity:0.88;
+      margin-top:4px;
+    }
+    .header-row{
+      margin-top:10px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      font-size:13px;
+      opacity:0.9;
+    }
+    .tag{
+      padding:4px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.25);
+      background:rgba(0,0,0,0.18);
+    }
+
+    .btn-row{
+      margin-top:10px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+    button{
+      border:none;
+      border-radius:999px;
+      padding:6px 12px;
+      font-size:13px;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+    }
+    .btn-soft{
+      background:rgba(17,21,43,0.9);
+      color:#f5f7ff;
+      border:1px solid var(--border);
+    }
+    .btn-primary{
+      background:linear-gradient(120deg,#0d47a1,#42a5f5);
+      color:#fff;
+    }
+    .btn-danger{
+      background:linear-gradient(120deg,#b71c1c,#ef5350);
+      color:#fff;
+    }
+    .btn-ghost{
+      background:transparent;
+      border:1px dashed var(--border);
+      color:var(--muted);
+    }
+    .btn-sm{
+      padding:3px 8px;
+      font-size:11px;
+    }
+
+    .section{
+      background:rgba(6,8,24,0.8);
+      border-radius:16px;
+      border:1px solid var(--border);
+      padding:16px 18px 18px;
+      margin-top:16px;
+      box-shadow:0 6px 20px rgba(0,0,0,0.5);
+    }
+    .section-title{
+      font-size:15px;
+      font-weight:700;
+      margin-bottom:10px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .section-title span.badge{
+      font-size:11px;
+      padding:2px 8px;
+      border-radius:999px;
+      border:1px solid rgba(244,143,177,0.6);
+      color:#ffdfe9;
+    }
+
+    .grid-2{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:8px 18px;
+    }
+    label{
+      font-size:13px;
+      display:block;
+      margin-bottom:3px;
+      color:var(--muted);
+    }
+    input[type="text"],
+    input[type="number"],
+    input[type="date"],
+    select,
+    textarea{
+      width:100%;
+      padding:6px 8px;
+      border-radius:8px;
+      border:1px solid var(--border);
+      background:var(--card);
+      color:#f5f7ff;
+      font-size:13px;
+    }
+    textarea{
+      min-height:80px;
+      resize:vertical;
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      font-size:13px;
+      margin-top:6px;
+    }
+    th,td{
+      border:1px solid var(--border);
+      padding:4px 6px;
+      text-align:left;
+    }
+    th{
+      background:rgba(13,71,161,0.6);
+      font-weight:600;
+      font-size:12px;
+    }
+    tbody tr:nth-child(even){
+      background:rgba(255,255,255,0.01);
+    }
+    tbody tr:hover{
+      background:rgba(255,255,255,0.04);
+    }
+
+    .text-center{text-align:center;}
+    .hint{
+      font-size:11px;
+      color:var(--muted);
+      margin-top:4px;
+    }
+
+    @media print{
+      body{
+        background:#fff;
+        color:#000;
+      }
+      header,.section{
+        box-shadow:none;
+        border-radius:0;
+      }
+      .section{
+        background:#fff;
+        border-color:#ccc;
+      }
+      .no-print{
+        display:none!important;
+      }
+      @page{
+        size:A4;
+        margin:15mm;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <header class="no-print">
+    <h1>แบบ อปท. 8.2.1 – หนังสือรับรองเงินสด</h1>
+    <h2>Cash Certification Letter – ระบบตรวจสอบรายงานการเงินดิจิทัล (อปท.)</h2>
+    <div class="header-row">
+      <div class="tag">FA Digital Working Paper</div>
+      <div class="tag">อ้างอิงแบบ อปท. 8.2.2 ตรวจนับเงินสด</div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-soft btn-sm"
+              type="button"
+              onclick="window.location.href='fa-lg-form-8-2.html'">
+        ⬅ กลับศูนย์กลางแบบ อปท. 8.2
+      </button>
+      <button class="btn-soft btn-sm"
+              type="button"
+              onclick="window.location.href='fa-lg-fieldwork.html'">
+        ⬅ กลับไปขั้นตอนปฏิบัติงานตรวจสอบ (อปท.)
+      </button>
+      <button class="btn-soft btn-sm"
+              type="button"
+              onclick="window.location.href='fa-lg-form-8-2-2.html'">
+        💵 ไปแบบ อปท. 8.2.2 ตรวจนับเงินสด
+      </button>
+    </div>
+  </header>
+
+  <!-- 1. Meta -->
+  <section class="section">
+    <div class="section-title">
+      1. ข้อมูลพื้นฐานหน่วยรับตรวจ & ปีงบประมาณ
+      <span class="badge">Meta</span>
+    </div>
+    <div class="grid-2">
+      <div>
+        <label for="fiscal_year">ปีงบประมาณ</label>
+        <select id="fiscal_year">
+          <option value="">-- เลือกปี --</option>
+        </select>
+      </div>
+      <div>
+        <label for="entity_code">รหัสหน่วยรับตรวจ</label>
+        <input type="text" id="entity_code" placeholder="เช่น SSK-MUN-001" />
+      </div>
+      <div>
+        <label for="entity_name">ชื่อหน่วยรับตรวจ</label>
+        <input type="text" id="entity_name" placeholder="เช่น เทศบาลเมืองศรีสะเกษ" />
+      </div>
+      <div>
+        <label for="entity_location">สถานที่ตั้งหน่วยรับตรวจ</label>
+        <input type="text" id="entity_location" placeholder="ตำบล/อำเภอ/จังหวัด" />
+      </div>
+    </div>
+    <div class="hint">
+      ใช้ชุดข้อมูลเดียวกับแบบ 8.2.2 และ 8.2.3 เพื่อให้อ้างอิงหน่วยรับตรวจได้ตรงกัน
+    </div>
+  </section>
+
+  <!-- 2. รายละเอียดหนังสือ -->
+  <section class="section">
+    <div class="section-title">
+      2. รายละเอียดหนังสือรับรองเงินสด
+      <span class="badge">Letter Context</span>
+    </div>
+    <div class="grid-2">
+      <div>
+        <label for="doc_date">วันที่หนังสือรับรองเงินสด (ออกหนังสือ)</label>
+        <input type="date" id="doc_date" oninput="updatePreview()" />
+      </div>
+      <div>
+        <label for="doc_place">สถานที่ออกหนังสือ</label>
+        <input type="text" id="doc_place" placeholder="เช่น เทศบาลเมืองศรีสะเกษ" oninput="updatePreview()" />
+      </div>
+      <div>
+        <label for="count_date">วันที่ตรวจนับเงินสด (ตามแบบ 8.2.2)</label>
+        <input type="date" id="count_date" oninput="updatePreview()" />
+      </div>
+      <div>
+        <label for="count_time">เวลาที่ตรวจนับเงินสด</label>
+        <input type="text" id="count_time" placeholder="เช่น 09.30 น." oninput="updatePreview()" />
+      </div>
+      <div>
+        <label for="status_date">วันที่ของรายงานสถานะการเงินที่ใช้อ้างอิง</label>
+        <input type="date" id="status_date" oninput="updatePreview()" />
+      </div>
+      <div>
+        <label for="ref_workpaper">เลขที่/ชื่อกระดาษทำการที่อ้างอิง</label>
+        <input type="text" id="ref_workpaper" placeholder="เช่น อปท.8.2.2/ทม.ศก/2568" oninput="updatePreview()" />
+      </div>
+    </div>
+
+    <label for="other_note" style="margin-top:8px;">ข้อเท็จจริงเพิ่มเติม/เงื่อนไขพิเศษ (ถ้ามี)</label>
+    <textarea id="other_note" oninput="updatePreview()" placeholder="เช่น มีเงินสดที่ฝากธนาคารแล้วแต่ธนาคารยังไม่บันทึก ..."></textarea>
+  </section>
+
+  <!-- 3. กรรมการเก็บรักษาเงิน -->
+  <section class="section">
+    <div class="section-title">
+      3. รายชื่อกรรมการเก็บรักษาเงิน (ผู้ยืนยัน)
+      <span class="badge">Cash Custodians</span>
+    </div>
+    <table id="custodian_table">
+      <thead>
+        <tr>
+          <th style="width:40px;">ลำดับ</th>
+          <th>ชื่อ-สกุล</th>
+          <th>ตำแหน่ง</th>
+          <th style="width:160px;">บทบาทในหนังสือ</th>
+          <th class="no-print" style="width:60px;">จัดการ</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <div class="btn-row no-print">
+      <button class="btn-ghost btn-sm" type="button" onclick="addCustodianRow()">+ เพิ่มกรรมการเก็บรักษาเงิน</button>
+    </div>
+    <div class="hint">
+      ชุดรายชื่อนี้จะใช้ทั้งในเนื้อความหนังสือ และในส่วนลงนามท้ายเอกสาร
+    </div>
+  </section>
+
+  <!-- 4. เนื้อหาหนังสือ (Preview + แก้ไขได้) -->
+  <section class="section">
+    <div class="section-title">
+      4. เนื้อหาหนังสือรับรองเงินสด (ฉบับร่าง)
+      <span class="badge">Draft Letter</span>
+    </div>
+    <div class="hint">
+      ระบบจะช่วยสร้างร่างข้อความจากข้อมูลด้านบนให้ก่อน คุณสามารถปรับแก้ เพิ่ม-ลดประโยคได้ตามรูปแบบหนังสือจริงของ สตง.
+    </div>
+    <textarea id="letter_body"></textarea>
+  </section>
+
+  <!-- 5. ลายเซ็น -->
+  <section class="section">
+    <div class="section-title">
+      5. ลายเซ็นผู้ยืนยันและผู้ตรวจสอบ
+      <span class="badge">Signatures</span>
+    </div>
+    <table id="sign_table">
+      <thead>
+        <tr>
+          <th>บทบาท</th>
+          <th>ชื่อ-สกุล</th>
+          <th>ตำแหน่ง</th>
+          <th style="width:120px;">วันที่ลงนาม</th>
+          <th class="no-print" style="width:60px;">จัดการ</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <div class="btn-row no-print">
+      <button class="btn-ghost btn-sm" type="button" onclick="addSignRow()">+ เพิ่มช่องลายเซ็น</button>
+    </div>
+  </section>
+
+  <!-- 6. Output -->
+  <section class="section no-print">
+    <div class="section-title">
+      6. การจัดเก็บ / Export / พิมพ์
+      <span class="badge">Output</span>
+    </div>
+    <div class="btn-row">
+      <button class="btn-primary" type="button" onclick="saveToStorage()">💾 บันทึกลงเครื่อง (LocalStorage)</button>
+      <button class="btn-soft" type="button" onclick="loadFromStorage()">📥 โหลดข้อมูลที่บันทึกไว้</button>
+      <button class="btn-soft" type="button" onclick="window.print()">🖨 พิมพ์ / Export เป็น PDF</button>
+      <button class="btn-danger" type="button" onclick="clearForm()">🗑 ล้างฟอร์มนี้</button>
+    </div>
+    <div class="hint">
+      ขณะนี้ใช้ LocalStorage เป็นที่เก็บข้อมูลชั่วคราว ก่อนเชื่อมต่อฐานข้อมูลกลางในขั้นถัดไป
+    </div>
+  </section>
+
+</div>
+
+<script>
+  // เติมปีงบ
+  document.addEventListener("DOMContentLoaded",()=>{
+    const fy=document.getElementById("fiscal_year");
+    for(let y=2562;y<=2590;y++){
+      const opt=document.createElement("option");
+      opt.value=y;
+      opt.textContent=y;
+      fy.appendChild(opt);
+    }
+    // แถวกรรมการเริ่มต้น
+    addCustodianRow({role:"ประธานกรรมการเก็บรักษาเงิน"});
+    addCustodianRow({role:"กรรมการเก็บรักษาเงิน"});
+    // แถวลายเซ็นเริ่มต้น
+    addSignRow({role:"ประธานกรรมการเก็บรักษาเงิน"});
+    addSignRow({role:"กรรมการเก็บรักษาเงิน"});
+    addSignRow({role:"ผู้ตรวจสอบ (สตง.)"});
+    updatePreview();
+  });
+
+  function addCustodianRow(data){
+    const tbody=document.querySelector("#custodian_table tbody");
+    const idx=tbody.children.length+1;
+    const tr=document.createElement("tr");
+    tr.innerHTML=`
+      <td class="text-center">${idx}</td>
+      <td><input type="text" value="${data?.name || ""}" oninput="updatePreview()" /></td>
+      <td><input type="text" value="${data?.position || ""}" oninput="updatePreview()" /></td>
+      <td><input type="text" value="${data?.role || ""}" oninput="updatePreview()" /></td>
+      <td class="no-print text-center">
+        <button class="btn-ghost btn-sm" type="button" onclick="removeCustodianRow(this)">ลบ</button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  }
+
+  function removeCustodianRow(btn){
+    const tr=btn.closest("tr");
+    const tbody=tr.parentElement;
+    tbody.removeChild(tr);
+    [...tbody.children].forEach((row,i)=>{
+      row.children[0].textContent=i+1;
+    });
+    updatePreview();
+  }
+
+  function addSignRow(data){
+    const tbody=document.querySelector("#sign_table tbody");
+    const tr=document.createElement("tr");
+    tr.innerHTML=`
+      <td><input type="text" value="${data?.role || ""}" /></td>
+      <td><input type="text" value="${data?.name || ""}" /></td>
+      <td><input type="text" value="${data?.position || ""}" /></td>
+      <td><input type="date" value="${data?.signed_date || ""}" /></td>
+      <td class="no-print text-center">
+        <button class="btn-ghost btn-sm" type="button" onclick="removeSignRow(this)">ลบ</button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  }
+
+  function removeSignRow(btn){
+    const tr=btn.closest("tr");
+    tr.parentElement.removeChild(tr);
+  }
+
+  function formatThaiDate(dateStr){
+    if(!dateStr) return "";
+    const d=new Date(dateStr);
+    if(isNaN(d.getTime())) return "";
+    const months=["มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"];
+    const day=d.getDate();
+    const month=months[d.getMonth()];
+    const year=d.getFullYear()+543;
+    return `${day} ${month} พ.ศ. ${year}`;
+  }
+
+  function updatePreview(){
+    const entity=document.getElementById("entity_name").value || "........................................";
+    const loc=document.getElementById("entity_location").value || "........................................";
+    const docDate=formatThaiDate(document.getElementById("doc_date").value) || "........................................";
+    const docPlace=document.getElementById("doc_place").value || "........................................";
+    const countDate=formatThaiDate(document.getElementById("count_date").value) || "........................................";
+    const countTime=document.getElementById("count_time").value || "........................................";
+    const statusDate=formatThaiDate(document.getElementById("status_date").value) || "........................................";
+    const refWp=document.getElementById("ref_workpaper").value || "........................................";
+    const note=document.getElementById("other_note").value || "";
+
+    // รวมชื่อกรรมการ
+    const custRows=document.querySelectorAll("#custodian_table tbody tr");
+    let names=[];
+    custRows.forEach(tr=>{
+      const inputs=tr.querySelectorAll("input");
+      const name=inputs[0].value;
+      const pos=inputs[1].value;
+      if(name){
+        names.push(`${name} ตำแหน่ง ${pos || "................................"}`);
+      }
+    });
+    const nameLine=names.length>0 ? names.join(" และ ") : "...............................................................";
+
+    const draft=
+`หนังสือรับรองเงินสด
+${docPlace}
+วันที่ ${docDate}
+
+เรื่อง รับรองยอดเงินสดของ ${entity}
+เรียน เจ้าหน้าที่สำนักตรวจเงินแผ่นดิน
+
+ข้าพเจ้า ${nameLine} ซึ่งเป็นกรรมการเก็บรักษาเงินของ ${entity} ${loc}
+ขอรับรองว่า การตรวจนับเงินสด ณ วันที่ ${countDate} เวลา ${countTime} นาฬิกา
+ตามกระดาษทำการ ${refWp} ตรงกับยอดเงินสดที่มีอยู่จริง ณ วันดังกล่าว
+และตรงกับยอดคงเหลือตามรายงานสถานะการเงิน ณ วันที่ ${statusDate}
+
+ทั้งนี้ ข้าพเจ้าขอรับรองว่า นอกจากเงินสดที่ได้นำมาให้ตรวจนับและบันทึกไว้ตามกระดาษทำการดังกล่าวแล้ว
+ไม่มีเงินสดอื่นของทางราชการที่เก็บรักษาไว้โดยมิได้นำมารายงานให้ตรวจนับเพิ่มเติมแต่อย่างใด
+
+${note ? "ข้อเท็จจริงเพิ่มเติม/คำอธิบาย:\n" + note + "\n\n" : ""}จึงเรียนมาเพื่อโปรดทราบ และใช้ประกอบการตรวจสอบของสำนักตรวจเงินแผ่นดินต่อไป
+
+ลงชื่อ ...............................................................  กรรมการเก็บรักษาเงิน
+ลงชื่อ ...............................................................  กรรมการเก็บรักษาเงิน
+ลงชื่อ ...............................................................  ประธานกรรมการเก็บรักษาเงิน
+`;
+
+    const body=document.getElementById("letter_body");
+    // ถ้ายังไม่เคยแก้ไข ให้ overwrite, ถ้าแก้แล้วแล้วผู้ใช้จะพิมพ์ทับได้เอง
+    if(!body.dataset.userEdited){
+      body.value=draft;
+    }
+  }
+
+  // ถ้าผู้ใช้แก้ไขเนื้อหาเองแล้ว ไม่ overwrite อัตโนมัติอีก
+  document.getElementById("letter_body").addEventListener("input",()=>{
+    document.getElementById("letter_body").dataset.userEdited="1";
+  });
+
+  function getStorageKey(){
+    const fy=document.getElementById("fiscal_year").value || "no-year";
+    const code=document.getElementById("entity_code").value || "no-entity";
+    return `fa_lg_form_8_2_1::${fy}::${code}`;
+  }
+
+  function collectFormData(){
+    const data={
+      meta:{
+        fiscal_year:document.getElementById("fiscal_year").value,
+        entity_code:document.getElementById("entity_code").value,
+        entity_name:document.getElementById("entity_name").value,
+        entity_location:document.getElementById("entity_location").value
+      },
+      context:{
+        doc_date:document.getElementById("doc_date").value,
+        doc_place:document.getElementById("doc_place").value,
+        count_date:document.getElementById("count_date").value,
+        count_time:document.getElementById("count_time").value,
+        status_date:document.getElementById("status_date").value,
+        ref_workpaper:document.getElementById("ref_workpaper").value,
+        other_note:document.getElementById("other_note").value
+      },
+      custodians:[],
+      letter_body:document.getElementById("letter_body").value,
+      letter_body_userEdited:!!document.getElementById("letter_body").dataset.userEdited,
+      signatures:[]
+    };
+
+    document.querySelectorAll("#custodian_table tbody tr").forEach((tr,idx)=>{
+      const inputs=tr.querySelectorAll("input");
+      data.custodians.push({
+        order:idx+1,
+        name:inputs[0].value,
+        position:inputs[1].value,
+        role:inputs[2].value
+      });
+    });
+
+    document.querySelectorAll("#sign_table tbody tr").forEach(tr=>{
+      const inputs=tr.querySelectorAll("input");
+      data.signatures.push({
+        role:inputs[0].value,
+        name:inputs[1].value,
+        position:inputs[2].value,
+        signed_date:inputs[3].value
+      });
+    });
+
+    return data;
+  }
+
+  function fillFormFromData(data){
+    if(!data) return;
+    if(data.meta){
+      document.getElementById("fiscal_year").value=data.meta.fiscal_year || "";
+      document.getElementById("entity_code").value=data.meta.entity_code || "";
+      document.getElementById("entity_name").value=data.meta.entity_name || "";
+      document.getElementById("entity_location").value=data.meta.entity_location || "";
+    }
+    if(data.context){
+      document.getElementById("doc_date").value=data.context.doc_date || "";
+      document.getElementById("doc_place").value=data.context.doc_place || "";
+      document.getElementById("count_date").value=data.context.count_date || "";
+      document.getElementById("count_time").value=data.context.count_time || "";
+      document.getElementById("status_date").value=data.context.status_date || "";
+      document.getElementById("ref_workpaper").value=data.context.ref_workpaper || "";
+      document.getElementById("other_note").value=data.context.other_note || "";
+    }
+
+    const ctbody=document.querySelector("#custodian_table tbody");
+    ctbody.innerHTML="";
+    (data.custodians || []).forEach(c=>addCustodianRow(c));
+    if(!data.custodians || data.custodians.length===0){
+      addCustodianRow({role:"ประธานกรรมการเก็บรักษาเงิน"});
+      addCustodianRow({role:"กรรมการเก็บรักษาเงิน"});
+    }
+
+    const body=document.getElementById("letter_body");
+    body.value=data.letter_body || "";
+    if(data.letter_body_userEdited) body.dataset.userEdited="1"; else delete body.dataset.userEdited;
+
+    const stb=document.querySelector("#sign_table tbody");
+    stb.innerHTML="";
+    (data.signatures || []).forEach(s=>addSignRow(s));
+    if(!data.signatures || data.signatures.length===0){
+      addSignRow({role:"ประธานกรรมการเก็บรักษาเงิน"});
+      addSignRow({role:"กรรมการเก็บรักษาเงิน"});
+      addSignRow({role:"ผู้ตรวจสอบ (สตง.)"});
+    }
+
+    // อัปเดต draft เผื่อผู้ใช้ยังไม่แก้ไขเอง
+    updatePreview();
+  }
+
+  function saveToStorage(){
+    const key=getStorageKey();
+    const data=collectFormData();
+    try{
+      localStorage.setItem(key,JSON.stringify(data));
+      alert("บันทึกข้อมูลฟอร์ม 8.2.1 ลง LocalStorage แล้ว\nKey: "+key);
+    }catch(e){
+      alert("บันทึกไม่สำเร็จ: "+e.message);
+    }
+  }
+
+  function loadFromStorage(){
+    const key=getStorageKey();
+    const raw=localStorage.getItem(key);
+    if(!raw){
+      alert("ไม่พบข้อมูลที่เคยบันทึกไว้สำหรับ key นี้\nกรุณาตรวจสอบปีงบประมาณ และรหัสหน่วยรับตรวจ");
+      return;
+    }
+    try{
+      const data=JSON.parse(raw);
+      fillFormFromData(data);
+      alert("โหลดข้อมูลที่บันทึกไว้เรียบร้อย");
+    }catch(e){
+      alert("ไม่สามารถอ่านข้อมูลที่เก็บไว้ได้: "+e.message);
+    }
+  }
+
+  function clearForm(){
+    if(!confirm("ยืนยันการล้างข้อมูลฟอร์มนี้? ข้อมูลที่ยังไม่บันทึกจะหายไป")) return;
+    document.querySelectorAll("input,textarea,select").forEach(el=>{
+      if(el.type==="checkbox" || el.type==="radio") el.checked=false;
+      else el.value="";
+    });
+    document.getElementById("letter_body").dataset.userEdited="";
+    const ctbody=document.querySelector("#custodian_table tbody");
+    ctbody.innerHTML="";
+    addCustodianRow({role:"ประธานกรรมการเก็บรักษาเงิน"});
+    addCustodianRow({role:"กรรมการเก็บรักษาเงิน"});
+
+    const stb=document.querySelector("#sign_table tbody");
+    stb.innerHTML="";
+    addSignRow({role:"ประธานกรรมการเก็บรักษาเงิน"});
+    addSignRow({role:"กรรมการเก็บรักษาเงิน"});
+    addSignRow({role:"ผู้ตรวจสอบ (สตง.)"});
+
+    updatePreview();
+  }
+</script>
+
+</body>
+</html>
