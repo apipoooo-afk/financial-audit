@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>FA DB | รายละเอียดหน่วยรับตรวจ</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+  :root{
+    --bg:#060818;
+    --card:#11152b;
+    --border:#262b46;
+    --accent:#42a5f5;
+    --accent2:#22c55e;
+    --muted:#a3acc7;
+    --text:#f5f7ff;
+  }
+  *{box-sizing:border-box;}
+
+  body{
+    margin:0;
+    font-family:"Segoe UI",Tahoma,sans-serif;
+    background:
+      radial-gradient(circle at 10% 0%, rgba(123,30,60,0.36) 0, transparent 55%),
+      radial-gradient(circle at 90% 100%, rgba(66,165,245,0.32) 0, transparent 55%),
+      var(--bg);
+    color:var(--text);
+  }
+
+  header{
+    padding:18px 12px;
+    text-align:center;
+    background:linear-gradient(120deg,#0d47a1,#6f42c1,#22c55e);
+    box-shadow:0 4px 18px rgba(0,0,0,.7);
+  }
+  header h1{margin:0;font-size:22px;font-weight:800;}
+  header p{margin:4px 0 0;font-size:13px;color:var(--muted);}
+
+  .wrap{
+    max-width:960px;
+    margin:20px auto 26px;
+    padding:0 16px;
+  }
+
+  .top-row{
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:8px;
+    font-size:13px;
+    color:var(--muted);
+    margin-bottom:10px;
+  }
+
+  .chip{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding:3px 10px;
+    border-radius:999px;
+    border:1px solid rgba(148,163,184,.6);
+    background:rgba(15,23,42,.9);
+    font-size:12px;
+  }
+
+  .card{
+    background:var(--card);
+    border-radius:18px;
+    border:1px solid rgba(255,255,255,.12);
+    padding:16px 16px 14px;
+    margin-bottom:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,.72);
+  }
+
+  h2{
+    margin:0 0 8px;
+    font-size:18px;
+    font-weight:700;
+  }
+  h3{
+    margin:16px 0 6px;
+    font-size:15px;
+    font-weight:600;
+    color:#e5e7eb;
+  }
+
+  .row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px 16px;
+    font-size:14px;
+    margin-bottom:4px;
+  }
+  .label{
+    width:160px;
+    color:var(--muted);
+  }
+  .value{
+    flex:1;
+  }
+
+  .nav{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding:8px 14px;
+    margin-right:8px;
+    border-radius:999px;
+    text-decoration:none;
+    background:#111827;
+    border:1px solid #374151;
+    color:#e5e7eb;
+    font-size:13px;
+  }
+
+  .btn-link{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding:6px 10px;
+    border-radius:999px;
+    border:1px solid #38bdf8;
+    color:#e0f2fe;
+    text-decoration:none;
+    font-size:12px;
+  }
+  .btn-link:hover{
+    background:#38bdf8;
+    color:#0b1120;
+  }
+
+  .pill{
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+    padding:3px 9px;
+    border-radius:999px;
+    font-size:11px;
+    border:1px solid rgba(148,163,184,.6);
+    background:#020617;
+    color:#e5e7eb;
+  }
+
+  @media(max-width:600px){
+    .label{width:120px;}
+  }
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>รายละเอียดหน่วยรับตรวจ / อปท.</h1>
+  <p>ข้อมูลจากฐานกลาง fa-db-data-gov</p>
+</header>
+
+<div class="wrap">
+
+  <div class="top-row">
+    <div>
+      ⏱ เวลา: <span id="nowTime">-</span><br>
+      🔑 code: <span id="codeText">-</span>
+    </div>
+    <div>
+      <span class="chip">
+        📦 localStorage: <code style="font-size:11px;">fa-db-data-gov</code>
+      </span>
+    </div>
+  </div>
+
+  <div id="notFound" class="card" style="display:none;">
+    <h2>ไม่พบข้อมูลหน่วยรับตรวจ</h2>
+    <p style="font-size:14px;color:var(--muted);">
+      ไม่พบข้อมูลจากฐานกลางสำหรับ code ที่ระบุในลิงก์<br>
+      กรุณากลับไปค้นหาจากหน้าระบบค้นหา หรือเลือกข้อมูลใหม่จากฐานข้อมูลกลาง
+    </p>
+    <a href="fa-lg-search.html" class="nav">🔍 กลับไปหน้าค้นหา</a>
+    <a href="fa-db-data-gov.html" class="nav">📊 ฐานข้อมูลกลาง</a>
+  </div>
+
+  <div id="detailCard" class="card" style="display:none;">
+
+    <h2 id="nameMain">-</h2>
+    <div style="font-size:13px;color:var(--muted);margin-bottom:10px;">
+      หน่วยรับตรวจ: <span id="unitText">-</span> · ประเภท: <span id="typeText">-</span>
+    </div>
+
+    <div class="row">
+      <div class="label">รหัสหน่วยงาน</div>
+      <div class="value" id="codeValue">-</div>
+    </div>
+
+    <div class="row">
+      <div class="label">สังกัดกระทรวง</div>
+      <div class="value" id="ministryValue">-</div>
+    </div>
+
+    <div class="row">
+      <div class="label">ระดับหน่วยงาน</div>
+      <div class="value" id="levelValue">-</div>
+    </div>
+
+    <h3>ที่ตั้ง / พื้นที่</h3>
+
+    <div class="row">
+      <div class="label">จังหวัด</div>
+      <div class="value" id="provinceValue">-</div>
+    </div>
+    <div class="row">
+      <div class="label">อำเภอ / เขต</div>
+      <div class="value" id="districtValue">-</div>
+    </div>
+    <div class="row">
+      <div class="label">ตำบล / แขวง</div>
+      <div class="value" id="subdistrictValue">-</div>
+    </div>
+    <div class="row">
+      <div class="label">หมู่บ้าน / ชุมชน</div>
+      <div class="value" id="villageValue">-</div>
+    </div>
+    <div class="row">
+      <div class="label">เลขที่ / หมู่ที่</div>
+      <div class="value" id="addressValue">-</div>
+    </div>
+    <div class="row">
+      <div class="label">รหัสไปรษณีย์</div>
+      <div class="value" id="zipcodeValue">-</div>
+    </div>
+
+    <div class="row">
+      <div class="label">พิกัด (LAT, LONG)</div>
+      <div class="value">
+        <span id="latlongValue">-</span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="label">แผนที่</div>
+      <div class="value" id="mapLinkSlot">
+        -
+      </div>
+    </div>
+
+    <h3>ระบบสารสนเทศ / เว็บไซต์</h3>
+
+    <div class="row">
+      <div class="label">เว็บไซต์หน่วยงาน</div>
+      <div class="value" id="websiteValue">-</div>
+    </div>
+
+    <div class="row">
+      <div class="label">หมายเหตุ</div>
+      <div class="value" id="remarkValue">-</div>
+    </div>
+
+    <h3>ข้อมูลสำหรับเชื่อมกับระบบอื่น</h3>
+    <div style="font-size:13px;">
+      <span class="pill">ใช้ร่วมระบบ FA</span>
+      <span class="pill">Tracking</span>
+      <span class="pill">Review</span>
+      <span class="pill">Learning</span>
+      <span class="pill">Cash Board</span>
+    </div>
+
+  </div>
+
+  <div style="margin-top:10px;">
+    <a href="fa-lg-search.html" class="nav">🔍 ค้นหาข้อมูล</a>
+    <a href="fa-db-data-gov.html" class="nav">📊 ฐานข้อมูลกลาง</a>
+    <a href="fa-lg-add.html" class="nav">➕ เพิ่มข้อมูล</a>
+    <a href="fa-lg-edit.html" class="nav">🛠 แก้ไขข้อมูล</a>
+  </div>
+
+</div>
+
+<script>
+function updateClock(){
+  const el = document.getElementById("nowTime");
+  if(!el) return;
+  el.textContent = new Date().toLocaleString("th-TH");
+}
+setInterval(updateClock,1000); updateClock();
+
+function getCodeFromQuery(){
+  const p = new URLSearchParams(location.search);
+  return p.get("code");
+}
+
+function loadDB(){
+  try{
+    return JSON.parse(localStorage.getItem("fa-db-data-gov") || "[]");
+  }catch(e){
+    return [];
+  }
+}
+
+function createGoogleMapsLink(row){
+  const lat = (row.lat || row.LAT || "").toString().trim();
+  const lng = (row.long || row.LONG || "").toString().trim();
+
+  if(lat && lng){
+    const url = `https://www.google.com/maps?q=${encodeURIComponent(lat+","+lng)}`;
+    return {
+      text:`ดูแผนที่จากพิกัด (${lat}, ${lng})`,
+      url
+    };
+  }
+
+  const parts = [
+    row.name || "",
+    row.unit || "",
+    row.subdistrict || "",
+    row.district || "",
+    row.province || ""
+  ].filter(Boolean);
+
+  if(parts.length===0) return null;
+
+  const q = parts.join(" ");
+  const url = `https://www.google.com/maps/search/${encodeURIComponent(q)}`;
+  return {
+    text:`ค้นหาบนแผนที่จากชื่อหน่วย: ${q}`,
+    url
+  };
+}
+
+function renderDetail(row){
+  document.getElementById("detailCard").style.display = "";
+  document.getElementById("notFound").style.display = "none";
+
+  document.getElementById("nameMain").textContent = row.name || "-";
+  document.getElementById("unitText").textContent = row.unit || row.name || "-";
+  document.getElementById("typeText").textContent = row.type || "-";
+
+  document.getElementById("codeValue").textContent      = row.code || "-";
+  document.getElementById("ministryValue").textContent  = row.ministry || "-";
+  document.getElementById("levelValue").textContent     = row.level || "-";
+
+  document.getElementById("provinceValue").textContent   = row.province || "-";
+  document.getElementById("districtValue").textContent   = row.district || "-";
+  document.getElementById("subdistrictValue").textContent= row.subdistrict || "-";
+  document.getElementById("villageValue").textContent    = row.village || "-";
+  document.getElementById("addressValue").textContent    = row.address || row.moo || "-";
+  document.getElementById("zipcodeValue").textContent    = row.zipcode || "-";
+
+  const lat = row.lat || row.LAT || "";
+  const lng = row.long || row.LONG || "";
+  if(lat || lng){
+    document.getElementById("latlongValue").textContent = `${lat || "?"}, ${lng || "?"}`;
+  }else{
+    document.getElementById("latlongValue").textContent = "-";
+  }
+
+  const mapSlot = document.getElementById("mapLinkSlot");
+  mapSlot.innerHTML = "-";
+  const m = createGoogleMapsLink(row);
+  if(m){
+    const a = document.createElement("a");
+    a.href = m.url;
+    a.target = "_blank";
+    a.className = "btn-link";
+    a.textContent = "เปิดใน Google Maps";
+    mapSlot.innerHTML = "";
+    mapSlot.appendChild(a);
+  }
+
+  const web = row.website || "";
+  const webEl = document.getElementById("websiteValue");
+  if(web){
+    webEl.innerHTML = `<a href="${web}" target="_blank" class="btn-link">เปิดเว็บไซต์</a><br><span style="font-size:12px;color:var(--muted);">${web}</span>`;
+  }else{
+    webEl.textContent = "-";
+  }
+
+  document.getElementById("remarkValue").textContent = row.remark || "-";
+}
+
+function showNotFound(){
+  document.getElementById("detailCard").style.display = "none";
+  document.getElementById("notFound").style.display = "";
+}
+
+(function init(){
+  const code = getCodeFromQuery();
+  document.getElementById("codeText").textContent = code || "-";
+
+  if(!code){
+    showNotFound();
+    return;
+  }
+
+  const db = loadDB();
+  const row = db.find(r => String(r.code) === String(code));
+
+  if(!row){
+    showNotFound();
+    return;
+  }
+
+  renderDetail(row);
+})();
+</script>
+
+</body>
+</html>
