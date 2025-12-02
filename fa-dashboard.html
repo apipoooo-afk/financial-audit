@@ -2,1014 +2,835 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8">
-  <title>FA Cash Board | Financial Audit Dashboard</title>
+  <title>FA Cash Board | Financial Audit System</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- Chart.js CDN -->
+
+  <!-- ใช้ Chart.js จาก CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
   <style>
     :root{
       --bg:#060818;
       --card:#11152b;
-      --border:#262b46;
+      --card-soft:#161b3b;
+      --accent:#fdd835;
+      --accent2:#42a5f5;
+      --accent3:#66bb6a;
+      --accent4:#ef5350;
       --muted:#a3acc7;
-      --accent1:#0d6efd;
-      --accent2:#f97316;
-      --accent3:#22c55e;
-      --accent4:#e11d48;
-      --accent5:#a855f7;
-      --accent6:#14b8a6;
+      --border:#262b46;
     }
-    *{box-sizing:border-box;margin:0;padding:0;}
+    *{box-sizing:border-box;}
     body{
       margin:0;
-      font-family:"Segoe UI",Arial, sans-serif;
-      background:radial-gradient(circle at 0 0,rgba(244,143,177,0.16) 0,transparent 55%),
-                 radial-gradient(circle at 100% 100%,rgba(66,165,245,0.18) 0,transparent 55%),
-                 var(--bg);
+      font-family:"Segoe UI",Arial,sans-serif;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(123,30,60,0.36) 0, transparent 55%),
+        radial-gradient(circle at 90% 100%, rgba(66,165,245,0.32) 0, transparent 55%),
+        var(--bg);
       color:#f5f7ff;
     }
 
     header{
-      padding:16px 14px;
-      background:linear-gradient(120deg,#7b1e3c,#0d47a1,#20c997);
-      box-shadow:0 6px 20px rgba(0,0,0,.55);
+      padding:16px 14px 14px;
+      background:linear-gradient(120deg,#0d47a1,#6f42c1,#20c997);
+      box-shadow:0 4px 16px rgba(0,0,0,0.55);
+      position:sticky;
+      top:0;
+      z-index:20;
     }
-    .header-inner{
+    .h-inner{
       max-width:1200px;
       margin:0 auto;
       display:flex;
       flex-wrap:wrap;
-      justify-content:space-between;
-      gap:10px;
+      gap:12px;
       align-items:flex-start;
+      justify-content:space-between;
     }
-    .h-left h1{
-      margin:0;
+    .h-title{
       font-size:24px;
       font-weight:800;
     }
-    .h-left p{
-      margin:3px 0;
+    .h-sub{
       font-size:13px;
       opacity:.9;
+      margin-top:4px;
+    }
+    .h-tags{
+      font-size:11px;
+      opacity:.9;
+      margin-top:2px;
     }
     .h-right{
-      text-align:right;
-      font-size:12px;
-    }
-    .nav-links{
-      margin-top:6px;
       display:flex;
-      flex-wrap:wrap;
+      flex-direction:column;
       gap:6px;
-      justify-content:flex-end;
+      align-items:flex-end;
+      min-width:220px;
     }
-    .nav-links a{
-      text-decoration:none;
-      color:#e5edff;
-      font-size:11px;
+    .tag-pill{
+      font-size:12px;
       padding:4px 8px;
       border-radius:999px;
-      border:1px solid rgba(255,255,255,.45);
-      background:rgba(15,23,42,.25);
-      backdrop-filter:blur(4px);
+      border:1px solid rgba(255,255,255,.5);
+      background:rgba(0,0,0,.15);
     }
-
-    .page{
-      max-width:1200px;
-      margin:16px auto 30px;
-      padding:0 12px 24px;
+    .dt-box{
+      font-size:12px;
+      background:rgba(0,0,0,.25);
+      padding:6px 10px;
+      border-radius:10px;
     }
-
-    .layout{
-      display:grid;
-      grid-template-columns: minmax(0,3fr) minmax(260px,1.4fr);
-      gap:16px;
-    }
-    @media(max-width:960px){
-      .layout{grid-template-columns:1fr;}
-    }
-
-    .card{
-      background:rgba(6,8,24,.92);
-      border-radius:16px;
-      border:1px solid var(--border);
-      box-shadow:0 8px 20px rgba(0,0,0,.6);
-      padding:12px 14px 14px;
-      margin-bottom:10px;
-    }
-    .card-header{
+    .dt-row{
       display:flex;
-      justify-content:space-between;
+      gap:6px;
       align-items:center;
-      gap:8px;
-      margin-bottom:8px;
     }
-    .card-title{
-      font-size:14px;
-      font-weight:700;
+
+    main{
+      max-width:1200px;
+      margin:16px auto 40px;
+      padding:0 14px 60px;
     }
-    .card-sub{
-      font-size:11px;
+
+    .top-bar{
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:10px;
+      font-size:13px;
       color:var(--muted);
     }
 
-    .filters{
+    /* NAV BUTTONS */
+    .nav-row{
       display:flex;
       flex-wrap:wrap;
       gap:8px;
-      margin:4px 0 2px;
-      font-size:11px;
+      margin-bottom:12px;
     }
-    .filters label{
+    .btn-nav{
+      border:none;
+      border-radius:999px;
+      padding:6px 12px;
+      font-size:12px;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      background:rgba(15,23,42,.9);
+      color:#e0f2fe;
+      border:1px solid rgba(148,163,184,.7);
+    }
+    .btn-nav:hover{
+      background:rgba(30,64,175,.95);
+    }
+
+    /* FILTER BAR */
+    .filter-bar{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin:10px 0 14px;
+      font-size:13px;
+    }
+    .filter-group{
       display:flex;
       flex-direction:column;
-      gap:2px;
+      gap:3px;
+      min-width:130px;
     }
-    .filters select{
-      padding:3px 6px;
-      border-radius:999px;
+    .filter-group label{
+      color:var(--muted);
+    }
+    select{
+      padding:6px 8px;
+      border-radius:8px;
       border:1px solid var(--border);
       background:#020617;
       color:#e5e7eb;
-      font-size:11px;
+      font-size:13px;
     }
 
-    .kpi-grid{
+    /* SUMMARY CARDS */
+    .summary-grid{
       display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
-      gap:8px;
-      margin-bottom:10px;
+      grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+      gap:12px;
+      margin-bottom:16px;
     }
-    .kpi{
-      background:#020617;
-      border-radius:12px;
-      border:1px solid var(--border);
-      padding:7px 8px;
+    .summary-card{
+      background:var(--card);
+      border-radius:16px;
+      padding:10px 12px;
+      border:1px solid rgba(148,163,184,.3);
+      box-shadow:0 8px 20px rgba(15,23,42,.85);
+      position:relative;
+      overflow:hidden;
+      cursor:default;
+    }
+    .summary-card::after{
+      content:"";
+      position:absolute;
+      right:-20px;
+      top:-20px;
+      width:70px;
+      height:70px;
+      border-radius:50%;
+      background:rgba(255,255,255,0.05);
+    }
+    .sc-label{
+      font-size:12px;
+      color:var(--muted);
+      margin-bottom:4px;
+    }
+    .sc-value{
+      font-size:20px;
+      font-weight:800;
+    }
+    .sc-sub{
       font-size:11px;
-    }
-    .kpi-label{
       color:var(--muted);
-      margin-bottom:3px;
+      margin-top:4px;
     }
-    .kpi-value{
-      font-size:18px;
-      font-weight:700;
-    }
-    .kpi-note{
-      margin-top:2px;
-      font-size:10px;
-      color:var(--muted);
+    .sc-tag{
+      font-size:11px;
+      margin-top:6px;
+      display:inline-block;
+      padding:2px 8px;
+      border-radius:999px;
+      background:rgba(15,23,42,.9);
+      border:1px solid rgba(148,163,184,.5);
+      color:#e0f2fe;
     }
 
-    .charts-grid{
+    /* tooltip แบบ hover */
+    .summary-card[data-tip]:hover::before{
+      content:attr(data-tip);
+      position:absolute;
+      left:10px;
+      bottom:8px;
+      max-width:260px;
+      background:rgba(15,23,42,.97);
+      border-radius:8px;
+      padding:6px 8px;
+      font-size:11px;
+      color:#e5e7eb;
+      box-shadow:0 6px 14px rgba(0,0,0,.7);
+      z-index:5;
+      white-space:normal;
+    }
+
+    /* CHARTS */
+    .chart-grid{
       display:grid;
       grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-      gap:10px;
+      gap:14px;
+      margin-bottom:18px;
     }
-    .chart-box{
-      background:#020617;
-      border-radius:12px;
-      border:1px solid var(--border);
-      padding:8px 8px 10px;
-      font-size:11px;
+    .chart-card{
+      background:var(--card-soft);
+      border-radius:16px;
+      padding:10px 10px 14px;
+      border:1px solid rgba(148,163,184,.35);
+      box-shadow:0 10px 22px rgba(15,23,42,.9);
     }
     .chart-title{
+      font-size:13px;
       margin-bottom:4px;
+    }
+    .chart-sub{
+      font-size:11px;
+      color:var(--muted);
+      margin-bottom:4px;
+    }
+    .chart-wrap{
+      position:relative;
+      height:240px;
+    }
+
+    /* TABLE */
+    .table-card{
+      background:var(--card);
+      border-radius:16px;
+      padding:10px 10px 14px;
+      border:1px solid rgba(148,163,184,.35);
+      box-shadow:0 10px 22px rgba(15,23,42,.9);
+    }
+    .table-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:6px;
+      font-size:13px;
+    }
+    .table-head-right{
+      font-size:11px;
       color:var(--muted);
     }
-    canvas{max-width:100%; height:220px;}
-
-    .table-wrap{
-      margin-top:6px;
-      max-height:230px;
-      overflow:auto;
-      border-radius:10px;
+    .table-search{
+      margin-bottom:8px;
+      display:flex;
+      gap:6px;
+      flex-wrap:wrap;
+      font-size:13px;
+    }
+    .table-search input{
+      padding:6px 8px;
+      border-radius:8px;
       border:1px solid var(--border);
       background:#020617;
+      color:#e5e7eb;
+      min-width:180px;
     }
+
     table{
       width:100%;
       border-collapse:collapse;
       font-size:11px;
     }
+    thead{
+      background:#020617;
+    }
     th,td{
-      padding:4px 6px;
-      border-bottom:1px solid #111827;
+      padding:5px 6px;
+      border-bottom:1px solid rgba(31,41,55,.9);
+      text-align:left;
       white-space:nowrap;
     }
     th{
       position:sticky;
       top:0;
-      background:#111827;
-      z-index:1;
-      text-align:left;
+      z-index:5;
     }
-    tr:hover td{
-      background:#0b1120;
+    tbody tr:nth-child(even){
+      background:#0b1024;
+    }
+    tbody tr:hover{
+      background:#1e293b;
+    }
+    .col-code{font-family:monospace;}
+    .link-small a{
+      color:#93c5fd;
+      text-decoration:none;
+    }
+    .link-small a:hover{
+      text-decoration:underline;
     }
 
-    /* Data entry panel */
-    .entry-form label{
-      font-size:11px;
-      display:block;
-      margin-top:4px;
-      color:var(--muted);
-    }
-    .entry-form input,
-    .entry-form select{
-      width:100%;
-      padding:4px 6px;
-      margin-top:2px;
-      border-radius:8px;
-      border:1px solid var(--border);
-      background:#020617;
-      color:#e5e7eb;
-      font-size:11px;
-    }
-    .entry-row{
-      display:grid;
-      grid-template-columns:repeat(2,minmax(0,1fr));
-      gap:6px;
-    }
-    .entry-actions{
-      margin-top:8px;
+    /* เมนูเพิ่มข้อมูล / กลับ */
+    .bottom-row{
       display:flex;
-      justify-content:space-between;
-      gap:6px;
-    }
-    button{
-      border:none;
-      border-radius:999px;
-      padding:5px 10px;
-      font-size:11px;
-      cursor:pointer;
-    }
-    .btn-primary{
-      background:var(--accent1);
-      color:#e5e7eb;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:12px;
+      font-size:12px;
     }
     .btn-secondary{
+      border-radius:999px;
+      border:1px solid rgba(148,163,184,.7);
       background:#020617;
-      border:1px solid var(--border);
-      color:var(--muted);
+      color:#e0f2fe;
+      padding:6px 10px;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      text-decoration:none;
     }
-    .small-note{
-      margin-top:4px;
-      font-size:10px;
-      color:var(--muted);
+    .btn-secondary:hover{
+      background:#111827;
+    }
+
+    @media(max-width:768px){
+      .h-inner{flex-direction:column;align-items:flex-start;}
+      .h-right{align-items:flex-start;}
     }
   </style>
 </head>
 <body>
 
 <header>
-  <div class="header-inner">
-    <div class="h-left">
-      <h1>FA Cash Board – Local Government Financial Audit</h1>
-      <p>แดชบอร์ดสถานะ อปท. ทั้งประเทศ • งบการเงิน • ผลการตรวจสอบ • ความคืบหน้างานตรวจ</p>
-      <p style="font-size:11px;opacity:.9;">
-        ข้อมูลจำลอง (Prototype) – พร้อมเชื่อมต่อระบบตรวจสอบการเงิน และระบบฐานข้อมูลในขั้นต่อไป
-      </p>
+  <div class="h-inner">
+    <div>
+      <div class="h-title">📈 FA Cash Board – แดชบอร์ดกลาง</div>
+      <div class="h-sub">
+        เชื่อมฐานข้อมูลกลาง อปท. (<code>localStorage["fa-db-data-gov"]</code>) สำหรับการวิเคราะห์ภาพรวมทั้งประเทศ
+      </div>
+      <div class="h-tags">
+        กลุ่มตรวจสอบที่ 4 • สำนักงานการตรวจเงินแผ่นดินจังหวัดศรีสะเกษ
+      </div>
     </div>
     <div class="h-right">
-      <div id="nowDate">--</div>
-      <div id="nowTime" style="font-variant-numeric:tabular-nums;">--:--:-- น.</div>
-      <div class="nav-links">
-        <a href="index.html">🏠 หน้าหลัก</a>
-        <a href="#top">📊 Cash Board หลัก</a>
-        <a href="fa-menu.html">📂 ระบบตรวจสอบการเงิน</a>
-        <a href="fa-review-login.html">🧮 ระบบสอบทาน</a>
-        <a href="fa-tracking.html">📌 ระบบติดตามผล</a>
-        <a href="fa-chatbot.html">🤖 ระบบถาม–ตอบอัตโนมัติ</a>
-        <a href="fa-database-login.html">🗄 ฐานข้อมูล FA</a>
+      <div class="tag-pill">Real-time view (front-end only)</div>
+      <div class="dt-box">
+        <div class="dt-row">📅 <span id="thaiDate">--</span></div>
+        <div class="dt-row">🕒 <span id="thaiTime">--:--:--</span> น.</div>
       </div>
     </div>
   </div>
 </header>
 
-<div class="page" id="top">
-  <div class="layout">
-    <!-- LEFT: DASHBOARD -->
-    <div>
-      <!-- FILTER & KPI -->
-      <div class="card">
-        <div class="card-header">
-          <div>
-            <div class="card-title">ตัวกรอง & สรุปภาพรวม</div>
-            <div class="card-sub">
-              เลือกจังหวัด / อำเภอ / ประเภท อปท. เพื่อดูสถานะจำแนกแบบ Real-time จากชุดข้อมูลที่มี
-            </div>
-          </div>
-        </div>
-        <div class="filters">
-          <label>
-            จังหวัด (Province)
-            <select id="filterProvince"></select>
-          </label>
-          <label>
-            อำเภอ (District)
-            <select id="filterAmphoe"></select>
-          </label>
-          <label>
-            ประเภท อปท. (Type)
-            <select id="filterType">
-              <option value="ALL">ทั้งหมด</option>
-              <option value="กทม">กรุงเทพมหานคร</option>
-              <option value="เมืองพัทยา">เมืองพัทยา</option>
-              <option value="อบจ.">อบจ.</option>
-              <option value="ทน.">ทน.</option>
-              <option value="ทต.">ทต.</option>
-              <option value="อบต.">อบต.</option>
-            </select>
-          </label>
-        </div>
-        <div class="kpi-grid">
-          <div class="kpi">
-            <div class="kpi-label">จำนวน อปท. ในตัวกรองนี้</div>
-            <div class="kpi-value" id="kpiTotalLG">0</div>
-            <div class="kpi-note">เทียบจากชุดข้อมูลทั้งหมด</div>
-          </div>
-          <div class="kpi">
-            <div class="kpi-label">ยังไม่ตรวจสอบ / กำลังตรวจ / เสร็จสิ้น</div>
-            <div class="kpi-value" id="kpiAuditStatus">0 / 0 / 0</div>
-            <div class="kpi-note">ตามสถานะการตรวจสอบล่าสุด</div>
-          </div>
-          <div class="kpi">
-            <div class="kpi-label">มีการปรับปรุงงบการเงิน</div>
-            <div class="kpi-value" id="kpiAdjusted">0</div>
-            <div class="kpi-note">หน่วยที่เคยปรับปรุงงบการเงิน</div>
-          </div>
-          <div class="kpi">
-            <div class="kpi-label">งบการเงินไม่มีเงื่อนไข</div>
-            <div class="kpi-value" id="kpiCleanOpinion">0</div>
-            <div class="kpi-note">Unqualified Opinion</div>
-          </div>
-        </div>
-      </div>
+<main>
+  <div class="top-bar">
+    <span>📌 ข้อมูลทั้งหมดดึงจากฐานกลาง <code>fa-db-data-gov</code> ถ้าไม่มีข้อมูลใน localStorage จะแสดงค่า 0 อัตโนมัติ</span>
+    <span>🧩 สามารถเพิ่ม/แก้ข้อมูลได้จากหน้า FA DB แล้ว refresh หน้านี้</span>
+  </div>
 
-      <!-- SECTION 1.1 & 1.2 -->
-      <div class="card">
-        <div class="card-header">
-          <div>
-            <div class="card-title">1.1 – จำนวน อปท. และประเภทหน่วยงาน</div>
-            <div class="card-sub">แยกตามประเภท กทม เมืองพัทยา อบจ. ทน. ทต. อบต. พร้อมสัดส่วนร้อยละ</div>
-          </div>
-        </div>
-        <div class="charts-grid">
-          <div class="chart-box">
-            <div class="chart-title">สัดส่วนตามประเภท อปท. (Pie)</div>
-            <canvas id="chartTypePie"></canvas>
-          </div>
-          <div class="chart-box">
-            <div class="chart-title">จำนวน อปท. ตามจังหวัด (Bar)</div>
-            <canvas id="chartProvinceBar"></canvas>
-          </div>
-        </div>
-        <div class="table-wrap" title="เลื่อนเพื่อดูรายละเอียดจังหวัด/อำเภอทั้งหมด">
-          <table>
-            <thead>
-              <tr>
-                <th>จังหวัด</th>
-                <th>อำเภอ</th>
-                <th>ประเภท</th>
-                <th>จำนวนหน่วย (นับจากแถวข้อมูล)</th>
-              </tr>
-            </thead>
-            <tbody id="tableLG"></tbody>
-          </table>
-        </div>
-      </div>
+  <!-- NAV เมนูไปยังระบบอื่น -->
+  <div class="nav-row">
+    <button class="btn-nav" onclick="location.href='index.html'">⬅ กลับหน้าแรก (Portal)</button>
+    <button class="btn-nav" onclick="location.href='fa-menu.html'">📂 ระบบตรวจสอบการเงิน (FA)</button>
+    <button class="btn-nav" onclick="location.href='fa-review-login.html'">🧮 ระบบสอบทาน</button>
+    <button class="btn-nav" onclick="location.href='fa-tracking.html'">📌 ระบบติดตามผล</button>
+    <button class="btn-nav" onclick="location.href='fa-chatbot.html'">🤖 Chatbot FA</button>
+    <button class="btn-nav" onclick="location.href='fa-db-data-gov.html'">🗄 ไปหน้าฐานข้อมูลกลาง อปท.</button>
+  </div>
 
-      <!-- 1.2 สถานะปิดงบ / ส่งงบ -->
-      <div class="card">
-        <div class="card-header">
-          <div>
-            <div class="card-title">1.2 – สถานะปิดงบการเงิน / การส่งงบการเงิน</div>
-            <div class="card-sub">ปิดงบแล้ว / ยังไม่ปิดงบ / ไม่ส่งงบ / ส่งงบล่าช้า</div>
-          </div>
-        </div>
-        <div class="charts-grid">
-          <div class="chart-box">
-            <div class="chart-title">สัดส่วนสถานะงบการเงิน (Pie)</div>
-            <canvas id="chartFSStatusPie"></canvas>
-          </div>
-          <div class="chart-box">
-            <div class="chart-title">จำนวนตามสถานะปิดงบ (Bar)</div>
-            <canvas id="chartFSStatusBar"></canvas>
-          </div>
-        </div>
-      </div>
+  <!-- FILTER -->
+  <div class="filter-bar">
+    <div class="filter-group">
+      <label for="filterProvince">จังหวัด (Province)</label>
+      <select id="filterProvince">
+        <option value="">ทุกจังหวัด</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label for="filterType">ประเภท อปท. (Type)</label>
+      <select id="filterType">
+        <option value="">ทุกประเภท</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>จำนวนหน่วยในชุดข้อมูลที่ใช้คำนวณ</label>
+      <div id="filterCount" style="font-size:13px;color:#e5e7eb;">- หน่วย</div>
+    </div>
+  </div>
 
-      <!-- 1.3 & 1.4 -->
-      <div class="card">
-        <div class="card-header">
-          <div>
-            <div class="card-title">1.3–1.4 – ผลการตรวจสอบ & การปรับปรุงงบการเงิน</div>
-            <div class="card-sub">งบการเงินมีเงื่อนไข / ไม่มีเงื่อนไข / ไม่รับรองงบ + มี/ไม่มีการปรับปรุง</div>
-          </div>
-        </div>
-        <div class="charts-grid">
-          <div class="chart-box">
-            <div class="chart-title">ผลการตรวจสอบงบการเงิน (Audit Opinion)</div>
-            <canvas id="chartOpinionPie"></canvas>
-          </div>
-          <div class="chart-box">
-            <div class="chart-title">มีการปรับปรุงงบการเงิน หรือไม่</div>
-            <canvas id="chartAdjustmentPie"></canvas>
-          </div>
-        </div>
-      </div>
-
-      <!-- 1.5 & 1.6 -->
-      <div class="card">
-        <div class="card-header">
-          <div>
-            <div class="card-title">1.5–1.6 – สถานะการตรวจสอบ & ความคืบหน้าตามลำดับขั้นตอน</div>
-            <div class="card-sub">ภาพรวม Workflow ตั้งแต่เปิดการตรวจจนถึงติดตามผล</div>
-          </div>
-        </div>
-        <div class="charts-grid">
-          <div class="chart-box">
-            <div class="chart-title">สถานะการตรวจสอบ (ยังไม่ตรวจ / กำลังตรวจ / เสร็จสิ้น)</div>
-            <canvas id="chartAuditStatusBar"></canvas>
-          </div>
-          <div class="chart-box">
-            <div class="chart-title">ความคืบหน้าตามขั้นตอน (Line)</div>
-            <canvas id="chartProgressLine"></canvas>
-          </div>
-        </div>
-      </div>
-
+  <!-- SUMMARY CARDS -->
+  <div class="summary-grid">
+    <div class="summary-card" id="cardTotalUnits"
+         data-tip="จำนวนหน่วย อปท. ทั้งหมดที่มีในฐานข้อมูลกลาง fa-db-data-gov (หลังจากใช้ตัวกรอง จังหวัด + ประเภท แล้ว)">
+      <div class="sc-label">จำนวน อปท. ทั้งหมด (หลังกรอง)</div>
+      <div class="sc-value" id="scTotalUnits">0</div>
+      <div class="sc-sub" id="scTotalUnitsSub">พบ 0 หน่วย</div>
+      <div class="sc-tag">1.1 Total LG Units</div>
     </div>
 
-    <!-- RIGHT: DATA ENTRY + INFO -->
-    <div>
-      <div class="card">
-        <div class="card-header">
-          <div>
-            <div class="card-title">2. ระบบเพิ่มข้อมูล (Data Entry)</div>
-            <div class="card-sub">
-              เพิ่ม/แก้ไขข้อมูล อปท. เพื่อใช้บน Cash Board <br>
-              ข้อมูลจะถูกเก็บในเบราว์เซอร์ (localStorage) เป็นฐานข้อมูลเบื้องต้น
-            </div>
-          </div>
-        </div>
-        <form class="entry-form" id="entryForm">
-          <div class="entry-row">
-            <div>
-              <label>จังหวัด (Province)
-                <input type="text" id="inProvince" placeholder="เช่น ศรีสะเกษ" required>
-              </label>
-            </div>
-            <div>
-              <label>อำเภอ (District)
-                <input type="text" id="inAmphoe" placeholder="เช่น เมืองศรีสะเกษ" required>
-              </label>
-            </div>
-          </div>
+    <div class="summary-card" id="cardProvince"
+         data-tip="จำนวนจังหวัดที่มีหน่วย อปท. ในชุดข้อมูลนี้ เช่น ถ้าทั้งประเทศจะเห็นครบทุกจังหวัด">
+      <div class="sc-label">จำนวนจังหวัดที่มีข้อมูล</div>
+      <div class="sc-value" id="scProvinceCount">0</div>
+      <div class="sc-sub" id="scProvinceSub">-</div>
+      <div class="sc-tag">By Province</div>
+    </div>
 
-          <div class="entry-row">
-            <div>
-              <label>ประเภท อปท.
-                <select id="inType" required>
-                  <option value="">เลือก...</option>
-                  <option value="กทม">กทม</option>
-                  <option value="เมืองพัทยา">เมืองพัทยา</option>
-                  <option value="อบจ.">อบจ.</option>
-                  <option value="ทน.">ทน.</option>
-                  <option value="ทต.">ทต.</option>
-                  <option value="อบต.">อบต.</option>
-                </select>
-              </label>
-            </div>
-            <div>
-              <label>ชื่อหน่วย (องค์กรปกครองท้องถิ่น)
-                <input type="text" id="inEntity" placeholder="เช่น ทต.หนองครก">
-              </label>
-            </div>
-          </div>
+    <div class="summary-card"
+         data-tip="ต้องการใช้จริงสำหรับ 1.2 / 1.3 / 1.4 สามารถเพิ่ม field สถานะงบการเงินในฐานกลาง เช่น fsStatus, fsOpinion, fsAdjusted แล้วระบบจะนับให้อัตโนมัติ">
+      <div class="sc-label">ภาพรวมสถานะงบการเงิน (demo)</div>
+      <div class="sc-value" id="scFsStatus">0 / 0</div>
+      <div class="sc-sub" id="scFsStatusSub">ปิดงบแล้ว / ยังไม่ปิดงบ (สมมติจาก field ตัวอย่าง)</div>
+      <div class="sc-tag">1.2 – 1.4 FS Status</div>
+    </div>
 
-          <div class="entry-row">
-            <div>
-              <label>สถานะงบการเงิน
-                <select id="inFSStatus" required>
-                  <option value="ปิดงบแล้ว">ปิดงบแล้ว</option>
-                  <option value="ยังไม่ปิดงบ">ยังไม่ปิดงบ</option>
-                  <option value="ไม่ส่งงบ">ไม่ส่งงบ</option>
-                  <option value="ส่งงบล่าช้า">ส่งงบล่าช้า</option>
-                </select>
-              </label>
-            </div>
-            <div>
-              <label>ผลการตรวจสอบ (Opinion)
-                <select id="inOpinion" required>
-                  <option value="ไม่มีเงื่อนไข">งบการเงินไม่มีเงื่อนไข</option>
-                  <option value="มีเงื่อนไข">งบการเงินมีเงื่อนไข</option>
-                  <option value="ไม่รับรอง">ไม่รับรองงบการเงิน</option>
-                </select>
-              </label>
-            </div>
-          </div>
+    <div class="summary-card"
+         data-tip="หากเพิ่ม field progressStep (open, doc, wp, closeMeeting, explain, report, qaReview, reportSent, followUp) ระบบนี้จะใช้เป็น mini KPI tracking ได้เลย">
+      <div class="sc-label">ความคืบหน้าการตรวจสอบ (demo)</div>
+      <div class="sc-value" id="scAuditProgress">0%</div>
+      <div class="sc-sub" id="scAuditProgressSub">หน่วยที่อยู่ในขั้นตอนสุดท้าย / ทั้งหมด</div>
+      <div class="sc-tag">1.5 – 1.6 Audit Progress</div>
+    </div>
+  </div>
 
-          <div class="entry-row">
-            <div>
-              <label>การปรับปรุงงบการเงิน
-                <select id="inAdjusted" required>
-                  <option value="มีการปรับปรุง">มีการปรับปรุงงบการเงิน</option>
-                  <option value="ไม่มีการปรับปรุง">ไม่มีการปรับปรุง</option>
-                </select>
-              </label>
-            </div>
-            <div>
-              <label>สถานะการตรวจสอบ
-                <select id="inAuditStatus" required>
-                  <option value="ยังไม่ตรวจสอบ">ยังไม่ตรวจสอบ</option>
-                  <option value="กำลังตรวจสอบ">กำลังตรวจสอบ</option>
-                  <option value="ตรวจสอบเสร็จสิ้น">ตรวจสอบเสร็จสิ้น</option>
-                </select>
-              </label>
-            </div>
-          </div>
-
-          <label>ขั้นตอนความคืบหน้า (Workflow Stage)
-            <select id="inProgress" required>
-              <option value="เปิดการตรวจแล้ว">เปิดการตรวจแล้ว</option>
-              <option value="ตรวจสอบเอกสาร">ตรวจสอบเอกสาร</option>
-              <option value="จัดทำกระดาษทำการ">จัดทำกระดาษทำการ</option>
-              <option value="ประชุมปิดตรวจ">ประชุมปิดตรวจ</option>
-              <option value="ให้หน่วยรับตรวจชี้แจง">ให้หน่วยรับตรวจชี้แจง</option>
-              <option value="จัดทำรายงานผลการตรวจสอบ">จัดทำรายงานผลการตรวจสอบ</option>
-              <option value="ส่ง ผอก สอบทานรายงาน">ส่ง ผอก สอบทานรายงาน</option>
-              <option value="แจ้งผลการตรวจสอบ">แจ้งผลการตรวจสอบ</option>
-              <option value="ติดตามผลการตรวจสอบ">ติดตามผลการตรวจสอบ</option>
-            </select>
-          </label>
-
-          <div class="entry-actions">
-            <button type="submit" class="btn-primary">➕ บันทึกข้อมูลเข้า Cash Board</button>
-            <button type="button" class="btn-secondary" id="btnResetData">
-              ♻ รีเซ็ตกลับเป็นข้อมูลตัวอย่าง
-            </button>
-          </div>
-          <div class="small-note">
-            เมื่อบันทึกแล้ว ระบบจะคำนวณใหม่ทุกกราฟ/ตาราง แบบ Real-time (ฝั่งเบราว์เซอร์) <br>
-            ในอนาคตสามารถเชื่อม JSON / API จากระบบตรวจสอบการเงิน และระบบฐานข้อมูล FA แทนการป้อนมือได้
-          </div>
-        </form>
+  <!-- CHARTS -->
+  <div class="chart-grid">
+    <div class="chart-card">
+      <div class="chart-title">สัดส่วน อปท. ตามประเภท</div>
+      <div class="chart-sub">
+        ใช้สำหรับ 1.1 (ประเภท: กทม, เมืองพัทยา, อบจ., ทน., ทต., อบต. ฯลฯ) – ดึงจาก field <code>type / ประเภท</code>
       </div>
+      <div class="chart-wrap">
+        <canvas id="chartTypePie"></canvas>
+      </div>
+    </div>
 
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title">3. Tooltip / Hover Details</div>
-        </div>
-        <div style="font-size:11px;color:var(--muted);line-height:1.5;">
-          • กราฟทุกตัวใช้ tooltip ของ Chart.js – เอาเมาส์ชี้จะเห็นจำนวนและสัดส่วนร้อยละของแต่ละหมวดหมู่<br>
-          • ตาราง อปท. ใช้ hover แสดง row highlight เพื่อดูจังหวัด–อำเภอ–ประเภทชัดเจน<br>
-          • ตัวเลข KPI ด้านบนเปลี่ยนตามตัวกรองจังหวัด/อำเภอ/ประเภทแบบทันที
-        </div>
+    <div class="chart-card">
+      <div class="chart-title">Top จังหวัดที่มีจำนวน อปท. มากสุด</div>
+      <div class="chart-sub">
+        แสดง 10 จังหวัดแรก (ตามชุดข้อมูลหลังกรอง) – ใช้ field <code>province / จังหวัด</code>
+      </div>
+      <div class="chart-wrap">
+        <canvas id="chartProvinceBar"></canvas>
       </div>
     </div>
   </div>
-</div>
+
+  <!-- TABLE -->
+  <div class="table-card">
+    <div class="table-head">
+      <div>📊 ตารางหน่วยรับตรวจ / อปท. (จากฐานกลาง)</div>
+      <div class="table-head-right" id="tableInfo">แสดง 0 จาก 0 รายการ</div>
+    </div>
+
+    <div class="table-search">
+      <span>🔍 ค้นหาชื่อหน่วย / รหัส</span>
+      <input type="text" id="tableSearchInput" placeholder="พิมพ์ชื่อ อปท. หรือรหัส...">
+    </div>
+
+    <div style="max-height:360px;overflow:auto;border-radius:12px;border:1px solid rgba(15,23,42,.9);">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:40px;">#</th>
+            <th>รหัส</th>
+            <th>ชื่อหน่วยงาน</th>
+            <th>ประเภท</th>
+            <th>จังหวัด</th>
+            <th>อำเภอ</th>
+            <th>ตำบล</th>
+            <th>หมู่บ้าน</th>
+            <th>เว็บไซต์</th>
+            <th>ลิงก์</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+          <!-- เติมด้วย JS -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ปุ่มด้านล่าง -->
+  <div class="bottom-row">
+    <a class="btn-secondary" href="fa-db-data-gov.html">
+      🗄 เพิ่ม/แก้ไขข้อมูลฐานกลาง อปท. (FA DB)
+    </a>
+    <a class="btn-secondary" href="index.html">⬅ กลับหน้าแรก (Portal)</a>
+  </div>
+
+</main>
 
 <script>
-  // ========= CLOCK =========
-  function updateNow(){
+  /* ========= Date / Time ไทย ========= */
+  function updateThaiDateTime(){
     const now = new Date();
-    const d = now.toLocaleDateString("th-TH",{year:"numeric",month:"long",day:"numeric"});
-    const t = now.toLocaleTimeString("th-TH",{hour:"2-digit",minute:"2-digit",second:"2-digit"});
-    document.getElementById("nowDate").textContent = d;
-    document.getElementById("nowTime").textContent = t + " น.";
+    const thMonths = [
+      "มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน",
+      "กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"
+    ];
+    const d = now.getDate();
+    const m = now.getMonth();
+    const y = now.getFullYear() + 543;
+    document.getElementById("thaiDate").textContent =
+      d + " " + thMonths[m] + " พ.ศ. " + y;
+    const hh = String(now.getHours()).padStart(2,"0");
+    const mm = String(now.getMinutes()).padStart(2,"0");
+    const ss = String(now.getSeconds()).padStart(2,"0");
+    document.getElementById("thaiTime").textContent = `${hh}:${mm}:${ss}`;
   }
-  updateNow();
-  setInterval(updateNow,1000);
+  updateThaiDateTime();
+  setInterval(updateThaiDateTime,1000);
 
-  // ========= DATA MODEL =========
-  const STORAGE_KEY = "fa_dashboard_entities";
-
-  const defaultData = [
-    {
-      province:"ศรีสะเกษ", amphoe:"เมืองศรีสะเกษ", type:"ทต.",
-      entity:"ทต.หนองครก",
-      fsStatus:"ปิดงบแล้ว",
-      opinion:"ไม่มีเงื่อนไข",
-      adjusted:"ไม่มีการปรับปรุง",
-      auditStatus:"ตรวจสอบเสร็จสิ้น",
-      progress:"ติดตามผลการตรวจสอบ"
-    },
-    {
-      province:"ศรีสะเกษ", amphoe:"กันทรลักษ์", type:"อบต.",
-      entity:"อบต.ชำ",
-      fsStatus:"ปิดงบแล้ว",
-      opinion:"มีเงื่อนไข",
-      adjusted:"มีการปรับปรุง",
-      auditStatus:"ตรวจสอบเสร็จสิ้น",
-      progress:"แจ้งผลการตรวจสอบ"
-    },
-    {
-      province:"อุบลราชธานี", amphoe:"วารินชำราบ", type:"ทน.",
-      entity:"ทน.วารินชำราบ",
-      fsStatus:"ส่งงบล่าช้า",
-      opinion:"มีเงื่อนไข",
-      adjusted:"มีการปรับปรุง",
-      auditStatus:"กำลังตรวจสอบ",
-      progress:"จัดทำกระดาษทำการ"
-    },
-    {
-      province:"อุบลราชธานี", amphoe:"เมืองอุบลราชธานี", type:"อบจ.",
-      entity:"อบจ.อุบลราชธานี",
-      fsStatus:"ปิดงบแล้ว",
-      opinion:"ไม่มีเงื่อนไข",
-      adjusted:"ไม่มีการปรับปรุง",
-      auditStatus:"กำลังตรวจสอบ",
-      progress:"ตรวจสอบเอกสาร"
-    },
-    {
-      province:"กรุงเทพมหานคร", amphoe:"บางรัก", type:"กทม",
-      entity:"สำนักงานเขตบางรัก",
-      fsStatus:"ยังไม่ปิดงบ",
-      opinion:"มีเงื่อนไข",
-      adjusted:"ไม่มีการปรับปรุง",
-      auditStatus:"ยังไม่ตรวจสอบ",
-      progress:"เปิดการตรวจแล้ว"
-    },
-    {
-      province:"ชลบุรี", amphoe:"บางละมุง", type:"เมืองพัทยา",
-      entity:"เมืองพัทยา",
-      fsStatus:"ปิดงบแล้ว",
-      opinion:"ไม่รับรอง",
-      adjusted:"มีการปรับปรุง",
-      auditStatus:"กำลังตรวจสอบ",
-      progress:"ให้หน่วยรับตรวจชี้แจง"
-    },
-    {
-      province:"ยโสธร", amphoe:"คำเขื่อนแก้ว", type:"อบต.",
-      entity:"อบต.เชียงเพ็ง",
-      fsStatus:"ไม่ส่งงบ",
-      opinion:"ไม่รับรอง",
-      adjusted:"ไม่มีการปรับปรุง",
-      auditStatus:"ยังไม่ตรวจสอบ",
-      progress:"เปิดการตรวจแล้ว"
-    },
-    {
-      province:"ศรีสะเกษ", amphoe:"กันทรารมย์", type:"อบต.",
-      entity:"อบต.ดูน",
-      fsStatus:"ปิดงบแล้ว",
-      opinion:"ไม่มีเงื่อนไข",
-      adjusted:"ไม่มีการปรับปรุง",
-      auditStatus:"ตรวจสอบเสร็จสิ้น",
-      progress:"ติดตามผลการตรวจสอบ"
+  /* ========= Utility: ดึง field แบบรองรับชื่อไทย/อังกฤษ ========= */
+  function getField(row, keys, fallback=""){
+    if(!row) return fallback;
+    for(const k of keys){
+      if(row[k] !== undefined && row[k] !== null && row[k] !== ""){
+        return row[k];
+      }
     }
-  ];
+    return fallback;
+  }
 
-  let entities = [];
-
-  function loadData(){
+  /* ========= โหลดข้อมูลจาก localStorage["fa-db-data-gov"] ========= */
+  let rawData = [];
+  function loadCentralData(){
     try{
-      const raw = localStorage.getItem(STORAGE_KEY);
-      entities = raw ? JSON.parse(raw) : defaultData.slice();
+      const raw = localStorage.getItem("fa-db-data-gov");
+      const arr = raw ? JSON.parse(raw) : [];
+      rawData = Array.isArray(arr) ? arr : [];
     }catch(e){
-      entities = defaultData.slice();
+      rawData = [];
+    }
+
+    // ถ้าไม่มีข้อมูลเลย ลองสร้างตัวอย่างเล็ก ๆ ให้เห็นหน้าตา (เพื่อ demo)
+    if(rawData.length === 0){
+      rawData = [
+        {
+          code:"LG-001",
+          name:"เทศบาลเมืองตัวอย่าง",
+          unit:"เทศบาลเมืองตัวอย่าง",
+          type:"ทน.",
+          province:"ศรีสะเกษ",
+          district:"เมืองศรีสะเกษ",
+          subdistrict:"หนองครก",
+          village:"หมู่ 1",
+          website:"https://example.go.th",
+          detailUrl:"#",
+          // field ตัวอย่างสำหรับ 1.2–1.6
+          fsStatus:"closed",             // closed / notClosed / late / notSubmitted
+          fsOpinion:"qualified",         // unqualified / qualified / adverse / disclaimer
+          fsAdjusted:true,               // มีการปรับปรุงงบการเงินหรือไม่
+          auditStatus:"completed",       // notStarted / inProgress / completed
+          progressStep:"followUp"        // open/doc/wp/closeMeeting/explain/report/qaReview/reportSent/followUp
+        },
+        {
+          code:"LG-002",
+          name:"องค์การบริหารส่วนตำบลตัวอย่าง",
+          unit:"อบต.ตัวอย่าง",
+          type:"อบต.",
+          province:"ศรีสะเกษ",
+          district:"กันทรารมย์",
+          subdistrict:"หนองผือ",
+          village:"หมู่ 3",
+          website:"",
+          detailUrl:"#",
+          fsStatus:"notClosed",
+          fsOpinion:"unqualified",
+          fsAdjusted:false,
+          auditStatus:"inProgress",
+          progressStep:"wp"
+        }
+      ];
     }
   }
-  function saveData(){
-    localStorage.setItem(STORAGE_KEY,JSON.stringify(entities));
-  }
 
-  // ========= FILTER =========
-  const selProvince = document.getElementById("filterProvince");
-  const selAmphoe   = document.getElementById("filterAmphoe");
-  const selType     = document.getElementById("filterType");
+  /* ========= Filters ========= */
+  const filterProvinceEl = document.getElementById("filterProvince");
+  const filterTypeEl = document.getElementById("filterType");
+  const filterCountEl = document.getElementById("filterCount");
+  const tableSearchInput = document.getElementById("tableSearchInput");
 
-  function initFilters(){
-    const provinces = [...new Set(entities.map(e=>e.province))].sort();
-    selProvince.innerHTML = `<option value="ALL">ทุกจังหวัด</option>`;
-    provinces.forEach(p=>{
+  function buildFilterOptions(){
+    const provinces = new Set();
+    const types = new Set();
+
+    rawData.forEach(row=>{
+      const p = getField(row,["province","จังหวัด"]);
+      const t = getField(row,["type","ประเภท"]);
+      if(p) provinces.add(p);
+      if(t) types.add(t);
+    });
+
+    [...provinces].sort().forEach(p=>{
       const opt = document.createElement("option");
       opt.value = p;
       opt.textContent = p;
-      selProvince.appendChild(opt);
+      filterProvinceEl.appendChild(opt);
     });
-    updateAmphoeOptions();
-  }
 
-  function updateAmphoeOptions(){
-    const p = selProvince.value;
-    let amphoes = entities;
-    if(p!=="ALL") amphoes = amphoes.filter(e=>e.province===p);
-    const list = [...new Set(amphoes.map(e=>e.amphoe))].sort();
-    selAmphoe.innerHTML = `<option value="ALL">ทุกอำเภอ</option>`;
-    list.forEach(a=>{
+    [...types].sort().forEach(t=>{
       const opt = document.createElement("option");
-      opt.value = a;
-      opt.textContent = a;
-      selAmphoe.appendChild(opt);
+      opt.value = t;
+      opt.textContent = t;
+      filterTypeEl.appendChild(opt);
     });
   }
 
-  function getFilteredEntities(){
-    const p = selProvince.value;
-    const a = selAmphoe.value;
-    const t = selType.value;
-    return entities.filter(e=>{
-      if(p!=="ALL" && e.province!==p) return false;
-      if(a!=="ALL" && e.amphoe!==a) return false;
-      if(t!=="ALL" && e.type!==t) return false;
+  function getFilteredData(){
+    const p = filterProvinceEl.value;
+    const t = filterTypeEl.value;
+    const keyword = tableSearchInput.value.trim().toLowerCase();
+
+    return rawData.filter(row=>{
+      const rrProvince = getField(row,["province","จังหวัด"]);
+      const rrType     = getField(row,["type","ประเภท"]);
+      const code       = String(getField(row,["code","รหัส"],"")).toLowerCase();
+      const name       = String(getField(row,["name","ชื่อหน่วยงาน","unit","หน่วยรับตรวจ"],"")).toLowerCase();
+
+      if(p && rrProvince !== p) return false;
+      if(t && rrType !== t) return false;
+
+      if(keyword){
+        if(!code.includes(keyword) && !name.includes(keyword)) return false;
+      }
       return true;
     });
   }
 
-  selProvince.addEventListener("change",()=>{
-    updateAmphoeOptions();
-    renderAll();
-  });
-  selAmphoe.addEventListener("change",renderAll);
-  selType.addEventListener("change",renderAll);
+  /* ========= Summary / KPI ========= */
+  function updateSummary(filtered){
+    const total = filtered.length;
+    filterCountEl.textContent = `${total.toLocaleString("th-TH")} หน่วย`;
 
-  // ========= CHARTS =========
-  const charts = {
-    typePie:null,
-    provinceBar:null,
-    fsPie:null,
-    fsBar:null,
-    opinionPie:null,
-    adjustPie:null,
-    auditBar:null,
-    progressLine:null
-  };
+    // 1) Total units
+    document.getElementById("scTotalUnits").textContent = total.toLocaleString("th-TH");
+    document.getElementById("scTotalUnitsSub").textContent = `พบ ${total.toLocaleString("th-TH")} หน่วยจากฐานกลาง`;
 
-  const palette = [
-    "rgba(37,99,235,0.9)",
-    "rgba(220,38,38,0.9)",
-    "rgba(22,163,74,0.9)",
-    "rgba(234,179,8,0.9)",
-    "rgba(236,72,153,0.9)",
-    "rgba(14,165,233,0.9)",
-    "rgba(249,115,22,0.9)",
-    "rgba(168,85,247,0.9)",
-    "rgba(20,184,166,0.9)",
-    "rgba(148,163,184,0.9)"
-  ].map((c,i)=>c);
-
-  function createPie(ctxId,labels,counts,titleKey){
-    if(charts[titleKey]) charts[titleKey].destroy();
-    const total = counts.reduce((a,b)=>a+b,0)||1;
-    charts[titleKey] = new Chart(
-      document.getElementById(ctxId).getContext("2d"),
-      {
-        type:"pie",
-        data:{
-          labels,
-          datasets:[{
-            data:counts,
-            backgroundColor:labels.map((_,i)=>palette[i % palette.length])
-          }]
-        },
-        options:{
-          plugins:{
-            legend:{position:"bottom",labels:{color:"#e5e7eb",font:{size:10}}},
-            tooltip:{
-              callbacks:{
-                label:(ctx)=>{
-                  const v = ctx.parsed || 0;
-                  const pct = (v*100/total).toFixed(1);
-                  return `${ctx.label}: ${v.toLocaleString("th-TH")} หน่วย (${pct}%)`;
-                }
-              }
-            }
-          }
-        }
-      }
-    );
-  }
-
-  function createBar(ctxId,labels,counts,titleKey){
-    if(charts[titleKey]) charts[titleKey].destroy();
-    charts[titleKey] = new Chart(
-      document.getElementById(ctxId).getContext("2d"),
-      {
-        type:"bar",
-        data:{
-          labels,
-          datasets:[{
-            data:counts,
-            backgroundColor:labels.map((_,i)=>palette[i % palette.length])
-          }]
-        },
-        options:{
-          scales:{
-            x:{ticks:{color:"#e5e7eb",font:{size:10}},grid:{display:false}},
-            y:{ticks:{color:"#e5e7eb",font:{size:10}},grid:{color:"#1f2937"}}
-          },
-          plugins:{
-            legend:{display:false},
-            tooltip:{
-              callbacks:{
-                label:(ctx)=>`${ctx.parsed.y.toLocaleString("th-TH")} หน่วย`
-              }
-            }
-          }
-        }
-      }
-    );
-  }
-
-  function createLine(ctxId,labels,counts,titleKey){
-    if(charts[titleKey]) charts[titleKey].destroy();
-    charts[titleKey] = new Chart(
-      document.getElementById(ctxId).getContext("2d"),
-      {
-        type:"line",
-        data:{
-          labels,
-          datasets:[{
-            data:counts,
-            borderColor:"rgba(56,189,248,0.9)",
-            backgroundColor:"rgba(56,189,248,0.25)",
-            fill:true,
-            tension:0.2,
-            pointRadius:3
-          }]
-        },
-        options:{
-          scales:{
-            x:{ticks:{color:"#e5e7eb",font:{size:9}},grid:{color:"#1f2937"}},
-            y:{ticks:{color:"#e5e7eb",font:{size:10}},grid:{color:"#1f2937"}}
-          },
-          plugins:{
-            legend:{display:false},
-            tooltip:{
-              callbacks:{
-                label:(ctx)=>`${ctx.parsed.y.toLocaleString("th-TH")} หน่วย`
-              }
-            }
-          }
-        }
-      }
-    );
-  }
-
-  // ========= RENDER =========
-  function renderAll(){
-    const data = getFilteredEntities();
-    renderKPI(data);
-    renderLGTableAndCharts(data);
-    renderFSStatus(data);
-    renderOpinionAndAdjustment(data);
-    renderAuditAndProgress(data);
-  }
-
-  function renderKPI(data){
-    const total = data.length;
-    document.getElementById("kpiTotalLG").textContent = total.toLocaleString("th-TH");
-
-    // audit status
-    const byAudit = countBy(data,"auditStatus");
-    const notYet = byAudit["ยังไม่ตรวจสอบ"] || 0;
-    const doing  = byAudit["กำลังตรวจสอบ"] || 0;
-    const done   = byAudit["ตรวจสอบเสร็จสิ้น"] || 0;
-    document.getElementById("kpiAuditStatus").textContent =
-      `${notYet}/${doing}/${done}`;
-
-    // adjusted
-    const byAdj = countBy(data,"adjusted");
-    const adjCount = byAdj["มีการปรับปรุง"] || 0;
-    document.getElementById("kpiAdjusted").textContent =
-      adjCount.toLocaleString("th-TH");
-
-    // clean opinion
-    const byOp = countBy(data,"opinion");
-    const clean = byOp["ไม่มีเงื่อนไข"] || 0;
-    document.getElementById("kpiCleanOpinion").textContent =
-      clean.toLocaleString("th-TH");
-  }
-
-  function countBy(arr,field){
-    const m = {};
-    arr.forEach(e=>{
-      const k = e[field] || "ไม่ระบุ";
-      m[k] = (m[k]||0)+1;
+    // 2) Province count
+    const provinces = new Set();
+    filtered.forEach(r=>{
+      const p = getField(r,["province","จังหวัด"]);
+      if(p) provinces.add(p);
     });
-    return m;
+    const pvCount = provinces.size;
+    document.getElementById("scProvinceCount").textContent = pvCount.toLocaleString("th-TH");
+    document.getElementById("scProvinceSub").textContent =
+      pvCount>0 ? `มีข้อมูลใน ${pvCount.toLocaleString("th-TH")} จังหวัด` : "ยังไม่มีข้อมูลจังหวัดในชุดนี้";
+
+    // 3) FS Status demo (ต้องมี field fsStatus ในฐานกลาง)
+    let closed=0, notClosed=0;
+    filtered.forEach(r=>{
+      const s = getField(r,["fsStatus"],"");
+      if(s==="closed") closed++;
+      else if(s==="notClosed" || s==="late" || s==="notSubmitted") notClosed++;
+    });
+    document.getElementById("scFsStatus").textContent =
+      `${closed.toLocaleString("th-TH")} / ${notClosed.toLocaleString("th-TH")}`;
+    document.getElementById("scFsStatusSub").textContent =
+      `ปิดงบแล้ว ${closed.toLocaleString("th-TH")} หน่วย | ยังไม่ปิด/ล่าช้า ${notClosed.toLocaleString("th-TH")} หน่วย`;
+
+    // 4) Audit progress demo – หน่วยที่ progressStep = followUp ถือว่าเสร็จสมบูรณ์
+    let done=0;
+    filtered.forEach(r=>{
+      const step = getField(r,["progressStep"],"");
+      if(step==="followUp" || step==="reportSent") done++;
+    });
+    const pct = total>0 ? (done*100/total) : 0;
+    document.getElementById("scAuditProgress").textContent = `${pct.toFixed(1)}%`;
+    document.getElementById("scAuditProgressSub").textContent =
+      `เสร็จสิ้นแล้ว ${done.toLocaleString("th-TH")} / ${total.toLocaleString("th-TH")} หน่วย (ตาม field progressStep)`;
   }
 
-  function renderLGTableAndCharts(data){
-    // Table
-    const tbody = document.getElementById("tableLG");
-    tbody.innerHTML = "";
-    data.forEach(e=>{
+  /* ========= Chart.js ========= */
+  let chartTypePie = null;
+  let chartProvinceBar = null;
+
+  function buildCharts(filtered){
+    const ctxType = document.getElementById("chartTypePie");
+    const ctxProv = document.getElementById("chartProvinceBar");
+    if(!ctxType || !ctxProv || !window.Chart) return;
+
+    // นับตามประเภท
+    const typeMap = {};
+    filtered.forEach(r=>{
+      const t = getField(r,["type","ประเภท"],"ไม่ระบุ");
+      typeMap[t] = (typeMap[t] || 0) + 1;
+    });
+    const typeLabels = Object.keys(typeMap);
+    const typeValues = typeLabels.map(k=>typeMap[k]);
+
+    if(chartTypePie) chartTypePie.destroy();
+    chartTypePie = new Chart(ctxType,{
+      type:"pie",
+      data:{
+        labels:typeLabels,
+        datasets:[{data:typeValues}]
+      },
+      options:{
+        plugins:{
+          legend:{position:"bottom",labels:{font:{size:11}}},
+          tooltip:{callbacks:{
+            label:(ctx)=>{
+              const label = ctx.label || "";
+              const value = ctx.raw || 0;
+              const total = typeValues.reduce((a,b)=>a+b,0)||1;
+              const pct = (value*100/total).toFixed(1);
+              return `${label}: ${value.toLocaleString("th-TH")} หน่วย (${pct}%)`;
+            }
+          }}
+        }
+      }
+    });
+
+    // นับตามจังหวัด (top 10)
+    const pvMap = {};
+    filtered.forEach(r=>{
+      const p = getField(r,["province","จังหวัด"],"ไม่ระบุ");
+      pvMap[p] = (pvMap[p] || 0) + 1;
+    });
+    const pvArr = Object.entries(pvMap).sort((a,b)=>b[1]-a[1]).slice(0,10);
+    const pvLabels = pvArr.map(([k])=>k);
+    const pvValues = pvArr.map(([,v])=>v);
+
+    if(chartProvinceBar) chartProvinceBar.destroy();
+    chartProvinceBar = new Chart(ctxProv,{
+      type:"bar",
+      data:{
+        labels:pvLabels,
+        datasets:[{data:pvValues}]
+      },
+      options:{
+        scales:{
+          x:{ticks:{font:{size:10}}},
+          y:{beginAtZero:true}
+        },
+        plugins:{
+          legend:{display:false},
+          tooltip:{callbacks:{
+            label:(ctx)=>{
+              const value = ctx.raw || 0;
+              return `${value.toLocaleString("th-TH")} หน่วย`;
+            }
+          }}
+        }
+      }
+    });
+  }
+
+  /* ========= Table ========= */
+  const tableBody = document.getElementById("tableBody");
+  const tableInfo = document.getElementById("tableInfo");
+
+  function renderTable(filtered){
+    tableBody.innerHTML = "";
+    const total = filtered.length;
+    const limit = 200; // กัน table หนักเกินไป
+    const showArr = filtered.slice(0,limit);
+
+    showArr.forEach((row,idx)=>{
       const tr = document.createElement("tr");
-      tr.title = `${e.entity} – ${e.fsStatus}, ${e.opinion}, ${e.auditStatus}`;
+      const code = getField(row,["code","รหัส"],"-");
+      const name = getField(row,["name","ชื่อหน่วยงาน","unit","หน่วยรับตรวจ"],"-");
+      const type = getField(row,["type","ประเภท"],"-");
+      const province = getField(row,["province","จังหวัด"],"-");
+      const district = getField(row,["district","อำเภอ","อำเภอ/เขต","เขต"],"-");
+      const subdistrict = getField(row,["subdistrict","ตำบล","แขวง"],"-");
+      const village = getField(row,["village","หมู่บ้าน","ชุมชน"],"-");
+      const website = getField(row,["website","เว็บ","url"],"");
+      const detailUrl = getField(row,["detailUrl","link","ลิงก์"],"");
+
       tr.innerHTML = `
-        <td>${e.province}</td>
-        <td>${e.amphoe}</td>
-        <td>${e.type}</td>
-        <td>1</td>
+        <td>${idx+1}</td>
+        <td class="col-code">${code}</td>
+        <td>${name}</td>
+        <td>${type}</td>
+        <td>${province}</td>
+        <td>${district}</td>
+        <td>${subdistrict}</td>
+        <td>${village}</td>
+        <td class="link-small">
+          ${website ? `<a href="${website}" target="_blank">เปิดเว็บ</a>` : "-"}
+        </td>
+        <td class="link-small">
+          ${detailUrl ? `<a href="${detailUrl}" target="_blank">ดูรายละเอียด</a>` : "-"}
+        </td>
       `;
-      tbody.appendChild(tr);
+      tableBody.appendChild(tr);
     });
 
-    // Pie by type
-    const byType = countBy(data,"type");
-    const typeLabels = Object.keys(byType);
-    const typeCounts = typeLabels.map(k=>byType[k]);
-    createPie("chartTypePie",typeLabels,typeCounts,"typePie");
-
-    // Bar by province
-    const byProvince = countBy(data,"province");
-    const pLabels = Object.keys(byProvince);
-    const pCounts = pLabels.map(k=>byProvince[k]);
-    createBar("chartProvinceBar",pLabels,pCounts,"provinceBar");
+    tableInfo.textContent =
+      `แสดง ${showArr.length.toLocaleString("th-TH")} จากทั้งหมด ${total.toLocaleString("th-TH")} รายการ`;
   }
 
-  function renderFSStatus(data){
-    const byFS = countBy(data,"fsStatus");
-    const labels = ["ปิดงบแล้ว","ยังไม่ปิดงบ","ไม่ส่งงบ","ส่งงบล่าช้า"];
-    const counts = labels.map(k=>byFS[k]||0);
-    createPie("chartFSStatusPie",labels,counts,"fsPie");
-    createBar("chartFSStatusBar",labels,counts,"fsBar");
+  /* ========= main refresh ========= */
+  function refreshAll(){
+    const filtered = getFilteredData();
+    updateSummary(filtered);
+    buildCharts(filtered);
+    renderTable(filtered);
   }
 
-  function renderOpinionAndAdjustment(data){
-    const byOp = countBy(data,"opinion");
-    const opLabels = ["ไม่มีเงื่อนไข","มีเงื่อนไข","ไม่รับรอง"];
-    const opCounts = opLabels.map(k=>byOp[k]||0);
-    createPie("chartOpinionPie",
-      opLabels.map(l=>{
-        if(l==="ไม่มีเงื่อนไข") return "งบการเงินไม่มีเงื่อนไข";
-        if(l==="มีเงื่อนไข") return "งบการเงินมีเงื่อนไข";
-        return "ไม่รับรองงบการเงิน";
-      }),
-      opCounts,
-      "opinionPie"
-    );
+  /* ========= Init ========= */
+  loadCentralData();
+  buildFilterOptions();
+  refreshAll();
 
-    const byAdj = countBy(data,"adjusted");
-    const adjLabels = ["มีการปรับปรุง","ไม่มีการปรับปรุง"];
-    const adjCounts = adjLabels.map(k=>byAdj[k]||0);
-    createPie("chartAdjustmentPie",adjLabels,adjCounts,"adjustPie");
-  }
-
-  function renderAuditAndProgress(data){
-    // audit status bar
-    const byAudit = countBy(data,"auditStatus");
-    const labels = ["ยังไม่ตรวจสอบ","กำลังตรวจสอบ","ตรวจสอบเสร็จสิ้น"];
-    const counts = labels.map(k=>byAudit[k]||0);
-    createBar("chartAuditStatusBar",labels,counts,"auditBar");
-
-    // progress line (ใช้ลำดับตรรกะที่กำหนด)
-    const stages = [
-      "เปิดการตรวจแล้ว",
-      "ตรวจสอบเอกสาร",
-      "จัดทำกระดาษทำการ",
-      "ประชุมปิดตรวจ",
-      "ให้หน่วยรับตรวจชี้แจง",
-      "จัดทำรายงานผลการตรวจสอบ",
-      "ส่ง ผอก สอบทานรายงาน",
-      "แจ้งผลการตรวจสอบ",
-      "ติดตามผลการตรวจสอบ"
-    ];
-    const byProg = countBy(data,"progress");
-    const pCounts = stages.map(s=>byProg[s]||0);
-    createLine("chartProgressLine",stages,pCounts,"progressLine");
-  }
-
-  // ========= DATA ENTRY =========
-  const form = document.getElementById("entryForm");
-  form.addEventListener("submit",e=>{
-    e.preventDefault();
-    const obj = {
-      province:document.getElementById("inProvince").value.trim() || "-",
-      amphoe:document.getElementById("inAmphoe").value.trim() || "-",
-      type:document.getElementById("inType").value,
-      entity:document.getElementById("inEntity").value.trim() || "-",
-      fsStatus:document.getElementById("inFSStatus").value,
-      opinion:document.getElementById("inOpinion").value,
-      adjusted:document.getElementById("inAdjusted").value,
-      auditStatus:document.getElementById("inAuditStatus").value,
-      progress:document.getElementById("inProgress").value
-    };
-    entities.push(obj);
-    saveData();
-    initFilters();
-    renderAll();
-    form.reset();
-    alert("บันทึกข้อมูลเข้า Cash Board เรียบร้อย (เก็บใน localStorage)");
-  });
-
-  document.getElementById("btnResetData").addEventListener("click",()=>{
-    if(!confirm("ยืนยันจะล้างข้อมูลทั้งหมด และกลับไปใช้ชุดข้อมูลตัวอย่างเดิม?")) return;
-    entities = defaultData.slice();
-    saveData();
-    initFilters();
-    renderAll();
-  });
-
-  // ========= INIT =========
-  loadData();
-  initFilters();
-  renderAll();
+  filterProvinceEl.addEventListener("change",refreshAll);
+  filterTypeEl.addEventListener("change",refreshAll);
+  tableSearchInput.addEventListener("input",refreshAll);
 </script>
 
 </body>
