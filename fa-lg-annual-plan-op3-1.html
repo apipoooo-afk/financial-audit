@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8">
-  <title>FA – LG Annual | อปท. 3.1 – Going Concern</title>
+  <title>FA – LG Annual | อปท. 3.1 Going Concern</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <style>
@@ -16,8 +16,8 @@
       --text:#f5f7ff;
       --pink:#f48fb1;
       --danger:#ef5350;
-      --warn:#ffb74d;
-      --success:#66bb6a;
+      --warn:#ffb300;
+      --ok:#66bb6a;
     }
     *{box-sizing:border-box;}
 
@@ -47,7 +47,7 @@
     header .sub{ font-size:13px; opacity:.9; }
 
     main{
-      max-width:1100px;
+      max-width:980px;
       margin:20px auto 28px;
       padding:0 16px 20px;
     }
@@ -72,37 +72,31 @@
     }
     .btn-nav:hover{ background:rgba(0,0,0,0.6); }
 
-    .intro{
-      font-size:13px;
-      color:var(--muted);
-      margin-bottom:10px;
-    }
-
     .card{
       background:var(--card);
-      border-radius:16px;
-      border:1px solid rgba(255,255,255,0.08);
-      box-shadow:0 8px 24px rgba(0,0,0,0.85);
-      padding:14px 14px 12px;
-      margin-bottom:14px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,0.12);
+      padding:16px 14px 16px;
+      box-shadow:0 10px 30px rgba(0,0,0,0.9);
+      margin-bottom:16px;
     }
     .card-header{
       display:flex;
       justify-content:space-between;
-      align-items:flex-end;
-      gap:8px;
-      margin-bottom:8px;
+      gap:10px;
+      align-items:flex-start;
+      margin-bottom:10px;
     }
     .card-title{
-      font-size:15px;
+      font-size:16px;
       font-weight:600;
     }
     .card-sub{
       font-size:12px;
       color:var(--muted);
     }
-    .pill{
-      padding:3px 10px;
+    .chip{
+      padding:4px 10px;
       border-radius:999px;
       border:1px solid rgba(255,255,255,0.2);
       font-size:11px;
@@ -110,83 +104,122 @@
       white-space:nowrap;
     }
 
+    .form-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:10px 14px;
+      margin-top:4px;
+    }
+
     label{
       font-size:12px;
       display:block;
-      margin-bottom:3px;
+      margin-bottom:2px;
+      color:#e3f2fd;
     }
-    .field-row{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      margin-bottom:8px;
-    }
-    .field{
-      flex:1 1 160px;
-    }
-    input[type="text"],
-    input[type="number"],
-    select,
-    textarea{
+    .input, select, textarea{
       width:100%;
       padding:6px 8px;
-      border-radius:8px;
+      border-radius:10px;
       border:1px solid var(--border);
-      background:#070b1c;
+      background:#080c1b;
       color:var(--text);
       font-size:12px;
     }
     textarea{
-      min-height:72px;
+      min-height:80px;
       resize:vertical;
     }
+    .input:focus, select:focus, textarea:focus{
+      outline:none;
+      border-color:var(--accent2);
+      box-shadow:0 0 0 1px rgba(38,198,218,0.5);
+    }
 
+    .section-title{
+      font-size:14px;
+      font-weight:600;
+      margin:10px 0 6px;
+    }
     .hint{
       font-size:11px;
       color:var(--muted);
-      margin-top:2px;
+      margin-bottom:6px;
     }
 
-    .table-like{
+    .indicator-table{
       width:100%;
       border-collapse:collapse;
       font-size:12px;
       margin-top:4px;
     }
-    .table-like th,
-    .table-like td{
-      border:1px solid rgba(255,255,255,0.12);
-      padding:4px 6px;
-      text-align:left;
+    .indicator-table th,
+    .indicator-table td{
+      border:1px solid rgba(255,255,255,0.08);
+      padding:6px 6px;
+      vertical-align:top;
     }
-    .table-like th{
-      background:rgba(66,165,245,0.18);
+    .indicator-table th{
+      background:#0b1024;
       font-weight:600;
     }
-    .table-like td input[type="number"],
-    .table-like td input[type="text"]{
-      width:100%;
-      padding:4px 6px;
-      font-size:12px;
+    .indicator-name{
+      font-weight:600;
+    }
+    .badge{
+      display:inline-block;
+      padding:2px 7px;
+      border-radius:999px;
+      font-size:10px;
+      border:1px solid rgba(255,255,255,0.2);
+      background:rgba(0,0,0,0.45);
     }
 
-    .badge-danger{ color:var(--danger); }
-    .badge-warn{ color:var(--warn); }
-    .badge-success{ color:var(--success); }
+    .badge-ok{ border-color:var(--ok); color:var(--ok); }
+    .badge-warn{ border-color:var(--warn); color:var(--warn); }
+    .badge-danger{ border-color:var(--danger); color:var(--danger); }
 
     .radio-row{
       display:flex;
       flex-wrap:wrap;
-      gap:12px;
+      gap:10px;
       font-size:12px;
-      margin:6px 0 4px;
+      margin:6px 0 2px;
     }
-    .radio-row label{
+
+    .pill-radio{
       display:inline-flex;
       align-items:center;
       gap:4px;
-      margin-bottom:0;
+      padding:4px 9px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.3);
+      background:rgba(0,0,0,0.25);
+      cursor:pointer;
+      font-size:12px;
     }
+    .pill-radio input{
+      accent-color:#42a5f5;
+    }
+
+    .flex-between{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:center;
+      margin-top:8px;
+    }
+
+    .status-pill{
+      padding:4px 10px;
+      border-radius:999px;
+      font-size:11px;
+      border:1px solid rgba(255,255,255,0.25);
+      background:rgba(0,0,0,0.45);
+    }
+    .status-ok{ border-color:var(--ok); color:var(--ok); }
+    .status-warn{ border-color:var(--warn); color:var(--warn); }
+    .status-danger{ border-color:var(--danger); color:var(--danger); }
 
     .btn-row{
       display:flex;
@@ -197,37 +230,27 @@
     .btn{
       padding:6px 12px;
       border-radius:999px;
-      border:1px solid rgba(255,255,255,0.45);
-      background:rgba(0,0,0,0.45);
+      border:1px solid rgba(255,255,255,0.4);
+      background:rgba(0,0,0,0.4);
       color:#fff;
       font-size:12px;
       cursor:pointer;
-      display:inline-flex;
-      align-items:center;
-      gap:6px;
-      text-decoration:none;
-    }
-    .btn:hover{
-      background:rgba(0,0,0,0.8);
     }
     .btn-primary{
-      border-color:#42a5f5;
+      border-color:var(--accent);
       background:linear-gradient(120deg,#0d47a1,#42a5f5);
     }
-    .btn-primary:hover{
-      background:linear-gradient(120deg,#0b3a82,#1e88e5);
+    .btn:hover{
+      background:rgba(0,0,0,0.7);
     }
-    .btn-ghost{
-      border-style:dashed;
-      border-color:rgba(255,255,255,0.35);
-      background:transparent;
+    .btn-primary:hover{
+      filter:brightness(1.1);
     }
 
     .footer-note{
-      font-size:11px;
+      font-size:10px;
       color:var(--muted);
-      margin-top:10px;
-      text-align:right;
+      margin-top:6px;
     }
 
     @media (max-width:600px){
@@ -241,141 +264,234 @@
 <body>
 
 <header>
-  <h2>อปท. 3.1 – การประเมิน Going Concern ของหน่วยรับตรวจ</h2>
-  <div class="sub">Form 3.1 – Going Concern Assessment | FA – LG Annual</div>
+  <h2>📊 อปท. 3.1 – การประเมิน Going Concern ของหน่วยรับตรวจ</h2>
+  <div class="sub">
+    Form 3.1 – Going Concern Assessment | FA – Local Government (Annual)
+  </div>
 </header>
 
 <main>
 
-  <!-- NAV TOP -->
   <div class="nav-top">
     <a href="fa-lg-annual-plan.html" class="btn-nav">
       <span>↩</span> กลับเมนูแบบฟอร์มการวางแผน
     </a>
     <a href="fa-lg-annual.html" class="btn-nav">
-      <span>📅</span> กลับหน้า FA – Annual LG
+      <span>📅</span> กลับหน้าเลือกปี / หน่วยรับตรวจ
     </a>
     <a href="fa-menu.html" class="btn-nav">
-      <span>📂</span> เมนู FA Main
+      <span>📂</span> FA Main Menu
     </a>
     <a href="index.html" class="btn-nav">
       <span>🏠</span> หน้าหลักระบบ
     </a>
   </div>
 
-  <div class="intro">
-    แบบฟอร์มนี้ใช้ประเมิน <strong>ความสามารถในการดำเนินงานต่อเนื่อง (Going Concern)</strong>
-    ของหน่วยรับตรวจจากทั้งข้อมูลเชิงตัวเลขและปัจจัยเชิงคุณภาพ
-    ผลลัพธ์จะเชื่อมไปยัง <strong>RMM (อปท.4)</strong> และ <strong>Overall Audit Plan (อปท.5)</strong>
-  </div>
-
-  <!-- CARD 1: ข้อมูลหน่วยรับตรวจ / ปี -->
+  <!-- CARD 1: ข้อมูลพื้นฐาน -->
   <section class="card">
     <div class="card-header">
       <div>
-        <div class="card-title">1. ข้อมูลทั่วไปของงานสอบบัญชี</div>
-        <div class="card-sub">General Information</div>
+        <div class="card-title">ส่วนที่ 1 – ข้อมูลพื้นฐานหน่วยรับตรวจและงวดการตรวจสอบ</div>
+        <div class="card-sub">
+          กำหนดปีงบประมาณ หน่วยรับตรวจ และข้อมูลภาพรวมที่จะใช้ประกอบการประเมิน Going Concern
+        </div>
       </div>
-      <div class="pill">Header – Shared with other planning forms</div>
+      <div class="chip">Planning • Going Concern</div>
     </div>
 
-    <div class="field-row">
-      <div class="field">
-        <label>ปีงบประมาณ (Fiscal Year)</label>
-        <select>
-          <option value="">– เลือกปีงบประมาณ –</option>
+    <div class="form-grid">
+      <div>
+        <label for="fiscalYear">ปีงบประมาณ</label>
+        <select id="fiscalYear" class="input">
+          <option value="">— เลือกปีงบประมาณ —</option>
           <option>2567</option>
           <option>2568</option>
           <option>2569</option>
         </select>
-        <div class="hint">ภายหลังสามารถเชื่อม dropdown นี้กับฐานข้อมูลปีงบประมาณได้</div>
       </div>
-      <div class="field">
-        <label>หน่วยรับตรวจ (Auditee)</label>
-        <input type="text" placeholder="ดึงจากฐานข้อมูล / เลือกจากรายชื่อหน่วยรับตรวจ">
-        <div class="hint">ขั้นต่อไปสามารถเปลี่ยนเป็น autocomplete จากฐานข้อมูลหน่วยรับตรวจ</div>
+
+      <div>
+        <label for="auditeeName">ชื่อหน่วยรับตรวจ (อปท.)</label>
+        <input id="auditeeName" class="input" type="text" placeholder="เช่น เทศบาลเมืองตัวอย่าง">
+      </div>
+
+      <div>
+        <label for="amphoe">อำเภอ</label>
+        <input id="amphoe" class="input" type="text" placeholder="อำเภอ">
+      </div>
+
+      <div>
+        <label for="province">จังหวัด</label>
+        <input id="province" class="input" type="text" placeholder="จังหวัด">
+      </div>
+
+      <div>
+        <label for="auditPeriod">งวดที่ตรวจสอบ / ณ วันที่</label>
+        <input id="auditPeriod" class="input" type="text" placeholder="เช่น สำหรับปีสิ้นสุดวันที่ 30 กันยายน 2567">
+      </div>
+
+      <div>
+        <label for="preparedBy">ผู้จัดทำ</label>
+        <input id="preparedBy" class="input" type="text" placeholder="ชื่อผู้ตรวจสอบ / ทีมงาน">
+      </div>
+
+      <div>
+        <label for="reviewedBy">ผู้สอบทาน</label>
+        <input id="reviewedBy" class="input" type="text" placeholder="ชื่อผู้สอบทาน / ผตจ.">
+      </div>
+
+      <div>
+        <label for="refOtherForms">อ้างอิงแบบฟอร์มที่เกี่ยวข้อง</label>
+        <input id="refOtherForms" class="input" type="text"
+               placeholder="เช่น อปท.3, 11.1.3, 11.1.5, อปท.4, ฟอร์ม 3.5–3.6">
       </div>
     </div>
 
-    <div class="field-row">
-      <div class="field">
-        <label>จังหวัด</label>
-        <input type="text" placeholder="จังหวัด">
-      </div>
-      <div class="field">
-        <label>อำเภอ</label>
-        <input type="text" placeholder="อำเภอ">
-      </div>
-      <div class="field">
-        <label>ดัชนี / Index No.</label>
-        <input type="text" placeholder="เช่น 3.1 / GC-01">
-      </div>
+    <div class="footer-note">
+      * ข้อมูลส่วนนี้จะเชื่อมโยงกับฐานข้อมูลหน่วยรับตรวจ / ระบบเลือกปีอัตโนมัติได้ในขั้นพัฒนาต่อไป
     </div>
   </section>
 
-  <!-- CARD 2: ตัวชี้วัดทางการเงิน -->
+  <!-- CARD 2: ตัวชี้วัดเชิงปริมาณ -->
   <section class="card">
     <div class="card-header">
       <div>
-        <div class="card-title">2. ตัวชี้วัดด้านการเงินและงบประมาณ</div>
-        <div class="card-sub">Key Financial & Budgetary Indicators</div>
+        <div class="card-title">ส่วนที่ 2 – ตัวชี้วัดเชิงปริมาณด้านการเงิน (Quantitative Indicators)</div>
+        <div class="card-sub">
+          รวบรวมอัตราส่วนทางการเงินและตัวเลขสำคัญที่สะท้อนความสามารถในการดำเนินงานต่อเนื่อง
+        </div>
       </div>
-      <div class="pill">Quantitative Assessment</div>
+      <div class="chip">Financial Ratios</div>
     </div>
 
-    <p style="font-size:12px; color:var(--muted); margin-top:0;">
-      กรอกข้อมูลจากงบแสดงฐานะการเงิน งบกระแสเงินสด และงบประมาณของ อปท.
-      เพื่อใช้เป็นฐานในการพิจารณา Going Concern
-    </p>
+    <div class="hint">
+      ใส่ค่าที่ได้จากการวิเคราะห์งบการเงิน / ระบบ e-LAAS / ฐานข้อมูลกลาง (รวมทั้งประมาณการปีถัดไปถ้ามี)
+    </div>
 
-    <table class="table-like">
+    <table class="indicator-table">
       <thead>
-        <tr>
-          <th style="width:34%;">ตัวชี้วัด</th>
-          <th style="width:22%;">ปีปัจจุบัน</th>
-          <th style="width:22%;">ปีก่อน</th>
-          <th>ข้อสังเกตเบื้องต้น</th>
-        </tr>
+      <tr>
+        <th style="width:26%;">ตัวชี้วัด</th>
+        <th style="width:20%;">ค่าที่คำนวณได้</th>
+        <th>เกณฑ์ / การตีความ</th>
+        <th style="width:20%;">การประเมินเบื้องต้น</th>
+      </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>1) ดุลงบประมาณ (เกินดุล / ขาดดุล)</td>
-          <td><input type="number" placeholder="ปีปัจจุบัน"></td>
-          <td><input type="number" placeholder="ปีก่อน"></td>
-          <td><input type="text" placeholder="เช่น ขาดดุลต่อเนื่อง 3 ปี"></td>
-        </tr>
-        <tr>
-          <td>2) ยอดเงินสดและรายการเทียบเท่าเงินสดสิ้นงวด</td>
-          <td><input type="number"></td>
-          <td><input type="number"></td>
-          <td><input type="text" placeholder="เช่น ลดลงมากผิดปกติ"></td>
-        </tr>
-        <tr>
-          <td>3) หนี้สินหมุนเวียนรวม</td>
-          <td><input type="number"></td>
-          <td><input type="number"></td>
-          <td><input type="text" placeholder="เช่น เพิ่มขึ้นเร็ว / เริ่มมีหนี้ค้างชำระ"></td>
-        </tr>
-        <tr>
-          <td>4) อัตราส่วนสภาพคล่อง (Current Ratio)</td>
-          <td><input type="text" placeholder="เช่น 1.2 เท่า"></td>
-          <td><input type="text" placeholder="เช่น 1.8 เท่า"></td>
-          <td><input type="text" placeholder="แนวโน้มดีขึ้น/แย่ลง"></td>
-        </tr>
-        <tr>
-          <td>5) ภาระผูกพันระยะยาวสำคัญ</td>
-          <td><input type="number"></td>
-          <td><input type="number"></td>
-          <td><input type="text" placeholder="เช่น กู้เงินลงทุนระยะยาวใหม่"></td>
-        </tr>
+      <tr>
+        <td class="indicator-name">
+          1) สภาพคล่อง (เช่น Current Ratio)
+        </td>
+        <td>
+          <label for="ratioLiquidity">ค่า (เท่า)</label>
+          <input id="ratioLiquidity" class="input" type="text" placeholder="เช่น 1.25 เท่า">
+        </td>
+        <td>
+          <textarea id="ratioLiquidityNote" class="input"
+                    placeholder="เช่น &gt; 1.0 ถือว่าพอใช้, &lt; 1.0 เสี่ยงสภาพคล่องตึงตัว"></textarea>
+        </td>
+        <td>
+          <select id="ratioLiquidityEval" class="input">
+            <option value="">— เลือก —</option>
+            <option value="ok">ปกติ</option>
+            <option value="warn">เริ่มมีความเสี่ยง</option>
+            <option value="danger">เสี่ยงสูง</option>
+          </select>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="indicator-name">
+          2) ฐานะงบประมาณ (ดุลขาดดุลต่อเนื่อง)
+        </td>
+        <td>
+          <label for="budgetBalance">ผลดุลปีล่าสุด</label>
+          <input id="budgetBalance" class="input" type="text" placeholder="เช่น ขาดดุล 12 ล้านบาท">
+        </td>
+        <td>
+          <textarea id="budgetBalanceNote" class="input"
+                    placeholder="เช่น ขาดดุลต่อเนื่องมากกว่า 2 ปี, พึ่งพาเงินอุดหนุนเฉพาะกิจสูง"></textarea>
+        </td>
+        <td>
+          <select id="budgetBalanceEval" class="input">
+            <option value="">— เลือก —</option>
+            <option value="ok">ปกติ</option>
+            <option value="warn">เสี่ยง</option>
+            <option value="danger">เสี่ยงรุนแรง</option>
+          </select>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="indicator-name">
+          3) ระดับหนี้สินและภาระผูกพัน
+        </td>
+        <td>
+          <label for="debtLevel">ยอดหนี้รวม / ภาระผูกพัน</label>
+          <input id="debtLevel" class="input" type="text" placeholder="เช่น หนี้เงินกู้ 50 ล้านบาท ภาระผูกพัน 30 ล้านบาท">
+        </td>
+        <td>
+          <textarea id="debtLevelNote" class="input"
+                    placeholder="เช่น ภาระผูกพันสูงเมื่อเทียบกับงบประมาณประจำปี / กระแสเงินสดในอนาคต"></textarea>
+        </td>
+        <td>
+          <select id="debtLevelEval" class="input">
+            <option value="">— เลือก —</option>
+            <option value="ok">ควบคุมได้</option>
+            <option value="warn">เริ่มกดดัน</option>
+            <option value="danger">เสี่ยงต่อการขาดเสถียรภาพ</option>
+          </select>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="indicator-name">
+          4) ความพึ่งพิงเงินอุดหนุน / รายได้เฉพาะกิจ
+        </td>
+        <td>
+          <label for="grantDepend">สัดส่วน (%)</label>
+          <input id="grantDepend" class="input" type="text" placeholder="เช่น 70% ของรายได้รวม">
+        </td>
+        <td>
+          <textarea id="grantDependNote" class="input"
+                    placeholder="เช่น สัดส่วนสูง อาจสะท้อนความเสี่ยงด้านการพึ่งพาแหล่งงบประมาณภายนอก"></textarea>
+        </td>
+        <td>
+          <select id="grantDependEval" class="input">
+            <option value="">— เลือก —</option>
+            <option value="ok">อยู่ในเกณฑ์ที่ยอมรับได้</option>
+            <option value="warn">พึ่งพาสูง</option>
+            <option value="danger">พึ่งพาสูงมาก</option>
+          </select>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="indicator-name">
+          5) ตัวชี้วัดอื่น ๆ ที่สำคัญ
+        </td>
+        <td>
+          <label for="otherIndicator">ระบุรายการ</label>
+          <input id="otherIndicator" class="input" type="text" placeholder="เช่น อัตราการเก็บรายได้ค่าน้ำบาดาล ฯลฯ">
+        </td>
+        <td>
+          <textarea id="otherIndicatorNote" class="input"
+                    placeholder="สรุปผลและเกณฑ์การตีความของตัวชี้วัดดังกล่าว"></textarea>
+        </td>
+        <td>
+          <select id="otherIndicatorEval" class="input">
+            <option value="">— เลือก —</option>
+            <option value="ok">หนุนให้ดำเนินงานต่อเนื่องได้</option>
+            <option value="warn">ต้องติดตามใกล้ชิด</option>
+            <option value="danger">เป็นสัญญาณเตือนสำคัญ</option>
+          </select>
+        </td>
+      </tr>
       </tbody>
     </table>
 
-    <div class="field-row" style="margin-top:8px;">
-      <div class="field">
-        <label>สรุปข้อสังเกตจากตัวชี้วัดทางการเงิน</label>
-        <textarea placeholder="สรุปภาพรวม เช่น ฐานะการเงินค่อนข้างตึงตัว แต่ยังมีสภาพคล่องเพียงพอ / มีแนวโน้ม Going Concern เสี่ยงสูง ฯลฯ"></textarea>
-      </div>
+    <div class="footer-note">
+      * สามารถเชื่อมการดึงข้อมูลอัตโนมัติจาก e-LAAS / ฐานข้อมูล Big Data ของ อปท. ในระยะพัฒนาต่อไป
     </div>
   </section>
 
@@ -383,37 +499,54 @@
   <section class="card">
     <div class="card-header">
       <div>
-        <div class="card-title">3. ปัจจัยเชิงคุณภาพที่มีผลต่อ Going Concern</div>
-        <div class="card-sub">Qualitative Factors</div>
+        <div class="card-title">ส่วนที่ 3 – ปัจจัยเชิงคุณภาพและเหตุการณ์ที่มีนัยสำคัญ</div>
+        <div class="card-sub">
+          ประเมินเหตุการณ์ สภาพแวดล้อม และปัจจัยที่อาจทำให้เกิดข้อสงสัยต่อการดำเนินงานต่อเนื่อง
+        </div>
       </div>
-      <div class="pill">Qualitative Assessment</div>
+      <div class="chip">Qualitative Factors</div>
     </div>
 
-    <div class="field-row">
-      <div class="field">
-        <label>3.1 ปัญหาด้านระบบงาน / บัญชี (เช่น e-LAAS, ระบบสารสนเทศ)</label>
-        <textarea placeholder="เช่น ระบบ e-LAAS ขัดข้องยาวนาน / ปรับปรุงระบบใหม่ระหว่างปี ฯลฯ"></textarea>
-      </div>
+    <div class="section-title">3.1 เหตุการณ์หรือปัจจัยเสี่ยงที่ตรวจพบ</div>
+    <div class="hint">
+      เลือกและอธิบายปัจจัยที่เกี่ยวข้อง (สามารถใช้ร่วมกับผลการประเมินจากแบบ อปท.3 / 11.1.3–11.1.5 / อปท.4)
     </div>
 
-    <div class="field-row">
-      <div class="field">
-        <label>3.2 ปัจจัยด้านกฎหมาย / ข้อพิพาท / คดีความ</label>
-        <textarea placeholder="เช่น มีคดีฟ้องร้องเรียกค่าเสียหายจำนวนมาก / มีคำสั่งศาลที่อาจกระทบฐานะการเงิน ฯลฯ"></textarea>
+    <div class="form-grid">
+      <div>
+        <label>🧩 ด้านกฎหมาย / นโยบาย</label>
+        <textarea id="qualLaw" class="input"
+                  placeholder="เช่น การเปลี่ยนแปลงกฎหมายสำคัญ การถ่ายโอนภารกิจ การถูกฟ้องร้องคดี ฯลฯ"></textarea>
       </div>
-    </div>
 
-    <div class="field-row">
-      <div class="field">
-        <label>3.3 ปัจจัยด้านการกำกับดูแลและการบริหารจัดการ</label>
-        <textarea placeholder="เช่น ปัญหาการเมืองท้องถิ่น / การเปลี่ยนแปลงผู้บริหารบ่อย / ข้อสังเกตจากรายงานปีก่อน ฯลฯ"></textarea>
+      <div>
+        <label>🏛️ ด้านโครงสร้างการบริหาร / ธรรมาภิบาล</label>
+        <textarea id="qualGovernance" class="input"
+                  placeholder="เช่น การเปลี่ยนแปลงผู้บริหารบ่อย การขาดเสถียรภาพองค์กร ฯลฯ"></textarea>
       </div>
-    </div>
 
-    <div class="field-row">
-      <div class="field">
-        <label>3.4 สัญญาณอื่น ๆ ที่อาจบ่งชี้ Going Concern</label>
-        <textarea placeholder="ระบุปัจจัยอื่น ๆ ที่อาจส่งผลให้หน่วยงานไม่สามารถดำเนินงานต่อเนื่องได้"></textarea>
+      <div>
+        <label>💼 ด้านการบริหารงบประมาณและการเงิน</label>
+        <textarea id="qualFinance" class="input"
+                  placeholder="เช่น การจัดทำงบประมาณล่าช้า ปรับลดงบประมาณอย่างมีนัยสำคัญ ฯลฯ"></textarea>
+      </div>
+
+      <div>
+        <label>👥 ด้านบุคลากรและระบบงาน</label>
+        <textarea id="qualStaff" class="input"
+                  placeholder="เช่น ขาดบุคลากรบัญชีหลัก ขาดผู้ปฏิบัติงานสำคัญ ระบบงานไม่เสถียร ฯลฯ"></textarea>
+      </div>
+
+      <div>
+        <label>🌐 ปัจจัยภายนอก / ภัยพิบัติ / เหตุฉุกเฉิน</label>
+        <textarea id="qualExternal" class="input"
+                  placeholder="เช่น ภัยพิบัติรุนแรง เศรษฐกิจถดถอย โรคระบาด ฯลฯ"></textarea>
+      </div>
+
+      <div>
+        <label>📝 ข้อสังเกตเพิ่มเติมอื่น ๆ</label>
+        <textarea id="qualOther" class="input"
+                  placeholder="ระบุปัจจัยอื่นที่อาจกระทบต่อการดำเนินงานต่อเนื่องของหน่วยรับตรวจ"></textarea>
       </div>
     </div>
   </section>
@@ -422,103 +555,127 @@
   <section class="card">
     <div class="card-header">
       <div>
-        <div class="card-title">4. สรุปการประเมิน Going Concern</div>
-        <div class="card-sub">Conclusion & Impact on Audit</div>
+        <div class="card-title">ส่วนที่ 4 – สรุปผลการประเมิน Going Concern และผลกระทบต่อการวางแผนตรวจสอบ</div>
+        <div class="card-sub">
+          ระบุข้อสรุปว่ามี/ไม่มีข้อสงสัย หรือมีข้อสงสัยอย่างมีนัยสำคัญต่อความสามารถในการดำเนินงานต่อเนื่อง
+        </div>
       </div>
-      <div class="pill">Conclusion</div>
+      <div class="chip">Conclusion</div>
     </div>
 
-    <label>4.1 ระดับการประเมิน Going Concern ของหน่วยรับตรวจ</label>
+    <div class="section-title">4.1 ระดับข้อสงสัยต่อ Going Concern</div>
     <div class="radio-row">
-      <label>
-        <input type="radio" name="gc_level">
-        <span class="badge-success">ไม่มีข้อบ่งชี้สำคัญ</span>
+      <label class="pill-radio">
+        <input type="radio" name="gcLevel" value="ok">
+        <span>ไม่มีข้อสงสัยที่มีนัยสำคัญ</span>
       </label>
-      <label>
-        <input type="radio" name="gc_level">
-        <span class="badge-warn">มีข้อบ่งชี้ แต่สามารถบริหารจัดการได้</span>
+      <label class="pill-radio">
+        <input type="radio" name="gcLevel" value="warn">
+        <span>มีข้อสงสัยบางส่วน (ต้องเฝ้าระวัง)</span>
       </label>
-      <label>
-        <input type="radio" name="gc_level">
-        <span class="badge-danger">มีข้อบ่งชี้รุนแรง / เสี่ยงสูง</span>
+      <label class="pill-radio">
+        <input type="radio" name="gcLevel" value="danger">
+        <span>มีข้อสงสัยอย่างมีนัยสำคัญ</span>
       </label>
     </div>
+
+    <label for="gcReason" style="margin-top:6px;">เหตุผลประกอบการตัดสินใจ (อ้างอิงตัวชี้วัดและปัจจัยจากส่วนที่ 2–3)</label>
+    <textarea id="gcReason" class="input"
+              placeholder="ระบุเหตุผลสนับสนุนการประเมิน เช่น สภาพคล่องต่ำ ขาดดุลต่อเนื่อง หนี้สูง ปัจจัยเชิงคุณภาพ ฯลฯ"></textarea>
+
+    <div class="section-title">4.2 ผลกระทบต่อรูปแบบและขอบเขตการตรวจสอบ</div>
     <div class="hint">
-      * ผลการเลือกในส่วนนี้ควรเชื่อมต่อไปยัง RMM (อปท.4) เพื่อกำหนดระดับความเสี่ยงระดับงบการเงิน
+      ระบุว่าการประเมิน Going Concern ส่งผลให้ออกแบบขั้นตอนการตรวจสอบเพิ่มเติมอย่างไร
+      (เช่น เพิ่มการวิเคราะห์ความสามารถในการชำระหนี้ เพิ่มขั้นตอนในด้านการเปิดเผยข้อมูล ฯลฯ)
     </div>
+    <textarea id="gcImpact" class="input"
+              placeholder="เช่น เพิ่มการทดสอบการประมาณการทางบัญชี เพิ่มการทดสอบเอกสารสนับสนุนการกู้ยืม / ภาระผูกพัน ฯลฯ"></textarea>
 
-    <div class="field-row" style="margin-top:6px;">
-      <div class="field">
-        <label>4.2 เหตุผลประกอบการตัดสินใจ</label>
-        <textarea placeholder="สรุปเหตุผลเชื่อมโยงตัวชี้วัดเชิงปริมาณและปัจจัยเชิงคุณภาพที่ทำให้ประเมินระดับ Going Concern ดังกล่าว"></textarea>
-      </div>
-    </div>
-
-    <div class="field-row">
-      <div class="field">
-        <label>4.3 ผลกระทบต่อแผนการสอบบัญชี (เชื่อมกับ อปท.4 และ อปท.5)</label>
-        <textarea placeholder="เช่น ต้องเพิ่มการทดสอบด้านสภาพคล่อง / เพิ่ม procedure ด้านประมาณการหนี้สิน / พิจารณาประเด็น Emphasis of Matter ฯลฯ"></textarea>
-      </div>
-    </div>
-
-    <div class="field-row">
-      <div class="field">
-        <label>ข้อเสนอแนะเพิ่มเติม (ถ้ามี)</label>
-        <textarea placeholder="ข้อเสนอแนะต่อผู้บริหาร อปท. หรือประเด็นที่ควรติดตามในปีถัดไป"></textarea>
-      </div>
-    </div>
-  </section>
-
-  <!-- CARD 5: ผู้จัดทำ / ผู้สอบทาน + ปุ่ม -->
-  <section class="card">
-    <div class="card-header">
+    <div class="flex-between">
       <div>
-        <div class="card-title">5. ข้อมูลผู้จัดทำและผู้สอบทาน</div>
-        <div class="card-sub">Prepared by / Reviewed by</div>
+        <div class="section-title" style="margin-top:10px;">ระดับความเสี่ยงโดยรวมจากมุมมอง Going Concern</div>
+        <div id="gcStatusPill" class="status-pill">
+          ยังไม่ประเมิน
+        </div>
       </div>
-      <div class="pill">Sign-off</div>
-    </div>
-
-    <div class="field-row">
-      <div class="field">
-        <label>ผู้จัดทำ (Prepared by)</label>
-        <input type="text" placeholder="ชื่อ–สกุล">
+      <div class="btn-row">
+        <button type="button" class="btn" onclick="clearForm()">ล้างข้อมูลชั่วคราว</button>
+        <button type="button" class="btn btn-primary" onclick="quickAssess()">
+          ประเมินระดับความเสี่ยงโดยสรุป
+        </button>
       </div>
-      <div class="field">
-        <label>วันที่จัดทำ</label>
-        <input type="text" placeholder="เช่น 12/10/2568">
-      </div>
-    </div>
-
-    <div class="field-row">
-      <div class="field">
-        <label>ผู้สอบทาน (Reviewed by)</label>
-        <input type="text" placeholder="ชื่อ–สกุล">
-      </div>
-      <div class="field">
-        <label>วันที่สอบทาน</label>
-        <input type="text" placeholder="เช่น 18/10/2568">
-      </div>
-    </div>
-
-    <div class="btn-row">
-      <button type="button" class="btn btn-primary">
-        💾 บันทึก (Sample / ยังไม่เชื่อมฐานข้อมูล)
-      </button>
-      <button type="button" class="btn">
-        🖨 พิมพ์ / Export A4
-      </button>
-      <button type="button" class="btn btn-ghost">
-        ↩ กลับเมนูแบบฟอร์มการวางแผน
-      </button>
     </div>
 
     <div class="footer-note">
-      * ขั้นต่อไปสามารถเชื่อมปุ่มเหล่านี้กับระบบฐานข้อมูล, ระบบ export PDF/Word, และ workflow การอนุมัติได้
+      * ปุ่ม “ประเมินระดับความเสี่ยงโดยสรุป” เป็นเพียง Logical Helper เบื้องต้น
+      ไม่ใช่การตัดสินใจแทนนักตรวจสอบ – สามารถปรับเกณฑ์ในโค้ด JavaScript ให้เข้ากับแนวปฏิบัติจริงของหน่วยงานได้
     </div>
   </section>
 
 </main>
+
+<script>
+  // ฟังก์ชันช่วยประเมินระดับความเสี่ยงอย่างง่าย ๆ จาก dropdown บางตัว
+  function quickAssess(){
+    const fields = [
+      document.getElementById('ratioLiquidityEval')?.value,
+      document.getElementById('budgetBalanceEval')?.value,
+      document.getElementById('debtLevelEval')?.value,
+      document.getElementById('grantDependEval')?.value,
+      document.getElementById('otherIndicatorEval')?.value
+    ].filter(Boolean);
+
+    const pill = document.getElementById('gcStatusPill');
+    if(!pill){
+      return;
+    }
+
+    if(fields.length === 0){
+      pill.textContent = 'ยังไม่มีข้อมูลเพียงพอสำหรับการประเมินแบบอัตโนมัติ';
+      pill.className = 'status-pill';
+      return;
+    }
+
+    // ถ้ามี "danger" อย่างน้อย 1 จุด → เสี่ยงสูง
+    if(fields.includes('danger')){
+      pill.textContent = 'ผลช่วยประเมินเบื้องต้น: ระดับความเสี่ยง Going Concern สูง – ต้องพิจารณาอย่างใกล้ชิด';
+      pill.className = 'status-pill status-danger';
+      return;
+    }
+
+    // ถ้าไม่มี danger แต่มี warn → เสี่ยงปานกลาง / ต้องเฝ้าระวัง
+    if(fields.includes('warn')){
+      pill.textContent = 'ผลช่วยประเมินเบื้องต้น: มีความเสี่ยงบางส่วน – ควรเฝ้าระวังและออกแบบขั้นตอนตรวจสอบเพิ่มเติม';
+      pill.className = 'status-pill status-warn';
+      return;
+    }
+
+    // ทุกตัวเป็น ok
+    pill.textContent = 'ผลช่วยประเมินเบื้องต้น: ไม่มีสัญญาณความเสี่ยงเชิงตัวเลขที่เด่นชัด (ยังต้องพิจารณาปัจจัยเชิงคุณภาพประกอบ)';
+    pill.className = 'status-pill status-ok';
+  }
+
+  function clearForm(){
+    // ล้างเฉพาะ input / select / textarea ในหน้านี้แบบง่าย ๆ
+    const inputs = document.querySelectorAll('input.input, textarea.input, select.input');
+    inputs.forEach(el => {
+      if(el.tagName === 'SELECT'){
+        el.selectedIndex = 0;
+      }else{
+        el.value = '';
+      }
+    });
+
+    const pill = document.getElementById('gcStatusPill');
+    if(pill){
+      pill.textContent = 'ยังไม่ประเมิน';
+      pill.className = 'status-pill';
+    }
+
+    const radios = document.querySelectorAll('input[type="radio"][name="gcLevel"]');
+    radios.forEach(r => r.checked = false);
+  }
+</script>
 
 </body>
 </html>
