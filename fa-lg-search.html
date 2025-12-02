@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>FA DB | ระบบค้นหาข้อมูล อปท.</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+  :root{
+    --bg:#060818;
+    --card:#11152b;
+    --border:#262b46;
+    --accent:#42a5f5;
+    --accent2:#26c6da;
+    --muted:#a3acc7;
+    --text:#f5f7ff;
+    --success:#22c55e;
+  }
+  *{box-sizing:border-box;}
+
+  body{
+    margin:0;
+    font-family:"Segoe UI", Tahoma, sans-serif;
+    background:var(--bg);
+    color:var(--text);
+  }
+
+  header{
+    padding:18px 12px;
+    text-align:center;
+    background:linear-gradient(120deg,#0d47a1,#6f42c1,#26c6da);
+    box-shadow:0 4px 16px rgba(0,0,0,.7);
+  }
+  header h1{margin:0;font-size:22px;font-weight:800;}
+  header p{margin:4px 0 0;font-size:13px;color:var(--muted);}
+
+  .wrap{
+    max-width:1200px;
+    margin:20px auto;
+    padding:0 16px;
+  }
+
+  .card{
+    background:var(--card);
+    border-radius:16px;
+    border:1px solid rgba(255,255,255,.15);
+    padding:15px 16px;
+    margin-bottom:18px;
+    box-shadow:0 8px 24px rgba(0,0,0,.65);
+  }
+
+  h2{
+    margin:0 0 10px;
+    font-size:18px;
+    font-weight:700;
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:10px 12px;
+  }
+
+  input,select{
+    width:100%;
+    padding:8px;
+    border-radius:8px;
+    background:#05081a;
+    border:1px solid #374151;
+    font-size:13px;
+    color:var(--text);
+  }
+
+  input:focus,select:focus{
+    outline:none;
+    border-color:var(--accent2);
+  }
+
+  .btn-row{
+    margin-top:10px;
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+  }
+
+  button{
+    border:none;
+    padding:9px 14px;
+    border-radius:999px;
+    cursor:pointer;
+    font-size:13px;
+  }
+
+  .btn-primary{background:var(--success);color:#0f2015;font-weight:700;}
+  .btn-secondary{background:#374151;color:#e5e7eb;}
+  .btn-danger{background:#b91c1c;color:#fff;}
+
+  table{
+    width:100%;border-collapse:collapse;font-size:12px;margin-top:8px;
+  }
+  th,td{
+    border:1px solid #374151;
+    padding:6px 6px;
+  }
+  th{background:#020617;}
+  tr:nth-child(even){background:#111827;}
+
+  .link-btn{
+    display:inline-block;
+    padding:3px 7px;
+    font-size:11px;
+    border-radius:999px;
+    color:#e0f2fe;
+    border:1px solid #38bdf8;
+    text-decoration:none;
+  }
+  .link-btn:hover{
+    background:#38bdf8;
+    color:#0d1b2a;
+  }
+
+  .nav{
+    margin-right:10px;
+    color:#e0e7ff;
+    text-decoration:none;
+    background:#374151;
+    padding:8px 14px;
+    border-radius:999px;
+    font-size:13px;
+  }
+
+  .stat{
+    font-size:13px;
+    color:var(--muted);
+    margin-top:4px;
+  }
+</style>
+
+</head>
+<body>
+
+<header>
+  <h1>ระบบค้นหาข้อมูล อปท.</h1>
+  <p>ค้นหาจากฐานข้อมูลกลาง fa-db-data-gov (ใช้ร่วมทุกระบบ)</p>
+</header>
+
+<div class="wrap">
+
+  <!-- เวลา -->
+  <div style="margin-bottom:10px;font-size:13px;color:var(--muted);">
+    ⏱ เวลา: <span id="clock">-</span>
+  </div>
+
+  <!-- การ์ดค้นหา -->
+  <div class="card">
+    <h2>ค้นหาข้อมูล</h2>
+
+    <div class="grid">
+      <div>
+        <label>หน่วยรับตรวจ / ชื่อ อปท.</label>
+        <input id="q-unit" placeholder="พิมพ์ชื่อหน่วยรับตรวจ">
+      </div>
+
+      <div>
+        <label>จังหวัด</label>
+        <select id="q-province">
+          <option value="">-- ทุกจังหวัด --</option>
+        </select>
+      </div>
+
+      <div>
+        <label>อำเภอ / เขต</label>
+        <input id="q-district" placeholder="พิมพ์ชื่ออำเภอ">
+      </div>
+
+      <div>
+        <label>ตำบล / แขวง</label>
+        <input id="q-subdistrict" placeholder="พิมพ์ชื่อตำบล">
+      </div>
+
+      <div>
+        <label>หมู่บ้าน / ชุมชน</label>
+        <input id="q-village" placeholder="พิมพ์ชื่อหมู่บ้าน">
+      </div>
+
+      <div>
+        <label>ประเภท อปท.</label>
+        <input id="q-type" placeholder="อบต./เทศบาล/เทศบาลเมือง...">
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-primary" id="btnSearch">ค้นหา</button>
+      <button class="btn-secondary" id="btnShowAll">แสดงทั้งหมด</button>
+      <button class="btn-secondary" id="btnClear">ล้างเงื่อนไข</button>
+      <button class="btn-secondary" id="btnExport">📤 Export CSV</button>
+    </div>
+
+    <div class="stat" id="searchStat">ยังไม่ได้ค้นหา</div>
+  </div>
+
+  <!-- ตารางผลลัพธ์ -->
+  <div class="card">
+    <h2>ผลการค้นหา</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>รหัส</th>
+          <th>ชื่อหน่วยงาน</th>
+          <th>หน่วยรับตรวจ</th>
+          <th>ประเภท</th>
+          <th>จังหวัด</th>
+          <th>อำเภอ</th>
+          <th>ตำบล</th>
+          <th>หมู่บ้าน</th>
+          <th>เว็บไซต์</th>
+          <th>รายละเอียด</th>
+        </tr>
+      </thead>
+      <tbody id="dataBody"></tbody>
+    </table>
+  </div>
+
+  <a href="fa-db-local.html" class="nav">⬅ เมนูฐานข้อมูล</a>
+  <a href="fa-db-data-gov.html" class="nav">📊 ฐานข้อมูลกลาง</a>
+
+</div>
+
+<script>
+/* ===== CLOCK ===== */
+function updateClock(){
+  document.getElementById("clock").textContent =
+    new Date().toLocaleString("th-TH");
+}
+setInterval(updateClock,1000); updateClock();
+
+/* ===== LOAD DB ===== */
+const KEY = "fa-db-data-gov";
+let DB = [];
+
+function loadDB(){
+  DB = JSON.parse(localStorage.getItem(KEY) || "[]");
+}
+
+/* ===== RENDER TABLE ===== */
+function renderTable(rows){
+  const tb = document.getElementById("dataBody");
+  tb.innerHTML = "";
+
+  if(rows.length === 0){
+    tb.innerHTML = `<tr><td colspan="11" style="text-align:center;color:#9ca3af;">ไม่พบข้อมูล</td></tr>`;
+    return;
+  }
+
+  rows.forEach((r,i)=>{
+    const tr = document.createElement("tr");
+    const detail = "fa-lg-view.html?code=" + encodeURIComponent(r.code||"");
+
+    tr.innerHTML = `
+      <td>${i+1}</td>
+      <td>${r.code||""}</td>
+      <td>${r.name||""}</td>
+      <td>${r.unit||r.name||""}</td>
+      <td>${r.type||""}</td>
+      <td>${r.province||""}</td>
+      <td>${r.district||""}</td>
+      <td>${r.subdistrict||""}</td>
+      <td>${r.village||""}</td>
+      <td>${r.website ? `<a href="${r.website}" target="_blank" class="link-btn">เปิด</a>` : ""}</td>
+      <td><a href="${detail}" class="link-btn">ดูรายละเอียด</a></td>
+    `;
+    tb.appendChild(tr);
+  });
+}
+
+/* ===== SEARCH ===== */
+function normalize(t){return (t||"").toLowerCase().trim();}
+
+function doSearch(showAll=false){
+  let result = DB;
+
+  if(!showAll){
+    const qUnit  = normalize(document.getElementById("q-unit").value);
+    const qProv  = document.getElementById("q-province").value.trim();
+    const qDist  = normalize(document.getElementById("q-district").value);
+    const qSub   = normalize(document.getElementById("q-subdistrict").value);
+    const qVill  = normalize(document.getElementById("q-village").value);
+    const qType  = normalize(document.getElementById("q-type").value);
+
+    if(qUnit){
+      result = result.filter(r=>
+        normalize(r.unit).includes(qUnit) ||
+        normalize(r.name).includes(qUnit)
+      );
+    }
+    if(qProv){ result = result.filter(r=> (r.province||"") === qProv); }
+    if(qDist){ result = result.filter(r=> normalize(r.district).includes(qDist)); }
+    if(qSub){ result = result.filter(r=> normalize(r.subdistrict).includes(qSub)); }
+    if(qVill){ result = result.filter(r=> normalize(r.village).includes(qVill)); }
+    if(qType){ result = result.filter(r=> normalize(r.type).includes(qType)); }
+  }
+
+  renderTable(result);
+  document.getElementById("searchStat").textContent =
+    `พบทั้งหมด ${result.length} รายการ`;
+}
+
+/* ===== FILL PROVINCE SELECT (จาก DB จริง) ===== */
+function fillProvinces(){
+  const all = DB;
+  const sel = document.getElementById("q-province");
+  const provs = new Set();
+  all.forEach(r=>{ if(r.province) provs.add(r.province); });
+
+  [...provs].sort().forEach(p=>{
+    const o = document.createElement("option");
+    o.value = p;
+    o.textContent = p;
+    sel.appendChild(o);
+  });
+}
+
+/* ===== EXPORT CSV ===== */
+function exportCSV(){
+  const rows = DB;
+  if(rows.length===0){ alert("ยังไม่มีข้อมูล"); return; }
+
+  const header = ["code","name","unit","type","province","district","subdistrict","village","website"];
+  const lines = [header.join(",")];
+
+  rows.forEach(r=>{
+    const row = header.map(k=>{
+      const v = (r[k]||"").toString().replace(/"/g,'""');
+      return `"${v}"`;
+    });
+    lines.push(row.join(","));
+  });
+
+  const blob = new Blob([lines.join("\r\n")],{type:"text/csv;charset=utf-8;"});
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement("a");
+  a.href = url;
+  a.download = "fa-lg-search-export.csv";
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+/* ===== CLEAR ===== */
+function clearForm(){
+  document.getElementById("q-unit").value = "";
+  document.getElementById("q-province").value = "";
+  document.getElementById("q-district").value = "";
+  document.getElementById("q-subdistrict").value = "";
+  document.getElementById("q-village").value = "";
+  document.getElementById("q-type").value = "";
+  document.getElementById("searchStat").textContent = "ยังไม่ได้ค้นหา";
+  document.getElementById("dataBody").innerHTML = "";
+}
+
+/* ===== INIT ===== */
+loadDB();
+fillProvinces();
+
+document.getElementById("btnSearch").addEventListener("click",()=>doSearch(false));
+document.getElementById("btnShowAll").addEventListener("click",()=>doSearch(true));
+document.getElementById("btnClear").addEventListener("click",clearForm);
+document.getElementById("btnExport").addEventListener("click",exportCSV);
+</script>
+
+</body>
+</html>
