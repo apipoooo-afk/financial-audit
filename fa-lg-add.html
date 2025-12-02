@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<title>FA DB | เพิ่มข้อมูล อปท. (Import)</title>
+<title>FA DB | เพิ่มข้อมูล อปท. (Import → fa-db-data-gov)</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
@@ -65,11 +65,6 @@
     font-weight:700;
   }
 
-  input,button{
-    font-family:"Segoe UI", Tahoma;
-    font-size:14px;
-  }
-
   #importBox{
     border:2px dashed var(--accent);
     padding:25px;
@@ -92,6 +87,11 @@
     margin-top:10px;
     font-size:13px;
     color:var(--muted);
+  }
+
+  input,button{
+    font-family:"Segoe UI", Tahoma;
+    font-size:14px;
   }
 
   table{
@@ -131,8 +131,8 @@
 <body>
 
 <header>
-  <h1>เพิ่มข้อมูล อปท. (Import to Master Database)</h1>
-  <p>รองรับ CSV · Excel · JSON URL – บันทึกลงฐานกลาง fa-db-data-gov</p>
+  <h1>เพิ่มข้อมูล อปท. (Import → ฐานกลาง fa-db-data-gov)</h1>
+  <p>รองรับ CSV · Excel · JSON URL – เขียนลง localStorage["fa-db-data-gov"] ให้ fa-db-data-gov.html ใช้งานได้ทันที</p>
 </header>
 
 <div class="wrap">
@@ -144,21 +144,21 @@
 
   <!-- กล่อง Import -->
   <div class="card">
-    <h2>นำเข้าข้อมูล อปท.</h2>
+    <h2>นำเข้าข้อมูล อปท. เข้าสู่ฐานข้อมูลกลาง</h2>
 
     <div id="importBox">
-      <button id="importBtn">📁 เลือกไฟล์ / ใส่ลิงก์ URL</button>
+      <button id="importBtn">📁 เลือกไฟล์ / นำเข้า (CSV, Excel)</button>
       <br><br>
 
       <input type="file" id="fileInput" accept=".csv,.xls,.xlsx,.json" style="display:none;">
 
       <div style="margin-top:10px;">
-        <input type="text" id="urlInput" placeholder="วาง URL JSON เช่น https://..." 
+        <input type="text" id="urlInput" placeholder="วาง URL JSON เช่น https://..."
                style="width:80%; padding:8px; border-radius:6px; background:#05081a; border:1px solid #374151; color:#fff;">
       </div>
 
       <button id="importUrlBtn" style="margin-top:10px; padding:8px 16px; border:none; background:#22c55e; border-radius:999px; cursor:pointer;">
-        🌐 นำเข้าจาก URL
+        🌐 นำเข้าจาก URL (JSON Array)
       </button>
 
       <div id="progress"></div>
@@ -167,7 +167,7 @@
 
   <!-- ตารางไฟล์ที่นำเข้า -->
   <div class="card">
-    <h2>บอร์ดรายการข้อมูลที่นำเข้าสู่ฐานกลาง</h2>
+    <h2>บอร์ดรายการไฟล์/แหล่งข้อมูลที่นำเข้าสู่ฐานกลาง</h2>
 
     <table>
       <thead>
@@ -184,11 +184,12 @@
 
   <a class="nav" href="fa-db-local.html">⬅ เมนูฐานข้อมูล อปท.</a>
   <a class="nav" href="fa-db-data-gov.html">📊 ดูฐานข้อมูลกลาง</a>
+  <a class="nav" href="fa-lg-search.html">🔍 ระบบค้นหาข้อมูล</a>
 
 </div>
 
 <script>
-/* นาฬิกา */
+/* ===== CLOCK ===== */
 function updateClock(){
   document.getElementById("nowTime").textContent =
     new Date().toLocaleString("th-TH");
@@ -196,33 +197,202 @@ function updateClock(){
 setInterval(updateClock,1000);
 updateClock();
 
-/* บันทึกลงฐานข้อมูลกลาง */
-function saveToMasterDB(records){
-  const KEY = "fa-db-data-gov";
+/* ===== KEY หลักของฐานกลาง ===== */
+const MASTER_KEY = "fa-db-data-gov";       // fa-db-data-gov.html ใช้อ่าน KEY นี้
+const FILEBOARD_KEY = "fa-db-fileboard";   // บันทึกรายการไฟล์ที่เคยนำเข้า
 
-  const old = JSON.parse(localStorage.getItem(KEY) || "[]");
-  const merged = [...old, ...records];
-
-  localStorage.setItem(KEY, JSON.stringify(merged));
+/* ===== ฟังก์ชันช่วย: แปลงชื่อคอลัมน์ → key มาตรฐาน ===== */
+function normalizeHeaderName(name){
+  return name.toString().trim().toLowerCase()
+    .replace(/\s+/g,"")
+    .replace(/[().]/g,"");
 }
 
-/* บอร์ดแสดงไฟล์ */
+/* mapping: header (ทั้งไทย/อังกฤษ) → field มาตรฐานที่ fa-db-data-gov ใช้ */
+const HEADER_MAP = {
+  code: [
+    "code","รหัส","รหัสหน่วยงาน","รหัสหน่วยงานอปท","รหัสอปท","รหัสอปท"
+  ],
+  name: [
+    "name","ชื่อหน่วยงาน","ชื่ออปท","ชื่ออปท","ชื่อหน่วยงานอปท","ชื่อหน่วยงานชื่ออปท"
+  ],
+  unit: [
+    "unit","หน่วยรับตรวจ"
+  ],
+  type: [
+    "type","ประเภท","ประเภทอปท","ประเภทหน่วยงาน"
+  ],
+  ministry: [
+    "ministry","สังกัดกระทรวง","กระทรวง"
+  ],
+  level: [
+    "level","ระดับหน่วยงาน","ระดับ"
+  ],
+  province: [
+    "province","จังหวัด"
+  ],
+  district: [
+    "district","อำเภอ","เขต","อำเภอเขต"
+  ],
+  subdistrict: [
+    "subdistrict","ตำบล","แขวง","ตำบลแขวง"
+  ],
+  village: [
+    "village","หมู่บ้าน","ชุมชน","หมู่บ้านชุมชน"
+  ],
+  address: [
+    "address","ที่อยู่","เลขที่","เลขที่หมู่ที่","เลขที่หมู่","บ้านเลขที่"
+  ],
+  zipcode: [
+    "zipcode","รหัสไปรษณีย์","ไปรษณีย์","postcode","zip"
+  ],
+  lat: [
+    "lat","latitude","ละติจูด","พิกัดละติจูด"
+  ],
+  long: [
+    "long","lng","longitude","ลองจิจูด","พิกัดลองจิจูด"
+  ],
+  website: [
+    "website","เว็บไซต์","เว็ปไซต์","url","websiteurl","เว็บไซด์"
+  ],
+  remark: [
+    "remark","หมายเหตุ","note","notes"
+  ]
+};
+
+/* สร้าง mapping ของ header จริงในไฟล์ → field มาตรฐาน */
+function buildHeaderIndex(headerArray){
+  const indexMap = {}; // canonicalKey → indexใน headerArray
+  const normalized = headerArray.map(h=>normalizeHeaderName(h));
+
+  for(const canonical in HEADER_MAP){
+    const candidates = HEADER_MAP[canonical];
+    for(let i=0;i<normalized.length;i++){
+      if(candidates.includes(normalized[i])){
+        indexMap[canonical] = i;
+        break;
+      }
+    }
+  }
+  return indexMap;
+}
+
+/* แปลง raw row (array หรือ object) → object มาตรฐาน */
+function normalizeRecordFromArray(headerArray, rowArray){
+  const idxMap = buildHeaderIndex(headerArray);
+  const obj = {};
+
+  for(const key in idxMap){
+    const colIndex = idxMap[key];
+    obj[key] = (rowArray[colIndex] || "").toString().trim();
+  }
+
+  // เผื่อมี header อื่นที่ไม่รู้จัก → ไม่ทิ้ง แต่ไม่จำเป็นต่อการแสดง
+  // สามารถแนบไปใน remark ได้ (ถ้าต้องการก็เพิ่ม logic ภายหลัง)
+
+  return obj;
+}
+
+function normalizeRecordFromObject(raw){
+  const keys = Object.keys(raw);
+  const normalizedKeys = keys.map(k=>normalizeHeaderName(k));
+  const idxMap = buildHeaderIndex(keys.map(k=>k)); // ใช้ header เดิม
+
+  const obj = {};
+
+  for(const canonical in idxMap){
+    const originalIndex = idxMap[canonical];
+    const originalKey   = keys[originalIndex];
+    obj[canonical] = (raw[originalKey] || "").toString().trim();
+  }
+
+  // ถ้า code / name ไม่มีเลย ลองเดาจาก key เดิม (กันข้อมูลหาย)
+  if(!obj.code && raw.code) obj.code = String(raw.code);
+  if(!obj.name && raw.name) obj.name = String(raw.name);
+
+  return obj;
+}
+
+/* ===== บันทึกลงฐานกลาง MASTER_KEY ===== */
+/* ถ้า code ซ้ำ → update ทับ, ถ้าไม่มี code → push ต่อท้าย */
+function saveToMasterDB(records){
+  if(!Array.isArray(records) || records.length===0) return;
+
+  let old;
+  try{
+    old = JSON.parse(localStorage.getItem(MASTER_KEY) || "[]");
+    if(!Array.isArray(old)) old = [];
+  }catch(e){
+    old = [];
+  }
+
+  let insertCount = 0;
+  let updateCount = 0;
+
+  records.forEach(rec=>{
+    const code = (rec.code || "").toString().trim();
+    if(code){
+      const idx = old.findIndex(r=> String(r.code||"").trim() === code);
+      if(idx >= 0){
+        // update
+        old[idx] = {...old[idx], ...rec};
+        updateCount++;
+      }else{
+        old.push(rec);
+        insertCount++;
+      }
+    }else{
+      // ไม่มี code → แทรกต่อท้าย
+      old.push(rec);
+      insertCount++;
+    }
+  });
+
+  localStorage.setItem(MASTER_KEY, JSON.stringify(old));
+
+  console.log("MASTER_DB updated:", {insertCount, updateCount, total: old.length});
+  document.getElementById("progress").innerHTML =
+    `<span class="tag-green">✔ บันทึกลงฐานกลางแล้ว เพิ่มใหม่ ${insertCount} รายการ, แก้ไข ${updateCount} รายการ (รวมทั้งหมด ${old.length} รายการในฐาน)</span>`;
+}
+
+/* ===== FILE BOARD (บันทึกประวัติการนำเข้า) ===== */
 function addFileBoard(name,size){
-  const list = JSON.parse(localStorage.getItem("fa-db-fileboard") || "[]");
+  let list;
+  try{
+    list = JSON.parse(localStorage.getItem(FILEBOARD_KEY) || "[]");
+    if(!Array.isArray(list)) list = [];
+  }catch(e){
+    list = [];
+  }
+
   list.push({
     name:name,
     size:size,
     date:new Date().toLocaleString("th-TH")
   });
-  localStorage.setItem("fa-db-fileboard", JSON.stringify(list));
+
+  localStorage.setItem(FILEBOARD_KEY, JSON.stringify(list));
   renderFileBoard();
 }
 
-/* แสดงรายการไฟล์ที่นำเข้า */
 function renderFileBoard(){
-  const list = JSON.parse(localStorage.getItem("fa-db-fileboard") || "[]");
+  let list;
+  try{
+    list = JSON.parse(localStorage.getItem(FILEBOARD_KEY) || "[]");
+    if(!Array.isArray(list)) list = [];
+  }catch(e){
+    list = [];
+  }
+
   const tb = document.getElementById("fileBoard");
   tb.innerHTML = "";
+
+  if(list.length===0){
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td colspan="4" style="text-align:center;color:#9ca3af;">ยังไม่เคยนำเข้าข้อมูล</td>`;
+    tb.appendChild(tr);
+    return;
+  }
 
   list.forEach((f,i)=>{
     const tr = document.createElement("tr");
@@ -238,107 +408,145 @@ function renderFileBoard(){
 
 renderFileBoard();
 
-/* ปุ่มเรียกเลือกไฟล์ */
+/* ===== ปุ่มเรียก input file ===== */
 document.getElementById("importBtn").addEventListener("click",()=>{
   document.getElementById("fileInput").click();
 });
 
-/* นำเข้าไฟล์ CSV/Excel */
+/* ===== นำเข้าไฟล์ CSV / Excel ===== */
 document.getElementById("fileInput").addEventListener("change", async(e)=>{
   const file = e.target.files[0];
   if(!file){ return; }
 
-  document.getElementById("progress").textContent = "⏳ กำลังอ่านไฟล์...";
+  const progress = document.getElementById("progress");
+  progress.textContent = "⏳ กำลังอ่านไฟล์...";
 
   const ext = file.name.split(".").pop().toLowerCase();
-
   let records = [];
 
-  if(ext === "csv"){
-    const text = await file.text();
-    records = parseCSV(text);
+  try{
+    if(ext === "csv"){
+      const text = await file.text();
+      records = parseCSVToRecords(text);
+    }else if(ext === "xls" || ext === "xlsx"){
+      records = await parseExcelToRecords(file);
+    }else if(ext === "json"){
+      const text = await file.text();
+      const raw = JSON.parse(text);
+      if(Array.isArray(raw)){
+        records = raw.map(r=>normalizeRecordFromObject(r));
+      }else{
+        alert("ไฟล์ JSON ต้องเป็น Array ของ Object");
+        progress.textContent = "";
+        return;
+      }
+    }else{
+      alert("รูปแบบไฟล์ไม่รองรับ (ต้องเป็น CSV / XLSX / JSON)");
+      progress.textContent = "";
+      return;
+    }
 
-  } else if(ext === "xls" || ext === "xlsx"){
-    records = await parseExcel(file);
+    progress.textContent = `⏳ ได้ข้อมูลจากไฟล์แล้ว ${records.length} รายการ กำลังบันทึกลงฐานกลาง...`;
 
-  } else {
-    alert("รูปแบบไฟล์ไม่รองรับ");
+    // บันทึกลงฐานกลาง
+    saveToMasterDB(records);
+
+    // บันทึกประวัติไฟล์
+    addFileBoard(file.name, formatSize(file.size));
+
+  }catch(err){
+    console.error(err);
+    alert("เกิดข้อผิดพลาดในการอ่านไฟล์/บันทึกข้อมูล");
+    progress.textContent = "";
+  }
+});
+
+/* ===== นำเข้าจาก URL JSON ===== */
+document.getElementById("importUrlBtn").addEventListener("click", async()=>{
+  const url = document.getElementById("urlInput").value.trim();
+  const progress = document.getElementById("progress");
+
+  if(!url){
+    alert("กรุณากรอก URL ก่อน");
     return;
   }
 
-  // บันทึกเข้าฐานกลาง
-  saveToMasterDB(records);
-
-  // บันทึกไฟล์ลงบอร์ด
-  addFileBoard(file.name, formatSize(file.size));
-
-  document.getElementById("progress").innerHTML =
-    `<span class='tag-green'>✔ นำเข้าแล้ว ${records.length} รายการ</span>`;
-});
-
-/* นำเข้าจาก URL JSON */
-document.getElementById("importUrlBtn").addEventListener("click",async()=>{
-  const url = document.getElementById("urlInput").value.trim();
-  if(!url){ alert("กรุณากรอก URL"); return;}
-
-  document.getElementById("progress").textContent = "⏳ กำลังดึงข้อมูลจาก URL...";
+  progress.textContent = "⏳ กำลังดึงข้อมูลจาก URL...";
 
   try{
     const res = await fetch(url);
     const json = await res.json();
 
     if(!Array.isArray(json)){
-      alert("รูปแบบข้อมูลต้องเป็น Array ของ Object");
+      alert("ข้อมูลจาก URL ต้องเป็น JSON Array ของ Object");
+      progress.textContent = "";
       return;
     }
 
-    saveToMasterDB(json);
+    const records = json.map(r=>normalizeRecordFromObject(r));
+
+    progress.textContent = `⏳ ได้ข้อมูลจาก URL แล้ว ${records.length} รายการ กำลังบันทึกลงฐานกลาง...`;
+
+    saveToMasterDB(records);
+
     addFileBoard(url, "-");
 
-    document.getElementById("progress").innerHTML =
-      `<span class='tag-green'>✔ นำเข้าจาก URL จำนวน ${json.length} รายการ</span>`;
-
-  }catch(e){
-    alert("ดึงข้อมูลจาก URL ไม่สำเร็จ");
+  }catch(err){
+    console.error(err);
+    alert("ไม่สามารถดึงข้อมูลจาก URL ได้");
+    progress.textContent = "";
   }
 });
 
-/* CSV Parser */
-function parseCSV(text){
-  const lines = text.trim().split(/\r?\n/);
-  const header = lines[0].split(",").map(h=>h.trim());
-  const rows = [];
-
-  for(let i=1;i<lines.length;i++){
-    const cols = lines[i].split(",");
-    const obj = {};
-    header.forEach((h,idx)=>{
-      obj[h] = cols[idx] ? cols[idx].trim() : "";
-    });
-    rows.push(obj);
+/* ===== CSV → records (มาตรฐาน) ===== */
+function parseCSVToRecords(text){
+  const lines = text.split(/\r?\n/).filter(l=>l.trim()!=="");
+  if(lines.length < 2){
+    return [];
   }
 
-  return rows;
+  const header = lines[0].split(",").map(h=>h.replace(/(^"|"$)/g,"").trim());
+  const records = [];
+
+  for(let i=1;i<lines.length;i++){
+    const cols = lines[i].split(",").map(c=>c.replace(/(^"|"$)/g,""));
+    if(cols.length === 0) continue;
+
+    const rec = normalizeRecordFromArray(header, cols);
+    records.push(rec);
+  }
+
+  console.log("CSV parsed records:", records.length);
+  return records;
 }
 
-/* Excel Parser */
-async function parseExcel(file){
-  return new Promise((resolve)=>{
+/* ===== Excel → records (มาตรฐาน) ===== */
+async function parseExcelToRecords(file){
+  return new Promise((resolve,reject)=>{
     const reader = new FileReader();
     reader.onload = function(e){
-      const data = new Uint8Array(e.target.result);
-      const workbook = XLSX.read(data,{type:"array"});
-      const sheet = workbook.Sheets[workbook.SheetNames[0]];
-      const json = XLSX.utils.sheet_to_json(sheet);
-      resolve(json);
+      try{
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data,{type:"array"});
+        const sheet = workbook.Sheets[workbook.SheetNames[0]];
+        const json = XLSX.utils.sheet_to_json(sheet, {defval:""});
+
+        const records = json.map(r=>normalizeRecordFromObject(r));
+        console.log("Excel parsed records:", records.length);
+        resolve(records);
+      }catch(err){
+        reject(err);
+      }
     };
+    reader.onerror = reject;
     reader.readAsArrayBuffer(file);
   });
 }
 
-/* จัดรูปแบบขนาดไฟล์ */
+/* ===== format size ===== */
 function formatSize(size){
-  if(size < 1024) return size+" B";
+  if(typeof size !== "number") return "-";
+  if(size < 1024) return size + " B";
   if(size < 1024*1024) return (size/1024).toFixed(1)+" KB";
   return (size/(1024*1024)).toFixed(1)+" MB";
 }
