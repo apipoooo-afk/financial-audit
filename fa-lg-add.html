@@ -114,7 +114,7 @@
   .nav{
     display:inline-block;
     padding:8px 14px;
-    margin-right:8px;
+    margin:4px 8px 0 0;
     border-radius:999px;
     background:#374151;
     color:#fff;
@@ -127,7 +127,7 @@
   }
 
   .btn-small{
-    padding:7px 12px;
+    padding:6px 10px;
     border-radius:999px;
     border:none;
     cursor:pointer;
@@ -141,7 +141,6 @@
     background:#374151;
     color:#fff;
   }
-
 </style>
 </head>
 
@@ -193,12 +192,35 @@
       🗑 ลบข้อมูลทั้งหมดในฐานกลาง (fa-db-data-gov)
     </button>
     <button id="btnClearBoard" class="btn-small btn-secondary">
-      🧹 ลบประวัติไฟล์ที่นำเข้า (fileboard)
+      🧹 ลบประวัติไฟล์ที่นำเข้า (fileboard ทั้งหมด)
     </button>
     <div id="masterInfo" style="margin-top:8px;font-size:13px;color:var(--muted);"></div>
   </div>
 
-  <!-- ตารางไฟล์ที่นำเข้า -->
+  <!-- พรีวิวข้อมูลในฐานกลาง + ลบทีละรายการ -->
+  <div class="card">
+    <h2>ตัวอย่างข้อมูลในฐานกลาง (ลบทีละรายการได้)</h2>
+    <p style="font-size:12px;color:var(--muted);">
+      แสดงตัวอย่างข้อมูลจาก <code>fa-db-data-gov</code> (สูงสุด 100 รายการแรก) ใช้สำหรับตรวจสอบและลบรายแถวอย่างรวดเร็ว
+    </p>
+    <button id="btnReloadMaster" class="btn-small btn-secondary">🔄 รีโหลดข้อมูลจากฐานกลาง</button>
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>รหัส</th>
+          <th>ชื่อหน่วยงาน</th>
+          <th>จังหวัด</th>
+          <th>อำเภอ</th>
+          <th>ประเภท</th>
+          <th>ลบ</th>
+        </tr>
+      </thead>
+      <tbody id="masterTableBody"></tbody>
+    </table>
+  </div>
+
+  <!-- ตารางไฟล์ที่นำเข้า + ลบทีละไฟล์ -->
   <div class="card">
     <h2>บอร์ดรายการไฟล์/แหล่งข้อมูลที่นำเข้าสู่ฐานกลาง</h2>
 
@@ -209,16 +231,28 @@
           <th>ชื่อไฟล์ / URL</th>
           <th>ขนาด</th>
           <th>วันที่นำเข้า</th>
+          <th>ลบ</th>
         </tr>
       </thead>
       <tbody id="fileBoard"></tbody>
     </table>
   </div>
 
-  <a class="nav" href="fa-db-local.html">⬅ เมนูฐานข้อมูล อปท.</a>
-  <a class="nav" href="fa-db-data-gov.html">📊 ดูฐานข้อมูลกลาง</a>
-  <a class="nav" href="fa-lg-search.html">🔍 ระบบค้นหาข้อมูล</a>
-  <a class="nav" href="fa-lg-edit.html">🛠 ระบบแก้ไขข้อมูล</a>
+  <!-- เมนูนำทาง -->
+  <div style="margin-top:4px;">
+    <!-- กลับหน้าก่อน / หน้าถัดไป -->
+    <a class="nav" href="javascript:history.back()">⬅ กลับหน้าก่อนนี้</a>
+    <a class="nav" href="fa-lg-search.html">➡ ไปหน้าถัดไป (ค้นหาข้อมูล)</a>
+
+    <!-- เมนูหลักเดิม -->
+    <a class="nav" href="fa-db-local.html">🏛 เมนูฐานข้อมูล อปท.</a>
+    <a class="nav" href="fa-db-data-gov.html">📊 ดูฐานข้อมูลกลาง</a>
+    <a class="nav" href="fa-lg-edit.html">🛠 ระบบแก้ไขข้อมูล</a>
+
+    <!-- เมนูเพิ่มรูป / เพิ่มเว็บไซต์ -->
+    <a class="nav" href="fa-lg-add-image.html">🖼 เพิ่มรูป</a>
+    <a class="nav" href="fa-lg-add-website.html">🌐 เพิ่มเว็บไซต์</a>
+  </div>
 
 </div>
 
@@ -340,7 +374,6 @@ function normalizeRecordFromObject(raw){
 }
 
 /* ===== บันทึกลงฐานกลาง MASTER_KEY ===== */
-/* ถ้า code ซ้ำ → update ทับ, ถ้าไม่มี code → push ต่อท้าย */
 function saveToMasterDB(records){
   if(!Array.isArray(records) || records.length===0) return;
 
@@ -378,6 +411,7 @@ function saveToMasterDB(records){
     `<span class="tag-green">✔ บันทึกลงฐานกลางแล้ว เพิ่มใหม่ ${insertCount} รายการ, แก้ไข ${updateCount} รายการ (รวมทั้งหมด ${old.length} รายการในฐาน)</span>`;
 
   updateMasterInfo();
+  loadMasterPreview();
 }
 
 /* ===== FILE BOARD (บันทึกประวัติการนำเข้า) ===== */
@@ -414,7 +448,7 @@ function renderFileBoard(){
 
   if(list.length===0){
     const tr = document.createElement("tr");
-    tr.innerHTML = `<td colspan="4" style="text-align:center;color:#9ca3af;">ยังไม่เคยนำเข้าข้อมูล</td>`;
+    tr.innerHTML = `<td colspan="5" style="text-align:center;color:#9ca3af;">ยังไม่เคยนำเข้าข้อมูล</td>`;
     tb.appendChild(tr);
     return;
   }
@@ -426,10 +460,26 @@ function renderFileBoard(){
       <td>${f.name}</td>
       <td>${f.size}</td>
       <td>${f.date}</td>
+      <td><button class="btn-small btn-danger" onclick="deleteFileBoardItem(${i})">ลบ</button></td>
     `;
     tb.appendChild(tr);
   });
 }
+
+/* ลบทีละรายการจากบอร์ดไฟล์ */
+window.deleteFileBoardItem = function(index){
+  if(!confirm("ต้องการลบประวัติไฟล์รายการนี้ใช่หรือไม่?")) return;
+  let list = [];
+  try{
+    list = JSON.parse(localStorage.getItem(FILEBOARD_KEY) || "[]");
+    if(!Array.isArray(list)) list = [];
+  }catch(e){
+    list = [];
+  }
+  list.splice(index,1);
+  localStorage.setItem(FILEBOARD_KEY, JSON.stringify(list));
+  renderFileBoard();
+};
 
 renderFileBoard();
 
@@ -446,6 +496,64 @@ function updateMasterInfo(){
     `จำนวนข้อมูลในฐานกลางปัจจุบัน: ${arr.length} รายการ`;
 }
 updateMasterInfo();
+
+/* พรีวิวข้อมูลในฐานกลาง + ลบทีละรายการ */
+function loadMasterPreview(){
+  let arr=[];
+  try{
+    arr = JSON.parse(localStorage.getItem(MASTER_KEY) || "[]");
+    if(!Array.isArray(arr)) arr=[];
+  }catch(e){
+    arr=[];
+  }
+
+  const tb = document.getElementById("masterTableBody");
+  tb.innerHTML = "";
+
+  if(arr.length===0){
+    tb.innerHTML = `<tr><td colspan="7" style="text-align:center;color:#9ca3af;">ยังไม่มีข้อมูลในฐานกลาง</td></tr>`;
+    return;
+  }
+
+  const max = Math.min(arr.length,100); // แสดงสูงสุด 100 รายการ
+  for(let i=0;i<max;i++){
+    const r = arr[i];
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${i+1}</td>
+      <td>${r.code || ""}</td>
+      <td>${r.name || ""}</td>
+      <td>${r.province || ""}</td>
+      <td>${r.district || ""}</td>
+      <td>${r.type || ""}</td>
+      <td><button class="btn-small btn-danger" onclick="deleteMasterRecord(${i})">ลบ</button></td>
+    `;
+    tb.appendChild(tr);
+  }
+}
+loadMasterPreview();
+
+/* ลบทีละรายการจากฐานกลาง */
+window.deleteMasterRecord = function(idx){
+  if(!confirm("ต้องการลบข้อมูลแถวนี้ออกจากฐานกลางหรือไม่?")) return;
+  let arr=[];
+  try{
+    arr = JSON.parse(localStorage.getItem(MASTER_KEY) || "[]");
+    if(!Array.isArray(arr)) arr=[];
+  }catch(e){
+    arr=[];
+  }
+
+  if(idx>=0 && idx<arr.length){
+    arr.splice(idx,1);
+    localStorage.setItem(MASTER_KEY, JSON.stringify(arr));
+  }
+  updateMasterInfo();
+  loadMasterPreview();
+  alert("ลบข้อมูลรายการนี้แล้ว");
+};
+
+document.getElementById("btnReloadMaster").addEventListener("click", loadMasterPreview);
 
 /* ===== ปุ่มเรียก input file ===== */
 document.getElementById("importBtn").addEventListener("click",()=>{
@@ -587,19 +695,20 @@ function formatSize(size){
   return (size/(1024*1024)).toFixed(1)+" MB";
 }
 
-/* ===== ปุ่มลบฐานกลาง & ลบประวัตินำเข้า ===== */
+/* ===== ปุ่มลบฐานกลาง & ลบประวัตินำเข้า (ทั้งหมด) ===== */
 document.getElementById("btnClearMaster").addEventListener("click",()=>{
   if(!confirm("ยืนยันลบข้อมูลทั้งหมดในฐานกลาง (fa-db-data-gov)?")) return;
   localStorage.removeItem(MASTER_KEY);
   updateMasterInfo();
+  loadMasterPreview();
   alert("ลบข้อมูลทั้งหมดในฐานกลางเรียบร้อย");
 });
 
 document.getElementById("btnClearBoard").addEventListener("click",()=>{
-  if(!confirm("ยืนยันลบประวัติเกี่ยวกับไฟล์ที่นำเข้า (fileboard)?")) return;
+  if(!confirm("ยืนยันลบประวัติไฟล์ที่นำเข้าทั้งหมด (fileboard)?")) return;
   localStorage.removeItem(FILEBOARD_KEY);
   renderFileBoard();
-  alert("ลบประวัติไฟล์ที่นำเข้าเรียบร้อย");
+  alert("ลบประวัติไฟล์ที่นำเข้าทั้งหมดเรียบร้อย");
 });
 </script>
 
