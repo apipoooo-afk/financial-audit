@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>FA – LG Annual Report | ระบบจัดทำงบและรายงานการตรวจสอบการเงิน</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    :root{
+      --bg:#060818;
+      --bg-soft:#0b1024;
+      --card:#11152b;
+      --border:#262b46;
+      --primary:#0d47a1;
+      --primary-2:#42a5f5;
+      --accent:#ffd54f;
+      --text:#f5f7ff;
+      --muted:#a3acc7;
+      --danger:#ef5350;
+      --success:#66bb6a;
+      --shadow-soft:0 12px 30px rgba(0,0,0,0.55);
+      --radius-lg:18px;
+    }
+
+    *{box-sizing:border-box;}
+
+    body{
+      margin:0;
+      font-family:"Segoe UI", Tahoma, sans-serif;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(123,30,60,0.36) 0, transparent 55%),
+        radial-gradient(circle at 90% 100%, rgba(66,165,245,0.32) 0, transparent 55%),
+        var(--bg);
+      color:var(--text);
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+    }
+
+    header{
+      padding:16px 14px 12px;
+      background:linear-gradient(120deg,#7b1e3c,#0d47a1,#42a5f5);
+      box-shadow:0 6px 22px rgba(0,0,0,0.6);
+      border-bottom:1px solid rgba(255,255,255,0.14);
+      position:sticky;
+      top:0;
+      z-index:20;
+    }
+
+    .header-inner{
+      max-width:1080px;
+      margin:0 auto;
+      display:flex;
+      flex-wrap:wrap;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:10px 18px;
+    }
+
+    .header-title-block h1{
+      margin:0;
+      font-size:22px;
+      font-weight:800;
+      letter-spacing:0.03em;
+    }
+
+    .header-title-block p{
+      margin:4px 0 0;
+      font-size:13px;
+      opacity:0.9;
+    }
+
+    .header-right{
+      display:flex;
+      flex-direction:column;
+      align-items:flex-end;
+      gap:6px;
+      font-size:11px;
+    }
+
+    .flow-pill{
+      padding:4px 10px;
+      border-radius:999px;
+      background:rgba(0,0,0,0.35);
+      border:1px solid rgba(255,255,255,0.25);
+      display:flex;
+      align-items:center;
+      gap:6px;
+      white-space:nowrap;
+    }
+
+    .back-link{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:4px 9px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.35);
+      background:rgba(0,0,0,0.25);
+      color:#fff;
+      text-decoration:none;
+      font-size:11px;
+    }
+    .back-link:hover{
+      background:rgba(0,0,0,0.5);
+    }
+
+    main{
+      flex:1;
+      padding:18px 12px 32px;
+    }
+
+    .main-inner{
+      max-width:1080px;
+      margin:0 auto;
+    }
+
+    .intro{
+      background:radial-gradient(circle at 0 0,rgba(66,165,245,0.16) 0,transparent 60%),
+                 radial-gradient(circle at 100% 100%,rgba(244,143,177,0.14) 0,transparent 55%),
+                 var(--bg-soft);
+      border-radius:var(--radius-lg);
+      border:1px solid var(--border);
+      padding:14px 14px 12px;
+      box-shadow:var(--shadow-soft);
+      margin-bottom:18px;
+    }
+
+    .intro h2{
+      margin:0 0 6px;
+      font-size:16px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    .intro p{
+      margin:4px 0;
+      font-size:12px;
+      color:var(--muted);
+    }
+
+    .flow-map{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      margin-top:8px;
+      font-size:11px;
+      color:var(--muted);
+      align-items:center;
+    }
+
+    .flow-step{
+      padding:4px 8px;
+      border-radius:999px;
+      border:1px dashed rgba(163,172,199,0.4);
+      background:rgba(6,8,24,0.72);
+      white-space:nowrap;
+    }
+
+    .flow-arrow{
+      opacity:0.75;
+    }
+
+    /* menu grid */
+    .menu-grid{
+      display:grid;
+      grid-template-columns:repeat(1,minmax(0,1fr));
+      gap:14px;
+      margin-top:4px;
+    }
+
+    @media(min-width:720px){
+      .menu-grid{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+      }
+    }
+
+    @media(min-width:1024px){
+      .menu-grid{
+        grid-template-columns:repeat(3,minmax(0,1fr));
+      }
+    }
+
+    .menu-card{
+      position:relative;
+      display:block;
+      text-decoration:none;
+      color:inherit;
+      background:radial-gradient(circle at 20% 0%,rgba(66,165,245,0.18) 0,transparent 55%),
+                 radial-gradient(circle at 80% 100%,rgba(244,143,177,0.16) 0,transparent 55%),
+                 var(--card);
+      border-radius:var(--radius-lg);
+      border:1px solid var(--border);
+      padding:14px 14px 12px;
+      box-shadow:var(--shadow-soft);
+      overflow:hidden;
+      transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease,
+        border-color 0.18s ease,
+        background 0.18s ease;
+    }
+
+    .menu-card:hover{
+      transform:translateY(-3px);
+      box-shadow:0 14px 32px rgba(0,0,0,0.75);
+      border-color:var(--primary-2);
+    }
+
+    .menu-icon{
+      font-size:22px;
+      margin-bottom:6px;
+    }
+
+    .menu-title{
+      font-size:15px;
+      font-weight:700;
+      margin-bottom:2px;
+    }
+
+    .menu-en{
+      display:block;
+      font-size:11px;
+      color:var(--muted);
+      font-weight:500;
+      margin-bottom:4px;
+    }
+
+    .menu-desc{
+      font-size:11.5px;
+      color:var(--muted);
+      line-height:1.5;
+      min-height:40px;
+    }
+
+    .menu-meta{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      margin-top:8px;
+      align-items:center;
+      font-size:10.5px;
+    }
+
+    .chip{
+      padding:3px 7px;
+      border-radius:999px;
+      border:1px solid rgba(163,172,199,0.5);
+      background:rgba(6,8,24,0.9);
+      display:flex;
+      align-items:center;
+      gap:4px;
+    }
+
+    .chip.badge-input{
+      border-color:rgba(244,213,79,0.8);
+      background:rgba(255,214,79,0.08);
+    }
+
+    .chip.badge-output{
+      border-color:rgba(102,187,106,0.85);
+      background:rgba(102,187,106,0.08);
+    }
+
+    .chip.badge-compare{
+      border-color:rgba(66,165,245,0.85);
+      background:rgba(66,165,245,0.08);
+    }
+
+    .chip span{
+      opacity:0.9;
+    }
+
+    .menu-tag{
+      position:absolute;
+      top:10px;
+      right:10px;
+      font-size:10px;
+      padding:3px 6px;
+      border-radius:999px;
+      background:rgba(0,0,0,0.55);
+      border:1px solid rgba(255,255,255,0.18);
+      color:var(--muted);
+    }
+
+    footer{
+      padding:10px 12px 14px;
+      font-size:11px;
+      color:var(--muted);
+      text-align:center;
+      border-top:1px solid rgba(255,255,255,0.08);
+      background:rgba(0,0,0,0.45);
+      backdrop-filter:blur(12px);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <div class="header-title-block">
+        <h1>FA – LG Annual Report</h1>
+        <p>ระบบจัดทำหมายเหตุ งบการเงิน 3 ฉบับ และรายงานการตรวจสอบการเงิน (เทียบ 2 ปี)</p>
+      </div>
+      <div class="header-right">
+        <a href="fa-menu.htm" class="back-link">
+          ← กลับเมนูหลัก FA (FA Main Menu)
+        </a>
+        <div class="flow-pill">
+          <strong>Data Flow</strong>
+          <span>อปท.8.2–8.31 → หมายเหตุ → งบ 3 ฉบับ → รายงานตรวจสอบ</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="main-inner">
+
+      <!-- Intro / Flow overview -->
+      <section class="intro">
+        <h2>🧭 แผนผังการจัดทำงบและรายงานตรวจสอบการเงิน</h2>
+        <p>
+          หน้าแรกนี้เป็นศูนย์กลางสำหรับจัดทำ
+          <strong>หมายเหตุประกอบงบการเงิน</strong>,
+          <strong>งบแสดงการเปลี่ยนแปลงสินทรัพย์สิทธิ</strong>,
+          <strong>งบแสดงผลการดำเนินงาน</strong>,
+          <strong>งบแสดงฐานะการเงิน</strong>
+          และ <strong>รายงานการตรวจสอบการเงิน</strong>
+          โดยข้อมูลเชื่อมต่อจาก <strong>กระดาษทำการ อปท.8.2–8.31</strong> และแสดงผลในรูปแบบเปรียบเทียบ 2 ปีงบประมาณ
+        </p>
+
+        <div class="flow-map">
+          <div class="flow-step">กระดาษทำการ อปท.8.2–8.31</div>
+          <div class="flow-arrow">➡️</div>
+          <div class="flow-step">หมายเหตุประกอบงบการเงิน (2 ปี)</div>
+          <div class="flow-arrow">➡️</div>
+          <div class="flow-step">งบ 3 ฉบับ (2 ปี)</div>
+          <div class="flow-arrow">➡️</div>
+          <div class="flow-step">รายงานตรวจสอบการเงิน (Word/PDF)</div>
+        </div>
+      </section>
+
+      <!-- Menu cards -->
+      <section class="menu-grid">
+
+        <!-- 1. หมายเหตุประกอบงบการเงิน -->
+        <a href="fa-lg-notes-2y.html" class="menu-card">
+          <div class="menu-tag">STEP 1</div>
+          <div class="menu-icon">📑</div>
+          <div class="menu-title">หมายเหตุประกอบงบการเงิน (เทียบ 2 ปี)</div>
+          <span class="menu-en">Notes to Financial Statements – 2-Year Comparative</span>
+          <div class="menu-desc">
+            ดึงตัวเลขจากกระดาษทำการขั้นตอนปฏิบัติงานตรวจสอบ
+            ตามแบบ <strong>อปท.8.2–8.31</strong> แล้วสรุปเป็น
+            <strong>หมายเหตุประกอบงบการเงิน</strong> พร้อมแสดงเปรียบเทียบ 2 ปีงบประมาณ
+          </div>
+          <div class="menu-meta">
+            <div class="chip badge-input">
+              <span>Input: แบบ อปท.8.2–8.31</span>
+            </div>
+            <div class="chip badge-compare">
+              <span>Output: หมายเหตุ 2 ปี</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- 2. งบแสดงการเปลี่ยนแปลงสินทรัพย์สิทธิ -->
+        <a href="fa-lg-rou-asset-2y.html" class="menu-card">
+          <div class="menu-tag">STEP 2</div>
+          <div class="menu-icon">📜</div>
+          <div class="menu-title">งบแสดงการเปลี่ยนแปลงสินทรัพย์สิทธิ (เทียบ 2 ปี)</div>
+          <span class="menu-en">Statement of Changes in Right-of-Use Assets – 2-Year Comparative</span>
+          <div class="menu-desc">
+            นำเข้าข้อมูลจาก <strong>หมายเหตุประกอบงบการเงิน</strong>
+            เพื่อจัดทำ <strong>งบแสดงการเปลี่ยนแปลงสินทรัพย์สิทธิ</strong>
+            แสดงยอดยกมา เพิ่มขึ้น ลดลง และยอดคงเหลือ 2 ปีงบประมาณ
+          </div>
+          <div class="menu-meta">
+            <div class="chip badge-input">
+              <span>Input: หมายเหตุประกอบงบการเงิน</span>
+            </div>
+            <div class="chip badge-output">
+              <span>Output: งบสินทรัพย์สิทธิ (2 ปี)</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- 3. งบแสดงผลการดำเนินงาน -->
+        <a href="fa-lg-performance-2y.html" class="menu-card">
+          <div class="menu-tag">STEP 3</div>
+          <div class="menu-icon">📈</div>
+          <div class="menu-title">งบแสดงผลการดำเนินงาน (เทียบ 2 ปี)</div>
+          <span class="menu-en">Statement of Financial Performance – 2-Year Comparative</span>
+          <div class="menu-desc">
+            นำเข้าตัวเลขรายได้ ค่าใช้จ่าย ผลต่าง และรายการสำคัญ
+            จาก <strong>หมายเหตุประกอบงบการเงิน</strong> เพื่อจัดทำ
+            <strong>งบแสดงผลการดำเนินงาน</strong> เปรียบเทียบ 2 ปี
+            รองรับการวิเคราะห์แนวโน้มและสาระสำคัญ
+          </div>
+          <div class="menu-meta">
+            <div class="chip badge-input">
+              <span>Input: หมายเหตุประกอบงบการเงิน</span>
+            </div>
+            <div class="chip badge-output">
+              <span>Output: งบผลการดำเนินงาน (2 ปี)</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- 4. งบแสดงฐานะการเงิน -->
+        <a href="fa-lg-financial-position-2y.html" class="menu-card">
+          <div class="menu-tag">STEP 4</div>
+          <div class="menu-icon">🏛️</div>
+          <div class="menu-title">งบแสดงฐานะการเงิน (เทียบ 2 ปี)</div>
+          <span class="menu-en">Statement of Financial Position – 2-Year Comparative</span>
+          <div class="menu-desc">
+            นำเข้าข้อมูลสินทรัพย์ หนี้สิน และสินทรัพย์สุทธิ
+            จาก <strong>หมายเหตุประกอบงบการเงิน</strong> เพื่อจัดทำ
+            <strong>งบแสดงฐานะการเงิน</strong> เทียบ 2 ปี
+            ใช้เป็นฐานหลักในการสร้างความเห็นต่องบการเงิน
+          </div>
+          <div class="menu-meta">
+            <div class="chip badge-input">
+              <span>Input: หมายเหตุประกอบงบการเงิน</span>
+            </div>
+            <div class="chip badge-output">
+              <span>Output: งบฐานะการเงิน (2 ปี)</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- 5. รายงานตรวจสอบการเงิน -->
+        <a href="fa-lg-annual-report-editor.html" class="menu-card">
+          <div class="menu-tag">STEP 5</div>
+          <div class="menu-icon">🖋️</div>
+          <div class="menu-title">รายงานการตรวจสอบการเงิน (Word / PDF)</div>
+          <span class="menu-en">Financial Audit Report – Word / PDF</span>
+          <div class="menu-desc">
+            รวบรวมข้อสรุปจาก <strong>หมายเหตุ</strong> และ <strong>งบ 3 ฉบับ</strong>
+            เพื่อจัดทำ <strong>รายงานการตรวจสอบการเงิน</strong> ในรูปแบบ Word หรือ PDF
+            ครอบคลุมส่วน ความเห็นผู้สอบบัญชี ฐานสำหรับความเห็น หน้าที่ของผู้บริหาร และหน้าที่ของผู้สอบบัญชี
+          </div>
+          <div class="menu-meta">
+            <div class="chip badge-input">
+              <span>Input: หมายเหตุ + งบ 3 ฉบับ</span>
+            </div>
+            <div class="chip badge-output">
+              <span>Output: Audit Report (Word/PDF)</span>
+            </div>
+          </div>
+        </a>
+
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    FA – LG Annual Report | สำนักงานการตรวจเงินแผ่นดินจังหวัดศรีสะเกษ | ระบบจัดทำงบและรายงานการตรวจสอบการเงินแบบดิจิทัล
+  </footer>
+
+</body>
+</html>
