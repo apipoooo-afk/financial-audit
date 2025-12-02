@@ -125,6 +125,23 @@
   .tag-green{
     color:#22c55e;
   }
+
+  .btn-small{
+    padding:7px 12px;
+    border-radius:999px;
+    border:none;
+    cursor:pointer;
+    font-size:12px;
+  }
+  .btn-danger{
+    background:var(--danger);
+    color:#fff;
+  }
+  .btn-secondary{
+    background:#374151;
+    color:#fff;
+  }
+
 </style>
 </head>
 
@@ -132,7 +149,7 @@
 
 <header>
   <h1>เพิ่มข้อมูล อปท. (Import → ฐานกลาง fa-db-data-gov)</h1>
-  <p>รองรับ CSV · Excel · JSON URL – เขียนลง localStorage["fa-db-data-gov"] ให้ fa-db-data-gov.html ใช้งานได้ทันที</p>
+  <p>รองรับ CSV · Excel · JSON URL – เขียนลง localStorage["fa-db-data-gov"] ให้ทุกระบบใช้ร่วมกัน</p>
 </header>
 
 <div class="wrap">
@@ -147,7 +164,7 @@
     <h2>นำเข้าข้อมูล อปท. เข้าสู่ฐานข้อมูลกลาง</h2>
 
     <div id="importBox">
-      <button id="importBtn">📁 เลือกไฟล์ / นำเข้า (CSV, Excel)</button>
+      <button id="importBtn">📁 เลือกไฟล์ / นำเข้า (CSV, Excel, JSON)</button>
       <br><br>
 
       <input type="file" id="fileInput" accept=".csv,.xls,.xlsx,.json" style="display:none;">
@@ -163,6 +180,22 @@
 
       <div id="progress"></div>
     </div>
+  </div>
+
+  <!-- จัดการฐานข้อมูลกลาง -->
+  <div class="card">
+    <h2>จัดการฐานข้อมูลกลาง</h2>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:8px;">
+      ฐานข้อมูลหลัก: <code>localStorage["fa-db-data-gov"]</code><br>
+      ประวัตินำเข้าไฟล์: <code>localStorage["fa-db-fileboard"]</code>
+    </p>
+    <button id="btnClearMaster" class="btn-small btn-danger">
+      🗑 ลบข้อมูลทั้งหมดในฐานกลาง (fa-db-data-gov)
+    </button>
+    <button id="btnClearBoard" class="btn-small btn-secondary">
+      🧹 ลบประวัติไฟล์ที่นำเข้า (fileboard)
+    </button>
+    <div id="masterInfo" style="margin-top:8px;font-size:13px;color:var(--muted);"></div>
   </div>
 
   <!-- ตารางไฟล์ที่นำเข้า -->
@@ -185,6 +218,7 @@
   <a class="nav" href="fa-db-local.html">⬅ เมนูฐานข้อมูล อปท.</a>
   <a class="nav" href="fa-db-data-gov.html">📊 ดูฐานข้อมูลกลาง</a>
   <a class="nav" href="fa-lg-search.html">🔍 ระบบค้นหาข้อมูล</a>
+  <a class="nav" href="fa-lg-edit.html">🛠 ระบบแก้ไขข้อมูล</a>
 
 </div>
 
@@ -198,8 +232,8 @@ setInterval(updateClock,1000);
 updateClock();
 
 /* ===== KEY หลักของฐานกลาง ===== */
-const MASTER_KEY = "fa-db-data-gov";       // fa-db-data-gov.html ใช้อ่าน KEY นี้
-const FILEBOARD_KEY = "fa-db-fileboard";   // บันทึกรายการไฟล์ที่เคยนำเข้า
+const MASTER_KEY    = "fa-db-data-gov";      // fa-db-data-gov.html ใช้อ่าน KEY นี้
+const FILEBOARD_KEY = "fa-db-fileboard";     // บันทึกรายการไฟล์ที่เคยนำเข้า
 
 /* ===== ฟังก์ชันช่วย: แปลงชื่อคอลัมน์ → key มาตรฐาน ===== */
 function normalizeHeaderName(name){
@@ -208,18 +242,20 @@ function normalizeHeaderName(name){
     .replace(/[().]/g,"");
 }
 
+/* mapping: header (ทั้งไทย/อังกฤษ) → field มาตรฐานที่ระบบใช้ */
 const HEADER_MAP = {
   code: [
     "code","รหัส","รหัสอปท","รหัสอปท.","รหัสหน่วยงาน","รหัสองค์กร","รหัสหน่วยงานอปท"
   ],
   name: [
-    "name","ชื่อ","ชื่อหน่วยงาน","ชื่ออปท","ชื่ออปท.","ชื่อองค์กร","ชื่อองค์กรปกครองส่วนท้องถิ่น","ชื่ออบต","ชื่อเทศบาล"
+    "name","ชื่อ","ชื่อหน่วยงาน","ชื่ออปท","ชื่ออปท.","ชื่อองค์กร",
+    "ชื่อองค์กรปกครองส่วนท้องถิ่น","ชื่ออบต","ชื่อเทศบาล","ชื่อองค์กรปกครองส่วนท้องถิ่นทั่วประเทศ"
   ],
   unit: [
     "unit","หน่วยรับตรวจ","หน่วยงาน","องค์กร","องค์กรปกครองส่วนท้องถิ่น"
   ],
   type: [
-    "type","ประเภท","ประเภทอปท","ประเภทองค์กร"
+    "type","ประเภท","ประเภทอปท","ประเภทองค์กร","ประเภทองค์กรปกครองส่วนท้องถิ่น"
   ],
   ministry: [
     "ministry","กระทรวง","สังกัดกระทรวง"
@@ -231,31 +267,31 @@ const HEADER_MAP = {
     "province","จังหวัด"
   ],
   district: [
-    "district","อำเภอ","เขต"
+    "district","อำเภอ","อำเภอ/เขต","เขต"
   ],
   subdistrict: [
-    "subdistrict","ตำบล","แขวง"
+    "subdistrict","ตำบล","แขวง","ตำบล/แขวง"
   ],
   village: [
     "village","หมู่บ้าน","ชุมชน","หมู่ที่","หมู่บ้าน/ชุมชน"
   ],
   address: [
-    "address","ที่อยู่","เลขที่"
+    "address","ที่อยู่","เลขที่","บ้านเลขที่","เลขที่หมู่ที่"
   ],
   zipcode: [
-    "zipcode","รหัสไปรษณีย์","ไปรษณีย์"
+    "zipcode","รหัสไปรษณีย์","ไปรษณีย์","postcode","zip"
   ],
   lat: [
-    "lat","latitude","ละติจูด","พิกัดlat"
+    "lat","latitude","ละติจูด","พิกัดละติจูด","พิกัดlat"
   ],
   long: [
-    "long","lng","longitude","ลองจิจูด","พิกัดlong"
+    "long","lng","longitude","ลองจิจูด","พิกัดลองจิจูด","พิกัดlong"
   ],
   website: [
-    "website","เว็บไซต์","เว็ปไซต์","web"
+    "website","เว็บไซต์","เว็ปไซต์","web","url","websiteurl","เว็บไซด์"
   ],
   remark: [
-    "remark","หมายเหตุ","หมายเหตุเพิ่มเติม","note"
+    "remark","หมายเหตุ","หมายเหตุเพิ่มเติม","note","notes"
   ]
 };
 
@@ -285,30 +321,21 @@ function normalizeRecordFromArray(headerArray, rowArray){
     const colIndex = idxMap[key];
     obj[key] = (rowArray[colIndex] || "").toString().trim();
   }
-
-  // เผื่อมี header อื่นที่ไม่รู้จัก → ไม่ทิ้ง แต่ไม่จำเป็นต่อการแสดง
-  // สามารถแนบไปใน remark ได้ (ถ้าต้องการก็เพิ่ม logic ภายหลัง)
-
   return obj;
 }
 
 function normalizeRecordFromObject(raw){
   const keys = Object.keys(raw);
-  const normalizedKeys = keys.map(k=>normalizeHeaderName(k));
-  const idxMap = buildHeaderIndex(keys.map(k=>k)); // ใช้ header เดิม
+  const idxMap = buildHeaderIndex(keys);
 
   const obj = {};
-
   for(const canonical in idxMap){
-    const originalIndex = idxMap[canonical];
-    const originalKey   = keys[originalIndex];
+    const originalKey = keys[idxMap[canonical]];
     obj[canonical] = (raw[originalKey] || "").toString().trim();
   }
 
-  // ถ้า code / name ไม่มีเลย ลองเดาจาก key เดิม (กันข้อมูลหาย)
   if(!obj.code && raw.code) obj.code = String(raw.code);
   if(!obj.name && raw.name) obj.name = String(raw.name);
-
   return obj;
 }
 
@@ -333,7 +360,6 @@ function saveToMasterDB(records){
     if(code){
       const idx = old.findIndex(r=> String(r.code||"").trim() === code);
       if(idx >= 0){
-        // update
         old[idx] = {...old[idx], ...rec};
         updateCount++;
       }else{
@@ -341,7 +367,6 @@ function saveToMasterDB(records){
         insertCount++;
       }
     }else{
-      // ไม่มี code → แทรกต่อท้าย
       old.push(rec);
       insertCount++;
     }
@@ -349,9 +374,10 @@ function saveToMasterDB(records){
 
   localStorage.setItem(MASTER_KEY, JSON.stringify(old));
 
-  console.log("MASTER_DB updated:", {insertCount, updateCount, total: old.length});
   document.getElementById("progress").innerHTML =
     `<span class="tag-green">✔ บันทึกลงฐานกลางแล้ว เพิ่มใหม่ ${insertCount} รายการ, แก้ไข ${updateCount} รายการ (รวมทั้งหมด ${old.length} รายการในฐาน)</span>`;
+
+  updateMasterInfo();
 }
 
 /* ===== FILE BOARD (บันทึกประวัติการนำเข้า) ===== */
@@ -407,12 +433,26 @@ function renderFileBoard(){
 
 renderFileBoard();
 
+/* แสดงสถานะฐานกลาง */
+function updateMasterInfo(){
+  let arr=[];
+  try{
+    arr = JSON.parse(localStorage.getItem(MASTER_KEY) || "[]");
+    if(!Array.isArray(arr)) arr=[];
+  }catch(e){
+    arr=[];
+  }
+  document.getElementById("masterInfo").textContent =
+    `จำนวนข้อมูลในฐานกลางปัจจุบัน: ${arr.length} รายการ`;
+}
+updateMasterInfo();
+
 /* ===== ปุ่มเรียก input file ===== */
 document.getElementById("importBtn").addEventListener("click",()=>{
   document.getElementById("fileInput").click();
 });
 
-/* ===== นำเข้าไฟล์ CSV / Excel ===== */
+/* ===== นำเข้าไฟล์ CSV / Excel / JSON ===== */
 document.getElementById("fileInput").addEventListener("change", async(e)=>{
   const file = e.target.files[0];
   if(!file){ return; }
@@ -427,8 +467,10 @@ document.getElementById("fileInput").addEventListener("change", async(e)=>{
     if(ext === "csv"){
       const text = await file.text();
       records = parseCSVToRecords(text);
+
     }else if(ext === "xls" || ext === "xlsx"){
       records = await parseExcelToRecords(file);
+
     }else if(ext === "json"){
       const text = await file.text();
       const raw = JSON.parse(text);
@@ -439,6 +481,7 @@ document.getElementById("fileInput").addEventListener("change", async(e)=>{
         progress.textContent = "";
         return;
       }
+
     }else{
       alert("รูปแบบไฟล์ไม่รองรับ (ต้องเป็น CSV / XLSX / JSON)");
       progress.textContent = "";
@@ -447,10 +490,7 @@ document.getElementById("fileInput").addEventListener("change", async(e)=>{
 
     progress.textContent = `⏳ ได้ข้อมูลจากไฟล์แล้ว ${records.length} รายการ กำลังบันทึกลงฐานกลาง...`;
 
-    // บันทึกลงฐานกลาง
     saveToMasterDB(records);
-
-    // บันทึกประวัติไฟล์
     addFileBoard(file.name, formatSize(file.size));
 
   }catch(err){
@@ -487,7 +527,6 @@ document.getElementById("importUrlBtn").addEventListener("click", async()=>{
     progress.textContent = `⏳ ได้ข้อมูลจาก URL แล้ว ${records.length} รายการ กำลังบันทึกลงฐานกลาง...`;
 
     saveToMasterDB(records);
-
     addFileBoard(url, "-");
 
   }catch(err){
@@ -515,7 +554,6 @@ function parseCSVToRecords(text){
     records.push(rec);
   }
 
-  console.log("CSV parsed records:", records.length);
   return records;
 }
 
@@ -531,7 +569,6 @@ async function parseExcelToRecords(file){
         const json = XLSX.utils.sheet_to_json(sheet, {defval:""});
 
         const records = json.map(r=>normalizeRecordFromObject(r));
-        console.log("Excel parsed records:", records.length);
         resolve(records);
       }catch(err){
         reject(err);
@@ -549,6 +586,21 @@ function formatSize(size){
   if(size < 1024*1024) return (size/1024).toFixed(1)+" KB";
   return (size/(1024*1024)).toFixed(1)+" MB";
 }
+
+/* ===== ปุ่มลบฐานกลาง & ลบประวัตินำเข้า ===== */
+document.getElementById("btnClearMaster").addEventListener("click",()=>{
+  if(!confirm("ยืนยันลบข้อมูลทั้งหมดในฐานกลาง (fa-db-data-gov)?")) return;
+  localStorage.removeItem(MASTER_KEY);
+  updateMasterInfo();
+  alert("ลบข้อมูลทั้งหมดในฐานกลางเรียบร้อย");
+});
+
+document.getElementById("btnClearBoard").addEventListener("click",()=>{
+  if(!confirm("ยืนยันลบประวัติเกี่ยวกับไฟล์ที่นำเข้า (fileboard)?")) return;
+  localStorage.removeItem(FILEBOARD_KEY);
+  renderFileBoard();
+  alert("ลบประวัติไฟล์ที่นำเข้าเรียบร้อย");
+});
 </script>
 
 <!-- Excel Library -->
