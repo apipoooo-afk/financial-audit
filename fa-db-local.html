@@ -287,13 +287,13 @@ const PROVINCES = [
 ];
 
 const MODULE_KEY   = "gov";
-const STORAGE_KEY  = "fa-db-data-" + MODULE_KEY;
+const STORAGE_KEY  = "fa-db-data-" + MODULE_KEY;   // = fa-db-data-gov
 const TOTAL_KEY    = "fa-db-total-" + MODULE_KEY;
 const SESSION_KEY  = "fa-db-session-" + MODULE_KEY;
 
 let data = [];
 let editIndex = -1;
-let lgOnly = false; // mode "ดูเฉพาะ อปท."
+let lgOnly = false; // mode "ดูเฉพาะ ท้องถิ่น"
 
 /* element refs */
 const fCode        = document.getElementById("f-code");
@@ -409,7 +409,9 @@ function renderTable(){
   const tbody = document.getElementById("dataBody");
   tbody.innerHTML = "";
 
+  const hasData = data.length > 0;
   const f = getFilters();
+
   let rows = data.filter(row=>
     matchField(row.unit,        f.fu) &&
     matchField(row.province,    f.fp) &&
@@ -422,6 +424,30 @@ function renderTable(){
     rows = rows.filter(r => (r.level || "").includes("ท้องถิ่น"));
   }
 
+  // 1) ยังไม่มีข้อมูลเลยในระบบ
+  if(!hasData){
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="12" style="text-align:center;color:#9ca3af;">
+          ยังไม่มีข้อมูลในฐาน <code>fa-db-data-gov</code> กรุณาใช้ปุ่ม <strong>Import CSV</strong><br>
+          แล้วเลือกไฟล์ <strong>ฐานข้อมูล อปท. ทั่วประเทศไทย.csv</strong> ก่อน
+        </td>
+      </tr>`;
+    return;
+  }
+
+  // 2) มีข้อมูลแล้ว แต่ไม่เจอตามเงื่อนไขค้นหา
+  if(rows.length === 0){
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="12" style="text-align:center;color:#9ca3af;">
+          ไม่พบข้อมูลตามเงื่อนไขการค้นหา
+        </td>
+      </tr>`;
+    return;
+  }
+
+  // 3) แสดงผลปกติ
   rows.forEach((row,idx)=>{
     const tr = document.createElement("tr");
     const detailUrl = "fa-lg-detail.html?code=" + encodeURIComponent(row.code || "");
@@ -750,7 +776,6 @@ btnSearchReset.addEventListener("click", ()=>{
   renderTable();
 });
 btnViewLG.addEventListener("click", ()=>{
-  // เคลียร์ filter text แต่เปิดโหมดดูเฉพาะ "ท้องถิ่น"
   document.getElementById("s-unit").value="";
   document.getElementById("s-province").value="";
   document.getElementById("s-district").value="";
