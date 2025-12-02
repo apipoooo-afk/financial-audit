@@ -2,234 +2,107 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<title>FA DB | ระบบเพิ่มข้อมูล อปท.</title>
+<title>FA DB | เพิ่มข้อมูล อปท. (Import)</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- XLSX สำหรับอ่านไฟล์ Excel -->
-<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
 <style>
   :root{
     --bg:#060818;
     --card:#11152b;
     --border:#262b46;
     --accent:#42a5f5;
-    --accent2:#22c55e;
+    --success:#22c55e;
+    --danger:#ef4444;
     --muted:#a3acc7;
     --text:#f5f7ff;
   }
   *{box-sizing:border-box;}
+
   body{
     margin:0;
-    font-family:"Segoe UI",Tahoma,sans-serif;
-    background:
-      radial-gradient(circle at 10% 0%, rgba(123,30,60,0.36) 0, transparent 55%),
-      radial-gradient(circle at 90% 100%, rgba(66,165,245,0.32) 0, transparent 55%),
-      var(--bg);
+    padding:0;
+    font-family:"Segoe UI", Tahoma, sans-serif;
+    background:var(--bg);
     color:var(--text);
   }
+
   header{
-    padding:18px 12px 14px;
+    padding:18px 12px;
     text-align:center;
     background:linear-gradient(120deg,#0d47a1,#6f42c1,#22c55e);
     box-shadow:0 4px 16px rgba(0,0,0,.7);
-    position:relative;
-    overflow:hidden;
   }
-  header::after{
-    content:"";
-    position:absolute;
-    inset:0;
-    background:
-      radial-gradient(circle at 15% 0%,rgba(244,143,177,0.24) 0,transparent 55%),
-      radial-gradient(circle at 85% 100%,rgba(45,212,191,0.22) 0,transparent 55%);
-    mix-blend-mode:screen;
-    opacity:.8;
-    pointer-events:none;
-  }
-  .header-inner{position:relative;z-index:1;}
+
   header h1{
     margin:0;
     font-size:22px;
     font-weight:800;
-    letter-spacing:.03em;
   }
   header p{
     margin:4px 0 0;
     font-size:13px;
-    color:#e5e7eb;
+    color:var(--muted);
   }
 
   .wrap{
-    max-width:1150px;
-    margin:18px auto 26px;
+    max-width:1100px;
+    margin:20px auto;
     padding:0 16px;
-  }
-  .top-row{
-    display:flex;
-    justify-content:space-between;
-    flex-wrap:wrap;
-    gap:8px;
-    font-size:13px;
-    color:var(--muted);
-    margin-bottom:12px;
-  }
-  .top-left{
-    display:flex;
-    flex-direction:column;
-    gap:2px;
-  }
-  .chip{
-    display:inline-flex;
-    align-items:center;
-    gap:6px;
-    padding:3px 9px;
-    border-radius:999px;
-    border:1px solid rgba(148,163,184,.55);
-    background:rgba(15,23,42,.9);
-    font-size:12px;
-  }
-  .chip a{
-    color:inherit;
-    text-decoration:none;
   }
 
   .card{
     background:var(--card);
-    border-radius:18px;
-    border:1px solid rgba(255,255,255,.08);
-    padding:14px 14px 12px;
-    margin-bottom:14px;
-    box-shadow:0 8px 22px rgba(0,0,0,.72);
-    position:relative;
-    overflow:hidden;
+    border-radius:16px;
+    padding:16px;
+    border:1px solid rgba(255,255,255,.12);
+    margin-bottom:18px;
+    box-shadow:0 8px 22px rgba(0,0,0,.65);
   }
-  .card::before{
-    content:"";
-    position:absolute;
-    inset:-40%;
-    background:radial-gradient(circle at 10% 0%,rgba(148,163,255,0.16) 0,transparent 55%);
-    opacity:0.9;
-    pointer-events:none;
-  }
-  .card-inner{position:relative;z-index:1;}
 
   h2{
-    margin:0 0 6px;
+    margin:0 0 10px;
     font-size:18px;
-    display:flex;
-    align-items:center;
-    gap:8px;
-  }
-  h2 span.en{
-    font-size:12px;
-    font-weight:400;
-    color:var(--muted);
-  }
-  p.desc{
-    margin:2px 0 8px;
-    font-size:13px;
-    color:var(--muted);
-  }
-
-  .grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-    gap:8px 12px;
-  }
-
-  label{
-    display:block;
-    font-size:13px;
-    margin-top:6px;
-  }
-  input,select,textarea{
-    width:100%;
-    margin-top:3px;
-    padding:7px 8px;
-    border-radius:8px;
-    border:1px solid rgba(148,163,184,.4);
-    background:#05081a;
-    color:var(--text);
-    font-size:13px;
-  }
-  input:focus,select:focus,textarea:focus{
-    outline:none;
-    border-color:#22c55e;
-  }
-
-  .btn-row{
-    margin-top:10px;
-    display:flex;
-    flex-wrap:wrap;
-    gap:8px;
-  }
-  button,a.nav{
-    border:none;
-    border-radius:999px;
-    padding:8px 14px;
-    font-size:13px;
-    cursor:pointer;
-  }
-  .btn-primary{
-    background:#22c55e;
-    color:#082f1a;
     font-weight:700;
   }
-  .btn-secondary{
-    background:#374151;
-    color:#e5e7eb;
-  }
-  .btn-danger{
-    background:#b91c1c;
-    color:#fff;
-  }
-  a.nav{
-    display:inline-flex;
-    align-items:center;
-    gap:6px;
-    color:#e0e7ff;
-    text-decoration:none;
-    border:1px solid rgba(148,163,184,.55);
-    background:rgba(15,23,42,.95);
+
+  input,button{
+    font-family:"Segoe UI", Tahoma;
+    font-size:14px;
   }
 
-  .note{
-    font-size:12px;
-    color:var(--muted);
-    margin-top:4px;
+  #importBox{
+    border:2px dashed var(--accent);
+    padding:25px;
+    text-align:center;
+    border-radius:16px;
+    background:rgba(255,255,255,0.05);
   }
-  .badge{
-    display:inline-flex;
-    align-items:center;
-    gap:4px;
-    font-size:11px;
-    padding:2px 7px;
+
+  #importBtn{
+    padding:10px 20px;
+    background:var(--accent);
+    border:none;
+    color:#000;
     border-radius:999px;
-    border:1px solid rgba(148,163,184,.5);
-    background:rgba(15,23,42,.95);
+    cursor:pointer;
+    font-weight:700;
   }
-  .log{
-    margin-top:6px;
-    font-size:12px;
-    color:#a5b4fc;
-  }
-  pre.sample{
-    background:#020617;
-    border-radius:10px;
-    border:1px solid #1e293b;
-    padding:8px;
-    font-size:11px;
-    overflow:auto;
+
+  #progress{
+    margin-top:10px;
+    font-size:13px;
+    color:var(--muted);
   }
 
   table{
     width:100%;
     border-collapse:collapse;
+    margin-top:10px;
     font-size:12px;
-    margin-top:8px;
   }
   th,td{
     border:1px solid #374151;
-    padding:5px 6px;
+    padding:6px 8px;
   }
   th{
     background:#020617;
@@ -238,670 +111,241 @@
     background:#111827;
   }
 
-  .link-btn{
-    display:inline-flex;
-    align-items:center;
-    padding:3px 8px;
+  .nav{
+    display:inline-block;
+    padding:8px 14px;
+    margin-right:8px;
     border-radius:999px;
-    border:1px solid #38bdf8;
-    color:#e0f2fe;
-    font-size:11px;
+    background:#374151;
+    color:#fff;
     text-decoration:none;
-  }
-  .link-btn:hover{
-    background:#0ea5e9;
-    color:#0b1120;
+    font-size:13px;
   }
 
-  .center-text{
-    text-align:center;
-    color:#9ca3af;
-  }
-
-  @media(max-width:600px){
-    header h1{font-size:18px;}
+  .tag-green{
+    color:#22c55e;
   }
 </style>
 </head>
+
 <body>
 
 <header>
-  <div class="header-inner">
-    <h1>FA DB – ระบบเพิ่มข้อมูล อปท.</h1>
-    <p>นำเข้าข้อมูลหน่วยรับตรวจ อปท. เข้าสู่ฐานข้อมูลกลาง fa-db-data-gov และแสดงบอร์ดข้อมูลล่าสุด</p>
-  </div>
+  <h1>เพิ่มข้อมูล อปท. (Import to Master Database)</h1>
+  <p>รองรับ CSV · Excel · JSON URL – บันทึกลงฐานกลาง fa-db-data-gov</p>
 </header>
 
 <div class="wrap">
 
-  <div class="top-row">
-    <div class="top-left">
-      <div>⏱ <span id="nowTime">-</span></div>
-      <div>
-        ผู้ใช้งาน: <strong id="userEmail">-</strong>
-        <span class="chip" style="margin-left:6px;">
-          <span>📦</span> key: <code>fa-db-data-gov</code>
-        </span>
-      </div>
-    </div>
-    <div style="display:flex;flex-direction:column;gap:4px;align-items:flex-end;">
-      <div style="display:flex;flex-wrap:wrap;gap:6px;justify-content:flex-end;">
-        <span class="chip">
-          <a href="#importHistoryCard">📜 ประวัตินำเข้า</a>
-        </span>
-        <span class="chip">
-          <a href="#lgBoardCard">📊 บอร์ดข้อมูลหน่วยรับตรวจ</a>
-        </span>
-      </div>
-      <div style="margin-top:4px;">
-        <span class="chip">
-          📥 จำนวนรายการในฐานปัจจุบัน: <strong id="totalRecords">0</strong>
-        </span>
-      </div>
-    </div>
+  <!-- นาฬิกา -->
+  <div style="font-size:13px; color:var(--muted); margin-bottom:10px;">
+    ⏱ เวลา: <span id="nowTime">-</span>
   </div>
 
-  <!-- 1) นำเข้าข้อมูลจากไฟล์ / URL -->
+  <!-- กล่อง Import -->
   <div class="card">
-    <div class="card-inner">
-      <h2>1) นำเข้าข้อมูลจากไฟล์ / URL
-        <span class="en">Bulk Import (One Button)</span>
-      </h2>
-      <p class="desc">
-        เลือกอย่างใดอย่างหนึ่ง: ไฟล์ CSV / Excel หรือ URL (ไฟล์ CSV ออนไลน์)<br>
-        จากนั้นกดปุ่มเดียว <strong>“นำเข้าข้อมูล”</strong> ระบบจะตรวจชนิดไฟล์และนำเข้าลงฐานข้อมูลกลาง.
-      </p>
+    <h2>นำเข้าข้อมูล อปท.</h2>
 
-      <div class="grid">
-        <div>
-          <label>📁 เลือกไฟล์ข้อมูล (.csv, .xls, .xlsx)</label>
-          <input type="file" id="inputFile" accept=".csv,.xls,.xlsx">
-          <div class="note">
-            แนะนำ: ใช้ไฟล์ <strong>“ฐานข้อมูล อปท. ทั่วประเทศไทย.csv”</strong> หรือไฟล์ Excel โครงสร้างเดียวกัน
-          </div>
-        </div>
-        <div>
-          <label>🔗 หรือระบุ URL ไฟล์ CSV ออนไลน์</label>
-          <input type="text" id="inputUrl" placeholder="เช่น https://example.go.th/lg-data.csv">
-          <div class="note">
-            ใช้กรณีไฟล์อยู่บนเว็บ (ระบบจะพยายามดึงข้อมูล ถ้าเซิร์ฟเวอร์อนุญาต CORS)
-          </div>
-        </div>
-        <div>
-          <label>📄 แนบไฟล์เอกสารประกอบ (เก็บเฉพาะชื่อไฟล์)</label>
-          <input type="file" id="fileDoc" accept=".pdf,.doc,.docx,.ppt,.pptx">
-          <div class="note">
-            สำหรับบันทึกชื่อไฟล์อ้างอิง เช่น รายงานทะเบียน อปท. จากหน่วยงานกลาง
-          </div>
-        </div>
+    <div id="importBox">
+      <button id="importBtn">📁 เลือกไฟล์ / ใส่ลิงก์ URL</button>
+      <br><br>
+
+      <input type="file" id="fileInput" accept=".csv,.xls,.xlsx,.json" style="display:none;">
+
+      <div style="margin-top:10px;">
+        <input type="text" id="urlInput" placeholder="วาง URL JSON เช่น https://..." 
+               style="width:80%; padding:8px; border-radius:6px; background:#05081a; border:1px solid #374151; color:#fff;">
       </div>
 
-      <div class="btn-row">
-        <button type="button" class="btn-primary" id="btnImportAll">นำเข้าข้อมูล</button>
-        <button type="button" class="btn-secondary" id="btnClearAttach">ล้างไฟล์ / URL</button>
-      </div>
+      <button id="importUrlBtn" style="margin-top:10px; padding:8px 16px; border:none; background:#22c55e; border-radius:999px; cursor:pointer;">
+        🌐 นำเข้าจาก URL
+      </button>
 
-      <div class="log" id="importProgress">สถานะการนำเข้า: -</div>
-      <div class="log" id="importLog">ยังไม่มีการนำเข้าล่าสุด</div>
-
-      <details style="margin-top:8px;">
-        <summary style="font-size:12px;cursor:pointer;color:#a5b4fc;">
-          ดูตัวอย่างโครงสร้างหัวตารางที่ระบบรองรับ
-        </summary>
-        <div style="margin-top:6px;">
-          <div class="badge">แบบภาษาไทย (ไฟล์ฐาน อปท.)</div>
-          <pre class="sample">
-จังหวัด,อำเภอ,ตำบล,รหัส อปท.,ประเภท อปท.,อปท.,ที่ตั้งสำนักงานเลขที่,หมู่ที่,รหัสไปรษณีย์,LAT,LONG,เว็ปไซต์ของอปท
-ศรีสะเกษ,เมืองศรีสะเกษ,เมืองเหนือ,1099,เทศบาลเมือง,เทศบาลเมืองศรีสะเกษ,123,1,33000,15.1180,104.3220,https://...
-          </pre>
-          <div class="badge">แบบอังกฤษ (โครงสร้างภายในระบบ)</div>
-          <pre class="sample">
-code,name,unit,type,ministry,level,province,district,subdistrict,village,address,zipcode,lat,long,website,remark
-1099,เทศบาลเมืองศรีสะเกษ,เทศบาลเมืองศรีสะเกษ,เทศบาลเมือง,มหาดไทย,ท้องถิ่น,ศรีสะเกษ,เมืองศรีสะเกษ,เมืองเหนือ,,123 ม.1,33000,15.1180,104.3220,https://...,ศูนย์กลางจังหวัด
-          </pre>
-        </div>
-      </details>
+      <div id="progress"></div>
     </div>
   </div>
 
-  <!-- ตารางแสดงประวัติการนำเข้า -->
-  <div class="card" id="importHistoryCard">
-    <div class="card-inner">
-      <h2>ประวัตินำเข้าไฟล์
-        <span class="en">Import History</span>
-      </h2>
-      <p class="desc">
-        แสดงไฟล์หรือ URL ที่เคยนำเข้าพร้อมจำนวนข้อมูลที่เข้าฐาน.
-      </p>
+  <!-- ตารางไฟล์ที่นำเข้า -->
+  <div class="card">
+    <h2>บอร์ดรายการข้อมูลที่นำเข้าสู่ฐานกลาง</h2>
 
-      <div class="btn-row">
-        <button type="button" class="btn-danger" id="btnDeleteImportSelected">ลบประวัติที่เลือก</button>
-      </div>
-
-      <table>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>ประเภท</th>
-            <th>ชื่อไฟล์ / URL</th>
-            <th>ขนาด (KB)</th>
-            <th>จำนวนรายการ</th>
-            <th>วันที่–เวลา</th>
-            <th>เลือก/ลบ</th>
-          </tr>
-        </thead>
-        <tbody id="importHistoryBody"></tbody>
-      </table>
-    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>ชื่อไฟล์ / URL</th>
+          <th>ขนาด</th>
+          <th>วันที่นำเข้า</th>
+        </tr>
+      </thead>
+      <tbody id="fileBoard"></tbody>
+    </table>
   </div>
 
-  <!-- บอร์ดแสดงข้อมูลจากฐาน fa-db-data-gov -->
-  <div class="card" id="lgBoardCard">
-    <div class="card-inner">
-      <h2>2) บอร์ดข้อมูลหน่วยรับตรวจ / อปท.
-        <span class="en">Local Government Data Board</span>
-      </h2>
-      <p class="desc">
-        แสดงรายการข้อมูลจากฐาน <code>fa-db-data-gov</code> (ใช้ร่วมทุกระบบ FA, Tracking, Review, Learning, Cash Board)<br>
-        <span id="boardSummary">-</span>
-      </p>
-
-      <div class="btn-row">
-        <button type="button" class="btn-danger" id="btnDeleteBoardSelected">ลบข้อมูลที่เลือก</button>
-      </div>
-
-      <table>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>รหัส</th>
-            <th>ชื่อหน่วยงาน</th>
-            <th>หน่วยรับตรวจ</th>
-            <th>ประเภท</th>
-            <th>จังหวัด</th>
-            <th>อำเภอ</th>
-            <th>ตำบล</th>
-            <th>ดูรายละเอียด</th>
-            <th>เลือก/ลบ</th>
-          </tr>
-        </thead>
-        <tbody id="boardBody"></tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- ปุ่มกลับ -->
-  <div style="margin-top:10px;">
-    <a href="fa-db-local.html" class="nav">
-      <span>⬅</span> กลับเมนูฐานข้อมูล อปท.
-    </a>
-    <a href="fa-database-menu.html" class="nav" style="margin-left:6px;">
-      <span>🏠</span> กลับเมนูฐานข้อมูลหลัก
-    </a>
-  </div>
+  <a class="nav" href="fa-db-local.html">⬅ เมนูฐานข้อมูล อปท.</a>
+  <a class="nav" href="fa-db-data-gov.html">📊 ดูฐานข้อมูลกลาง</a>
 
 </div>
 
 <script>
-const STORAGE_KEY    = "fa-db-data-gov";
-const IMPORT_LOG_KEY = "fa-db-import-log-gov";
-
-let db = [];
-let importLog = [];
-let attachedDoc = null;
-
-/* ===== CLOCK ===== */
+/* นาฬิกา */
 function updateClock(){
-  const el = document.getElementById("nowTime");
-  if(!el) return;
-  const now = new Date();
-  const opts = {
-    year:"numeric",
-    month:"short",
-    day:"2-digit",
-    hour:"2-digit",
-    minute:"2-digit",
-    second:"2-digit"
-  };
-  el.textContent = now.toLocaleString("th-TH", opts);
+  document.getElementById("nowTime").textContent =
+    new Date().toLocaleString("th-TH");
+}
+setInterval(updateClock,1000);
+updateClock();
+
+/* บันทึกลงฐานข้อมูลกลาง */
+function saveToMasterDB(records){
+  const KEY = "fa-db-data-gov";
+
+  const old = JSON.parse(localStorage.getItem(KEY) || "[]");
+  const merged = [...old, ...records];
+
+  localStorage.setItem(KEY, JSON.stringify(merged));
 }
 
-/* ===== SESSION DISPLAY ===== */
-function displaySession(){
-  const el = document.getElementById("userEmail");
+/* บอร์ดแสดงไฟล์ */
+function addFileBoard(name,size){
+  const list = JSON.parse(localStorage.getItem("fa-db-fileboard") || "[]");
+  list.push({
+    name:name,
+    size:size,
+    date:new Date().toLocaleString("th-TH")
+  });
+  localStorage.setItem("fa-db-fileboard", JSON.stringify(list));
+  renderFileBoard();
+}
+
+/* แสดงรายการไฟล์ที่นำเข้า */
+function renderFileBoard(){
+  const list = JSON.parse(localStorage.getItem("fa-db-fileboard") || "[]");
+  const tb = document.getElementById("fileBoard");
+  tb.innerHTML = "";
+
+  list.forEach((f,i)=>{
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${i+1}</td>
+      <td>${f.name}</td>
+      <td>${f.size}</td>
+      <td>${f.date}</td>
+    `;
+    tb.appendChild(tr);
+  });
+}
+
+renderFileBoard();
+
+/* ปุ่มเรียกเลือกไฟล์ */
+document.getElementById("importBtn").addEventListener("click",()=>{
+  document.getElementById("fileInput").click();
+});
+
+/* นำเข้าไฟล์ CSV/Excel */
+document.getElementById("fileInput").addEventListener("change", async(e)=>{
+  const file = e.target.files[0];
+  if(!file){ return; }
+
+  document.getElementById("progress").textContent = "⏳ กำลังอ่านไฟล์...";
+
+  const ext = file.name.split(".").pop().toLowerCase();
+
+  let records = [];
+
+  if(ext === "csv"){
+    const text = await file.text();
+    records = parseCSV(text);
+
+  } else if(ext === "xls" || ext === "xlsx"){
+    records = await parseExcel(file);
+
+  } else {
+    alert("รูปแบบไฟล์ไม่รองรับ");
+    return;
+  }
+
+  // บันทึกเข้าฐานกลาง
+  saveToMasterDB(records);
+
+  // บันทึกไฟล์ลงบอร์ด
+  addFileBoard(file.name, formatSize(file.size));
+
+  document.getElementById("progress").innerHTML =
+    `<span class='tag-green'>✔ นำเข้าแล้ว ${records.length} รายการ</span>`;
+});
+
+/* นำเข้าจาก URL JSON */
+document.getElementById("importUrlBtn").addEventListener("click",async()=>{
+  const url = document.getElementById("urlInput").value.trim();
+  if(!url){ alert("กรุณากรอก URL"); return;}
+
+  document.getElementById("progress").textContent = "⏳ กำลังดึงข้อมูลจาก URL...";
+
   try{
-    const raw = localStorage.getItem("fas-session");
-    if(!raw){ el.textContent = "-"; return; }
-    const s = JSON.parse(raw);
-    if(s.expiresAt && Date.now() > s.expiresAt){
-      el.textContent = "-";
+    const res = await fetch(url);
+    const json = await res.json();
+
+    if(!Array.isArray(json)){
+      alert("รูปแบบข้อมูลต้องเป็น Array ของ Object");
       return;
     }
-    el.textContent = s.email || "-";
-  }catch{
-    el.textContent = "-";
-  }
-}
 
-/* ===== DB LOAD/SAVE + BOARD ===== */
-function loadDB(){
-  try{
-    db = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+    saveToMasterDB(json);
+    addFileBoard(url, "-");
+
+    document.getElementById("progress").innerHTML =
+      `<span class='tag-green'>✔ นำเข้าจาก URL จำนวน ${json.length} รายการ</span>`;
+
   }catch(e){
-    db = [];
+    alert("ดึงข้อมูลจาก URL ไม่สำเร็จ");
   }
-  document.getElementById("totalRecords").textContent = db.length;
-  renderBoard();
-}
-function saveDB(){
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(db));
-  document.getElementById("totalRecords").textContent = db.length;
-  renderBoard();
-}
-
-function renderBoard(){
-  const tbody = document.getElementById("boardBody");
-  const summary = document.getElementById("boardSummary");
-  tbody.innerHTML = "";
-  const total = db.length;
-
-  if(total === 0){
-    summary.textContent = "ยังไม่มีข้อมูลในฐาน";
-    const tr = document.createElement("tr");
-    tr.innerHTML = `<td colspan="10" class="center-text">ยังไม่มีข้อมูลในฐาน fa-db-data-gov</td>`;
-    tbody.appendChild(tr);
-    return;
-  }
-
-  const maxRows = 100;
-  summary.textContent = `แสดงสูงสุด ${maxRows} รายการแรก จากทั้งหมด ${total} รายการในฐาน`;
-
-  let shown = 0;
-  for(let i=0; i<db.length && shown<maxRows; i++){
-    const r = db[i];
-    const tr = document.createElement("tr");
-    const code = r.code || "";
-    const name = r.name || "";
-    const unit = r.unit || name;
-    const type = r.type || "";
-    const prov = r.province || "";
-    const dist = r.district || "";
-    const subd = r.subdistrict || "";
-    const detailHref = "fa-lg-view.html?code=" + encodeURIComponent(code);
-
-    tr.dataset.idx = String(i);
-    tr.innerHTML = `
-      <td>${shown+1}</td>
-      <td>${code}</td>
-      <td>${name}</td>
-      <td>${unit}</td>
-      <td>${type}</td>
-      <td>${prov}</td>
-      <td>${dist}</td>
-      <td>${subd}</td>
-      <td style="text-align:center;">
-        <a href="${detailHref}" class="link-btn">ดูรายละเอียด</a>
-      </td>
-      <td style="text-align:center;">
-        <input type="checkbox" class="chkBoard" data-idx="${i}">
-      </td>
-    `;
-    tbody.appendChild(tr);
-    shown++;
-  }
-
-  if(shown === 0){
-    const tr = document.createElement("tr");
-    tr.innerHTML = `<td colspan="10" class="center-text">ไม่พบข้อมูลที่จะแสดง</td>`;
-    tbody.appendChild(tr);
-  }
-}
-
-/* ===== IMPORT LOG ===== */
-function loadImportLog(){
-  try{
-    importLog = JSON.parse(localStorage.getItem(IMPORT_LOG_KEY) || "[]");
-  }catch(e){
-    importLog = [];
-  }
-  renderImportHistory();
-}
-function saveImportLog(){
-  localStorage.setItem(IMPORT_LOG_KEY, JSON.stringify(importLog));
-  renderImportHistory();
-}
-function renderImportHistory(){
-  const tbody = document.getElementById("importHistoryBody");
-  tbody.innerHTML = "";
-  if(importLog.length === 0){
-    const tr = document.createElement("tr");
-    tr.innerHTML = `<td colspan="7" class="center-text">ยังไม่มีประวัติการนำเข้า</td>`;
-    tbody.appendChild(tr);
-    return;
-  }
-  importLog.forEach((log,idx)=>{
-    const tr = document.createElement("tr");
-    const sizeKB = log.size ? (log.size/1024).toFixed(1) : "-";
-    const dt = new Date(log.when);
-    const dtStr = isNaN(dt.getTime()) ? log.when : dt.toLocaleString("th-TH");
-    tr.innerHTML = `
-      <td>${idx+1}</td>
-      <td>${log.type||""}</td>
-      <td>${log.name||""}</td>
-      <td style="text-align:right;">${sizeKB}</td>
-      <td style="text-align:right;">${log.records||0}</td>
-      <td>${dtStr}</td>
-      <td style="text-align:center;">
-        <input type="checkbox" class="chkImport" data-idx="${idx}">
-      </td>
-    `;
-    tbody.appendChild(tr);
-  });
-}
-
-/* ===== ATTACH DOC ===== */
-document.getElementById("fileDoc").addEventListener("change", e=>{
-  const f = e.target.files[0];
-  if(!f){ attachedDoc = null; return; }
-  attachedDoc = { name:f.name, type:f.type || "document" };
-});
-document.getElementById("btnClearAttach").addEventListener("click", ()=>{
-  document.getElementById("inputFile").value = "";
-  document.getElementById("inputUrl").value = "";
-  document.getElementById("fileDoc").value = "";
-  attachedDoc = null;
-  document.getElementById("importProgress").textContent = "สถานะการนำเข้า: -";
-  document.getElementById("importLog").textContent = "ล้างไฟล์ / URL แล้ว";
 });
 
-/* ===== CSV PARSE + IMPORT (รองรับหัวไทย/อังกฤษ) ===== */
+/* CSV Parser */
+function parseCSV(text){
+  const lines = text.trim().split(/\r?\n/);
+  const header = lines[0].split(",").map(h=>h.trim());
+  const rows = [];
 
-function detectDelimiter(line){
-  if(line.includes(",") && line.includes(";")){
-    const c = (line.match(/,/g)||[]).length;
-    const s = (line.match(/;/g)||[]).length;
-    return c>=s ? "," : ";";
+  for(let i=1;i<lines.length;i++){
+    const cols = lines[i].split(",");
+    const obj = {};
+    header.forEach((h,idx)=>{
+      obj[h] = cols[idx] ? cols[idx].trim() : "";
+    });
+    rows.push(obj);
   }
-  if(line.includes(";")) return ";";
-  return ",";
+
+  return rows;
 }
 
-function importFromCSVText(text, srcMeta){
-  const linesRaw = text.split(/\r?\n/).filter(l=>l.trim()!=="");
-  if(linesRaw.length < 2){
-    alert("ไฟล์ไม่มีข้อมูลเพียงพอ");
-    return 0;
-  }
-  const delim = detectDelimiter(linesRaw[0]);
-  const header = linesRaw[0].split(delim).map(h=>h.replace(/(^"|"$)/g,"").trim());
-
-  function findIdxContains(keyword){
-    const lowerKey = keyword.toLowerCase();
-    for(let i=0;i<header.length;i++){
-      if(header[i].toLowerCase().includes(lowerKey)) return i;
-    }
-    return -1;
-  }
-
-  const idxThai_province   = findIdxContains("จังหวัด");
-  const idxThai_district   = findIdxContains("อำเภ");
-  const idxThai_subdistrict= findIdxContains("ตำบล");
-  const idxThai_code       = findIdxContains("รหัส");
-  const idxThai_type       = findIdxContains("ประเภท");
-  const idxThai_name       = findIdxContains("อปท");
-  const idxThai_addrNo     = findIdxContains("ที่ตั้ง");
-  const idxThai_moo        = findIdxContains("หมู่");
-  const idxThai_zip        = findIdxContains("ไปรษณีย์");
-  const idxThai_lat        = findIdxContains("lat");
-  const idxThai_long       = findIdxContains("long");
-  const idxThai_web        = (function(){
-    const i1 = findIdxContains("เว็ปไซต์");
-    const i2 = findIdxContains("เว็บไซต์");
-    return i1!==-1?i1:i2;
-  })();
-
-  const isThaiLG =
-    idxThai_province   !== -1 &&
-    idxThai_district   !== -1 &&
-    idxThai_subdistrict!== -1 &&
-    idxThai_code       !== -1 &&
-    idxThai_name       !== -1;
-
-  const now = new Date().toISOString();
-  const srcUrlMeta = srcMeta.sourceUrl || "";
-
-  const imported = [];
-  const progressEl = document.getElementById("importProgress");
-  const totalRecords = linesRaw.length - 1;
-  progressEl.textContent = "สถานะการนำเข้า: กำลังนำเข้า... (ประมาณ " + totalRecords + " รายการ)";
-
-  if(isThaiLG){
-    for(let i=1;i<linesRaw.length;i++){
-      const cols = linesRaw[i].split(delim).map(c=>c.replace(/(^"|"$)/g,""));
-      if(cols.length === 0) continue;
-      const name = cols[idxThai_name] || "";
-      const province = cols[idxThai_province] || "";
-      const district = cols[idxThai_district] || "";
-      const subd = cols[idxThai_subdistrict] || "";
-      const code = (cols[idxThai_code] || "").toString();
-
-      imported.push({
-        code      : code,
-        name      : name,
-        unit      : name,
-        type      : idxThai_type !== -1 ? (cols[idxThai_type]||"") : "",
-        ministry  : "มหาดไทย",
-        level     : "ท้องถิ่น",
-        province  : province,
-        district  : district,
-        subdistrict: subd,
-        village   : "",
-        address   : (
-          (idxThai_addrNo !== -1 ? (cols[idxThai_addrNo]||"") : "") +
-          (idxThai_moo !== -1 && cols[idxThai_moo] ? " ม." + cols[idxThai_moo] : "")
-        ).trim(),
-        zipcode   : idxThai_zip !== -1 ? (cols[idxThai_zip]||"") : "",
-        lat       : idxThai_lat !== -1 ? (cols[idxThai_lat]||"") : "",
-        long      : idxThai_long !== -1 ? (cols[idxThai_long]||"") : "",
-        website   : idxThai_web !== -1 ? (cols[idxThai_web]||"") : "",
-        sourceType: "csv-thai-lg",
-        sourceUrl : srcUrlMeta,
-        attachmentName: attachedDoc ? attachedDoc.name : "",
-        attachmentType: attachedDoc ? attachedDoc.type : "",
-        remark    : "",
-        createdAt : now,
-        updatedAt : now
-      });
-    }
-  }else{
-    const idx = {
-      code     : header.indexOf("code"),
-      name     : header.indexOf("name"),
-      unit     : header.indexOf("unit"),
-      type     : header.indexOf("type"),
-      ministry : header.indexOf("ministry"),
-      level    : header.indexOf("level"),
-      province : header.indexOf("province"),
-      district : header.indexOf("district"),
-      subdistrict: header.indexOf("subdistrict"),
-      village  : header.indexOf("village"),
-      address  : header.indexOf("address"),
-      zipcode  : header.indexOf("zipcode"),
-      lat      : header.indexOf("lat"),
-      long     : header.indexOf("long"),
-      website  : header.indexOf("website"),
-      remark   : header.indexOf("remark")
+/* Excel Parser */
+async function parseExcel(file){
+  return new Promise((resolve)=>{
+    const reader = new FileReader();
+    reader.onload = function(e){
+      const data = new Uint8Array(e.target.result);
+      const workbook = XLSX.read(data,{type:"array"});
+      const sheet = workbook.Sheets[workbook.SheetNames[0]];
+      const json = XLSX.utils.sheet_to_json(sheet);
+      resolve(json);
     };
-    if(idx.code === -1 || idx.name === -1 || idx.province === -1){
-      alert("ไฟล์นี้ไม่ตรงโครงสร้างที่ระบบรองรับ (ต้องมีอย่างน้อย code, name, province)");
-      progressEl.textContent = "สถานะการนำเข้า: ล้มเหลว (โครงสร้างไม่ตรง)";
-      return 0;
-    }
-    for(let i=1;i<linesRaw.length;i++){
-      const cols = linesRaw[i].split(delim).map(c=>c.replace(/(^"|"$)/g,""));
-      if(cols.length === 0) continue;
-      imported.push({
-        code      : idx.code !== -1 ? (cols[idx.code]||"") : "",
-        name      : idx.name !== -1 ? (cols[idx.name]||"") : "",
-        unit      : idx.unit !== -1 ? (cols[idx.unit]||"") : (idx.name !== -1 ? (cols[idx.name]||"") : ""),
-        type      : idx.type !== -1 ? (cols[idx.type]||"") : "",
-        ministry  : idx.ministry !== -1 ? (cols[idx.ministry]||"") : "",
-        level     : idx.level !== -1 ? (cols[idx.level]||"") : "",
-        province  : idx.province !== -1 ? (cols[idx.province]||"") : "",
-        district  : idx.district !== -1 ? (cols[idx.district]||"") : "",
-        subdistrict: idx.subdistrict !== -1 ? (cols[idx.subdistrict]||"") : "",
-        village   : idx.village !== -1 ? (cols[idx.village]||"") : "",
-        address   : idx.address !== -1 ? (cols[idx.address]||"") : "",
-        zipcode   : idx.zipcode !== -1 ? (cols[idx.zipcode]||"") : "",
-        lat       : idx.lat !== -1 ? (cols[idx.lat]||"") : "",
-        long      : idx.long !== -1 ? (cols[idx.long]||"") : "",
-        website   : idx.website !== -1 ? (cols[idx.website]||"") : "",
-        sourceType: "csv-english",
-        sourceUrl : srcUrlMeta,
-        attachmentName: attachedDoc ? attachedDoc.name : "",
-        attachmentType: attachedDoc ? attachedDoc.type : "",
-        remark    : idx.remark !== -1 ? (cols[idx.remark]||"") : "",
-        createdAt : now,
-        updatedAt : now
-      });
-    }
-  }
-
-  const importedCount = imported.length;
-  if(importedCount === 0){
-    alert("ไม่พบข้อมูลที่สามารถนำเข้าได้จากไฟล์นี้");
-    progressEl.textContent = "สถานะการนำเข้า: ไม่พบข้อมูลที่นำเข้าได้";
-    return 0;
-  }
-  db = db.concat(imported);
-  progressEl.textContent = "สถานะการนำเข้า: เสร็จสิ้น นำเข้าแล้ว " + importedCount + " / " + totalRecords + " รายการ";
-  return importedCount;
+    reader.readAsArrayBuffer(file);
+  });
 }
 
-/* ===== ONE BUTTON IMPORT HANDLER ===== */
-document.getElementById("btnImportAll").addEventListener("click", async ()=>{
-  const file = document.getElementById("inputFile").files[0];
-  const url  = document.getElementById("inputUrl").value.trim();
-  const progressEl = document.getElementById("importProgress");
-  const logEl = document.getElementById("importLog");
-
-  if(!file && !url){
-    alert("กรุณาเลือกไฟล์ หรือกรอก URL อย่างใดอย่างหนึ่ง");
-    return;
-  }
-
-  let srcName = "";
-  let srcType = "";
-  let size    = null;
-  let text    = "";
-
-  try{
-    if(file){
-      srcName = file.name;
-      size    = file.size || null;
-      const ext = (file.name.split(".").pop() || "").toLowerCase();
-
-      progressEl.textContent = "สถานะการนำเข้า: กำลังอ่านไฟล์ " + file.name + " ...";
-      if(ext === "xls" || ext === "xlsx"){
-        const reader = new FileReader();
-        reader.onload = e =>{
-          const data = new Uint8Array(e.target.result);
-          const workbook = XLSX.read(data,{type:"array"});
-          const sheetName = workbook.SheetNames[0];
-          const sheet = workbook.Sheets[sheetName];
-          const csv = XLSX.utils.sheet_to_csv(sheet);
-          srcType = "Excel";
-          doImport(csv, { sourceUrl:"" }, srcName, srcType, size);
-        };
-        reader.readAsArrayBuffer(file);
-        return;
-      }else{
-        const reader = new FileReader();
-        reader.onload = e =>{
-          const csvText = e.target.result;
-          srcType = "CSV";
-          doImport(csvText, { sourceUrl:"" }, srcName, srcType, size);
-        };
-        reader.readAsText(file,"utf-8");
-        return;
-      }
-    }else if(url){
-      srcName = url;
-      size    = null;
-      srcType = "URL-CSV";
-      progressEl.textContent = "สถานะการนำเข้า: กำลังดึงข้อมูลจาก URL ...";
-      const res = await fetch(url);
-      if(!res.ok){
-        progressEl.textContent = "สถานะการนำเข้า: ล้มเหลว (HTTP "+res.status+")";
-        alert("ไม่สามารถดึงข้อมูลจาก URL นี้ได้");
-        return;
-      }
-      text = await res.text();
-      doImport(text, { sourceUrl:url }, srcName, srcType, size);
-    }
-  }catch(err){
-    console.error(err);
-    progressEl.textContent = "สถานะการนำเข้า: เกิดข้อผิดพลาด";
-    alert("เกิดข้อผิดพลาดระหว่างนำเข้าข้อมูล");
-  }
-
-  function doImport(csvText, meta, name, type, sizeBytes){
-    const count = importFromCSVText(csvText, meta);
-    if(count>0){
-      saveDB();
-      importLog.push({
-        type:type,
-        name:name,
-        size:sizeBytes,
-        records:count,
-        when:new Date().toISOString()
-      });
-      saveImportLog();
-      logEl.textContent =
-        `นำเข้า ${type} "${name}" เรียบร้อย จำนวน ${count} รายการ (รวมทั้งหมด ${db.length} รายการในฐาน)`;
-      alert(`นำเข้าข้อมูลสำเร็จ จำนวน ${count} รายการ`);
-    }
-  }
-});
-
-/* ===== DELETE IMPORT HISTORY SELECTED ===== */
-document.getElementById("btnDeleteImportSelected").addEventListener("click", ()=>{
-  const checks = Array.from(document.querySelectorAll(".chkImport:checked"));
-  if(checks.length === 0){
-    alert("กรุณาเลือกประวัติที่ต้องการลบอย่างน้อย 1 รายการ");
-    return;
-  }
-  if(!confirm("ยืนยันการลบประวัติที่เลือกจำนวน "+checks.length+" รายการ?")) return;
-  const idxSet = new Set(checks.map(ch=>Number(ch.dataset.idx)));
-  importLog = importLog.filter((_,idx)=>!idxSet.has(idx));
-  saveImportLog();
-});
-
-/* ===== DELETE BOARD RECORDS SELECTED ===== */
-document.getElementById("btnDeleteBoardSelected").addEventListener("click", ()=>{
-  const checks = Array.from(document.querySelectorAll(".chkBoard:checked"));
-  if(checks.length === 0){
-    alert("กรุณาเลือกรายการข้อมูลที่ต้องการลบอย่างน้อย 1 รายการ");
-    return;
-  }
-  if(!confirm("ยืนยันการลบข้อมูลหน่วยรับตรวจที่เลือกจำนวน "+checks.length+" รายการออกจากฐานข้อมูล?")) return;
-  const idxArr = checks.map(ch=>Number(ch.dataset.idx)).filter(n=>!isNaN(n));
-  idxArr.sort((a,b)=>b-a); // ลบจากท้ายป้องกัน index ขยับ
-  idxArr.forEach(i=>{
-    if(i>=0 && i<db.length){
-      db.splice(i,1);
-    }
-  });
-  saveDB();
-});
-
-/* ===== INIT ===== */
-displaySession();
-loadDB();
-loadImportLog();
-updateClock();
-setInterval(updateClock,1000);
+/* จัดรูปแบบขนาดไฟล์ */
+function formatSize(size){
+  if(size < 1024) return size+" B";
+  if(size < 1024*1024) return (size/1024).toFixed(1)+" KB";
+  return (size/(1024*1024)).toFixed(1)+" MB";
+}
 </script>
+
+<!-- Excel Library -->
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
 </body>
 </html>
