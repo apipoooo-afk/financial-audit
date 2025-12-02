@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <title>งบแสดงฐานะการเงิน (2 ปี)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    body{
+      margin:0;
+      font-family:"Segoe UI", Tahoma, sans-serif;
+      background:#060818;
+      color:#f5f7ff;
+    }
+    header{
+      padding:18px 20px;
+      background:linear-gradient(120deg,#0d47a1,#42a5f5,#7b1e3c);
+      box-shadow:0 4px 12px rgba(0,0,0,0.45);
+    }
+    header h1{
+      margin:0;
+      font-size:24px;
+      font-weight:700;
+    }
+    header p{
+      margin:4px 0 0 0;
+      font-size:13px;
+      opacity:0.9;
+    }
+
+    .container{
+      padding:20px;
+    }
+
+    .upload-box{
+      background:#11152b;
+      padding:18px 20px;
+      border-radius:14px;
+      border:1px solid #262b46;
+      margin-bottom:20px;
+    }
+    .upload-box h3{
+      margin-top:0;
+      font-size:18px;
+    }
+    .upload-box label{
+      font-size:14px;
+    }
+    .upload-box input[type="file"]{
+      margin-top:6px;
+      margin-bottom:10px;
+    }
+    .btn-primary{
+      padding:8px 18px;
+      border:none;
+      border-radius:999px;
+      background:#42a5f5;
+      color:#fff;
+      font-size:14px;
+      cursor:pointer;
+      box-shadow:0 4px 10px rgba(0,0,0,0.4);
+    }
+    .btn-primary:hover{
+      background:#64b5f6;
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:16px;
+      background:#11152b;
+    }
+    th,td{
+      border:1px solid #262b46;
+      padding:6px 8px;
+      font-size:13px;
+    }
+    th{
+      background:#0d47a1;
+      text-align:center;
+      position:sticky;
+      top:0;
+      z-index:5;
+    }
+    td.num{
+      text-align:right;
+      font-variant-numeric:tabular-nums;
+    }
+    td.note-col{
+      text-align:center;
+      width:70px;
+    }
+
+    /* ระดับย่อหน้า */
+    .lvl-1{ padding-left:4px; }
+    .lvl-2{ padding-left:18px; }
+    .lvl-3{ padding-left:34px; }
+
+    /* รูปแบบแถว */
+    .row-section{
+      background:#1b2142;
+      font-weight:800;
+      border-top:2px solid #42a5f5;
+    }
+    .row-group{
+      background:#151c38;
+      font-weight:700;
+    }
+    .row-subtotal{
+      background:#172844;
+      font-weight:700;
+    }
+    .row-grand{
+      background:#264d79;
+      font-weight:800;
+    }
+
+    .caption{
+      margin-top:10px;
+      font-size:13px;
+      opacity:0.85;
+    }
+    a.note-link{
+      color:#ffd54f;
+      text-decoration:none;
+    }
+    a.note-link:hover{
+      text-decoration:underline;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>งบแสดงฐานะการเงิน (2 ปี)</h1>
+  <p>ดึงข้อมูลจากกระดาษทำการ แผ่น <strong>BS</strong> – เทียบปีปัจจุบันกับปีก่อน</p>
+</header>
+
+<div class="container">
+
+  <div class="upload-box">
+    <h3>นำเข้าไฟล์ Excel กระดาษทำการ</h3>
+    <p class="caption">
+      เลือกไฟล์กระดาษทำการปีปัจจุบัน (ปี N) และปีก่อน (ปี N-1)
+      ระบบจะอ่านค่าตามโครงสร้าง SOFP โดยอัตโนมัติ
+    </p>
+
+    <div>
+      <label>ไฟล์ปีปัจจุบัน (ปี N):<br>
+        <input type="file" id="fileCurrent" accept=".xlsx,.xls,.xlsm" />
+      </label>
+    </div>
+
+    <div>
+      <label>ไฟล์ปีก่อน (ปี N-1):<br>
+        <input type="file" id="filePrevious" accept=".xlsx,.xls,.xlsm" />
+      </label>
+    </div>
+
+    <button class="btn-primary" onclick="processSOFP()">
+      ประมวลผลงบฐานะการเงิน (2 ปี)
+    </button>
+  </div>
+
+  <div id="bsContainer"></div>
+
+</div>
+
+<!-- XLSX -->
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.20.0/dist/xlsx.full.min.js"></script>
+
+<script>
+// ----------------------------------------------------
+// 1) โครงสร้าง SOFP ตามที่ให้มา
+// ----------------------------------------------------
+const SOFP_SPEC = {
+  fs_type: "SOFP",
+  sheet_name: "BS",
+  description: "งบแสดงฐานะการเงิน",
+  lines: [
+    {"line_code":"SOFP_001","excel_row":5,"label":"สินทรัพย์","note_ref":"หมายเหตุ","level_col":1,"line_type":"section_header"},
+    {"line_code":"SOFP_002","excel_row":6,"label":"สินทรัพย์หมุนเวียน","note_ref":null,"level_col":2,"line_type":"group_header"},
+    {"line_code":"SOFP_003","excel_row":7,"label":"เงินสดและรายการเทียบเท่าเงินสด","note_ref":4,"level_col":3,"line_type":"detail"},
+    {"line_code":"SOFP_004","excel_row":8,"label":"ลูกหนี้การค้า","note_ref":5,"level_col":3,"line_type":"detail"},
+    {"line_code":"SOFP_005","excel_row":9,"label":"ลูกหนี้เงินโอนและรายการอุดหนุนระยะสั้น","note_ref":6,"level_col":3,"line_type":"detail"},
+    {"line_code":"SOFP_006","excel_row":10,"label":"ลูกหนี้อื่นระยะสั้น","note_ref":7,"level_col":3,"line_type":"detail"},
+    {"line_code":"SOFP_007","excel_row":11,"label":"เงินให้กู้ยืมระยะสั้น","note_ref":8,"level_col":3,"line_type":"detail"},
+    {"line_code":"SOFP_008","excel_row":12,"label":"เงินลงทุนระยะสั้น","note_ref":9,"level_col":3,"line_type":"detail"},
+    {"line_code":"SOFP_009","excel_row":13,"label":"สินค้าคงเหลือ","note_ref":10,"level_col":3,"line_type":"detail"},
+    {"line_code":"SOFP_010","excel_row":14,"label":"วัสดุคงเหลือ","note_ref":11,"level_col":3,"line_type":"detail"},
+    {"line_code":"SOFP_011","excel_row":15,"label":"สินทรัพย์หมุนเวียนอื่น","note_ref":12,"level_col":3,"line_type":"detail"},
+    {"line_code":"SOFP_012","excel_row":16,"label":"รวมสินทรัพย์หมุนเวียน","note_ref":null,"level_col":3,"line_type":"subtotal"},
+    {"line_code":"SOFP_013","excel_row":17,"label":"สินทรัพย์ไม่หมุนเวียน","note_ref":null,"level_col":2,"line_type":"group_header"},
+    {"line_code":"SOFP_014","excel_row":18,"label":"เงินให้กู้ยืมระยะยาว","note_ref":13,"level_col":3,"line_type":"detail"},
+    {"line_code":"SOFP_015","excel_row":19,"label":"เงินลงทุนระยะยาว","note_ref":14,"level_col":3,"line_type":"detail"},
+    {"line_code":"SOFP_016","excel_row":20,"label":"ที่ดิน อาคาร และอุปกรณ์ - สุทธิ","note_ref":15,"level_col":3,"line_type":"detail"},
+    {"line_code":"SOFP_017","excel_row":21,"label":"สินทรัพย์โครงสร้างพื้นฐาน - สุทธิ","note_ref":16,"level_col":3,"line_type":"detail"},
+    {"line_code":"SOFP_018","excel_row":22,"label":"สินทรัพย์ไม่มีตัวตน - สุทธิ","note_ref":17,"level_col":3,"line_type":"detail"},
+    {"line_code":"SOFP_019","excel_row":23,"label":"อสังหาริมทรัพย์เพื่อการลงทุน - สุทธิ","note_ref":18,"level_col":3,"line_type":"detail"},
+    {"line_code":"SOFP_020","excel_row":24,"label":"สินทรัพย์ไม่หมุนเวียนอื่น","note_ref":19,"level_col":3,"line_type":"detail"},
+    {"line_code":"SOFP_021","excel_row":25,"label":"รวมสินทรัพย์ไม่หมุนเวียน","note_ref":null,"level_col":3,"line_type":"subtotal"},
+    {"line_code":"SOFP_022","excel_row":26,"label":"รวมสินทรัพย์","note_ref":null,"level_col":1,"line_type":"subtotal"},
+    {"line_code":"SOFP_023","excel_row":27,"label":"หนี้สินและสินทรัพย์สุทธิ/ส่วนทุน","note_ref":null,"level_col":1,"line_type":"section_header"},
+    {"line_code":"SOFP_024","excel_row":28,"label":"หนี้สิน","note_ref":null,"level_col":1,"line_type":"section_header"},
+    {"line_code":"SOFP_025","excel_row":29,"label":"หนี้สินหมุนเวียน","note_ref":null,"level_col":2,"line_type":"group_header"},
+    {"line_code":"SOFP_026","excel_row":30,"label":"เจ้าหนี้การค้า","note_ref":20,"level_col":3,"line_type":"detail"},
+    {"line_code":"SOFP_027","excel_row":31,"label":"เจ้าหนี้เงินโอนและรายการอุดหนุนระยะสั้น","note_ref":21,"level_col":3,"line_type":"detail"},
+    {"line_code":"SOFP_028","excel_row":32,"label":"เจ้าหนี้อื่นระยะสั้น","note_ref":22,"level_col":3,"line_type":"detail"},
+    {"line_code":"SOFP_029","excel_row":33,"label":"เงินกู้ยืมระยะสั้น","note_ref":23,"level_col":3,"line_type":"detail"},
+    {"line_code":"SOFP_030","excel_row":34,"label":"ส่วนของเงินกู้ยืมระยะยาวที่ถึงกำหนดชำระภายใน 1 ปี","note_ref":24,"level_col":3,"line_type":"detail"},
+    {"line_code":"SOFP_031","excel_row":35,"label":"ส่วนของเจ้าหนี้ตามสัญญาเช่าการเงินที่ถึงกำหนดชำระภายใน 1 ปี","note_ref":25,"level_col":3,"line_type":"detail"},
+    {"line_code":"SOFP_032","excel_row":36,"label":"เงินรับฝากระยะสั้น","note_ref":26,"level_col":3,"line_type":"detail"},
+    {"line_code":"SOFP_033","excel_row":37,"label":"ประมาณการหนี้สินระยะสั้น","note_ref":27,"level_col":3,"line_type":"detail"},
+    {"line_code":"SOFP_034","excel_row":38,"label":"หนี้สินหมุนเวียนอื่น","note_ref":28,"level_col":3,"line_type":"detail"},
+    {"line_code":"SOFP_035","excel_row":39,"label":"รวมหนี้สินหมุนเวียน","note_ref":null,"level_col":3,"line_type":"subtotal"},
+    {"line_code":"SOFP_036","excel_row":40,"label":"หนี้สินไม่หมุนเวียน","note_ref":null,"level_col":2,"line_type":"group_header"},
+    {"line_code":"SOFP_037","excel_row":41,"label":"เจ้าหนี้ระยะยาว","note_ref":null,"level_col":3,"line_type":"detail"},
+    {"line_code":"SOFP_038","excel_row":42,"label":"เจ้าหนี้เงินโอนและรายการอุดหนุนระยะยาว","note_ref":29,"level_col":3,"line_type":"detail"},
+    {"line_code":"SOFP_039","excel_row":43,"label":"เงินกู้ยืมระยะยาว - สุทธิ","note_ref":30,"level_col":3,"line_type":"detail"},
+    {"line_code":"SOFP_040","excel_row":44,"label":"เจ้าหนี้ตามสัญญาเช่าการเงินระยะยาว - สุทธิ","note_ref":31,"level_col":3,"line_type":"detail"},
+    {"line_code":"SOFP_041","excel_row":45,"label":"เงินรับฝากระยะยาว","note_ref":32,"level_col":3,"line_type":"detail"},
+    {"line_code":"SOFP_042","excel_row":46,"label":"ประมาณการหนี้สินระยะยาว","note_ref":33,"level_col":3,"line_type":"detail"},
+    {"line_code":"SOFP_043","excel_row":47,"label":"หนี้สินไม่หมุนเวียนอื่น","note_ref":34,"level_col":3,"line_type":"detail"},
+    {"line_code":"SOFP_044","excel_row":48,"label":"รวมหนี้สินไม่หมุนเวียน","note_ref":null,"level_col":3,"line_type":"subtotal"},
+    {"line_code":"SOFP_045","excel_row":49,"label":"รวมหนี้สิน","note_ref":null,"level_col":1,"line_type":"subtotal"},
+    {"line_code":"SOFP_046","excel_row":50,"label":"สินทรัพย์สุทธิ/ส่วนทุน","note_ref":null,"level_col":1,"line_type":"section_header"},
+    {"line_code":"SOFP_047","excel_row":51,"label":"รายได้สูง/(ต่ำ)กว่าค่าใช้จ่ายสะสม","note_ref":39,"level_col":2,"line_type":"detail"},
+    {"line_code":"SOFP_048","excel_row":52,"label":"องค์ประกอบอื่นของสินทรัพย์สุทธิ/ส่วนทุน","note_ref":40,"level_col":2,"line_type":"detail"},
+    {"line_code":"SOFP_049","excel_row":53,"label":"กำไร/ขาดทุนสุทธิ","note_ref":null,"level_col":2,"line_type":"detail"},
+    {"line_code":"SOFP_050","excel_row":54,"label":"รวมสินทรัพย์สุทธิ/ส่วนทุน","note_ref":null,"level_col":1,"line_type":"grand_total"},
+    {"line_code":"SOFP_051","excel_row":55,"label":"รวมหนี้สินและสินทรัพย์สุทธิ/ส่วนทุน","note_ref":null,"level_col":1,"line_type":"grand_total"}
+  ]
+};
+
+// ----------------------------------------------------
+// 2) อ่าน Excel
+// ----------------------------------------------------
+function readExcel(file){
+  return new Promise((resolve, reject)=>{
+    const reader = new FileReader();
+    reader.onload = e => {
+      try{
+        const data = new Uint8Array(e.target.result);
+        const wb = XLSX.read(data, {type:"array"});
+        resolve(wb);
+      }catch(err){
+        reject(err);
+      }
+    };
+    reader.onerror = reject;
+    reader.readAsArrayBuffer(file);
+  });
+}
+
+// สมมติใช้คอลัมน์ C (index 2) เป็นตัวเลขงบ
+function getValue(sheet, excelRow, colIndex=2){
+  const addr = XLSX.utils.encode_cell({r:excelRow-1, c:colIndex});
+  const cell = sheet[addr];
+  return cell ? cell.v : "";
+}
+
+// ----------------------------------------------------
+// 3) ประมวลผลงบฐานะการเงิน 2 ปี
+// ----------------------------------------------------
+async function processSOFP(){
+  const fileN  = document.getElementById("fileCurrent").files[0];
+  const fileP  = document.getElementById("filePrevious").files[0];
+
+  if(!fileN || !fileP){
+    alert("กรุณาเลือกไฟล์กระดาษทำการ ปี N และปี N-1 ให้ครบ");
+    return;
+  }
+
+  const wbN = await readExcel(fileN);
+  const wbP = await readExcel(fileP);
+
+  const sheetName = SOFP_SPEC.sheet_name;
+  const sheetN = wbN.Sheets[sheetName];
+  const sheetP = wbP.Sheets[sheetName];
+
+  if(!sheetN || !sheetP){
+    alert("ไม่พบแผ่นงานชื่อ 'BS' ในไฟล์อย่างน้อยหนึ่งไฟล์");
+    return;
+  }
+
+  let html = `
+    <table>
+      <tr>
+        <th>รายการ</th>
+        <th>หมายเหตุ</th>
+        <th>ปี N</th>
+        <th>ปี N-1</th>
+      </tr>
+  `;
+
+  SOFP_SPEC.lines.forEach(line=>{
+    const row = line.excel_row;
+    const vN = getValue(sheetN, row);
+    const vP = getValue(sheetP, row);
+
+    // ระดับย่อหน้า
+    const lvlClass = line.level_col === 1 ? "lvl-1"
+                     : line.level_col === 2 ? "lvl-2"
+                     : "lvl-3";
+
+    // เลือก class ตามประเภทแถว
+    let trClass = "";
+    if(line.line_type === "section_header") trClass = "row-section";
+    else if(line.line_type === "group_header") trClass = "row-group";
+    else if(line.line_type === "subtotal") trClass = "row-subtotal";
+    else if(line.line_type === "grand_total") trClass = "row-grand";
+
+    // สร้างเซลล์หมายเหตุ
+    let noteCell = "";
+    if(typeof line.note_ref === "number"){
+      const n = line.note_ref;
+      noteCell = `<a class="note-link" href="fa-lg-notes-2y.html#note-${n}" target="_blank">${n}</a>`;
+    }else{
+      noteCell = (line.note_ref && line.note_ref !== null && line.line_type === "section_header")
+                  ? line.note_ref
+                  : "";
+    }
+
+    // section header ให้รวมคอลัมน์
+    if(line.line_type === "section_header"){
+      html += `
+        <tr class="${trClass}">
+          <td class="${lvlClass}" colspan="4">${line.label}</td>
+        </tr>
+      `;
+    }else{
+      html += `
+        <tr class="${trClass}">
+          <td class="${lvlClass}">${line.label}</td>
+          <td class="note-col">${noteCell}</td>
+          <td class="num">${vN ?? ""}</td>
+          <td class="num">${vP ?? ""}</td>
+        </tr>
+      `;
+    }
+  });
+
+  html += `</table>
+    <p class="caption">
+      * หมายเหตุสามารถคลิกเพื่อเปิดรายละเอียดในหน้า <code>fa-lg-notes-2y.html</code>
+    </p>
+  `;
+
+  document.getElementById("bsContainer").innerHTML = html;
+}
+</script>
+
+</body>
+</html>
