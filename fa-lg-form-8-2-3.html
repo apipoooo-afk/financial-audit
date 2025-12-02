@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <title>แบบ อปท. 8.2.3 – งบกระทบยอดเงินฝากธนาคาร | FA Digital</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root{
+      --bg:#060818;
+      --card:#11152b;
+      --border:#262b46;
+      --pink:#f48fb1;
+      --blue:#0d47a1;
+      --muted:#a3acc7;
+      --green:#4caf50;
+      --danger:#ef5350;
+    }
+    *{box-sizing:border-box;}
+    body{
+      margin:0;
+      font-family:"Segoe UI",Tahoma,sans-serif;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(123,30,60,0.36) 0, transparent 55%),
+        radial-gradient(circle at 90% 100%, rgba(66,165,245,0.32) 0, transparent 55%),
+        var(--bg);
+      color:#f5f7ff;
+    }
+    h1,h2,h3,h4{margin:0;}
+
+    .page{
+      max-width:1100px;
+      margin:24px auto 40px;
+      padding:0 16px 32px;
+    }
+
+    header{
+      background:linear-gradient(120deg,#7b1e3c,#0d47a1,#f48fb1);
+      border-radius:18px;
+      padding:18px 20px;
+      box-shadow:0 10px 30px rgba(0,0,0,0.55);
+      margin-bottom:18px;
+      border:1px solid rgba(255,255,255,0.15);
+    }
+    header h1{
+      font-size:22px;
+      font-weight:800;
+    }
+    header h2{
+      font-size:16px;
+      font-weight:400;
+      opacity:0.88;
+      margin-top:4px;
+    }
+    .header-row{
+      margin-top:10px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      font-size:13px;
+      opacity:0.9;
+    }
+    .tag{
+      padding:4px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.25);
+      background:rgba(0,0,0,0.18);
+    }
+
+    .btn-row{
+      margin-top:10px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+    button{
+      border:none;
+      border-radius:999px;
+      padding:6px 12px;
+      font-size:13px;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+    }
+    .btn-soft{
+      background:rgba(17,21,43,0.9);
+      color:#f5f7ff;
+      border:1px solid var(--border);
+    }
+    .btn-primary{
+      background:linear-gradient(120deg,#0d47a1,#42a5f5);
+      color:#fff;
+    }
+    .btn-danger{
+      background:linear-gradient(120deg,#b71c1c,#ef5350);
+      color:#fff;
+    }
+    .btn-ghost{
+      background:transparent;
+      border:1px dashed var(--border);
+      color:var(--muted);
+    }
+    .btn-sm{
+      padding:3px 8px;
+      font-size:11px;
+    }
+
+    .section{
+      background:rgba(6,8,24,0.8);
+      border-radius:16px;
+      border:1px solid var(--border);
+      padding:16px 18px 18px;
+      margin-top:16px;
+      box-shadow:0 6px 20px rgba(0,0,0,0.5);
+    }
+    .section-title{
+      font-size:15px;
+      font-weight:700;
+      margin-bottom:10px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .section-title span.badge{
+      font-size:11px;
+      padding:2px 8px;
+      border-radius:999px;
+      border:1px solid rgba(244,143,177,0.6);
+      color:#ffdfe9;
+    }
+
+    .grid-2{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:8px 18px;
+    }
+    label{
+      font-size:13px;
+      display:block;
+      margin-bottom:3px;
+      color:var(--muted);
+    }
+    input[type="text"],
+    input[type="number"],
+    input[type="date"],
+    select,
+    textarea{
+      width:100%;
+      padding:6px 8px;
+      border-radius:8px;
+      border:1px solid var(--border);
+      background:var(--card);
+      color:#f5f7ff;
+      font-size:13px;
+    }
+    textarea{
+      min-height:70px;
+      resize:vertical;
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      font-size:13px;
+      margin-top:6px;
+    }
+    th,td{
+      border:1px solid var(--border);
+      padding:4px 6px;
+      text-align:left;
+    }
+    th{
+      background:rgba(13,71,161,0.6);
+      font-weight:600;
+      font-size:12px;
+    }
+    tbody tr:nth-child(even){
+      background:rgba(255,255,255,0.01);
+    }
+    tbody tr:hover{
+      background:rgba(255,255,255,0.04);
+    }
+    td input[type="number"],
+    td input[type="text"]{
+      font-size:12px;
+      padding:3px 5px;
+    }
+
+    .text-right{text-align:right;}
+    .text-center{text-align:center;}
+
+    .summary-box{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+      gap:8px 14px;
+      margin-top:8px;
+    }
+    .summary-item{
+      background:rgba(9,12,32,0.9);
+      border-radius:12px;
+      border:1px solid var(--border);
+      padding:8px 10px;
+      font-size:12px;
+    }
+    .summary-label{
+      color:var(--muted);
+      margin-bottom:4px;
+    }
+    .summary-value{
+      font-weight:700;
+      font-size:14px;
+    }
+
+    .hint{
+      font-size:11px;
+      color:var(--muted);
+      margin-top:4px;
+    }
+
+    @media print{
+      body{
+        background:#fff;
+        color:#000;
+      }
+      header,.section{
+        box-shadow:none;
+        border-radius:0;
+      }
+      .section{
+        background:#fff;
+        border-color:#ccc;
+      }
+      .no-print{
+        display:none!important;
+      }
+      @page{
+        size:A4;
+        margin:15mm;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <header class="no-print">
+    <h1>แบบ อปท. 8.2.3 – งบกระทบยอดเงินฝากธนาคาร</h1>
+    <h2>Bank Reconciliation – ระบบตรวจสอบรายงานการเงินดิจิทัล (อปท.)</h2>
+    <div class="header-row">
+      <div class="tag">FA Digital Working Paper</div>
+      <div class="tag">Bank Reconciliation</div>
+      <div class="tag">เชื่อมโยง eLASS & สมุดบัญชีธนาคาร</div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-soft btn-sm"
+              type="button"
+              onclick="window.location.href='fa-lg-fieldwork.html'">
+        ⬅ กลับไปขั้นตอนปฏิบัติงานตรวจสอบ (อปท.)
+      </button>
+      <button class="btn-soft btn-sm"
+              type="button"
+              onclick="window.location.href='fa-lg-form-8-2-2.html'">
+        💵 ไปแบบ อปท. 8.2.2 ตรวจนับเงินสด
+      </button>
+    </div>
+  </header>
+
+  <!-- 1. Meta -->
+  <section class="section">
+    <div class="section-title">
+      1. ข้อมูลหน่วยรับตรวจ & งวดตรวจสอบ
+      <span class="badge">Meta</span>
+    </div>
+    <div class="grid-2">
+      <div>
+        <label for="fiscal_year">ปีงบประมาณ</label>
+        <select id="fiscal_year">
+          <option value="">-- เลือกปี --</option>
+        </select>
+      </div>
+      <div>
+        <label for="entity_code">รหัสหน่วยรับตรวจ</label>
+        <input type="text" id="entity_code" placeholder="เช่น SSK-MUN-001" />
+      </div>
+      <div>
+        <label for="entity_name">ชื่อหน่วยรับตรวจ</label>
+        <input type="text" id="entity_name" placeholder="เช่น เทศบาลเมืองศรีสะเกษ" />
+      </div>
+      <div>
+        <label for="entity_type">ประเภทหน่วย</label>
+        <input type="text" id="entity_type" placeholder="เทศบาลเมือง / อบต. / อบจ." />
+      </div>
+      <div>
+        <label for="province">จังหวัด</label>
+        <input type="text" id="province" placeholder="ศรีสะเกษ" />
+      </div>
+      <div>
+        <label for="district">อำเภอ</label>
+        <input type="text" id="district" placeholder="เมืองศรีสะเกษ" />
+      </div>
+      <div>
+        <label for="audit_date">งวดที่ตรวจสอบ (ณ วันที่)</label>
+        <input type="date" id="audit_date" />
+      </div>
+      <div>
+        <label for="sai_province">สำนักตรวจเงินแผ่นดินจังหวัด</label>
+        <input type="text" id="sai_province" placeholder="สำนักตรวจเงินแผ่นดินจังหวัดศรีสะเกษ" />
+      </div>
+      <div>
+        <label for="stmt_date">วันที่รายงานงบกระทบยอดธนาคาร</label>
+        <input type="date" id="stmt_date" />
+      </div>
+      <div>
+        <label for="objective">วัตถุประสงค์การตรวจสอบ</label>
+        <textarea id="objective" placeholder="เช่น เพื่อตรวจสอบว่ายอดคงเหลือเงินฝากธนาคารตามงบกระทบยอด ตรงกับงบการเงิน และ eLASS หรือไม่"></textarea>
+      </div>
+    </div>
+
+    <div class="btn-row no-print" style="margin-top:12px;">
+      <button class="btn-soft btn-sm" type="button" onclick="loadFromStorage()">ดึงข้อมูลจาก LocalStorage</button>
+      <button class="btn-soft btn-sm" type="button" onclick="clearForm()">ล้างข้อมูลหน้าฟอร์ม</button>
+    </div>
+  </section>
+
+  <!-- 2. ตารางบัญชีเงินฝาก -->
+  <section class="section">
+    <div class="section-title">
+      2. ตารางบัญชีเงินฝากธนาคาร / งบกระทบยอด
+      <span class="badge">Bank Accounts</span>
+    </div>
+    <div class="hint">
+      ใส่ข้อมูลบัญชีเงินฝากแต่ละเล่ม: ธนาคาร, ประเภทบัญชี, เลขที่บัญชี, ยอดจาก eLASS และยอดตามบัญชี อปท. / หน่วยงานภายใน ระบบจะคำนวณผลต่างให้อัตโนมัติ
+    </div>
+    <table id="bank_table">
+      <thead>
+        <tr>
+          <th style="width:80px;">รหัสบัญชี</th>
+          <th>ธนาคาร</th>
+          <th>ประเภทบัญชี / เลขที่บัญชี</th>
+          <th style="width:120px;">ยอดจาก eLASS</th>
+          <th style="width:120px;">ยอดตามบัญชี อปท.</th>
+          <th style="width:120px;">ยอดหน่วยงานภายใน</th>
+          <th style="width:100px;">ผลต่าง</th>
+          <th>หมายเหตุ</th>
+          <th class="no-print" style="width:60px;">จัดการ</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- แถวตัวอย่าง 3 แถว -->
+        <tr>
+          <td><input type="text" placeholder="110101" /></td>
+          <td><input type="text" placeholder="ธนาคารกรุงไทย จำกัด (มหาชน) สาขา..." /></td>
+          <td><input type="text" placeholder="กระแสรายวัน เลขที่บัญชี..." /></td>
+          <td><input type="number" step="0.01" value="0" oninput="recalcBanks()" /></td>
+          <td><input type="number" step="0.01" value="0" oninput="recalcBanks()" /></td>
+          <td><input type="number" step="0.01" value="0" oninput="recalcBanks()" /></td>
+          <td class="text-right diff-cell">0.00</td>
+          <td><input type="text" placeholder="เช่น อยู่ระหว่างปรับปรุงรายการ..." /></td>
+          <td class="no-print text-center">
+            <button class="btn-ghost btn-sm" type="button" onclick="removeBankRow(this)">ลบ</button>
+          </td>
+        </tr>
+        <tr>
+          <td><input type="text" /></td>
+          <td><input type="text" /></td>
+          <td><input type="text" /></td>
+          <td><input type="number" step="0.01" value="0" oninput="recalcBanks()" /></td>
+          <td><input type="number" step="0.01" value="0" oninput="recalcBanks()" /></td>
+          <td><input type="number" step="0.01" value="0" oninput="recalcBanks()" /></td>
+          <td class="text-right diff-cell">0.00</td>
+          <td><input type="text" /></td>
+          <td class="no-print text-center">
+            <button class="btn-ghost btn-sm" type="button" onclick="removeBankRow(this)">ลบ</button>
+          </td>
+        </tr>
+        <tr>
+          <td><input type="text" /></td>
+          <td><input type="text" /></td>
+          <td><input type="text" /></td>
+          <td><input type="number" step="0.01" value="0" oninput="recalcBanks()" /></td>
+          <td><input type="number" step="0.01" value="0" oninput="recalcBanks()" /></td>
+          <td><input type="number" step="0.01" value="0" oninput="recalcBanks()" /></td>
+          <td class="text-right diff-cell">0.00</td>
+          <td><input type="text" /></td>
+          <td class="no-print text-center">
+            <button class="btn-ghost btn-sm" type="button" onclick="removeBankRow(this)">ลบ</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="btn-row no-print">
+      <button class="btn-ghost btn-sm" type="button" onclick="addBankRow()">+ เพิ่มแถวบัญชีเงินฝาก</button>
+    </div>
+  </section>
+
+  <!-- 3. สรุปยอดรวม -->
+  <section class="section">
+    <div class="section-title">
+      3. สรุปยอดรวม & ผลการตรวจสอบ
+      <span class="badge">Summary</span>
+    </div>
+    <div class="summary-box">
+      <div class="summary-item">
+        <div class="summary-label">ยอดรวมจาก eLASS</div>
+        <div class="summary-value" id="sum_elass">0.00</div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-label">ยอดรวมตามบัญชี อปท.</div>
+        <div class="summary-value" id="sum_gl_lg">0.00</div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-label">ยอดรวมหน่วยงานภายใน</div>
+        <div class="summary-value" id="sum_gl_sub">0.00</div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-label">ผลต่างรวม (อปท.+หน่วยงาน - eLASS)</div>
+        <div class="summary-value" id="sum_diff">0.00</div>
+      </div>
+    </div>
+
+    <label for="conclusion" style="margin-top:10px;">ข้อสรุปผลการตรวจสอบ</label>
+    <textarea id="conclusion" placeholder="สรุปว่ามียอดต่างหรือไม่ สาเหตุ และข้อเสนอแนะ เช่น พบผลต่างจากรายการที่ยังไม่ลงบัญชี / อยู่ระหว่างติดตามใบแจ้งยอด / ธนาคารบันทึกผิด ฯลฯ"></textarea>
+  </section>
+
+  <!-- 4. ลายเซ็น -->
+  <section class="section">
+    <div class="section-title">
+      4. ลายเซ็นและการรับรอง
+      <span class="badge">Signatures</span>
+    </div>
+    <table id="sign_table">
+      <thead>
+        <tr>
+          <th>บทบาท</th>
+          <th>ชื่อ-สกุล</th>
+          <th>ตำแหน่ง</th>
+          <th style="width:120px;">วันที่ลงนาม</th>
+          <th class="no-print" style="width:60px;">จัดการ</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+    <div class="btn-row no-print">
+      <button class="btn-ghost btn-sm" type="button" onclick="addSignRow()">+ เพิ่มช่องลายเซ็น</button>
+    </div>
+  </section>
+
+  <!-- 5. Output -->
+  <section class="section no-print">
+    <div class="section-title">
+      5. การจัดเก็บ / Export / พิมพ์
+      <span class="badge">Output</span>
+    </div>
+    <div class="btn-row">
+      <button class="btn-primary" type="button" onclick="saveToStorage()">💾 บันทึกลงเครื่อง (LocalStorage)</button>
+      <button class="btn-soft" type="button" onclick="loadFromStorage()">📥 โหลดข้อมูลที่บันทึกไว้</button>
+      <button class="btn-soft" type="button" onclick="window.print()">🖨 พิมพ์ / Export เป็น PDF</button>
+      <button class="btn-danger" type="button" onclick="clearForm()">🗑 ล้างฟอร์มนี้</button>
+    </div>
+    <div class="hint">
+      ขณะนี้ใช้ LocalStorage ใน Browser เป็นที่เก็บข้อมูลชั่วคราว ก่อนเชื่อมต่อฐานข้อมูลกลางในขั้นถัดไป
+    </div>
+  </section>
+
+</div>
+
+<script>
+  function formatMoney(num){
+    return (num || 0).toLocaleString("th-TH",{minimumFractionDigits:2,maximumFractionDigits:2});
+  }
+
+  // ----- ตารางธนาคาร -----
+  function addBankRow(){
+    const tbody=document.querySelector("#bank_table tbody");
+    const tr=document.createElement("tr");
+    tr.innerHTML=`
+      <td><input type="text" /></td>
+      <td><input type="text" /></td>
+      <td><input type="text" /></td>
+      <td><input type="number" step="0.01" value="0" oninput="recalcBanks()" /></td>
+      <td><input type="number" step="0.01" value="0" oninput="recalcBanks()" /></td>
+      <td><input type="number" step="0.01" value="0" oninput="recalcBanks()" /></td>
+      <td class="text-right diff-cell">0.00</td>
+      <td><input type="text" /></td>
+      <td class="no-print text-center">
+        <button class="btn-ghost btn-sm" type="button" onclick="removeBankRow(this)">ลบ</button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  }
+
+  function removeBankRow(btn){
+    const tr=btn.closest("tr");
+    tr.parentElement.removeChild(tr);
+    recalcBanks();
+  }
+
+  function recalcBanks(){
+    const rows=document.querySelectorAll("#bank_table tbody tr");
+    let sumElass=0, sumGlLg=0, sumGlSub=0, sumDiff=0;
+    rows.forEach(row=>{
+      const inputs=row.querySelectorAll("input[type='number']");
+      const elass=parseFloat(inputs[0].value || "0");
+      const gl_lg=parseFloat(inputs[1].value || "0");
+      const gl_sub=parseFloat(inputs[2].value || "0");
+      const diff=(gl_lg+gl_sub)-elass;
+      row.querySelector(".diff-cell").textContent=formatMoney(diff);
+      sumElass+=elass;
+      sumGlLg+=gl_lg;
+      sumGlSub+=gl_sub;
+      sumDiff+=diff;
+    });
+    document.getElementById("sum_elass").textContent=formatMoney(sumElass);
+    document.getElementById("sum_gl_lg").textContent=formatMoney(sumGlLg);
+    document.getElementById("sum_gl_sub").textContent=formatMoney(sumGlSub);
+    document.getElementById("sum_diff").textContent=formatMoney(sumDiff);
+  }
+
+  // ----- ลายเซ็น -----
+  function addSignRow(data){
+    const tbody=document.querySelector("#sign_table tbody");
+    const tr=document.createElement("tr");
+    tr.innerHTML=`
+      <td><input type="text" value="${data?.role || ""}" placeholder="เช่น ผู้จัดทำ / ผู้ตรวจสอบ / ผอ.กลุ่มตรวจ" /></td>
+      <td><input type="text" value="${data?.name || ""}" /></td>
+      <td><input type="text" value="${data?.position || ""}" /></td>
+      <td><input type="date" value="${data?.signed_date || ""}" /></td>
+      <td class="no-print text-center">
+        <button class="btn-ghost btn-sm" type="button" onclick="removeSignRow(this)">ลบ</button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  }
+
+  function removeSignRow(btn){
+    const tr=btn.closest("tr");
+    tr.parentElement.removeChild(tr);
+  }
+
+  // ----- Storage -----
+  function getStorageKey(){
+    const fy=document.getElementById("fiscal_year").value || "no-year";
+    const code=document.getElementById("entity_code").value || "no-entity";
+    return `fa_lg_form_8_2_3::${fy}::${code}`;
+  }
+
+  function collectFormData(){
+    const data={
+      meta:{
+        fiscal_year:document.getElementById("fiscal_year").value,
+        entity_code:document.getElementById("entity_code").value,
+        entity_name:document.getElementById("entity_name").value,
+        entity_type:document.getElementById("entity_type").value,
+        province:document.getElementById("province").value,
+        district:document.getElementById("district").value,
+        audit_date:document.getElementById("audit_date").value,
+        sai_province:document.getElementById("sai_province").value,
+        stmt_date:document.getElementById("stmt_date").value,
+        objective:document.getElementById("objective").value
+      },
+      bank_accounts:[],
+      summary:{
+        sum_elass:0,
+        sum_gl_lg:0,
+        sum_gl_sub:0,
+        sum_diff:0,
+        conclusion:document.getElementById("conclusion").value
+      },
+      signatures:[]
+    };
+
+    // bank rows
+    document.querySelectorAll("#bank_table tbody tr").forEach(tr=>{
+      const tds=tr.querySelectorAll("td");
+      const nums=tr.querySelectorAll("input[type='number']");
+      const diffText=tr.querySelector(".diff-cell").textContent.replace(/,/g,"");
+      data.bank_accounts.push({
+        account_code:tds[0].querySelector("input").value,
+        bank_name:tds[1].querySelector("input").value,
+        account_type_no:tds[2].querySelector("input").value,
+        elass_balance:parseFloat(nums[0].value || "0"),
+        gl_balance_lg:parseFloat(nums[1].value || "0"),
+        gl_balance_sub:parseFloat(nums[2].value || "0"),
+        difference:parseFloat(diffText || "0"),
+        remark:tds[7].querySelector("input").value
+      });
+    });
+
+    // summary (คำนวณซ้ำจาก DOM เพื่อความชัวร์)
+    const rows=document.querySelectorAll("#bank_table tbody tr");
+    let sumElass=0, sumGlLg=0, sumGlSub=0, sumDiff=0;
+    rows.forEach(row=>{
+      const nums=row.querySelectorAll("input[type='number']");
+      const elass=parseFloat(nums[0].value || "0");
+      const gl_lg=parseFloat(nums[1].value || "0");
+      const gl_sub=parseFloat(nums[2].value || "0");
+      const diff=(gl_lg+gl_sub)-elass;
+      sumElass+=elass;
+      sumGlLg+=gl_lg;
+      sumGlSub+=gl_sub;
+      sumDiff+=diff;
+    });
+    data.summary.sum_elass=sumElass;
+    data.summary.sum_gl_lg=sumGlLg;
+    data.summary.sum_gl_sub=sumGlSub;
+    data.summary.sum_diff=sumDiff;
+
+    // signatures
+    document.querySelectorAll("#sign_table tbody tr").forEach(tr=>{
+      const inputs=tr.querySelectorAll("input");
+      data.signatures.push({
+        role:inputs[0].value,
+        name:inputs[1].value,
+        position:inputs[2].value,
+        signed_date:inputs[3].value
+      });
+    });
+
+    return data;
+  }
+
+  function fillFormFromData(data){
+    if(!data) return;
+    if(data.meta){
+      document.getElementById("fiscal_year").value=data.meta.fiscal_year || "";
+      document.getElementById("entity_code").value=data.meta.entity_code || "";
+      document.getElementById("entity_name").value=data.meta.entity_name || "";
+      document.getElementById("entity_type").value=data.meta.entity_type || "";
+      document.getElementById("province").value=data.meta.province || "";
+      document.getElementById("district").value=data.meta.district || "";
+      document.getElementById("audit_date").value=data.meta.audit_date || "";
+      document.getElementById("sai_province").value=data.meta.sai_province || "";
+      document.getElementById("stmt_date").value=data.meta.stmt_date || "";
+      document.getElementById("objective").value=data.meta.objective || "";
+    }
+
+    // bank accounts
+    const tbody=document.querySelector("#bank_table tbody");
+    tbody.innerHTML="";
+    (data.bank_accounts || []).forEach(b=>{
+      const tr=document.createElement("tr");
+      tr.innerHTML=`
+        <td><input type="text" value="${b.account_code || ""}" /></td>
+        <td><input type="text" value="${b.bank_name || ""}" /></td>
+        <td><input type="text" value="${b.account_type_no || ""}" /></td>
+        <td><input type="number" step="0.01" value="${b.elass_balance || 0}" oninput="recalcBanks()" /></td>
+        <td><input type="number" step="0.01" value="${b.gl_balance_lg || 0}" oninput="recalcBanks()" /></td>
+        <td><input type="number" step="0.01" value="${b.gl_balance_sub || 0}" oninput="recalcBanks()" /></td>
+        <td class="text-right diff-cell">${formatMoney(b.difference || 0)}</td>
+        <td><input type="text" value="${b.remark || ""}" /></td>
+        <td class="no-print text-center">
+          <button class="btn-ghost btn-sm" type="button" onclick="removeBankRow(this)">ลบ</button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+    if(!data.bank_accounts || data.bank_accounts.length===0){
+      addBankRow();
+      addBankRow();
+      addBankRow();
+    }
+    recalcBanks();
+
+    if(data.summary){
+      document.getElementById("conclusion").value=data.summary.conclusion || "";
+      document.getElementById("sum_elass").textContent=formatMoney(data.summary.sum_elass || 0);
+      document.getElementById("sum_gl_lg").textContent=formatMoney(data.summary.sum_gl_lg || 0);
+      document.getElementById("sum_gl_sub").textContent=formatMoney(data.summary.sum_gl_sub || 0);
+      document.getElementById("sum_diff").textContent=formatMoney(data.summary.sum_diff || 0);
+    }
+
+    // signatures
+    const stb=document.querySelector("#sign_table tbody");
+    stb.innerHTML="";
+    (data.signatures || []).forEach(s=>addSignRow(s));
+    if(!data.signatures || data.signatures.length===0){
+      addSignRow({role:"ผู้จัดทำ"});
+      addSignRow({role:"ผู้สอบทาน"});
+      addSignRow({role:"ผู้อำนวยการกลุ่มตรวจสอบที่ 4"});
+    }
+  }
+
+  function saveToStorage(){
+    const key=getStorageKey();
+    const data=collectFormData();
+    try{
+      localStorage.setItem(key,JSON.stringify(data));
+      alert("บันทึกข้อมูลฟอร์ม 8.2.3 ลง LocalStorage แล้ว\nKey: "+key);
+    }catch(e){
+      alert("บันทึกไม่สำเร็จ: "+e.message);
+    }
+  }
+
+  function loadFromStorage(){
+    const key=getStorageKey();
+    const raw=localStorage.getItem(key);
+    if(!raw){
+      alert("ไม่พบข้อมูลที่เคยบันทึกไว้สำหรับ key นี้\nกรุณาตรวจสอบปีงบประมาณ และรหัสหน่วยรับตรวจ");
+      return;
+    }
+    try{
+      const data=JSON.parse(raw);
+      fillFormFromData(data);
+      alert("โหลดข้อมูลที่บันทึกไว้เรียบร้อย");
+    }catch(e){
+      alert("ไม่สามารถอ่านข้อมูลที่เก็บไว้ได้: "+e.message);
+    }
+  }
+
+  function clearForm(){
+    if(!confirm("ยืนยันการล้างข้อมูลฟอร์มนี้? ข้อมูลที่ยังไม่บันทึกจะหายไป")) return;
+    document.querySelectorAll("input,textarea,select").forEach(el=>{
+      if(el.type==="checkbox" || el.type==="radio") el.checked=false;
+      else el.value="";
+    });
+
+    const tbody=document.querySelector("#bank_table tbody");
+    tbody.innerHTML="";
+    addBankRow();
+    addBankRow();
+    addBankRow();
+    recalcBanks();
+
+    document.getElementById("conclusion").value="";
+    document.getElementById("sum_elass").textContent="0.00";
+    document.getElementById("sum_gl_lg").textContent="0.00";
+    document.getElementById("sum_gl_sub").textContent="0.00";
+    document.getElementById("sum_diff").textContent="0.00";
+
+    const stb=document.querySelector("#sign_table tbody");
+    stb.innerHTML="";
+    addSignRow({role:"ผู้จัดทำ"});
+    addSignRow({role:"ผู้สอบทาน"});
+    addSignRow({role:"ผู้อำนวยการกลุ่มตรวจสอบที่ 4"});
+  }
+
+  document.addEventListener("DOMContentLoaded",()=>{
+    // ปีงบ 2562–2590
+    const fy=document.getElementById("fiscal_year");
+    for(let y=2562;y<=2590;y++){
+      const opt=document.createElement("option");
+      opt.value=y;
+      opt.textContent=y;
+      fy.appendChild(opt);
+    }
+    // แถวธนาคารเริ่มต้นมีแล้วใน HTML (3 แถว)
+    recalcBanks();
+    // ลายเซ็นเริ่มต้น
+    addSignRow({role:"ผู้จัดทำ"});
+    addSignRow({role:"ผู้สอบทาน"});
+    addSignRow({role:"ผู้อำนวยการกลุ่มตรวจสอบที่ 4"});
+  });
+</script>
+
+</body>
+</html>
