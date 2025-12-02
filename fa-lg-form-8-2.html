@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <title>แบบ อปท. 8.2 – การตรวจสอบเงินสดและเงินฝากธนาคาร | FA Digital</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root{
+      --bg:#060818;
+      --card:#11152b;
+      --border:#262b46;
+      --blue:#0d47a1;
+      --pink:#f48fb1;
+      --muted:#a3acc7;
+      --accent:#ffd54f;
+      --green:#4caf50;
+      --danger:#ef5350;
+    }
+    *{box-sizing:border-box;}
+    body{
+      margin:0;
+      font-family:"Segoe UI",Tahoma,sans-serif;
+      background:
+        radial-gradient(circle at 0 0, rgba(123,30,60,0.36) 0, transparent 55%),
+        radial-gradient(circle at 100% 100%, rgba(66,165,245,0.32) 0, transparent 55%),
+        var(--bg);
+      color:#f5f7ff;
+    }
+    h1,h2,h3{margin:0;}
+
+    .page{
+      max-width:1150px;
+      margin:24px auto 40px;
+      padding:0 16px 32px;
+    }
+
+    header{
+      background:linear-gradient(120deg,#7b1e3c,#0d47a1,#f48fb1);
+      border-radius:20px;
+      padding:18px 20px;
+      box-shadow:0 10px 30px rgba(0,0,0,0.55);
+      border:1px solid rgba(255,255,255,0.18);
+      margin-bottom:22px;
+    }
+    header h1{
+      font-size:24px;
+      font-weight:800;
+    }
+    header h2{
+      font-size:15px;
+      font-weight:400;
+      margin-top:6px;
+      opacity:0.9;
+    }
+    .header-meta{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:10px;
+      font-size:12px;
+    }
+    .pill{
+      padding:3px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.3);
+      background:rgba(0,0,0,0.18);
+    }
+
+    .btn-row{
+      margin-top:10px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+    button{
+      border:none;
+      border-radius:999px;
+      padding:6px 12px;
+      font-size:13px;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+    }
+    .btn-soft{
+      background:rgba(17,21,43,0.9);
+      color:#f5f7ff;
+      border:1px solid var(--border);
+    }
+    .btn-sm{
+      padding:3px 8px;
+      font-size:11px;
+    }
+    .btn-primary{
+      background:linear-gradient(120deg,#0d47a1,#42a5f5);
+      color:#fff;
+    }
+
+    .section{
+      background:rgba(6,8,24,0.9);
+      border-radius:16px;
+      border:1px solid var(--border);
+      padding:16px 18px 18px;
+      margin-top:16px;
+      box-shadow:0 6px 20px rgba(0,0,0,0.5);
+    }
+    .section-title{
+      font-size:15px;
+      font-weight:700;
+      margin-bottom:10px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:8px;
+    }
+    .section-title small{
+      font-size:11px;
+      color:var(--muted);
+    }
+
+    .grid-2{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:8px 18px;
+    }
+    label{
+      font-size:13px;
+      display:block;
+      margin-bottom:3px;
+      color:var(--muted);
+    }
+    input[type="text"],
+    input[type="number"],
+    select{
+      width:100%;
+      padding:6px 8px;
+      border-radius:8px;
+      border:1px solid var(--border);
+      background:var(--card);
+      color:#f5f7ff;
+      font-size:13px;
+    }
+    .hint{
+      font-size:11px;
+      color:var(--muted);
+      margin-top:4px;
+    }
+
+    .menu-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:14px;
+    }
+    .menu-card{
+      display:block;
+      padding:14px 14px 12px;
+      border-radius:16px;
+      border:1px solid var(--border);
+      background:rgba(9,12,32,0.95);
+      text-decoration:none;
+      color:#f5f7ff;
+      box-shadow:0 6px 18px rgba(0,0,0,0.55);
+      position:relative;
+      overflow:hidden;
+      transition:transform .16s ease, box-shadow .16s ease, border-color .16s ease, background .16s ease;
+    }
+    .menu-card::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:radial-gradient(circle at 0 0,rgba(244,143,177,0.22),transparent 60%);
+      opacity:0;
+      transition:opacity .16s ease;
+    }
+    .menu-card:hover{
+      transform:translateY(-3px);
+      box-shadow:0 10px 26px rgba(0,0,0,0.75);
+      border-color:rgba(244,143,177,0.7);
+      background:rgba(12,18,48,0.98);
+    }
+    .menu-card:hover::before{
+      opacity:1;
+    }
+    .menu-code{
+      font-size:13px;
+      font-weight:700;
+      padding:3px 9px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.35);
+      display:inline-block;
+      margin-bottom:6px;
+      background:rgba(6,8,24,0.9);
+    }
+    .menu-title{
+      font-size:15px;
+      font-weight:700;
+    }
+    .menu-sub{
+      font-size:11px;
+      color:var(--muted);
+      margin-top:2px;
+    }
+    .menu-desc{
+      font-size:12px;
+      margin-top:6px;
+      color:#d0d4f7;
+      min-height:34px;
+    }
+    .menu-footer{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-top:10px;
+      font-size:11px;
+      color:var(--muted);
+    }
+    .menu-footer span.tag{
+      padding:2px 8px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.25);
+    }
+
+    .status-dot{
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+    }
+    .dot{
+      width:8px;
+      height:8px;
+      border-radius:50%;
+    }
+    .dot-ok{background:var(--green);}
+    .dot-missing{background:var(--danger);}
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <h1>แบบ อปท. 8.2 – การตรวจสอบเงินสดและเงินฝากธนาคาร</h1>
+    <h2>Cash & Bank Audit Suite – Local Government Financial Audit</h2>
+    <div class="header-meta">
+      <div class="pill">8.2.1 รับรองเงินสด</div>
+      <div class="pill">8.2.2 ตรวจนับเงินสด</div>
+      <div class="pill">8.2.3 งบกระทบยอดเงินฝากธนาคาร</div>
+    </div>
+    <div class="btn-row">
+      <a href="fa-lg-fieldwork.html" class="btn-soft">
+        ⬅ กลับไปขั้นตอนปฏิบัติงานตรวจสอบ (อปท.)
+      </a>
+      <button class="btn-soft btn-sm" type="button" onclick="checkStatus()">
+        🔄 รีเฟรชสถานะฟอร์มย่อย
+      </button>
+    </div>
+  </header>
+
+  <!-- 1. Meta -->
+  <section class="section">
+    <div class="section-title">
+      <span>1. เลือกปีงบประมาณ & หน่วยรับตรวจ</span>
+      <small>ใช้ร่วมกันทั้ง 8.2.1 / 8.2.2 / 8.2.3</small>
+    </div>
+    <div class="grid-2">
+      <div>
+        <label for="fiscal_year">ปีงบประมาณ</label>
+        <select id="fiscal_year">
+          <option value="">-- เลือกปี --</option>
+        </select>
+      </div>
+      <div>
+        <label for="entity_code">รหัสหน่วยรับตรวจ</label>
+        <input type="text" id="entity_code" placeholder="เช่น SSK-MUN-001" />
+      </div>
+      <div>
+        <label for="entity_name">ชื่อหน่วยรับตรวจ</label>
+        <input type="text" id="entity_name" placeholder="เช่น เทศบาลเมืองศรีสะเกษ" />
+      </div>
+      <div>
+        <label for="entity_type">ประเภทหน่วย</label>
+        <input type="text" id="entity_type" placeholder="เทศบาลเมือง / อบต. / อบจ." />
+      </div>
+    </div>
+    <div class="hint">
+      ระบบจะใช้ <strong>ปีงบประมาณ + รหัสหน่วยรับตรวจ</strong> เป็น key ใน LocalStorage  
+      ฟอร์มย่อย 8.2.1 / 8.2.2 / 8.2.3 จะใช้ key เดียวกันคนละ prefix
+    </div>
+    <div class="btn-row" style="margin-top:8px;">
+      <button class="btn-primary btn-sm" type="button" onclick="openForms('8_2_1')">
+        ➜ เปิดแบบ อปท. 8.2.1 (รับรองเงินสด)
+      </button>
+      <button class="btn-primary btn-sm" type="button" onclick="openForms('8_2_2')">
+        ➜ เปิดแบบ อปท. 8.2.2 (ตรวจนับเงินสด)
+      </button>
+      <button class="btn-primary btn-sm" type="button" onclick="openForms('8_2_3')">
+        ➜ เปิดแบบ อปท. 8.2.3 (งบกระทบยอดเงินฝาก)
+      </button>
+    </div>
+  </section>
+
+  <!-- 2. สถานะฟอร์มย่อย -->
+  <section class="section">
+    <div class="section-title">
+      <span>2. สถานะการบันทึกข้อมูลฟอร์มย่อย 8.2.x</span>
+      <small>ตรวจดูเบื้องต้นจาก LocalStorage ของ Browser</small>
+    </div>
+    <div class="menu-grid">
+      <!-- 8.2.1 -->
+      <a href="fa-lg-form-8-2-1.html" class="menu-card" onclick="return handleCardClick(event,'8_2_1')">
+        <div class="menu-code">แบบ อปท. 8.2.1</div>
+        <div class="menu-title">หนังสือรับรองเงินสด</div>
+        <div class="menu-sub">Cash Certification Letter</div>
+        <div class="menu-desc">
+          หนังสือยืนยันจากกรรมการเก็บรักษาเงิน ว่าจำนวนเงินสดตรงกับการตรวจนับ และไม่มีเงินอื่นตกค้างนอกระบบ
+        </div>
+        <div class="menu-footer">
+          <span class="tag">Certification</span>
+          <span class="status-dot">
+            <span class="dot dot-missing" id="status_8_2_1"></span>
+            <span id="status_8_2_1_text">ยังไม่พบข้อมูล</span>
+          </span>
+        </div>
+      </a>
+
+      <!-- 8.2.2 -->
+      <a href="fa-lg-form-8-2-2.html" class="menu-card" onclick="return handleCardClick(event,'8_2_2')">
+        <div class="menu-code">แบบ อปท. 8.2.2</div>
+        <div class="menu-title">ตรวจนับเงินสด</div>
+        <div class="menu-sub">Cash Count Sheet</div>
+        <div class="menu-desc">
+          บันทึกรายละเอียดการตรวจนับเงินสดจริงตามชนิดเงิน กรรมการเก็บรักษาเงิน และลายเซ็นรับรอง
+        </div>
+        <div class="menu-footer">
+          <span class="tag">Cash & Custody</span>
+          <span class="status-dot">
+            <span class="dot dot-missing" id="status_8_2_2"></span>
+            <span id="status_8_2_2_text">ยังไม่พบข้อมูล</span>
+          </span>
+        </div>
+      </a>
+
+      <!-- 8.2.3 -->
+      <a href="fa-lg-form-8-2-3.html" class="menu-card" onclick="return handleCardClick(event,'8_2_3')">
+        <div class="menu-code">แบบ อปท. 8.2.3</div>
+        <div class="menu-title">งบกระทบยอดเงินฝากธนาคาร</div>
+        <div class="menu-sub">Bank Reconciliation</div>
+        <div class="menu-desc">
+          ตรวจสอบยอดเงินฝากธนาคารจาก eLASS เทียบกับงบการเงินและบัญชีหน่วยงานภายใน พร้อมสรุปผลต่าง
+        </div>
+        <div class="menu-footer">
+          <span class="tag">Bank Reco</span>
+          <span class="status-dot">
+            <span class="dot dot-missing" id="status_8_2_3"></span>
+            <span id="status_8_2_3_text">ยังไม่พบข้อมูล</span>
+          </span>
+        </div>
+      </a>
+
+    </div>
+    <div class="hint" style="margin-top:10px;">
+      การแสดงสถานะนี้อ้างอิงจาก LocalStorage เท่านั้น ยังไม่ได้เชื่อมฐานข้อมูลกลาง –  
+      ถ้าย้ายเครื่องหรือเปลี่ยน Browser ข้อมูลจะไม่ตามมา
+    </div>
+  </section>
+
+</div>
+
+<script>
+  // เติมปีงบ 2562–2590
+  document.addEventListener("DOMContentLoaded",()=>{
+    const fy=document.getElementById("fiscal_year");
+    for(let y=2562;y<=2590;y++){
+      const opt=document.createElement("option");
+      opt.value=y;
+      opt.textContent=y;
+      fy.appendChild(opt);
+    }
+    checkStatus();
+  });
+
+  function getKeySuffix(){
+    const fy=document.getElementById("fiscal_year").value || "no-year";
+    const code=document.getElementById("entity_code").value || "no-entity";
+    return `::${fy}::${code}`;
+  }
+
+  function openForms(type){
+    const suffix=getKeySuffix();
+    if(suffix.includes("no-year") || suffix.includes("no-entity")){
+      if(!confirm("ยังไม่ได้ระบุปีงบประมาณหรือรหัสหน่วยรับตรวจ\nต้องการเปิดฟอร์มโดยไม่ผูกกับ key หรือไม่?")) return;
+    }
+    let url="";
+    if(type==="8_2_1") url="fa-lg-form-8-2-1.html";
+    if(type==="8_2_2") url="fa-lg-form-8-2-2.html";
+    if(type==="8_2_3") url="fa-lg-form-8-2-3.html";
+    window.location.href=url;
+  }
+
+  function handleCardClick(event,type){
+    event.preventDefault();
+    openForms(type);
+    return false;
+  }
+
+  function setStatus(id,hasData){
+    const dot=document.getElementById(`status_${id}`);
+    const text=document.getElementById(`status_${id}_text`);
+    if(!dot || !text) return;
+    if(hasData){
+      dot.classList.remove("dot-missing");
+      dot.classList.add("dot-ok");
+      text.textContent="มีข้อมูลที่บันทึกไว้แล้ว";
+    }else{
+      dot.classList.remove("dot-ok");
+      dot.classList.add("dot-missing");
+      text.textContent="ยังไม่พบข้อมูล";
+    }
+  }
+
+  function checkStatus(){
+    const suffix=getKeySuffix();
+    const key1="fa_lg_form_8_2_1"+suffix;
+    const key2="fa_lg_form_8_2_2"+suffix;
+    const key3="fa_lg_form_8_2_3"+suffix;
+
+    setStatus("8_2_1", !!localStorage.getItem(key1));
+    setStatus("8_2_2", !!localStorage.getItem(key2));
+    setStatus("8_2_3", !!localStorage.getItem(key3));
+  }
+</script>
+
+</body>
+</html>
