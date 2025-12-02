@@ -212,6 +212,24 @@
     font-size:11px;
     overflow:auto;
   }
+
+  table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:12px;
+    margin-top:8px;
+  }
+  th,td{
+    border:1px solid #374151;
+    padding:5px 6px;
+  }
+  th{
+    background:#020617;
+  }
+  tr:nth-child(even){
+    background:#111827;
+  }
+
   @media(max-width:600px){
     header h1{font-size:18px;}
   }
@@ -242,15 +260,15 @@
     </div>
   </div>
 
-  <!-- 1) นำเข้าข้อมูลจากไฟล์ / ลิงก์ -->
+  <!-- 1) นำเข้าข้อมูลจากไฟล์ / URL -->
   <div class="card">
     <div class="card-inner">
-      <h2>1) นำเข้าข้อมูลจากไฟล์ / ลิงก์
+      <h2>1) นำเข้าข้อมูลจากไฟล์ / URL
         <span class="en">Bulk Import</span>
       </h2>
       <p class="desc">
-        รองรับไฟล์ CSV, Excel ของฐานข้อมูล อปท. ทั่วประเทศ รวมถึงโครงสร้างภายในระบบเอง
-        เมื่อ Import สำเร็จ ข้อมูลจะถูกเพิ่มเข้าฐานกลางทันที.
+        ใช้สำหรับนำเข้าข้อมูล อปท. จากไฟล์ CSV / Excel หรือจาก URL (ไฟล์ CSV ออนไลน์) 
+        ข้อมูลที่นำเข้าจะถูกเพิ่มลงฐานกลางทันที.
       </p>
 
       <div class="grid">
@@ -270,17 +288,17 @@
           </div>
         </div>
         <div>
+          <label>🔗 Import จาก URL (ไฟล์ CSV ออนไลน์)</label>
+          <input type="text" id="importUrl" placeholder="เช่น https://example.go.th/lg-data.csv">
+          <div class="note">
+            หมายเหตุ: ใช้งานได้เฉพาะ URL ที่อนุญาตให้เรียกใช้จากเว็บ (CORS).
+          </div>
+        </div>
+        <div>
           <label>📄 แนบไฟล์เอกสารประกอบ (บันทึกเฉพาะชื่อไฟล์)</label>
           <input type="file" id="fileDoc" accept=".pdf,.doc,.docx,.ppt,.pptx">
           <div class="note">
             ระบบจะไม่เก็บเนื้อไฟล์จริง เก็บเฉพาะชื่อไฟล์และประเภทไฟล์ไว้ในฟิลด์ของ record.
-          </div>
-        </div>
-        <div>
-          <label>🔗 ลิงก์ข้อมูล (URL)</label>
-          <input type="text" id="f-sourceUrl" placeholder="เช่น https://example.go.th/lg-info">
-          <div class="note">
-            ใช้ระบุแหล่งข้อมูลออนไลน์ เช่น เว็บไซต์ อปท., เอกสารประกอบ หรือวิดีโอแนะนำหน่วยงาน.
           </div>
         </div>
       </div>
@@ -288,7 +306,8 @@
       <div class="btn-row">
         <button type="button" class="btn-primary" id="btnImportCsv">นำเข้า CSV</button>
         <button type="button" class="btn-secondary" id="btnImportXlsx">นำเข้า Excel</button>
-        <button type="button" class="btn-secondary" id="btnClearAttach">ล้างไฟล์แนบ / ลิงก์</button>
+        <button type="button" class="btn-secondary" id="btnImportUrl">นำเข้าจาก URL</button>
+        <button type="button" class="btn-secondary" id="btnClearAttach">ล้างไฟล์ / URL</button>
       </div>
 
       <div class="log" id="importLog">ยังไม่มีการนำเข้าล่าสุด</div>
@@ -313,6 +332,31 @@ code,name,unit,type,ministry,level,province,district,subdistrict,village,address
     </div>
   </div>
 
+  <!-- ตารางแสดงประวัติการนำเข้า -->
+  <div class="card">
+    <div class="card-inner">
+      <h2>ประวัติการนำเข้าไฟล์
+        <span class="en">Import History</span>
+      </h2>
+      <p class="desc">
+        แสดงรายการไฟล์/แหล่งข้อมูลที่เคยนำเข้า พร้อมจำนวนข้อมูลที่เพิ่มเข้าในฐาน.
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>ประเภท</th>
+            <th>ชื่อไฟล์ / URL</th>
+            <th>ขนาด (KB)</th>
+            <th>จำนวนรายการ</th>
+            <th>วันที่–เวลา</th>
+          </tr>
+        </thead>
+        <tbody id="importHistoryBody"></tbody>
+      </table>
+    </div>
+  </div>
+
   <!-- 2) เพิ่มข้อมูลทีละรายการ (Manual Add) -->
   <div class="card">
     <div class="card-inner">
@@ -320,7 +364,7 @@ code,name,unit,type,ministry,level,province,district,subdistrict,village,address
         <span class="en">Manual Add</span>
       </h2>
       <p class="desc">
-        ใช้กรณีต้องการเพิ่ม/แก้ไขข้อมูลรายหน่วยแบบเฉพาะเจาะจง 
+        ใช้กรณีต้องการเพิ่มข้อมูลรายหน่วยแบบเฉพาะเจาะจง 
         ทุกครั้งที่กดบันทึก ระบบจะเพิ่ม record ใหม่เข้าในฐานกลางโดยไม่ลบทิ้งของเดิม.
       </p>
 
@@ -412,7 +456,7 @@ code,name,unit,type,ministry,level,province,district,subdistrict,village,address
     <a href="fa-db-local.html" class="nav">
       <span>⬅</span> กลับเมนูฐานข้อมูล อปท.
     </a>
-    <a href="fa-db-menu.html" class="nav" style="margin-left:6px;">
+    <a href="fa-database-menu.html" class="nav" style="margin-left:6px;">
       <span>🏠</span> กลับเมนูฐานข้อมูลหลัก
     </a>
   </div>
@@ -420,24 +464,12 @@ code,name,unit,type,ministry,level,province,district,subdistrict,village,address
 </div>
 
 <script>
-const STORAGE_KEY = "fa-db-data-gov";
+const STORAGE_KEY      = "fa-db-data-gov";
+const IMPORT_LOG_KEY   = "fa-db-import-log-gov";
 
 let db = [];
-let attachedDoc = null; // เก็บ info ของไฟล์เอกสารที่แนบล่าสุด
-
-function loadDB(){
-  try{
-    db = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
-  }catch(e){
-    db = [];
-  }
-  document.getElementById("totalRecords").textContent = db.length;
-}
-
-function saveDB(){
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(db));
-  document.getElementById("totalRecords").textContent = db.length;
-}
+let importLog = [];
+let attachedDoc = null; // ข้อมูลไฟล์เอกสารที่แนบล่าสุด
 
 /* SESSION DISPLAY (ไม่บังคับ redirect) */
 function displaySession(){
@@ -454,6 +486,64 @@ function displaySession(){
   }catch{
     el.textContent = "-";
   }
+}
+
+function loadDB(){
+  try{
+    db = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+  }catch(e){
+    db = [];
+  }
+  document.getElementById("totalRecords").textContent = db.length;
+}
+
+function saveDB(){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(db));
+  document.getElementById("totalRecords").textContent = db.length;
+}
+
+/* import log */
+function loadImportLog(){
+  try{
+    importLog = JSON.parse(localStorage.getItem(IMPORT_LOG_KEY) || "[]");
+  }catch(e){
+    importLog = [];
+  }
+  renderImportHistory();
+}
+
+function saveImportLog(){
+  localStorage.setItem(IMPORT_LOG_KEY, JSON.stringify(importLog));
+  renderImportHistory();
+}
+
+function renderImportHistory(){
+  const tbody = document.getElementById("importHistoryBody");
+  tbody.innerHTML = "";
+  if(importLog.length === 0){
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td colspan="6" style="text-align:center;color:#9ca3af;">ยังไม่มีประวัติการนำเข้า</td>`;
+    tbody.appendChild(tr);
+    return;
+  }
+  importLog
+    .slice() // copy
+    .sort((a,b)=> (a.when < b.when ? 1 : -1)) // ล่าสุดอยู่บน
+    .forEach((log,idx)=>{
+      const tr = document.createElement("tr");
+      const sizeKB = log.size ? (log.size/1024).toFixed(1) : "-";
+      const dt = new Date(log.when);
+      const dtStr = isNaN(dt.getTime()) ? log.when : dt.toLocaleString("th-TH");
+      tr.innerHTML = `
+        <td>${idx+1}</td>
+        <td>${log.type||""}</td>
+        <td>${log.name||""}</td>
+        <td style="text-align:right;">${sizeKB}</td>
+        <td style="text-align:right;">${log.records||0}</td>
+        <td>${dtStr}</td>
+      `;
+      tbody.appendChild(tr);
+    });
 }
 
 /* รายชื่อจังหวัด */
@@ -492,77 +582,188 @@ function populateProvinceSelect(){
   sel.value = "ศรีสะเกษ";
 }
 
-/* Import CSV */
+/* แนบไฟล์เอกสาร */
+document.getElementById("fileDoc").addEventListener("change", e=>{
+  const f = e.target.files[0];
+  if(!f){ attachedDoc = null; return; }
+  attachedDoc = { name:f.name, type:f.type || "document" };
+});
+
+/* ล้างไฟล์ / URL */
+document.getElementById("btnClearAttach").addEventListener("click", ()=>{
+  document.getElementById("fileCsv").value = "";
+  document.getElementById("fileXlsx").value = "";
+  document.getElementById("fileDoc").value = "";
+  document.getElementById("importUrl").value = "";
+  attachedDoc = null;
+  document.getElementById("importLog").textContent = "ล้างสถานะไฟล์ / URL แล้ว";
+});
+
+/* Import CSV จากไฟล์ */
 document.getElementById("btnImportCsv").addEventListener("click", ()=>{
   const file = document.getElementById("fileCsv").files[0];
   if(!file){ alert("กรุณาเลือกไฟล์ CSV ก่อน"); return; }
   const reader = new FileReader();
   reader.onload = e => {
-    importFromCSVText(e.target.result, file.name);
+    const importedCount = importFromCSVText(e.target.result, file.name);
+    if(importedCount > 0){
+      importLog.push({
+        type:"CSV",
+        name:file.name,
+        size:file.size || null,
+        records:importedCount,
+        when:new Date().toISOString()
+      });
+      saveDB();
+      saveImportLog();
+      document.getElementById("importLog").textContent =
+        `นำเข้าไฟล์ CSV "${file.name}" เรียบร้อย จำนวน ${importedCount} รายการ (รวมทั้งหมด ${db.length} รายการในฐาน)`;
+      alert(`นำเข้าไฟล์ CSV สำเร็จ จำนวน ${importedCount} รายการ`);
+    }
   };
   reader.readAsText(file,"utf-8");
 });
 
+/* Import จาก URL (CSV ออนไลน์) */
+document.getElementById("btnImportUrl").addEventListener("click", async ()=>{
+  const url = document.getElementById("importUrl").value.trim();
+  if(!url){ alert("กรุณากรอก URL ก่อน"); return; }
+  try{
+    document.getElementById("importLog").textContent = "กำลังดึงข้อมูลจาก URL ...";
+    const res = await fetch(url);
+    if(!res.ok){
+      document.getElementById("importLog").textContent = "ไม่สามารถดึงข้อมูลจาก URL นี้ได้ (HTTP "+res.status+")";
+      alert("ไม่สามารถดึงข้อมูลจาก URL นี้ได้");
+      return;
+    }
+    const text = await res.text();
+    const importedCount = importFromCSVText(text, url);
+    if(importedCount > 0){
+      importLog.push({
+        type:"URL-CSV",
+        name:url,
+        size:null,
+        records:importedCount,
+        when:new Date().toISOString()
+      });
+      saveDB();
+      saveImportLog();
+      document.getElementById("importLog").textContent =
+        `นำเข้าข้อมูลจาก URL เรียบร้อย จำนวน ${importedCount} รายการ (รวมทั้งหมด ${db.length} รายการในฐาน)`;
+      alert(`นำเข้าข้อมูลจาก URL สำเร็จ จำนวน ${importedCount} รายการ`);
+    }
+  }catch(err){
+    console.error(err);
+    document.getElementById("importLog").textContent = "เกิดข้อผิดพลาดในการดึงข้อมูลจาก URL";
+    alert("เกิดข้อผิดพลาดในการดึงข้อมูลจาก URL (อาจติด CORS หรือรูปแบบไม่ใช่ CSV)");
+  }
+});
+
+/* Import Excel */
+document.getElementById("btnImportXlsx").addEventListener("click", ()=>{
+  const file = document.getElementById("fileXlsx").files[0];
+  if(!file){ alert("กรุณาเลือกไฟล์ Excel ก่อน"); return; }
+  const reader = new FileReader();
+  reader.onload = e =>{
+    const data = new Uint8Array(e.target.result);
+    const workbook = XLSX.read(data,{type:"array"});
+    const sheetName = workbook.SheetNames[0];
+    const sheet = workbook.Sheets[sheetName];
+    const csv = XLSX.utils.sheet_to_csv(sheet);
+    const importedCount = importFromCSVText(csv, file.name);
+    if(importedCount > 0){
+      importLog.push({
+        type:"Excel",
+        name:file.name,
+        size:file.size || null,
+        records:importedCount,
+        when:new Date().toISOString()
+      });
+      saveDB();
+      saveImportLog();
+      document.getElementById("importLog").textContent =
+        `นำเข้าไฟล์ Excel "${file.name}" เรียบร้อย จำนวน ${importedCount} รายการ (รวมทั้งหมด ${db.length} รายการในฐาน)`;
+      alert(`นำเข้าไฟล์ Excel สำเร็จ จำนวน ${importedCount} รายการ`);
+    }
+  };
+  reader.readAsArrayBuffer(file);
+});
+
+/* ฟังก์ชันอ่าน CSV (รองรับทั้งหัวไทย และหัวอังกฤษ) */
 function importFromCSVText(text, fname){
   const lines = text.split(/\r?\n/).filter(l=>l.trim()!=="");
   if(lines.length < 2){
     alert("ไฟล์ไม่มีข้อมูลเพียงพอ");
-    return;
+    return 0;
   }
-  const header = lines[0].split(",").map(h=>h.replace(/(^"|"$)/g,"").trim());
+  const headerRaw = lines[0].split(",");
+  const header = headerRaw.map(h=>h.replace(/(^"|"$)/g,"").trim());
 
-  // ตรวจว่าคือไฟล์ อปท. ภาษาไทยหรือไม่
+  // helper: หา index ที่ header มีคำไทยบางส่วน
+  function findIdxContains(keyword){
+    const lowerKey = keyword.toLowerCase();
+    for(let i=0;i<header.length;i++){
+      if(header[i].toLowerCase().includes(lowerKey)) return i;
+    }
+    return -1;
+  }
+
+  // ตรวจว่าคือไฟล์ฐาน อปท. ภาษาไทยหรือไม่ (ใช้คำหลักแบบกว้าง)
+  const idxThai_province   = findIdxContains("จังหวัด");
+  const idxThai_district   = findIdxContains("อำเภ");
+  const idxThai_subdistrict= findIdxContains("ตำบล");
+  const idxThai_code       = findIdxContains("รหัส");
+  const idxThai_type       = findIdxContains("ประเภท");
+  const idxThai_name       = findIdxContains("อปท");
+  const idxThai_addrNo     = findIdxContains("ที่ตั้ง");
+  const idxThai_moo        = findIdxContains("หมู่");
+  const idxThai_zip        = findIdxContains("ไปรษณีย์");
+  const idxThai_lat        = findIdxContains("lat");
+  const idxThai_long       = findIdxContains("long");
+  const idxThai_web        = findIdxContains("เว็ปไซต์") !== -1 ? findIdxContains("เว็ปไซต์") : findIdxContains("เว็บไซต์");
+
   const isThaiLG =
-    header.indexOf("จังหวัด") !== -1 &&
-    header.indexOf("อำเภอ") !== -1 &&
-    header.indexOf("ตำบล") !== -1 &&
-    header.indexOf("รหัส อปท.") !== -1;
+    idxThai_province   !== -1 &&
+    idxThai_district   !== -1 &&
+    idxThai_subdistrict!== -1 &&
+    idxThai_code       !== -1 &&
+    idxThai_name       !== -1;
 
   const imported = [];
+  const now = new Date().toISOString();
+  const srcUrlMeta = document.getElementById("importUrl").value.trim() || "";
 
   if(isThaiLG){
-    const idx = {
-      province   : header.indexOf("จังหวัด"),
-      district   : header.indexOf("อำเภอ"),
-      subdistrict: header.indexOf("ตำบล"),
-      code       : header.indexOf("รหัส อปท."),
-      type       : header.indexOf("ประเภท อปท."),
-      name       : header.indexOf("อปท."),
-      addrNo     : header.indexOf("ที่ตั้งสำนักงานเลขที่"),
-      moo        : header.indexOf("หมู่ที่"),
-      zipcode    : header.indexOf("รหัสไปรษณีย์"),
-      latTH      : header.indexOf("LAT"),
-      longTH     : header.indexOf("LONG"),
-      websiteTH  : header.indexOf("เว็ปไซต์ของอปท")
-    };
-    const now = new Date().toISOString();
     for(let i=1;i<lines.length;i++){
       const cols = lines[i].split(",").map(c=>c.replace(/(^"|"$)/g,""));
       if(cols.length === 0) continue;
-      const name = cols[idx.name] || "";
-      const province = cols[idx.province] || "";
-      const district = cols[idx.district] || "";
-      const subd = cols[idx.subdistrict] || "";
-      const code = (cols[idx.code] || "").toString();
+      const name = cols[idxThai_name] || "";
+      const province = cols[idxThai_province] || "";
+      const district = cols[idxThai_district] || "";
+      const subd = cols[idxThai_subdistrict] || "";
+      const code = (cols[idxThai_code] || "").toString();
 
       imported.push({
         code      : code,
         name      : name,
         unit      : name,
-        type      : cols[idx.type] || "",
+        type      : idxThai_type !== -1 ? (cols[idxThai_type]||"") : "",
         ministry  : "มหาดไทย",
         level     : "ท้องถิ่น",
         province  : province,
         district  : district,
         subdistrict: subd,
         village   : "",
-        address   : ((cols[idx.addrNo]||"") + (cols[idx.moo] ? " ม." + cols[idx.moo] : "")).trim(),
-        zipcode   : cols[idx.zipcode] || "",
-        lat       : (idx.latTH !== -1 ? cols[idx.latTH] : ""),
-        long      : (idx.longTH !== -1 ? cols[idx.longTH] : ""),
-        website   : (idx.websiteTH !== -1 ? cols[idx.websiteTH] : ""),
+        address   : (
+          (idxThai_addrNo !== -1 ? (cols[idxThai_addrNo]||"") : "") +
+          (idxThai_moo !== -1 && cols[idxThai_moo] ? " ม." + cols[idxThai_moo] : "")
+        ).trim(),
+        zipcode   : idxThai_zip !== -1 ? (cols[idxThai_zip]||"") : "",
+        lat       : idxThai_lat !== -1 ? (cols[idxThai_lat]||"") : "",
+        long      : idxThai_long !== -1 ? (cols[idxThai_long]||"") : "",
+        website   : idxThai_web !== -1 ? (cols[idxThai_web]||"") : "",
         sourceType: "csv-thai-lg",
-        sourceUrl : document.getElementById("f-sourceUrl").value.trim() || "",
+        sourceUrl : srcUrlMeta,
         attachmentName: attachedDoc ? attachedDoc.name : "",
         attachmentType: attachedDoc ? attachedDoc.type : "",
         remark    : "",
@@ -590,19 +791,17 @@ function importFromCSVText(text, fname){
       website  : header.indexOf("website"),
       remark   : header.indexOf("remark")
     };
-    // ตรวจว่าครบพอใช้ได้ไหม
     if(idx.code === -1 || idx.name === -1 || idx.province === -1){
-      alert("ไฟล์ CSV นี้ไม่ตรงโครงสร้างที่ระบบรองรับ (code/name/province ต้องมีอย่างน้อย)");
-      return;
+      alert("ไฟล์นี้ไม่ตรงโครงสร้างที่ระบบรองรับ (ต้องมีอย่างน้อย code, name, province)");
+      return 0;
     }
-    const now = new Date().toISOString();
     for(let i=1;i<lines.length;i++){
       const cols = lines[i].split(",").map(c=>c.replace(/(^"|"$)/g,""));
       if(cols.length === 0) continue;
       imported.push({
         code      : idx.code !== -1 ? (cols[idx.code]||"") : "",
         name      : idx.name !== -1 ? (cols[idx.name]||"") : "",
-        unit      : idx.unit !== -1 ? (cols[idx.unit]||"") : (cols[idx.name]||""),
+        unit      : idx.unit !== -1 ? (cols[idx.unit]||"") : (idx.name !== -1 ? (cols[idx.name]||"") : ""),
         type      : idx.type !== -1 ? (cols[idx.type]||"") : "",
         ministry  : idx.ministry !== -1 ? (cols[idx.ministry]||"") : "",
         level     : idx.level !== -1 ? (cols[idx.level]||"") : "",
@@ -616,7 +815,7 @@ function importFromCSVText(text, fname){
         long      : idx.long !== -1 ? (cols[idx.long]||"") : "",
         website   : idx.website !== -1 ? (cols[idx.website]||"") : "",
         sourceType: "csv-english",
-        sourceUrl : document.getElementById("f-sourceUrl").value.trim() || "",
+        sourceUrl : srcUrlMeta,
         attachmentName: attachedDoc ? attachedDoc.name : "",
         attachmentType: attachedDoc ? attachedDoc.type : "",
         remark    : idx.remark !== -1 ? (cols[idx.remark]||"") : "",
@@ -628,47 +827,12 @@ function importFromCSVText(text, fname){
 
   if(imported.length === 0){
     alert("ไม่พบข้อมูลที่สามารถนำเข้าได้จากไฟล์นี้");
-    return;
+    return 0;
   }
+
   db = db.concat(imported);
-  saveDB();
-
-  document.getElementById("importLog").textContent =
-    `นำเข้าไฟล์ "${fname}" เรียบร้อย จำนวน ${imported.length} รายการ (รวมในฐานทั้งหมด ${db.length} รายการ)`;
+  return imported.length;
 }
-
-/* Import Excel */
-document.getElementById("btnImportXlsx").addEventListener("click", ()=>{
-  const file = document.getElementById("fileXlsx").files[0];
-  if(!file){ alert("กรุณาเลือกไฟล์ Excel ก่อน"); return; }
-  const reader = new FileReader();
-  reader.onload = e =>{
-    const data = new Uint8Array(e.target.result);
-    const workbook = XLSX.read(data,{type:"array"});
-    const sheetName = workbook.SheetNames[0];
-    const sheet = workbook.Sheets[sheetName];
-    const csv = XLSX.utils.sheet_to_csv(sheet);
-    importFromCSVText(csv, file.name);
-  };
-  reader.readAsArrayBuffer(file);
-});
-
-/* แนบไฟล์เอกสาร */
-document.getElementById("fileDoc").addEventListener("change", e=>{
-  const f = e.target.files[0];
-  if(!f){ attachedDoc = null; return; }
-  attachedDoc = { name:f.name, type:f.type || "document" };
-});
-
-/* ล้างไฟล์แนบ / ลิงก์ */
-document.getElementById("btnClearAttach").addEventListener("click", ()=>{
-  document.getElementById("fileCsv").value = "";
-  document.getElementById("fileXlsx").value = "";
-  document.getElementById("fileDoc").value = "";
-  document.getElementById("f-sourceUrl").value = "";
-  attachedDoc = null;
-  document.getElementById("importLog").textContent = "ล้างสถานะไฟล์และลิงก์แล้ว";
-});
 
 /* ฟอร์มเพิ่มข้อมูลทีละรายการ */
 function clearForm(){
@@ -690,6 +854,7 @@ function clearForm(){
   document.getElementById("f-url").value = "";
   document.getElementById("f-remark").value = "";
 }
+
 document.getElementById("btnClearForm").addEventListener("click", clearForm);
 
 document.getElementById("formAdd").addEventListener("submit", e=>{
@@ -734,6 +899,7 @@ document.getElementById("formAdd").addEventListener("submit", e=>{
 /* init */
 displaySession();
 loadDB();
+loadImportLog();
 populateProvinceSelect();
 clearForm();
 </script>
