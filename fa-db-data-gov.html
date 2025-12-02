@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>FA DB | fa-db-data-gov – ฐานข้อมูล อปท. กลาง</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    --bg:#060818;
+    --card:#11152b;
+    --border:#262b46;
+    --accent:#42a5f5;
+    --accent2:#22c55e;
+    --muted:#a3acc7;
+    --text:#f5f7ff;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Segoe UI",Tahoma,sans-serif;
+    background:
+      radial-gradient(circle at 10% 0%, rgba(123,30,60,0.36) 0, transparent 55%),
+      radial-gradient(circle at 90% 100%, rgba(66,165,245,0.32) 0, transparent 55%),
+      var(--bg);
+    color:var(--text);
+  }
+  header{
+    padding:18px 12px 14px;
+    text-align:center;
+    background:linear-gradient(120deg,#0d47a1,#6f42c1,#22c55e);
+    box-shadow:0 4px 16px rgba(0,0,0,.7);
+    position:relative;
+    overflow:hidden;
+  }
+  header::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+      radial-gradient(circle at 15% 0%,rgba(244,143,177,0.24) 0,transparent 55%),
+      radial-gradient(circle at 85% 100%,rgba(45,212,191,0.22) 0,transparent 55%);
+    mix-blend-mode:screen;
+    opacity:.8;
+    pointer-events:none;
+  }
+  .header-inner{position:relative;z-index:1;}
+  header h1{
+    margin:0;
+    font-size:22px;
+    font-weight:800;
+    letter-spacing:.03em;
+  }
+  header p{
+    margin:4px 0 0;
+    font-size:13px;
+    color:#e5e7eb;
+  }
+
+  .wrap{
+    max-width:1200px;
+    margin:18px auto 26px;
+    padding:0 16px;
+  }
+  .top-row{
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:8px;
+    font-size:13px;
+    color:var(--muted);
+    margin-bottom:12px;
+  }
+  .top-left{
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+  }
+  .chip{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding:3px 9px;
+    border-radius:999px;
+    border:1px solid rgba(148,163,184,.55);
+    background:rgba(15,23,42,.9);
+    font-size:12px;
+  }
+  .chip code{
+    font-size:11px;
+  }
+
+  .card{
+    background:var(--card);
+    border-radius:18px;
+    border:1px solid rgba(255,255,255,.08);
+    padding:14px 14px 12px;
+    margin-bottom:14px;
+    box-shadow:0 8px 22px rgba(0,0,0,.72);
+    position:relative;
+    overflow:hidden;
+  }
+  .card::before{
+    content:"";
+    position:absolute;
+    inset:-40%;
+    background:radial-gradient(circle at 10% 0%,rgba(148,163,255,0.16) 0,transparent 55%);
+    opacity:0.9;
+    pointer-events:none;
+  }
+  .card-inner{position:relative;z-index:1;}
+
+  h2{
+    margin:0 0 6px;
+    font-size:18px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  h2 span.en{
+    font-size:12px;
+    font-weight:400;
+    color:var(--muted);
+  }
+  p.desc{
+    margin:2px 0 8px;
+    font-size:13px;
+    color:var(--muted);
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:8px 12px;
+  }
+
+  label{
+    display:block;
+    font-size:13px;
+    margin-top:6px;
+  }
+  input,select{
+    width:100%;
+    margin-top:3px;
+    padding:7px 8px;
+    border-radius:8px;
+    border:1px solid rgba(148,163,184,.4);
+    background:#05081a;
+    color:var(--text);
+    font-size:13px;
+  }
+  input:focus,select:focus{
+    outline:none;
+    border-color:#22c55e;
+  }
+
+  .btn-row{
+    margin-top:10px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  button,a.nav{
+    border:none;
+    border-radius:999px;
+    padding:8px 14px;
+    font-size:13px;
+    cursor:pointer;
+  }
+  .btn-primary{
+    background:#22c55e;
+    color:#082f1a;
+    font-weight:700;
+  }
+  .btn-secondary{
+    background:#374151;
+    color:#e5e7eb;
+  }
+  .btn-danger{
+    background:#b91c1c;
+    color:#fff;
+  }
+  a.nav{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    color:#e0e7ff;
+    text-decoration:none;
+    border:1px solid rgba(148,163,184,.55);
+    background:rgba(15,23,42,.95);
+  }
+
+  table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:12px;
+    margin-top:8px;
+  }
+  th,td{
+    border:1px solid #374151;
+    padding:5px 6px;
+  }
+  th{
+    background:#020617;
+  }
+  tr:nth-child(even){
+    background:#111827;
+  }
+
+  .center-text{
+    text-align:center;
+    color:#9ca3af;
+  }
+  .link-btn{
+    display:inline-flex;
+    align-items:center;
+    padding:3px 7px;
+    border-radius:999px;
+    border:1px solid #38bdf8;
+    color:#e0f2fe;
+    font-size:11px;
+    text-decoration:none;
+  }
+  .link-btn:hover{
+    background:#0ea5e9;
+    color:#0b1120;
+  }
+
+  .stat-text{
+    font-size:12px;
+    color:var(--muted);
+    margin-top:4px;
+  }
+
+  @media(max-width:600px){
+    header h1{font-size:18px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <h1>FA DB – ฐานข้อมูล อปท. กลาง (fa-db-data-gov)</h1>
+    <p>ระบบดู / ค้นหา / ดึงข้อมูลหน่วยรับตรวจองค์กรปกครองส่วนท้องถิ่น ใช้ร่วมทุกระบบ FA</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="top-row">
+    <div class="top-left">
+      <div>⏱ <span id="nowTime">-</span></div>
+      <div>
+        ผู้ใช้งาน: <strong id="userEmail">-</strong>
+      </div>
+      <div>
+        <span class="chip">
+          📦 localStorage key: <code>fa-db-data-gov</code>
+        </span>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:4px;align-items:flex-end;">
+      <span class="chip">
+        📥 จำนวนทั้งหมดในฐาน: <strong id="totalRecords">0</strong> รายการ
+      </span>
+      <span class="chip">
+        🔎 ผลการค้นหา: <strong id="filteredRecords">0</strong> รายการ
+      </span>
+    </div>
+  </div>
+
+  <!-- กล่องค้นหา -->
+  <div class="card">
+    <div class="card-inner">
+      <h2>ค้นหาข้อมูลหน่วยรับตรวจ / อปท.
+        <span class="en">Search Local Government Units</span>
+      </h2>
+      <p class="desc">
+        ค้นหาจากฐานข้อมูลกลางที่เก็บไว้ใน <code>localStorage["fa-db-data-gov"]</code><br>
+        ทุกระบบอื่นสามารถใช้คำสั่ง <code>JSON.parse(localStorage.getItem("fa-db-data-gov") || "[]")</code> เพื่อดึงข้อมูลชุดเดียวกันนี้ไปใช้.
+      </p>
+
+      <div class="grid">
+        <div>
+          <label>หน่วยรับตรวจ / ชื่อ อปท. (unit / name)</label>
+          <input type="text" id="q-unit" placeholder="พิมพ์ชื่อหน่วยรับตรวจ หรือชื่อ อปท.">
+        </div>
+        <div>
+          <label>จังหวัด (province)</label>
+          <select id="q-province">
+            <option value="">-- ทุกจังหวัด --</option>
+          </select>
+        </div>
+        <div>
+          <label>อำเภอ / เขต (district)</label>
+          <input type="text" id="q-district" placeholder="พิมพ์ชื่ออำเภอ/เขต">
+        </div>
+        <div>
+          <label>ตำบล / แขวง (subdistrict)</label>
+          <input type="text" id="q-subdistrict" placeholder="พิมพ์ชื่อตำบล/แขวง">
+        </div>
+        <div>
+          <label>หมู่บ้าน / ชุมชน (village)</label>
+          <input type="text" id="q-village" placeholder="พิมพ์ชื่อหมู่บ้าน/ชุมชน">
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button type="button" class="btn-primary" id="btnSearch">ค้นหาข้อมูล</button>
+        <button type="button" class="btn-secondary" id="btnClear">ล้างเงื่อนไขค้นหา</button>
+        <button type="button" class="btn-secondary" id="btnShowAll">แสดงทั้งหมด</button>
+        <button type="button" class="btn-secondary" id="btnExportCSV">📤 Export CSV</button>
+      </div>
+
+      <div class="stat-text" id="searchSummary">ยังไม่ได้เริ่มค้นหา</div>
+    </div>
+  </div>
+
+  <!-- ตารางแสดงข้อมูล -->
+  <div class="card">
+    <div class="card-inner">
+      <h2>ตารางข้อมูลหน่วยรับตรวจ / อปท.
+        <span class="en">Search Result Table</span>
+      </h2>
+      <p class="desc">
+        แสดงข้อมูลจากฐานกลาง: #, รหัส, ชื่อหน่วยงาน, หน่วยรับตรวจ, ประเภท, จังหวัด, อำเภอ, ตำบล, หมู่บ้าน, เว็บไซต์ และลิงก์ดูรายละเอียด.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>รหัส</th>
+            <th>ชื่อหน่วยงาน</th>
+            <th>หน่วยรับตรวจ</th>
+            <th>ประเภท</th>
+            <th>จังหวัด</th>
+            <th>อำเภอ</th>
+            <th>ตำบล</th>
+            <th>หมู่บ้าน</th>
+            <th>เว็บไซต์</th>
+            <th>รายละเอียด</th>
+          </tr>
+        </thead>
+        <tbody id="dataBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ปุ่มกลับ -->
+  <div style="margin-top:10px;">
+    <a href="fa-db-local.html" class="nav">
+      <span>⬅</span> กลับเมนูฐานข้อมูล อปท.
+    </a>
+    <a href="fa-database-menu.html" class="nav" style="margin-left:6px;">
+      <span>🏠</span> กลับเมนูฐานข้อมูลหลัก
+    </a>
+  </div>
+
+</div>
+
+<script>
+const STORAGE_KEY = "fa-db-data-gov";
+
+let db = [];
+let currentFiltered = [];
+
+/* ===== CLOCK ===== */
+function updateClock(){
+  const el = document.getElementById("nowTime");
+  if(!el) return;
+  const now = new Date();
+  const opts = {
+    year:"numeric",
+    month:"short",
+    day:"2-digit",
+    hour:"2-digit",
+    minute:"2-digit",
+    second:"2-digit"
+  };
+  el.textContent = now.toLocaleString("th-TH", opts);
+}
+
+/* ===== SESSION DISPLAY ===== */
+function displaySession(){
+  const el = document.getElementById("userEmail");
+  try{
+    const raw = localStorage.getItem("fas-session");
+    if(!raw){ el.textContent = "-"; return; }
+    const s = JSON.parse(raw);
+    if(s.expiresAt && Date.now() > s.expiresAt){
+      el.textContent = "-";
+      return;
+    }
+    el.textContent = s.email || "-";
+  }catch{
+    el.textContent = "-";
+  }
+}
+
+/* ===== PROVINCES (76 จังหวัด) ===== */
+const PROVINCES = [
+  "กรุงเทพมหานคร","กระบี่","กาญจนบุรี","กาฬสินธุ์","กำแพงเพชร",
+  "ขอนแก่น","จันทบุรี","ฉะเชิงเทรา","ชลบุรี","ชัยนาท",
+  "ชัยภูมิ","ชุมพร","เชียงใหม่","เชียงราย","ตรัง",
+  "ตราด","ตาก","นครนายก","นครปฐม","นครพนม",
+  "นครราชสีมา","นครศรีธรรมราช","นครสวรรค์","นนทบุรี","นราธิวาส",
+  "น่าน","บึงกาฬ","บุรีรัมย์","ปทุมธานี","ประจวบคีรีขันธ์",
+  "ปราจีนบุรี","ปัตตานี","พระนครศรีอยุธยา","พะเยา","พังงา",
+  "พัทลุง","พิจิตร","พิษณุโลก","เพชรบุรี","เพชรบูรณ์",
+  "แพร่","ภูเก็ต","มหาสารคาม","มุกดาหาร","แม่ฮ่องสอน",
+  "ยะลา","ยโสธร","ร้อยเอ็ด","ระนอง","ระยอง",
+  "ราชบุรี","ลพบุรี","ลำปาง","ลำพูน","เลย",
+  "ศรีสะเกษ","สกลนคร","สงขลา","สตูล","สมุทรปราการ",
+  "สมุทรสงคราม","สมุทรสาคร","สระแก้ว","สระบุรี","สิงห์บุรี",
+  "สุโขทัย","สุพรรณบุรี","สุราษฎร์ธานี","สุรินทร์","หนองคาย",
+  "หนองบัวลำภู","อ่างทอง","อำนาจเจริญ","อุดรธานี","อุตรดิตถ์",
+  "อุทัยธานี","อุบลราชธานี"
+];
+function populateProvinceSelect(){
+  const sel = document.getElementById("q-province");
+  PROVINCES.forEach(p=>{
+    const o = document.createElement("option");
+    o.value = p;
+    o.textContent = p;
+    sel.appendChild(o);
+  });
+}
+
+/* ===== DB LOAD ===== */
+function loadDB(){
+  try{
+    db = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+  }catch(e){
+    db = [];
+  }
+  document.getElementById("totalRecords").textContent = db.length;
+  // default: show nothing until search → or show first N? เลือกแบบรอคำสั่ง
+  currentFiltered = [];
+  renderTable();
+  document.getElementById("filteredRecords").textContent = 0;
+}
+
+/* ===== RENDER TABLE ===== */
+function renderTable(){
+  const tbody = document.getElementById("dataBody");
+  tbody.innerHTML = "";
+
+  if(!currentFiltered || currentFiltered.length===0){
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td colspan="11" class="center-text">ยังไม่มีผลการค้นหา</td>`;
+    tbody.appendChild(tr);
+    return;
+  }
+
+  const maxRows = 500; // กันหน้าแน่นเกิน
+  const toShow = currentFiltered.slice(0, maxRows);
+
+  toShow.forEach((r,idx)=>{
+    const tr = document.createElement("tr");
+    const code = r.code || "";
+    const name = r.name || "";
+    const unit = r.unit || name;
+    const type = r.type || "";
+    const prov = r.province || "";
+    const dist = r.district || "";
+    const subd = r.subdistrict || "";
+    const vill = r.village || "";
+    const web  = r.website || "";
+    const detailHref = "fa-lg-view.html?code=" + encodeURIComponent(code);
+
+    tr.innerHTML = `
+      <td>${idx+1}</td>
+      <td>${code}</td>
+      <td>${name}</td>
+      <td>${unit}</td>
+      <td>${type}</td>
+      <td>${prov}</td>
+      <td>${dist}</td>
+      <td>${subd}</td>
+      <td>${vill}</td>
+      <td>${web ? `<a href="${web}" target="_blank" class="link-btn">เปิด</a>` : ""}</td>
+      <td style="text-align:center;">
+        <a href="${detailHref}" class="link-btn">ดูรายละเอียด</a>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+/* ===== SEARCH ===== */
+function normalize(text){
+  return (text||"").toString().toLowerCase().trim();
+}
+
+function doSearch(showAll=false){
+  if(db.length===0){
+    alert("ยังไม่มีข้อมูลในฐาน fa-db-data-gov");
+    return;
+  }
+  const qUnit   = normalize(document.getElementById("q-unit").value);
+  const qProv   = document.getElementById("q-province").value.trim();
+  const qDist   = normalize(document.getElementById("q-district").value);
+  const qSubd   = normalize(document.getElementById("q-subdistrict").value);
+  const qVill   = normalize(document.getElementById("q-village").value);
+
+  let result = db;
+
+  if(!showAll){
+    if(qUnit){
+      result = result.filter(r=>{
+        const name = normalize(r.name);
+        const unit = normalize(r.unit);
+        return name.includes(qUnit) || unit.includes(qUnit);
+      });
+    }
+    if(qProv){
+      result = result.filter(r=>(r.province||"")===qProv);
+    }
+    if(qDist){
+      result = result.filter(r=> normalize(r.district).includes(qDist));
+    }
+    if(qSubd){
+      result = result.filter(r=> normalize(r.subdistrict).includes(qSubd));
+    }
+    if(qVill){
+      result = result.filter(r=> normalize(r.village).includes(qVill));
+    }
+  }
+
+  currentFiltered = result;
+  document.getElementById("filteredRecords").textContent = result.length;
+
+  const summary = document.getElementById("searchSummary");
+  if(showAll){
+    summary.textContent = `แสดงข้อมูลทั้งหมดจากฐาน: ${result.length} รายการ (ตัดแสดงสูงสุด 500 รายการบนหน้าจอ)`;
+  }else{
+    summary.textContent = `ผลการค้นหา: ${result.length} รายการ (ตัดแสดงสูงสุด 500 รายการบนหน้าจอ)`;
+  }
+
+  renderTable();
+}
+
+/* ===== EXPORT CSV ===== */
+function toCSV(rows){
+  if(!rows || rows.length===0) return "";
+  const header = ["code","name","unit","type","ministry","level","province","district","subdistrict","village","address","zipcode","lat","long","website","remark"];
+  const lines = [];
+  lines.push(header.join(","));
+  rows.forEach(r=>{
+    const row = header.map(k=>{
+      const v = (r[k] || "").toString().replace(/"/g,'""');
+      return `"${v}"`;
+    });
+    lines.push(row.join(","));
+  });
+  return lines.join("\r\n");
+}
+function exportCSV(){
+  const rows = currentFiltered.length>0 ? currentFiltered : db;
+  if(rows.length===0){
+    alert("ยังไม่มีข้อมูลให้ส่งออก");
+    return;
+  }
+  const csv = toCSV(rows);
+  const blob = new Blob([csv],{type:"text/csv;charset=utf-8;"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "fa-db-data-gov-export.csv";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+/* ===== CLEAR ===== */
+function clearSearch(){
+  document.getElementById("q-unit").value = "";
+  document.getElementById("q-province").value = "";
+  document.getElementById("q-district").value = "";
+  document.getElementById("q-subdistrict").value = "";
+  document.getElementById("q-village").value = "";
+  currentFiltered = [];
+  document.getElementById("filteredRecords").textContent = 0;
+  document.getElementById("searchSummary").textContent = "ยังไม่ได้เริ่มค้นหา";
+  renderTable();
+}
+
+/* ===== INIT ===== */
+document.getElementById("btnSearch").addEventListener("click", ()=>doSearch(false));
+document.getElementById("btnShowAll").addEventListener("click", ()=>doSearch(true));
+document.getElementById("btnClear").addEventListener("click", clearSearch);
+document.getElementById("btnExportCSV").addEventListener("click", exportCSV);
+
+displaySession();
+populateProvinceSelect();
+loadDB();
+updateClock();
+setInterval(updateClock,1000);
+</script>
+
+</body>
+</html>
