@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>FA – LG Annual | อปท. 3.1 – Going Concern</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    :root{
+      --bg:#060818;
+      --card:#11152b;
+      --border:#262b46;
+      --accent:#42a5f5;
+      --accent2:#26c6da;
+      --muted:#a3acc7;
+      --text:#f5f7ff;
+      --pink:#f48fb1;
+      --danger:#ef5350;
+      --warn:#ffb74d;
+      --success:#66bb6a;
+    }
+    *{box-sizing:border-box;}
+
+    body{
+      margin:0;
+      font-family:"Segoe UI", Tahoma, sans-serif;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(123,30,60,0.36) 0, transparent 55%),
+        radial-gradient(circle at 90% 100%, rgba(66,165,245,0.32) 0, transparent 55%),
+        radial-gradient(circle at 0% 100%, rgba(38,198,218,0.22) 0, transparent 55%),
+        var(--bg);
+      color:var(--text);
+      min-height:100vh;
+      font-size:140%;
+    }
+
+    header{
+      padding:16px 10px 12px;
+      text-align:center;
+      background:linear-gradient(120deg,#0d47a1,#42a5f5,#26c6da);
+      box-shadow:0 4px 16px rgba(0,0,0,0.7);
+      position:sticky;
+      top:0;
+      z-index:20;
+    }
+    header h2{ margin:0; font-size:20px; }
+    header .sub{ font-size:13px; opacity:.9; }
+
+    main{
+      max-width:1100px;
+      margin:20px auto 28px;
+      padding:0 16px 20px;
+    }
+
+    .nav-top{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-bottom:14px;
+    }
+    .btn-nav{
+      padding:6px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.45);
+      background:rgba(0,0,0,0.35);
+      color:#fff;
+      font-size:12px;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+    }
+    .btn-nav:hover{ background:rgba(0,0,0,0.6); }
+
+    .intro{
+      font-size:13px;
+      color:var(--muted);
+      margin-bottom:10px;
+    }
+
+    .card{
+      background:var(--card);
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,0.08);
+      box-shadow:0 8px 24px rgba(0,0,0,0.85);
+      padding:14px 14px 12px;
+      margin-bottom:14px;
+    }
+    .card-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-end;
+      gap:8px;
+      margin-bottom:8px;
+    }
+    .card-title{
+      font-size:15px;
+      font-weight:600;
+    }
+    .card-sub{
+      font-size:12px;
+      color:var(--muted);
+    }
+    .pill{
+      padding:3px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.2);
+      font-size:11px;
+      background:rgba(0,0,0,0.35);
+      white-space:nowrap;
+    }
+
+    label{
+      font-size:12px;
+      display:block;
+      margin-bottom:3px;
+    }
+    .field-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-bottom:8px;
+    }
+    .field{
+      flex:1 1 160px;
+    }
+    input[type="text"],
+    input[type="number"],
+    select,
+    textarea{
+      width:100%;
+      padding:6px 8px;
+      border-radius:8px;
+      border:1px solid var(--border);
+      background:#070b1c;
+      color:var(--text);
+      font-size:12px;
+    }
+    textarea{
+      min-height:72px;
+      resize:vertical;
+    }
+
+    .hint{
+      font-size:11px;
+      color:var(--muted);
+      margin-top:2px;
+    }
+
+    .table-like{
+      width:100%;
+      border-collapse:collapse;
+      font-size:12px;
+      margin-top:4px;
+    }
+    .table-like th,
+    .table-like td{
+      border:1px solid rgba(255,255,255,0.12);
+      padding:4px 6px;
+      text-align:left;
+    }
+    .table-like th{
+      background:rgba(66,165,245,0.18);
+      font-weight:600;
+    }
+    .table-like td input[type="number"],
+    .table-like td input[type="text"]{
+      width:100%;
+      padding:4px 6px;
+      font-size:12px;
+    }
+
+    .badge-danger{ color:var(--danger); }
+    .badge-warn{ color:var(--warn); }
+    .badge-success{ color:var(--success); }
+
+    .radio-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      font-size:12px;
+      margin:6px 0 4px;
+    }
+    .radio-row label{
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+      margin-bottom:0;
+    }
+
+    .btn-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:10px;
+    }
+    .btn{
+      padding:6px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.45);
+      background:rgba(0,0,0,0.45);
+      color:#fff;
+      font-size:12px;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      text-decoration:none;
+    }
+    .btn:hover{
+      background:rgba(0,0,0,0.8);
+    }
+    .btn-primary{
+      border-color:#42a5f5;
+      background:linear-gradient(120deg,#0d47a1,#42a5f5);
+    }
+    .btn-primary:hover{
+      background:linear-gradient(120deg,#0b3a82,#1e88e5);
+    }
+    .btn-ghost{
+      border-style:dashed;
+      border-color:rgba(255,255,255,0.35);
+      background:transparent;
+    }
+
+    .footer-note{
+      font-size:11px;
+      color:var(--muted);
+      margin-top:10px;
+      text-align:right;
+    }
+
+    @media (max-width:600px){
+      .card-header{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h2>อปท. 3.1 – การประเมิน Going Concern ของหน่วยรับตรวจ</h2>
+  <div class="sub">Form 3.1 – Going Concern Assessment | FA – LG Annual</div>
+</header>
+
+<main>
+
+  <!-- NAV TOP -->
+  <div class="nav-top">
+    <a href="fa-lg-annual-plan.html" class="btn-nav">
+      <span>↩</span> กลับเมนูแบบฟอร์มการวางแผน
+    </a>
+    <a href="fa-lg-annual.html" class="btn-nav">
+      <span>📅</span> กลับหน้า FA – Annual LG
+    </a>
+    <a href="fa-menu.html" class="btn-nav">
+      <span>📂</span> เมนู FA Main
+    </a>
+    <a href="index.html" class="btn-nav">
+      <span>🏠</span> หน้าหลักระบบ
+    </a>
+  </div>
+
+  <div class="intro">
+    แบบฟอร์มนี้ใช้ประเมิน <strong>ความสามารถในการดำเนินงานต่อเนื่อง (Going Concern)</strong>
+    ของหน่วยรับตรวจจากทั้งข้อมูลเชิงตัวเลขและปัจจัยเชิงคุณภาพ
+    ผลลัพธ์จะเชื่อมไปยัง <strong>RMM (อปท.4)</strong> และ <strong>Overall Audit Plan (อปท.5)</strong>
+  </div>
+
+  <!-- CARD 1: ข้อมูลหน่วยรับตรวจ / ปี -->
+  <section class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">1. ข้อมูลทั่วไปของงานสอบบัญชี</div>
+        <div class="card-sub">General Information</div>
+      </div>
+      <div class="pill">Header – Shared with other planning forms</div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>ปีงบประมาณ (Fiscal Year)</label>
+        <select>
+          <option value="">– เลือกปีงบประมาณ –</option>
+          <option>2567</option>
+          <option>2568</option>
+          <option>2569</option>
+        </select>
+        <div class="hint">ภายหลังสามารถเชื่อม dropdown นี้กับฐานข้อมูลปีงบประมาณได้</div>
+      </div>
+      <div class="field">
+        <label>หน่วยรับตรวจ (Auditee)</label>
+        <input type="text" placeholder="ดึงจากฐานข้อมูล / เลือกจากรายชื่อหน่วยรับตรวจ">
+        <div class="hint">ขั้นต่อไปสามารถเปลี่ยนเป็น autocomplete จากฐานข้อมูลหน่วยรับตรวจ</div>
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>จังหวัด</label>
+        <input type="text" placeholder="จังหวัด">
+      </div>
+      <div class="field">
+        <label>อำเภอ</label>
+        <input type="text" placeholder="อำเภอ">
+      </div>
+      <div class="field">
+        <label>ดัชนี / Index No.</label>
+        <input type="text" placeholder="เช่น 3.1 / GC-01">
+      </div>
+    </div>
+  </section>
+
+  <!-- CARD 2: ตัวชี้วัดทางการเงิน -->
+  <section class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">2. ตัวชี้วัดด้านการเงินและงบประมาณ</div>
+        <div class="card-sub">Key Financial & Budgetary Indicators</div>
+      </div>
+      <div class="pill">Quantitative Assessment</div>
+    </div>
+
+    <p style="font-size:12px; color:var(--muted); margin-top:0;">
+      กรอกข้อมูลจากงบแสดงฐานะการเงิน งบกระแสเงินสด และงบประมาณของ อปท.
+      เพื่อใช้เป็นฐานในการพิจารณา Going Concern
+    </p>
+
+    <table class="table-like">
+      <thead>
+        <tr>
+          <th style="width:34%;">ตัวชี้วัด</th>
+          <th style="width:22%;">ปีปัจจุบัน</th>
+          <th style="width:22%;">ปีก่อน</th>
+          <th>ข้อสังเกตเบื้องต้น</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1) ดุลงบประมาณ (เกินดุล / ขาดดุล)</td>
+          <td><input type="number" placeholder="ปีปัจจุบัน"></td>
+          <td><input type="number" placeholder="ปีก่อน"></td>
+          <td><input type="text" placeholder="เช่น ขาดดุลต่อเนื่อง 3 ปี"></td>
+        </tr>
+        <tr>
+          <td>2) ยอดเงินสดและรายการเทียบเท่าเงินสดสิ้นงวด</td>
+          <td><input type="number"></td>
+          <td><input type="number"></td>
+          <td><input type="text" placeholder="เช่น ลดลงมากผิดปกติ"></td>
+        </tr>
+        <tr>
+          <td>3) หนี้สินหมุนเวียนรวม</td>
+          <td><input type="
