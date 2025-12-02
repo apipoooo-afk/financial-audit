@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>FA – LG Annual | อปท. 4 RMM – การประเมินความเสี่ยงและตอบสนองความเสี่ยง</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    :root{
+      --bg:#060818;
+      --card:#11152b;
+      --border:#262b46;
+      --accent:#42a5f5;
+      --accent2:#26c6da;
+      --muted:#a3acc7;
+      --text:#f5f7ff;
+      --pink:#f48fb1;
+      --danger:#ef5350;
+      --warn:#ffb300;
+      --ok:#66bb6a;
+    }
+    *{box-sizing:border-box;}
+
+    body{
+      margin:0;
+      font-family:"Segoe UI", Tahoma, sans-serif;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(123,30,60,0.36) 0, transparent 55%),
+        radial-gradient(circle at 90% 100%, rgba(66,165,245,0.32) 0, transparent 55%),
+        radial-gradient(circle at 0% 100%, rgba(38,198,218,0.22) 0, transparent 55%),
+        var(--bg);
+      color:var(--text);
+      min-height:100vh;
+      font-size:140%;
+    }
+
+    header{
+      padding:16px 10px 12px;
+      text-align:center;
+      background:linear-gradient(120deg,#0d47a1,#42a5f5,#26c6da);
+      box-shadow:0 4px 16px rgba(0,0,0,0.7);
+      position:sticky;
+      top:0;
+      z-index:20;
+    }
+    header h2{ margin:0; font-size:20px; }
+    header .sub{ font-size:13px; opacity:.9; }
+
+    main{
+      max-width:1100px;
+      margin:20px auto 28px;
+      padding:0 16px 20px;
+    }
+
+    .nav-top{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-bottom:14px;
+    }
+    .btn-nav{
+      padding:6px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.45);
+      background:rgba(0,0,0,0.35);
+      color:#fff;
+      font-size:12px;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+    }
+    .btn-nav:hover{ background:rgba(0,0,0,0.6); }
+
+    .card{
+      background:var(--card);
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,0.12);
+      padding:16px 14px 16px;
+      box-shadow:0 10px 30px rgba(0,0,0,0.9);
+      margin-bottom:16px;
+    }
+    .card-header{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:flex-start;
+      margin-bottom:10px;
+    }
+    .card-title{
+      font-size:16px;
+      font-weight:600;
+    }
+    .card-sub{
+      font-size:12px;
+      color:var(--muted);
+    }
+    .chip{
+      padding:4px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.2);
+      font-size:11px;
+      background:rgba(0,0,0,0.35);
+      white-space:nowrap;
+    }
+
+    .form-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:10px 14px;
+      margin-top:4px;
+    }
+
+    label{
+      font-size:12px;
+      display:block;
+      margin-bottom:2px;
+      color:#e3f2fd;
+    }
+    .input, select, textarea{
+      width:100%;
+      padding:6px 8px;
+      border-radius:10px;
+      border:1px solid var(--border);
+      background:#080c1b;
+      color:var(--text);
+      font-size:12px;
+    }
+    textarea{
+      min-height:80px;
+      resize:vertical;
+    }
+    .input:focus, select:focus, textarea:focus{
+      outline:none;
+      border-color:var(--accent2);
+      box-shadow:0 0 0 1px rgba(38,198,218,0.5);
+    }
+
+    .section-title{
+      font-size:14px;
+      font-weight:600;
+      margin:10px 0 6px;
+    }
+    .hint{
+      font-size:11px;
+      color:var(--muted);
+      margin-bottom:6px;
+    }
+
+    .rmm-table{
+      width:100%;
+      border-collapse:collapse;
+      font-size:12px;
+      margin-top:4px;
+    }
+    .rmm-table th,
+    .rmm-table td{
+      border:1px solid rgba(255,255,255,0.08);
+      padding:4px 4px;
+      vertical-align:top;
+    }
+    .rmm-table th{
+      background:#0b1024;
+      font-weight:600;
+    }
+    .rmm-table input,
+    .rmm-table select,
+    .rmm-table textarea{
+      font-size:11px;
+    }
+    .small-input{
+      padding:4px 6px;
+      border-radius:8px;
+      border:1px solid var(--border);
+      background:#080c1b;
+      color:var(--text);
+      width:100%;
+    }
+    .small-select{
+      padding:4px 6px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.3);
+      background:#080c1b;
+      color:var(--text);
+      width:100%;
+    }
+    .small-textarea{
+      padding:4px 6px;
+      border-radius:8px;
+      border:1px solid var(--border);
+      background:#080c1b;
+      color:var(--text);
+      width:100%;
+      min-height:52px;
+      resize:vertical;
+    }
+
+    .flex-between{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:center;
+      margin-top:8px;
+      flex-wrap:wrap;
+    }
+
+    .status-pill{
+      padding:4px 10px;
+      border-radius:999px;
+      font-size:11px;
+      border:1px solid rgba(255,255,255,0.25);
+      background:rgba(0,0,0,0.45);
+    }
+    .status-ok{ border-color:var(--ok); color:var(--ok); }
+    .status-warn{ border-color:var(--warn); color:var(--warn); }
+    .status-danger{ border-color:var(--danger); color:var(--danger); }
+
+    .btn-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:10px;
+    }
+    .btn{
+      padding:6px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.4);
+      background:rgba(0,0,0,0.4);
+      color:#fff;
+      font-size:12px;
+      cursor:pointer;
+    }
+    .btn-primary{
+      border-color:var(--accent);
+      background:linear-gradient(120deg,#0d47a1,#42a5f5);
+    }
+    .btn-danger{
+      border-color:var(--danger);
+      background:linear-gradient(120deg,#b71c1c,#f44336);
+    }
+    .btn:hover{
+      background:rgba(0,0,0,0.7);
+    }
+    .btn-primary:hover,
+    .btn-danger:hover{
+      filter:brightness(1.08);
+    }
+
+    .footer-note{
+      font-size:10px;
+      color:var(--muted);
+      margin-top:6px;
+    }
+
+    @media (max-width:600px){
+      .card-header{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h2>🧮 อปท. 4 – การประเมินความเสี่ยงและตอบสนองความเสี่ยง (RMM)</h2>
+  <div class="sub">
+    Form 4 – Risk of Material Misstatement & Audit Responses | FA – Local Government (Annual)
+  </div>
+</header>
+
+<main>
+
+  <div class="nav-top">
+    <a href="fa-lg-annual-plan.html" class="btn-nav">
+      <span>↩</span> กลับเมนูแบบฟอร์มการวางแผน
+    </a>
+    <a href="fa-lg-annual.html" class="btn-nav">
+      <span>📅</span> กลับหน้าเลือกปี / หน่วยรับตรวจ
+    </a>
+    <a href="fa-menu.html" class="btn-nav">
+      <span>📂</span> FA Main Menu
+    </a>
+    <a href="index.html" class="btn-nav">
+      <span>🏠</span> หน้าหลักระบบ
+    </a>
+  </div>
+
+  <!-- CARD 1: ข้อมูลพื้นฐาน -->
+  <section class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">ส่วนที่ 1 – ข้อมูลพื้นฐาน และฟอร์มอ้างอิงสำหรับกำหนด RMM</div>
+        <div class="card-sub">
+          ใช้ผูกปีงบประมาณ หน่วยรับตรวจ และฟอร์มจากการวางแผน (IC, Fraud Risk, Materiality ฯลฯ) ที่เป็นฐานในการกำหนด RMM
+        </div>
+      </div>
+      <div class="chip">RMM • Overview</div>
+    </div>
+
+    <div class="form-grid">
+      <div>
+        <label for="fiscalYear">ปีงบประมาณ</label>
+        <select id="fiscalYear" class="input">
+          <option value="">— เลือกปีงบประมาณ —</option>
+          <option>2567</option>
+          <option>2568</option>
+          <option>2569</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="auditeeName">ชื่อหน่วยรับตรวจ (อปท.)</label>
+        <input id="auditeeName" class="input" type="text" placeholder="เช่น เทศบาลเมืองตัวอย่าง">
+      </div>
+
+      <div>
+        <label for="amphoe">อำเภอ</label>
+        <input id="amphoe" class="input" type="text" placeholder="อำเภอ">
+      </div>
+
+      <div>
+        <label for="province">จังหวัด</label>
+        <input id="province" class="input" type="text" placeholder="จังหวัด">
+      </div>
+
+      <div>
+        <label for="auditPeriod">งวดที่ประเมิน</label>
+        <input id="auditPeriod" class="input" type="text" placeholder="เช่น สำหรับปีสิ้นสุดวันที่ 30 กันยายน 2567">
+      </div>
+
+      <div>
+        <label for="preparedBy">ผู้จัดทำ</label>
+        <input id="preparedBy" class="input" type="text" placeholder="ชื่อผู้จัดทำแบบฟอร์ม">
+      </div>
+
+      <div>
+        <label for="reviewedBy">ผู้สอบทาน</label>
+        <input id="reviewedBy" class="input" type="text" placeholder="ชื่อผู้สอบทาน / ผตจ.">
+      </div>
+
+      <div>
+        <label for="refForms">ฟอร์ม/แหล่งข้อมูลที่ใช้กำหนด RMM</label>
+        <input id="refForms" class="input" type="text"
+               placeholder="เช่น อปท.3, 3.1, 11.1.3–11.1.5, ฟอร์ม 3.5–3.6, Fraud Risk, IC, วิเคราะห์อัตราส่วน ฯลฯ">
+      </div>
+    </div>
+
+    <div class="footer-note">
+      * ข้อมูลส่วนนี้สามารถตั้งค่าให้ดึงอัตโนมัติจากระบบ FA – LG และฐานข้อมูล Materiality / Fraud Risk / IC ที่บันทึกไว้แล้ว
+    </div>
+  </section>
+
+  <!-- CARD 2: ความเสี่ยงระดับงบการเงินโดยรวม -->
+  <section class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">ส่วนที่ 2 – การประเมินความเสี่ยงระดับงบการเงินโดยรวม</div>
+        <div class="card-sub">
+          ใช้สรุประดับความเสี่ยงที่อาจทำให้เกิดการแสดงข้อมูลที่ขัดต่อข้อเท็จจริงอย่างมีสาระสำคัญในงบการเงินโดยรวม
+        </div>
+      </div>
+      <div class="chip">Financial Statement Level Risk</div>
+    </div>
+
+    <div class="form-grid">
+      <div>
+        <label for="fsRiskLevel">ระดับความเสี่ยงระดับงบการเงินโดยรวม</label>
+        <select id="fsRiskLevel" class="input">
+          <option value="">— เลือก —</option>
+          <option value="low">ต่ำ</option>
+          <option value="medium">ปานกลาง</option>
+          <option value="high">สูง</option>
+        </select>
+      </div>
+      <div>
+        <label for="fsRiskReason">เหตุผลประกอบ</label>
+        <textarea id="fsRiskReason" class="input"
+                  placeholder="เชื่อมโยงผลจาก IC, Fraud Risk, Going Concern, และปัจจัยเชิงระบบอื่น ๆ"></textarea>
+      </div>
+    </div>
+
+    <div class="section-title">2.1 แนวทางตอบสนองระดับงบการเงินโดยรวม</div>
+    <textarea id="fsResponse" class="input"
+              placeholder="เช่น เพิ่มทีมงานอาวุโส เพิ่มการทบทวนโดย ผตจ., ขยายขอบเขตการสุ่มตัวอย่าง, เพิ่มขั้นตอนวิเคราะห์เชิงระบบ ฯลฯ"></textarea>
+
+    <div class="flex-between">
+      <div>
+        <div class="section-title" style="margin-top:10px;">สถานะการประเมินความเสี่ยงระดับ FS</div>
+        <div id="fsStatusPill" class="status-pill">
+          ยังไม่ประเมิน
+        </div>
+      </div>
+      <div class="btn-row">
+        <button type="button" class="btn btn-primary" onclick="computeFsStatus()">
+          ประเมินสถานะโดยสังเขป
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- CARD 3: ตาราง RMM รายรายการ -->
+  <section class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">ส่วนที่ 3 – ตาราง RMM รายรายการ / ประเด็นสำคัญ (Assertion Level)</div>
+        <div class="card-sub">
+          ใช้บันทึกความเสี่ยงระดับ Assertion (C, A, E, V, RO, D ฯลฯ) และวิธีการตอบสนอง (Test of Controls / Substantive Test)
+        </div>
+      </div>
+      <div class="chip">Assertion Level RMM</div>
+    </div>
+
+    <div class="hint">
+      ตัวอย่าง Assertion: C = Completeness, A = Accuracy, E = Existence, V = Valuation, RO = Rights & Obligations, D = Presentation & Disclosure
+    </div>
+
+    <div class="btn-row" style="margin-bottom:6px;">
+      <button type="button" class="btn" onclick="addRmmRow()">➕ เพิ่มรายการความเสี่ยง</button>
+      <button type="button" class="btn btn-danger" onclick="clearRmmTable()">🗑 ลบข้อมูลในตารางทั้งหมด</button>
+    </div>
+
+    <div style="overflow-x:auto;">
+      <table class="rmm-table">
+        <thead>
+        <tr>
+          <th style="width:4%;">ลำดับ</th>
+          <th style="width:16%;">รายการ/ด้านที่มีความเสี่ยงสูง</th>
+          <th style="width:10%;">Assertion<br>(C,A,E,V,RO,D)</th>
+          <th style="width:9%;">IR<br>(Inherent Risk)</th>
+          <th style="width:9%;">CR<br>(Control Risk)</th>
+          <th style="width:9%;">RMM โดยรวม</th>
+          <th style="width:18%;">ลักษณะความเสี่ยง / สาเหตุ</th>
+          <th style="width:25%;">การตอบสนองความเสี่ยง (แผนการตรวจสอบ)</th>
+        </tr>
+        </thead>
+        <tbody id="rmmBody">
+        <!-- แถวตัวอย่างเริ่มต้น 3 แถว -->
+        <tr>
+          <td class="rmm-order">1</td>
+          <td>
+            <input class="small-input rmm-area" type="text"
+                   placeholder="เช่น รายได้ค่าน้ำบาดาล / รายได้ภาษี ฯลฯ">
+          </td>
+          <td>
+            <input class="small-input rmm-assertion" type="text"
+                   placeholder="เช่น C, E, V">
+          </td>
+          <td>
+            <select class="small-select rmm-ir">
+              <option value="">—</option>
+              <option value="low">ต่ำ</option>
+              <option value="medium">ปานกลาง</option>
+              <option value="high">สูง</option>
+            </select>
+          </td>
+          <td>
+            <select class="small-select rmm-cr">
+              <option value="">—</option>
+              <option value="low">ต่ำ</option>
+              <option value="medium">ปานกลาง</option>
+              <option value="high">สูง</option>
+            </select>
+          </td>
+          <td>
+            <select class="small-select rmm-rmm">
+              <option value="">—</option>
+              <option value="low">ต่ำ</option>
+              <option value="medium">ปานกลาง</option>
+              <option value="high">สูง</option>
+            </select>
+          </td>
+          <td>
+            <textarea class="small-textarea rmm-desc"
+                      placeholder="สรุปลักษณะความเสี่ยง ข้อมูล/สัญญาณที่พบ ฯลฯ"></textarea>
+          </td>
+          <td>
+            <textarea class="small-textarea rmm-response"
+                      placeholder="ระบุขั้นตอนตรวจสอบที่วางแผน เช่น Test of Controls, Substantive Test, Analytical Procedures ฯลฯ"></textarea>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="rmm-order">2</td>
+          <td>
+            <input class="small-input rmm-area" type="text"
+                   placeholder="เช่น ค่าใช้จ่ายโครงการลงทุน / พัสดุ ฯลฯ">
+          </td>
+          <td>
+            <input class="small-input rmm-assertion" type="text"
+                   placeholder="เช่น A, V, D">
+          </td>
+          <td>
+            <select class="small-select rmm-ir">
+              <option value="">—</option>
+              <option value="low">ต่ำ</option>
+              <option value="medium">ปานกลาง</option>
+              <option value="high">สูง</option>
+            </select>
+          </td>
+          <td>
+            <select class="small-select rmm-cr">
+              <option value="">—</option>
+              <option value="low">ต่ำ</option>
+              <option value="medium">ปานกลาง</option>
+              <option value="high">สูง</option>
+            </select>
+          </td>
+          <td>
+            <select class="small-select rmm-rmm">
+              <option value="">—</option>
+              <option value="low">ต่ำ</option>
+              <option value="medium">ปานกลาง</option>
+              <option value="high">สูง</option>
+            </select>
+          </td>
+          <td>
+            <textarea class="small-textarea rmm-desc"
+                      placeholder="สรุปความเสี่ยงของรายการนี้"></textarea>
+          </td>
+          <td>
+            <textarea class="small-textarea rmm-response"
+                      placeholder="วางแผนตอบสนอง เช่น ทดสอบเอกสารหลักฐานตัวอย่าง X รายการ ฯลฯ"></textarea>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="rmm-order">3</td>
+          <td>
+            <input class="small-input rmm-area" type="text"
+                   placeholder="เช่น สินทรัพย์ถาวร / ที่ดินอาคาร ฯลฯ">
+          </td>
+          <td>
+            <input class="small-input rmm-assertion" type="text"
+                   placeholder="เช่น E, V, RO">
+          </td>
+          <td>
+            <select class="small-select rmm-ir">
+              <option value="">—</option>
+              <option value="low">ต่ำ</option>
+              <option value="medium">ปานกลาง</option>
+              <option value="high">สูง</option>
+            </select>
+          </td>
+          <td>
+            <select class="small-select rmm-cr">
+              <option value="">—</option>
+              <option value="low">ต่ำ</option>
+              <option value="medium">ปานกลาง</option>
+              <option value="high">สูง</option>
+            </select>
+          </td>
+          <td>
+            <select class="small-select rmm-rmm">
+              <option value="">—</option>
+              <option value="low">ต่ำ</option>
+              <option value="medium">ปานกลาง</option>
+              <option value="high">สูง</option>
+            </select>
+          </td>
+          <td>
+            <textarea class="small-textarea rmm-desc"
+                      placeholder="สรุปความเสี่ยงของรายการนี้"></textarea>
+          </td>
+          <td>
+            <textarea class="small-textarea rmm-response"
+                      placeholder="ระบุ Test of Details / Analytical Review / การตรวจนับ ฯลฯ"></textarea>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="footer-note">
+      * ในระบบจริง แต่ละรายการ RMM สามารถเชื่อมกับกระดาษทำการ Fieldwork, โปรแกรมตรวจสอบ และสถานะการทำงานของทีมตรวจสอบได้
+    </div>
+  </section>
+
+  <!-- CARD 4: สรุปรวม RMM + ปุ่มช่วยประเมิน -->
+  <section class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">ส่วนที่ 4 – สรุประดับ RMM โดยรวม และการใช้ RMM เชื่อมกับแผนตรวจสอบ</div>
+        <div class="card-sub">
+          ใช้สรุประดับ RMM รวมทั้งผลกระทบต่อการกำหนดขอบเขต และระดับรายละเอียดของการตรวจสอบในแต่ละด้าน
+        </div>
+      </div>
+      <div class="chip">RMM Summary</div>
+    </div>
+
+    <div class="section-title">4.1 สรุประดับ RMM โดยรวมจากตารางส่วนที่ 3</div>
+    <div class="flex-between">
+      <div>
+        <label for="rmmOverallLevel">เลือกระดับ RMM โดยรวม</label>
+        <select id="rmmOverallLevel" class="input">
+          <option value="">— เลือก —</option>
+          <option value="low">ต่ำ – เน้น Analytical & Sample-based</option>
+          <option value="medium">ปานกลาง – ใช้ผสม TOC + Substantive</option>
+          <option value="high">สูง – เน้น Substantive Test หนาแน่น / ขยายขอบเขต</option>
+        </select>
+      </div>
+      <div>
+        <div class="section-title" style="margin-top:0;">สถานะช่วยประเมิน RMM</div>
+        <div id="rmmStatusPill" class="status-pill">
+          ยังไม่ประเมิน
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title">4.2 การเชื่อม RMM กับ Materiality และการออกแบบตัวอย่าง</div>
+    <textarea id="rmmMaterialityLink" class="input"
+              placeholder="เช่น กำหนดขนาดตัวอย่างตาม OM/PM/TE จากฟอร์ม 3.5–3.6 ปรับเพิ่มสำหรับรายการที่ RMM สูง ฯลฯ"></textarea>
+
+    <div class="section-title">4.3 หมายเหตุ/ข้อพิจารณาเพิ่มเติมสำหรับ ผตจ. และผู้สอบทาน</div>
+    <textarea id="rmmNote" class="input"
+              placeholder="สรุปข้อสังเกตที่ควรเน้นในการสอบทาน แสดงความเชื่อมโยงระหว่าง RMM, IC, Fraud Risk และแผน Fieldwork"></textarea>
+
+    <div class="btn-row">
+      <button type="button" class="btn" onclick="computeRmmStatusFromTable()">
+        🔎 วิเคราะห์ RMM จากตารางอย่างคร่าว ๆ
+      </button>
+      <button type="button" class="btn btn-primary" onclick="clearAllRmmForm()">
+        🧹 ล้างข้อมูลทั้งหมด (หน้านี้)
+      </button>
+    </div>
+
+    <div class="footer-note">
+      * ฟังก์ชัน “วิเคราะห์ RMM จากตารางอย่างคร่าว ๆ” ใช้ Logic ง่าย ๆ เพื่อให้เห็นแนวโน้มเท่านั้น – ในระบบจริงสามารถเชื่อมกับ Scoring Model จาก Excel / ฐานข้อมูลได้
+    </div>
+  </section>
+
+</main>
+
+<script>
+  // ประเมินสถานะ FS Risk เบื้องต้น
+  function computeFsStatus(){
+    const val = document.getElementById('fsRiskLevel')?.value;
+    const pill = document.getElementById('fsStatusPill');
+    if(!pill) return;
+
+    if(!val){
+      pill.textContent = 'ยังไม่ได้เลือกระดับความเสี่ยง';
+      pill.className = 'status-pill';
+      return;
+    }
+
+    if(val === 'high'){
+      pill.textContent = 'ผลช่วยประเมิน: ความเสี่ยงระดับงบการเงินสูง – ต้องเพิ่มขั้นตอนการตรวจสอบในภาพรวม';
+      pill.className = 'status-pill status-danger';
+    }else if(val === 'medium'){
+      pill.textContent = 'ผลช่วยประเมิน: ความเสี่ยงระดับงบการเงินปานกลาง – ต้องออกแบบขั้นตอนเสริมบางส่วน';
+      pill.className = 'status-pill status-warn';
+    }else{
+      pill.textContent = 'ผลช่วยประเมิน: ความเสี่ยงระดับงบการเงินต่ำ – แต่ยังต้องอาศัยการประเมินรายรายการประกอบ';
+      pill.className = 'status-pill status-ok';
+    }
+  }
+
+  // เพิ่มแถว RMM
+  function addRmmRow(){
+    const tbody = document.getElementById('rmmBody');
+    if(!tbody) return;
+
+    const rowCount = tbody.querySelectorAll('tr').length;
+    const newIndex = rowCount + 1;
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td class="rmm-order">${newIndex}</td>
+      <td>
+        <input class="small-input rmm-area" type="text"
+               placeholder="ระบุรายการ/ด้านที่มีความเสี่ยงสูง">
+      </td>
+      <td>
+        <input class="small-input rmm-assertion" type="text"
+               placeholder="เช่น C, A, E, V, RO, D">
+      </td>
+      <td>
+        <select class="small-select rmm-ir">
+          <option value="">—</option>
+          <option value="low">ต่ำ</option>
+          <option value="medium">ปานกลาง</option>
+          <option value="high">สูง</option>
+        </select>
+      </td>
+      <td>
+        <select class="small-select rmm-cr">
+          <option value="">—</option>
+          <option value="low">ต่ำ</option>
+          <option value="medium">ปานกลาง</option>
+          <option value="high">สูง</option>
+        </select>
+      </td>
+      <td>
+        <select class="small-select rmm-rmm">
+          <option value="">—</option>
+          <option value="low">ต่ำ</option>
+          <option value="medium">ปานกลาง</option>
+          <option value="high">สูง</option>
+        </select>
+      </td>
+      <td>
+        <textarea class="small-textarea rmm-desc"
+                  placeholder="สรุปความเสี่ยงของรายการนี้"></textarea>
+      </td>
+      <td>
+        <textarea class="small-textarea rmm-response"
+                  placeholder="แผนการตอบสนองความเสี่ยงสำหรับรายการนี้"></textarea>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  }
+
+  // ล้างเฉพาะตาราง RMM
+  function clearRmmTable(){
+    const tbody = document.getElementById('rmmBody');
+    if(!tbody) return;
+    tbody.innerHTML = '';
+  }
+
+  // วิเคราะห์ RMM จากตารางแบบง่าย ๆ
+  function computeRmmStatusFromTable(){
+    const selectRmm = document.querySelectorAll('#rmmBody .rmm-rmm');
+    const pill = document.getElementById('rmmStatusPill');
+    if(!pill) return;
+
+    if(selectRmm.length === 0){
+      pill.textContent = 'ยังไม่มีรายการในตารางความเสี่ยง';
+      pill.className = 'status-pill';
+      return;
+    }
+
+    let values = [];
+    selectRmm.forEach(s => {
+      if(s.value) values.push(s.value);
+    });
+
+    if(values.length === 0){
+      pill.textContent = 'ยังไม่ได้กำหนดระดับ RMM รายรายการ';
+      pill.className = 'status-pill';
+      return;
+    }
+
+    if(values.includes('high')){
+      pill.textContent = 'ผลช่วยประเมิน: มีรายการที่ RMM สูงหลายรายการ – ควรถือว่าระดับ RMM รวมอยู่ในกลุ่มสูง และขยายขอบเขตการตรวจ';
+      pill.className = 'status-pill status-danger';
+    }else if(values.includes('medium')){
+      pill.textContent = 'ผลช่วยประเมิน: ส่วนใหญ่เป็นระดับปานกลาง – ควรวางแผนตรวจแบบผสม และเน้นรายการเสี่ยงเฉพาะด้าน';
+      pill.className = 'status-pill status-warn';
+    }else{
+      pill.textContent = 'ผลช่วยประเมิน: RMM ในตารางอยู่ระดับต่ำ – อย่างไรก็ดี ต้องติดตามข้อมูลใหม่และผลจาก Fraud Risk / IC เพิ่มเติม';
+      pill.className = 'status-pill status-ok';
+    }
+  }
+
+  // ล้างข้อมูลทุกส่วนของฟอร์ม RMM หน้านี้
+  function clearAllRmmForm(){
+    // ล้าง input, textarea, select
+    const inputs = document.querySelectorAll('input.input, textarea.input, select.input');
+    inputs.forEach(el => {
+      if(el.tagName === 'SELECT'){
+        el.selectedIndex = 0;
+      }else{
+        el.value = '';
+      }
+    });
+
+    // ล้างตาราง RMM
+    clearRmmTable();
+
+    // รีเซ็ต pill ทั้งสองตัว
+    const fsPill = document.getElementById('fsStatusPill');
+    if(fsPill){
+      fsPill.textContent = 'ยังไม่ประเมิน';
+      fsPill.className = 'status-pill';
+    }
+
+    const rmmPill = document.getElementById('rmmStatusPill');
+    if(rmmPill){
+      rmmPill.textContent = 'ยังไม่ประเมิน';
+      rmmPill.className = 'status-pill';
+    }
+  }
+</script>
+
+</body>
+</html>
