@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>FA – LG Annual | อปท.5 – แผนการสอบบัญชีโดยรวม (Overall Audit Plan)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    :root{
+      --bg:#060818;
+      --card:#11152b;
+      --border:#262b46;
+      --accent:#42a5f5;
+      --accent2:#26c6da;
+      --muted:#a3acc7;
+      --text:#f5f7ff;
+      --pink:#f48fb1;
+    }
+    *{box-sizing:border-box;}
+
+    body{
+      margin:0;
+      font-family:"Segoe UI", Tahoma, sans-serif;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(123,30,60,0.36) 0, transparent 55%),
+        radial-gradient(circle at 90% 100%, rgba(66,165,245,0.32) 0, transparent 55%),
+        radial-gradient(circle at 0% 100%, rgba(38,198,218,0.22) 0, transparent 55%),
+        var(--bg);
+      color:var(--text);
+      min-height:100vh;
+      font-size:140%;
+    }
+
+    header{
+      padding:16px 10px 12px;
+      text-align:center;
+      background:linear-gradient(120deg,#0d47a1,#42a5f5,#26c6da);
+      box-shadow:0 4px 16px rgba(0,0,0,0.7);
+      position:sticky;
+      top:0;
+      z-index:20;
+    }
+    header h2{ margin:0; font-size:20px; }
+    header .sub{ font-size:13px; opacity:.9; }
+
+    main{
+      max-width:1100px;
+      margin:20px auto 28px;
+      padding:0 16px 20px;
+    }
+
+    .nav-top{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-bottom:14px;
+    }
+    .btn-nav{
+      padding:6px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.45);
+      background:rgba(0,0,0,0.35);
+      color:#fff;
+      font-size:12px;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+    }
+    .btn-nav:hover{ background:rgba(0,0,0,0.6); }
+
+    .card{
+      background:var(--card);
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,0.12);
+      padding:16px 14px 16px;
+      box-shadow:0 10px 30px rgba(0,0,0,0.9);
+      margin-bottom:16px;
+    }
+    .card-header{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:flex-start;
+      margin-bottom:10px;
+    }
+    .card-title{
+      font-size:16px;
+      font-weight:600;
+    }
+    .card-sub{
+      font-size:12px;
+      color:var(--muted);
+    }
+    .chip{
+      padding:4px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.2);
+      font-size:11px;
+      background:rgba(0,0,0,0.35);
+      white-space:nowrap;
+    }
+
+    .form-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:10px 14px;
+      margin-top:4px;
+    }
+
+    label{
+      font-size:12px;
+      display:block;
+      margin-bottom:2px;
+      color:#e3f2fd;
+    }
+    .input, select, textarea{
+      width:100%;
+      padding:6px 8px;
+      border-radius:10px;
+      border:1px solid var(--border);
+      background:#080c1b;
+      color:var(--text);
+      font-size:12px;
+    }
+    textarea{
+      min-height:70px;
+      resize:vertical;
+    }
+    .input:focus, select:focus, textarea:focus{
+      outline:none;
+      border-color:var(--accent2);
+      box-shadow:0 0 0 1px rgba(38,198,218,0.5);
+    }
+
+    .section-title{
+      font-size:14px;
+      font-weight:600;
+      margin:10px 0 6px;
+    }
+    .hint{
+      font-size:11px;
+      color:var(--muted);
+      margin-bottom:6px;
+    }
+
+    .btn-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:10px;
+    }
+    .btn{
+      padding:6px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.4);
+      background:rgba(0,0,0,0.4);
+      color:#fff;
+      font-size:12px;
+      cursor:pointer;
+    }
+    .btn-primary{
+      border-color:var(--accent);
+      background:linear-gradient(120deg,#0d47a1,#42a5f5);
+    }
+    .btn-danger{
+      border-color:#f44336;
+      background:linear-gradient(120deg,#b71c1c,#f44336);
+    }
+    .btn:hover{
+      background:rgba(0,0,0,0.7);
+    }
+    .btn-primary:hover,
+    .btn-danger:hover{
+      filter:brightness(1.1);
+    }
+
+    .footer-note{
+      font-size:10px;
+      color:var(--muted);
+      margin-top:6px;
+    }
+
+    /* ---------- A4 PREVIEW ---------- */
+    .a4-wrapper{
+      margin-top:18px;
+    }
+
+    .a4-title{
+      font-size:14px;
+      font-weight:600;
+      margin-bottom:6px;
+    }
+
+    .a4-page{
+      width:210mm;
+      min-height:297mm;
+      margin:0 auto 16px;
+      background:#ffffff;
+      color:#000000;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      padding:12mm;
+      font-size:11pt;
+      position:relative;
+    }
+
+    .a4-header-center{
+      text-align:center;
+      margin-bottom:6px;
+      font-size:12pt;
+      font-weight:600;
+    }
+    .a4-subheader{
+      text-align:center;
+      font-size:10pt;
+      margin-bottom:8px;
+    }
+    .a4-row{
+      display:flex;
+      justify-content:space-between;
+      font-size:10pt;
+      margin-bottom:4px;
+    }
+    .a4-row span{
+      display:inline-block;
+      min-width:80px;
+    }
+    .a4-row .value{
+      border-bottom:1px solid #000;
+      min-width:160px;
+      display:inline-block;
+      padding:0 2px;
+    }
+
+    .a4-table{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:8px;
+      font-size:10pt;
+    }
+    .a4-table th,
+    .a4-table td{
+      border:1px solid #000;
+      padding:4px 4px;
+      vertical-align:top;
+    }
+    .a4-table th{
+      text-align:center;
+      font-weight:600;
+    }
+
+    .a4-sign-row{
+      margin-top:40px;
+      display:flex;
+      justify-content:space-between;
+      font-size:10pt;
+    }
+    .a4-sign-block{
+      width:45%;
+      text-align:center;
+    }
+    .a4-sign-line{
+      border-bottom:1px solid #000;
+      margin:18px 0 2px;
+      height:0;
+    }
+
+    .a4-footer{
+      position:absolute;
+      bottom:8mm;
+      left:12mm;
+      right:12mm;
+      font-size:8pt;
+      display:flex;
+      justify-content:space-between;
+    }
+
+    /* PRINT */
+    @page{
+      size:A4;
+      margin:12mm;
+    }
+    @media print{
+      body{
+        background:#ffffff;
+        color:#000000;
+        font-size:11pt;
+      }
+      header,
+      .nav-top,
+      .card:not(.card-a4),
+      .no-print{
+        display:none !important;
+      }
+      .a4-page{
+        box-shadow:none;
+        margin:0;
+        width:auto;
+        min-height:auto;
+        padding:0;
+      }
+      main{
+        max-width:100%;
+        margin:0;
+        padding:0;
+      }
+    }
+
+    @media (max-width:900px){
+      .a4-page{
+        width:100%;
+        min-height:auto;
+      }
+    }
+
+    @media (max-width:600px){
+      .card-header{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h2>🧭 อปท.5 – แผนการสอบบัญชีโดยรวม (Overall Audit Plan)</h2>
+  <div class="sub">
+    Overall Audit Plan – FA การตรวจสอบรายงานการเงินองค์กรปกครองส่วนท้องถิ่น (Annual)
+  </div>
+</header>
+
+<main>
+
+  <div class="nav-top">
+    <a href="fa-lg-annual-plan.html" class="btn-nav">
+      <span>↩</span> กลับเมนูแบบฟอร์มการวางแผน
+    </a>
+    <a href="fa-lg-annual.html" class="btn-nav">
+      <span>📅</span> กลับหน้าเลือกปี / หน่วยรับตรวจ
+    </a>
+    <a href="fa-menu.html" class="btn-nav">
+      <span>📂</span> FA Main Menu
+    </a>
+    <a href="index.html" class="btn-nav">
+      <span>🏠</span> หน้าหลักระบบ
+    </a>
+  </div>
+
+  <!-- CARD 1: Digital Form -->
+  <section class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">ส่วนที่ 1 – ข้อมูลพื้นฐาน และภาพรวมการสอบบัญชี</div>
+        <div class="card-sub">
+          ระบุปีงบประมาณ หน่วยรับตรวจ วัตถุประสงค์ ขอบเขต และแนวทางสอบบัญชีที่สอดคล้องกับ RMM / Materiality
+        </div>
+      </div>
+      <div class="chip">Digital Form • Overall Plan</div>
+    </div>
+
+    <div class="form-grid">
+      <div>
+        <label for="fy">ปีงบประมาณ</label>
+        <select id="fy" class="input">
+          <option value="">— เลือกปีงบประมาณ —</option>
+          <option>2562</option>
+          <option>2563</option>
+          <option>2564</option>
+          <option>2565</option>
+          <option>2566</option>
+          <option>2567</option>
+          <option>2568</option>
+          <option>2569</option>
+          <option>2570</option>
+          <option>2571</option>
+          <option>2572</option>
+          <option>2573</option>
+          <option>2574</option>
+          <option>2575</option>
+          <option>2576</option>
+          <option>2577</option>
+          <option>2578</option>
+          <option>2579</option>
+          <option>2580</option>
+          <option>2581</option>
+          <option>2582</option>
+        </select>
+      </div>
+      <div>
+        <label for="auditee">ชื่อหน่วยรับตรวจ (อปท.)</label>
+        <input id="auditee" class="input" type="text" placeholder="เช่น เทศบาลเมืองตัวอย่าง">
+      </div>
+      <div>
+        <label for="amphoe">อำเภอ</label>
+        <input id="amphoe" class="input" type="text" placeholder="อำเภอ">
+      </div>
+      <div>
+        <label for="province">จังหวัด</label>
+        <input id="province" class="input" type="text" placeholder="จังหวัด">
+      </div>
+      <div>
+        <label for="teamLead">หัวหน้าคณะผู้ตรวจสอบ</label>
+        <input id="teamLead" class="input" type="text" placeholder="ชื่อหัวหน้าคณะ">
+      </div>
+      <div>
+        <label for="teamMembers">สมาชิกคณะผู้ตรวจสอบ</label>
+        <input id="teamMembers" class="input" type="text" placeholder="ระบุชื่อย่อ / รายชื่อย่อ ๆ">
+      </div>
+      <div>
+        <label for="reviewedBy">ผู้สอบทาน / ผตจ.</label>
+        <input id="reviewedBy" class="input" type="text" placeholder="ชื่อผู้สอบทาน">
+      </div>
+    </div>
+
+    <div class="section-title">1.2 วัตถุประสงค์และขอบเขตการสอบบัญชี</div>
+    <div class="form-grid">
+      <div>
+        <label for="objectives">วัตถุประสงค์การสอบบัญชี</label>
+        <textarea id="objectives" class="input" placeholder="เช่น ให้ความเห็นต่อความถูกต้องเชื่อถือได้ของงบการเงินของ อปท. ตามมาตรฐานการบัญชีภาครัฐ และข้อกำหนดตามกฎหมายที่เกี่ยวข้อง"></textarea>
+      </div>
+      <div>
+        <label for="scope">ขอบเขตการสอบบัญชี</label>
+        <textarea id="scope" class="input" placeholder="เช่น ครอบคลุมงบแสดงฐานะการเงิน งบแสดงผลการดำเนินงาน งบกระแสเงินสด และหมายเหตุประกอบงบการเงิน รวมถึงระบบควบคุมภายในที่เกี่ยวข้อง"></textarea>
+      </div>
+    </div>
+
+    <div class="section-title">1.3 พื้นที่/รายการสำคัญที่เน้นตรวจ (จาก RMM / Materiality)</div>
+    <textarea id="fsFocus" class="input" placeholder="เช่น รายได้ภาษีและค่าธรรมเนียม, รายจ่ายโครงการลงทุนขนาดใหญ่, ครุภัณฑ์/สิ่งก่อสร้าง, ลูกหนี้/เจ้าหนี้ค้างชำระ, เงินสดและรายการเทียบเท่าเงินสด ฯลฯ"></textarea>
+
+    <div class="section-title">1.4 สรุปความเสี่ยงที่มีนัยสำคัญ (Key Risks)</div>
+    <textarea id="riskSummary" class="input" placeholder="สรุปจากแบบ อปท.4, 11.1.3–11.1.5 เช่น ความเสี่ยงทุจริตด้านจัดซื้อจัดจ้าง ความเสี่ยงบันทึกรายได้ไม่ครบถ้วน ความเสี่ยงประเมินสินทรัพย์/หนี้สินไม่ถูกต้อง ฯลฯ"></textarea>
+
+    <div class="section-title">1.5 แนวทางตอบสนองความเสี่ยง (Overall Audit Strategy)</div>
+    <div class="form-grid">
+      <div>
+        <label for="approachSummary">แนวทางสอบบัญชีโดยรวม</label>
+        <textarea id="approachSummary" class="input" placeholder="เช่น เน้นการทดสอบเนื้อหาในรายการรายได้/รายจ่ายสำคัญ ควบคู่กับการทดสอบควบคุมเฉพาะกิจกรรมที่มีระบบควบคุมภายในพอเหมาะ"></textarea>
+      </div>
+      <div>
+        <label for="controlTestPlan">การทดสอบควบคุม (Test of Controls)</label>
+        <textarea id="controlTestPlan" class="input" placeholder="ระบุระบบ/กิจกรรมที่จะทดสอบควบคุม เช่น ระบบจัดซื้อจัดจ้าง ระบบอนุมัติจ่ายเงิน ระบบบันทึกบัญชี ฯลฯ"></textarea>
+      </div>
+      <div>
+        <label for="substantiveTestPlan">การทดสอบเนื้อหา (Substantive Tests)</label>
+        <textarea id="substantiveTestPlan" class="input" placeholder="ระบุรายการที่จะทดสอบเนื้อหา เช่น การยืนยันยอดลูกหนี้/เจ้าหนี้ การตรวจใบเสร็จ ใบแจ้งหนี้ สัญญา ฯลฯ"></textarea>
+      </div>
+    </div>
+
+    <div class="section-title">1.6 การใช้ผู้เชี่ยวชาญ / ระบบ IT และการสุ่มตัวอย่าง</div>
+    <div class="form-grid">
+      <div>
+        <label for="expertsUse">การใช้ผู้เชี่ยวชาญเฉพาะด้าน</label>
+        <textarea id="expertsUse" class="input" placeholder="เช่น ผู้เชี่ยวชาญด้านประเมินมูลค่าสินทรัพย์ ผู้เชี่ยวชาญด้านนิติวิศวกรรม ฯลฯ (ถ้ามี)"></textarea>
+      </div>
+      <div>
+        <label for="itUse">การใช้เครื่องมือ IT / Data Analytics</label>
+        <textarea id="itUse" class="input" placeholder="เช่น การใช้ Excel / BI / ระบบ FA-Analytics ในการวิเคราะห์แนวโน้มและตรวจจับรายการผิดปกติ"></textarea>
+      </div>
+      <div>
+        <label for="samplingPlan">แนวทางการสุ่มตัวอย่าง</label>
+        <textarea id="samplingPlan" class="input" placeholder="เช่น การสุ่มตาม Monetary Unit Sampling, Random Sampling หรือ Judgmental Sampling โดยอิง OM/PM/TE"></textarea>
+      </div>
+    </div>
+
+    <div class="section-title">1.7 ตารางเวลา และจำนวนคน-วัน (Schedule & Man-days)</div>
+    <div class="form-grid">
+      <div>
+        <label for="scheduleStart">วันที่เริ่มปฏิบัติงาน (วางแผน)</label>
+        <input id="scheduleStart" class="input" type="date">
+      </div>
+      <div>
+        <label for="scheduleEnd">วันที่สิ้นสุดปฏิบัติงาน (โดยประมาณ)</label>
+        <input id="scheduleEnd" class="input" type="date">
+      </div>
+      <div>
+        <label for="manDays">จำนวนคน-วัน (โดยประมาณ)</label>
+        <input id="manDays" class="input" type="number" min="0" step="0.5" placeholder="เช่น 18 คน-วัน">
+      </div>
+    </div>
+
+    <div class="btn-row no-print">
+      <button type="button" class="btn" onclick="pushToA4()">อัปเดตข้อมูลไปยังแบบฟอร์ม A4</button>
+    </div>
+
+    <div class="footer-note">
+      * เวอร์ชันระบบจริงสามารถเชื่อมข้อมูลจาก อปท.3–4, ฟอร์ม 3.5–3.6 และฐานข้อมูลตาราง Audit Program ของคุณเพื่อให้กรอกอัตโนมัติได้
+    </div>
+  </section>
+
+  <!-- CARD 2: A4 + Export -->
+  <section class="card card-a4">
+    <div class="card-header">
+      <div>
+        <div class="card-title">ส่วนที่ 2 – แบบฟอร์ม อปท.5 รูปแบบกระดาษ A4 (สำหรับพิมพ์ / Export)</div>
+        <div class="card-sub">
+          แบบฟอร์ม A4 จะดึงข้อมูลจากแบบดิจิทัลด้านบน — สามารถพิมพ์เป็น PDF (A4) หรือ Export เป็นไฟล์ HTML / JSON ได้
+        </div>
+      </div>
+      <div class="chip">A4 Layout • Export</div>
+    </div>
+
+    <div class="btn-row no-print">
+      <button type="button" class="btn" onclick="pushToA4()">อัปเดตแบบฟอร์ม A4</button>
+      <button type="button" class="btn btn-primary" onclick="window.print()">พิมพ์ / Export PDF (A4)</button>
+      <button type="button" class="btn" onclick="exportA4Html()">Export เป็น HTML (A4 เฉพาะหน้า)</button>
+      <button type="button" class="btn btn-danger" onclick="exportJson()">Export เป็น JSON (ข้อมูลแบบฟอร์ม)</button>
+    </div>
+
+    <div class="a4-wrapper">
+      <div class="a4-title">ตัวอย่างแสดงผลแบบฟอร์มในหน้ากระดาษ A4</div>
+
+      <div class="a4-page" id="a4Page">
+        <div class="a4-header-center">
+          แบบฟอร์ม อปท.5 – แผนการสอบบัญชีโดยรวม (Overall Audit Plan)
+        </div>
+        <div class="a4-subheader">
+          สำนักงานการตรวจเงินแผ่นดิน – การตรวจสอบรายงานการเงินขององค์กรปกครองส่วนท้องถิ่น
+        </div>
+
+        <div class="a4-row">
+          <div>
+            <span>ปีงบประมาณ</span>
+            <span class="value" id="a4Fy">&nbsp;</span>
+          </div>
+          <div>
+            <span>หน่วยรับตรวจ</span>
+            <span class="value" id="a4Auditee">&nbsp;</span>
+          </div>
+        </div>
+        <div class="a4-row">
+          <div>
+            <span>อำเภอ</span>
+            <span class="value" id="a4Amphoe">&nbsp;</span>
+          </div>
+          <div>
+            <span>จังหวัด</span>
+            <span class="value" id="a4Province">&nbsp;</span>
+          </div>
+        </div>
+        <div class="a4-row">
+          <div>
+            <span>หัวหน้าคณะ</span>
+            <span class="value" id="a4TeamLead">&nbsp;</span>
+          </div>
+          <div>
+            <span>สมาชิกคณะ</span>
+            <span class="value" id="a4TeamMembers">&nbsp;</span>
+          </div>
+        </div>
+        <div class="a4-row">
+          <div style="flex:1;">
+            <span>ผู้สอบทาน / ผตจ.</span>
+            <span class="value" id="a4ReviewedBy">&nbsp;</span>
+          </div>
+        </div>
+
+        <div style="margin-top:10px; font-size:10pt;">
+          <strong>1. วัตถุประสงค์และขอบเขตการสอบบัญชี</strong>
+        </div>
+        <table class="a4-table">
+          <tr>
+            <th style="width:50%;">วัตถุประสงค์การสอบบัญชี</th>
+            <th>ขอบเขตการสอบบัญชี</th>
+          </tr>
+          <tr>
+            <td id="a4Objectives"></td>
+            <td id="a4Scope"></td>
+          </tr>
+        </table>
+
+        <div style="margin-top:10px; font-size:10pt;">
+          <strong>2. พื้นที่/รายการสำคัญที่เน้นตรวจ (จากการประเมินความเสี่ยงและสาระสำคัญ)</strong>
+        </div>
+        <div style="font-size:10pt; margin-top:4px;" id="a4FsFocus"></div>
+
+        <div style="margin-top:10px; font-size:10pt;">
+          <strong>3. สรุปความเสี่ยงที่มีนัยสำคัญ (Key Risks)</strong>
+        </div>
+        <div style="font-size:10pt; margin-top:4px;" id="a4RiskSummary"></div>
+
+        <div style="margin-top:10px; font-size:10pt;">
+          <strong>4. แนวทางตอบสนองความเสี่ยง (Overall Audit Strategy)</strong>
+        </div>
+        <table class="a4-table">
+          <tr>
+            <th style="width:34%;">แนวทางสอบบัญชีโดยรวม</th>
+            <th style="width:33%;">การทดสอบควบคุม (Test of Controls)</th>
+            <th>การทดสอบเนื้อหา (Substantive Tests)</th>
+          </tr>
+          <tr>
+            <td id="a4ApproachSummary"></td>
+            <td id="a4ControlTestPlan"></td>
+            <td id="a4SubstantiveTestPlan"></td>
+          </tr>
+        </table>
+
+        <div style="margin-top:10px; font-size:10pt;">
+          <strong>5. การใช้ผู้เชี่ยวชาญ / เครื่องมือ IT / การสุ่มตัวอย่าง</strong>
+        </div>
+        <table class="a4-table">
+          <tr>
+            <th style="width:33%;">การใช้ผู้เชี่ยวชาญเฉพาะด้าน</th>
+            <th style="width:33%;">การใช้เครื่องมือ IT / Data Analytics</th>
+            <th>แนวทางการสุ่มตัวอย่าง</th>
+          </tr>
+          <tr>
+            <td id="a4ExpertsUse"></td>
+            <td id="a4ItUse"></td>
+            <td id="a4SamplingPlan"></td>
+          </tr>
+        </table>
+
+        <div style="margin-top:10px; font-size:10pt;">
+          <strong>6. ตารางเวลาและจำนวนคน-วัน</strong>
+        </div>
+        <table class="a4-table">
+          <tr>
+            <th style="width:25%;">วันที่เริ่มปฏิบัติงาน</th>
+            <th style="width:25%;">วันที่สิ้นสุดโดยประมาณ</th>
+            <th>จำนวนคน-วัน</th>
+          </tr>
+          <tr>
+            <td id="a4ScheduleStart" style="text-align:center;"></td>
+            <td id="a4ScheduleEnd" style="text-align:center;"></td>
+            <td id="a4ManDays" style="text-align:center;"></td>
+          </tr>
+        </table>
+
+        <div class="a4-sign-row">
+          <div class="a4-sign-block">
+            ลงชื่อ
+            <div class="a4-sign-line"></div>
+            (.......................................................)<br>
+            หัวหน้าคณะผู้ตรวจสอบ
+          </div>
+          <div class="a4-sign-block">
+            ลงชื่อ
+            <div class="a4-sign-line"></div>
+            (.......................................................)<br>
+            ผู้สอบทาน / ผตจ.
+          </div>
+        </div>
+
+        <div class="a4-footer">
+          <div>แบบฟอร์ม อปท.5 – แผนการสอบบัญชีโดยรวม</div>
+          <div id="a4FooterMeta">พิมพ์จากระบบ FA – LG</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  function nl2br(text){
+    if(!text) return '';
+    return text.replace(/\n/g,'<br>');
+  }
+
+  function formatDateThaiInput(value){
+    if(!value) return '';
+    const d = new Date(value);
+    if(isNaN(d.getTime())) return value;
+    const day = d.getDate();
+    const month = d.getMonth()+1;
+    const year = d.getFullYear() + 543;
+    return day.toString().padStart(2,'0') + '/' +
+           month.toString().padStart(2,'0') + '/' +
+           year.toString();
+  }
+
+  function pushToA4(){
+    // ข้อมูลทั่วไป
+    document.getElementById('a4Fy').textContent        = document.getElementById('fy').value || '';
+    document.getElementById('a4Auditee').textContent   = document.getElementById('auditee').value || '';
+    document.getElementById('a4Amphoe').textContent    = document.getElementById('amphoe').value || '';
+    document.getElementById('a4Province').textContent  = document.getElementById('province').value || '';
+    document.getElementById('a4TeamLead').textContent  = document.getElementById('teamLead').value || '';
+    document.getElementById('a4TeamMembers').textContent = document.getElementById('teamMembers').value || '';
+    document.getElementById('a4ReviewedBy').textContent= document.getElementById('reviewedBy').value || '';
+
+    // วัตถุประสงค์ / ขอบเขต
+    document.getElementById('a4Objectives').innerHTML  = nl2br(document.getElementById('objectives').value || '');
+    document.getElementById('a4Scope').innerHTML       = nl2br(document.getElementById('scope').value || '');
+
+    // Focus / Risks
+    document.getElementById('a4FsFocus').innerHTML     = nl2br(document.getElementById('fsFocus').value || '');
+    document.getElementById('a4RiskSummary').innerHTML = nl2br(document.getElementById('riskSummary').value || '');
+
+    // Strategy
+    document.getElementById('a4ApproachSummary').innerHTML   = nl2br(document.getElementById('approachSummary').value || '');
+    document.getElementById('a4ControlTestPlan').innerHTML   = nl2br(document.getElementById('controlTestPlan').value || '');
+    document.getElementById('a4SubstantiveTestPlan').innerHTML = nl2br(document.getElementById('substantiveTestPlan').value || '');
+
+    // Experts / IT / Sampling
+    document.getElementById('a4ExpertsUse').innerHTML   = nl2br(document.getElementById('expertsUse').value || '');
+    document.getElementById('a4ItUse').innerHTML        = nl2br(document.getElementById('itUse').value || '');
+    document.getElementById('a4SamplingPlan').innerHTML = nl2br(document.getElementById('samplingPlan').value || '');
+
+    // Schedule
+    const startVal = document.getElementById('scheduleStart').value || '';
+    const endVal   = document.getElementById('scheduleEnd').value || '';
+    const manDays  = document.getElementById('manDays').value || '';
+
+    document.getElementById('a4ScheduleStart').textContent = formatDateThaiInput(startVal);
+    document.getElementById('a4ScheduleEnd').textContent   = formatDateThaiInput(endVal);
+    document.getElementById('a4ManDays').textContent       = manDays;
+
+    // Footer meta – เวลา
+    const now = new Date();
+    const ts = now.toLocaleString('th-TH');
+    document.getElementById('a4FooterMeta').textContent = 'พิมพ์จากระบบ FA – LG ณ ' + ts;
+  }
+
+  function exportA4Html(){
+    const a4 = document.getElementById('a4Page');
+    if(!a4){
+      alert('ไม่พบเนื้อหา A4');
+      return;
+    }
+    const htmlContent =
+      '<!DOCTYPE html><html lang="th"><head><meta charset="UTF-8"><title>OP5-Overall-Audit-Plan-A4</title>' +
+      '<style>@page{size:A4;margin:12mm;}body{font-family:"TH Sarabun New","Segoe UI",sans-serif;font-size:11pt;} .a4-page{width:100%;min-height:100%;}</style>' +
+      '</head><body>' + a4.outerHTML + '</body></html>';
+
+    const blob = new Blob([htmlContent], {type:'text/html'});
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href = url;
+    a.download = 'op5_overall_audit_plan_a4.html';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  function exportJson(){
+    const data = {
+      fiscalYear   : document.getElementById('fy').value || '',
+      auditee      : document.getElementById('auditee').value || '',
+      amphoe       : document.getElementById('amphoe').value || '',
+      province     : document.getElementById('province').value || '',
+      teamLead     : document.getElementById('teamLead').value || '',
+      teamMembers  : document.getElementById('teamMembers').value || '',
+      reviewedBy   : document.getElementById('reviewedBy').value || '',
+      objectives   : document.getElementById('objectives').value || '',
+      scope        : document.getElementById('scope').value || '',
+      fsFocus      : document.getElementById('fsFocus').value || '',
+      riskSummary  : document.getElementById('riskSummary').value || '',
+      approachSummary    : document.getElementById('approachSummary').value || '',
+      controlTestPlan    : document.getElementById('controlTestPlan').value || '',
+      substantiveTestPlan: document.getElementById('substantiveTestPlan').value || '',
+      expertsUse   : document.getElementById('expertsUse').value || '',
+      itUse        : document.getElementById('itUse').value || '',
+      samplingPlan : document.getElementById('samplingPlan').value || '',
+      scheduleStart: document.getElementById('scheduleStart').value || '',
+      scheduleEnd  : document.getElementById('scheduleEnd').value || '',
+      manDays      : document.getElementById('manDays').value || ''
+    };
+
+    const blob = new Blob([JSON.stringify(data,null,2)], {type:'application/json'});
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href = url;
+    a.download = 'op5_overall_audit_plan.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+</script>
+
+</body>
+</html>
