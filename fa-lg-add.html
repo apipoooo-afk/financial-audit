@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>FA DB | ระบบเพิ่มข้อมูล อปท.</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- XLSX สำหรับอ่านไฟล์ Excel -->
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<style>
+  :root{
+    --bg:#060818;
+    --card:#11152b;
+    --border:#262b46;
+    --accent:#42a5f5;
+    --accent2:#22c55e;
+    --muted:#a3acc7;
+    --text:#f5f7ff;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Segoe UI",Tahoma,sans-serif;
+    background:
+      radial-gradient(circle at 10% 0%, rgba(123,30,60,0.36) 0, transparent 55%),
+      radial-gradient(circle at 90% 100%, rgba(66,165,245,0.32) 0, transparent 55%),
+      var(--bg);
+    color:var(--text);
+  }
+  header{
+    padding:18px 12px 14px;
+    text-align:center;
+    background:linear-gradient(120deg,#0d47a1,#6f42c1,#22c55e);
+    box-shadow:0 4px 16px rgba(0,0,0,.7);
+    position:relative;
+    overflow:hidden;
+  }
+  header::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+      radial-gradient(circle at 15% 0%,rgba(244,143,177,0.24) 0,transparent 55%),
+      radial-gradient(circle at 85% 100%,rgba(45,212,191,0.22) 0,transparent 55%);
+    mix-blend-mode:screen;
+    opacity:.8;
+    pointer-events:none;
+  }
+  .header-inner{position:relative;z-index:1;}
+  header h1{
+    margin:0;
+    font-size:22px;
+    font-weight:800;
+    letter-spacing:.03em;
+  }
+  header p{
+    margin:4px 0 0;
+    font-size:13px;
+    color:#e5e7eb;
+  }
+
+  .wrap{
+    max-width:1150px;
+    margin:18px auto 26px;
+    padding:0 16px;
+  }
+  .top-row{
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:8px;
+    font-size:13px;
+    color:var(--muted);
+    margin-bottom:12px;
+  }
+  .chip{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding:3px 9px;
+    border-radius:999px;
+    border:1px solid rgba(148,163,184,.55);
+    background:rgba(15,23,42,.9);
+    font-size:12px;
+  }
+
+  .card{
+    background:var(--card);
+    border-radius:18px;
+    border:1px solid rgba(255,255,255,.08);
+    padding:14px 14px 12px;
+    margin-bottom:14px;
+    box-shadow:0 8px 22px rgba(0,0,0,.72);
+    position:relative;
+    overflow:hidden;
+  }
+  .card::before{
+    content:"";
+    position:absolute;
+    inset:-40%;
+    background:radial-gradient(circle at 10% 0%,rgba(148,163,255,0.16) 0,transparent 55%);
+    opacity:0.9;
+    pointer-events:none;
+  }
+  .card-inner{position:relative;z-index:1;}
+
+  h2{
+    margin:0 0 6px;
+    font-size:18px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  h2 span.en{
+    font-size:12px;
+    font-weight:400;
+    color:var(--muted);
+  }
+  p.desc{
+    margin:2px 0 8px;
+    font-size:13px;
+    color:var(--muted);
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:8px 12px;
+  }
+
+  label{
+    display:block;
+    font-size:13px;
+    margin-top:6px;
+  }
+  input,select,textarea{
+    width:100%;
+    margin-top:3px;
+    padding:7px 8px;
+    border-radius:8px;
+    border:1px solid rgba(148,163,184,.4);
+    background:#05081a;
+    color:var(--text);
+    font-size:13px;
+  }
+  input:focus,select:focus,textarea:focus{
+    outline:none;
+    border-color:#22c55e;
+  }
+  textarea{min-height:60px;resize:vertical;}
+
+  .btn-row{
+    margin-top:10px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  button,a.nav{
+    border:none;
+    border-radius:999px;
+    padding:8px 14px;
+    font-size:13px;
+    cursor:pointer;
+  }
+  .btn-primary{
+    background:#22c55e;
+    color:#082f1a;
+    font-weight:700;
+  }
+  .btn-secondary{
+    background:#374151;
+    color:#e5e7eb;
+  }
+  .btn-danger{
+    background:#b91c1c;
+    color:#fff;
+  }
+  a.nav{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    color:#e0e7ff;
+    text-decoration:none;
+    border:1px solid rgba(148,163,184,.55);
+    background:rgba(15,23,42,.95);
+  }
+
+  .note{
+    font-size:12px;
+    color:var(--muted);
+    margin-top:4px;
+  }
+  .badge{
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+    font-size:11px;
+    padding:2px 7px;
+    border-radius:999px;
+    border:1px solid rgba(148,163,184,.5);
+    background:rgba(15,23,42,.95);
+  }
+  .log{
+    margin-top:8px;
+    font-size:12px;
+    color:#a5b4fc;
+  }
+  pre.sample{
+    background:#020617;
+    border-radius:10px;
+    border:1px solid #1e293b;
+    padding:8px;
+    font-size:11px;
+    overflow:auto;
+  }
+  @media(max-width:600px){
+    header h1{font-size:18px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <h1>FA DB – ระบบเพิ่มข้อมูล อปท.</h1>
+    <p>เพิ่ม/นำเข้าข้อมูลหน่วยรับตรวจ อปท. เข้าสู่ฐานข้อมูลกลาง fa-db-data-gov เพื่อใช้ร่วมกับทุกระบบ FA</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="top-row">
+    <div>
+      ผู้ใช้งาน: <strong id="userEmail">-</strong>
+      <span class="chip" style="margin-left:6px;">
+        <span>📦</span> localStorage key: <code>fa-db-data-gov</code>
+      </span>
+    </div>
+    <div>
+      <span class="chip">
+        📥 จำนวนรายการในฐานปัจจุบัน: <strong id="totalRecords">0</strong>
+      </span>
+    </div>
+  </div>
+
+  <!-- 1) นำเข้าข้อมูลจากไฟล์ / ลิงก์ -->
+  <div class="card">
+    <div class="card-inner">
+      <h2>1) นำเข้าข้อมูลจากไฟล์ / ลิงก์
+        <span class="en">Bulk Import</span>
+      </h2>
+      <p class="desc">
+        รองรับไฟล์ CSV, Excel ของฐานข้อมูล อปท. ทั่วประเทศ รวมถึงโครงสร้างภายในระบบเอง
+        เมื่อ Import สำเร็จ ข้อมูลจะถูกเพิ่มเข้าฐานกลางทันที.
+      </p>
+
+      <div class="grid">
+        <div>
+          <label>📥 Import CSV</label>
+          <input type="file" id="fileCsv" accept=".csv">
+          <div class="note">
+            รองรับทั้งหัวตารางภาษาไทย (เช่น จังหวัด, อำเภอ, ตำบล, รหัส อปท., ประเภท อปท., อปท.) 
+            และหัวตารางภาษาอังกฤษ (code,name,unit,type,province,...)
+          </div>
+        </div>
+        <div>
+          <label>📊 Import Excel (.xls, .xlsx)</label>
+          <input type="file" id="fileXlsx" accept=".xls,.xlsx">
+          <div class="note">
+            ต้องมีแถวแรกเป็นหัวตาราง โครงสร้างใกล้เคียงกับ CSV.
+          </div>
+        </div>
+        <div>
+          <label>📄 แนบไฟล์เอกสารประกอบ (บันทึกเฉพาะชื่อไฟล์)</label>
+          <input type="file" id="fileDoc" accept=".pdf,.doc,.docx,.ppt,.pptx">
+          <div class="note">
+            ระบบจะไม่เก็บเนื้อไฟล์จริง เก็บเฉพาะชื่อไฟล์และประเภทไฟล์ไว้ในฟิลด์ของ record.
+          </div>
+        </div>
+        <div>
+          <label>🔗 ลิงก์ข้อมูล (URL)</label>
+          <input type="text" id="f-sourceUrl" placeholder="เช่น https://example.go.th/lg-info">
+          <div class="note">
+            ใช้ระบุแหล่งข้อมูลออนไลน์ เช่น เว็บไซต์ อปท., เอกสารประกอบ หรือวิดีโอแนะนำหน่วยงาน.
+          </div>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button type="button" class="btn-primary" id="btnImportCsv">นำเข้า CSV</button>
+        <button type="button" class="btn-secondary" id="btnImportXlsx">นำเข้า Excel</button>
+        <button type="button" class="btn-secondary" id="btnClearAttach">ล้างไฟล์แนบ / ลิงก์</button>
+      </div>
+
+      <div class="log" id="importLog">ยังไม่มีการนำเข้าล่าสุด</div>
+
+      <details style="margin-top:8px;">
+        <summary style="font-size:12px;cursor:pointer;color:#a5b4fc;">
+          ดูตัวอย่างโครงสร้างหัวตารางที่ระบบรองรับ
+        </summary>
+        <div style="margin-top:6px;">
+          <div class="badge">แบบภาษาไทย (ไฟล์ฐาน อปท.)</div>
+          <pre class="sample">
+จังหวัด,อำเภอ,ตำบล,รหัส อปท.,ประเภท อปท.,อปท.,ที่ตั้งสำนักงานเลขที่,หมู่ที่,รหัสไปรษณีย์,LAT,LONG,เว็ปไซต์ของอปท
+ศรีสะเกษ,เมืองศรีสะเกษ,เมืองเหนือ,1099,เทศบาลเมือง,เทศบาลเมืองศรีสะเกษ,123,1,33000,15.1180,104.3220,https://...
+          </pre>
+          <div class="badge">แบบภาษาอังกฤษ (โครงสร้างภายในระบบ)</div>
+          <pre class="sample">
+code,name,unit,type,ministry,level,province,district,subdistrict,village,address,zipcode,lat,long,website,remark
+1099,เทศบาลเมืองศรีสะเกษ,เทศบาลเมืองศรีสะเกษ,เทศบาลเมือง,มหาดไทย,ท้องถิ่น,ศรีสะเกษ,เมืองศรีสะเกษ,เมืองเหนือ,,123 ม.1,33000,15.1180,104.3220,https://...,ศูนย์กลางจังหวัด
+          </pre>
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <!-- 2) เพิ่มข้อมูลทีละรายการ (Manual Add) -->
+  <div class="card">
+    <div class="card-inner">
+      <h2>2) เพิ่มข้อมูลทีละรายการ
+        <span class="en">Manual Add</span>
+      </h2>
+      <p class="desc">
+        ใช้กรณีต้องการเพิ่ม/แก้ไขข้อมูลรายหน่วยแบบเฉพาะเจาะจง 
+        ทุกครั้งที่กดบันทึก ระบบจะเพิ่ม record ใหม่เข้าในฐานกลางโดยไม่ลบทิ้งของเดิม.
+      </p>
+
+      <form id="formAdd">
+        <div class="grid">
+          <div>
+            <label>รหัสหน่วยงาน / รหัส อปท. (code)</label>
+            <input type="text" id="f-code" required>
+          </div>
+          <div>
+            <label>ชื่อหน่วยงาน / ชื่อ อปท. (name)</label>
+            <input type="text" id="f-name" required>
+          </div>
+          <div>
+            <label>หน่วยรับตรวจ (unit)</label>
+            <input type="text" id="f-unit" placeholder="เช่น เทศบาลเมืองศรีสะเกษ">
+          </div>
+          <div>
+            <label>ประเภทหน่วยงาน / ประเภท อปท. (type)</label>
+            <input type="text" id="f-type" placeholder="เทศบาลเมือง/เทศบาลตำบล/อบต./อบจ.">
+          </div>
+          <div>
+            <label>สังกัดกระทรวง (ministry)</label>
+            <input type="text" id="f-ministry" value="มหาดไทย">
+          </div>
+          <div>
+            <label>ระดับหน่วยงาน (level)</label>
+            <select id="f-level">
+              <option value="ท้องถิ่น">ท้องถิ่น</option>
+              <option value="ส่วนกลาง">ส่วนกลาง</option>
+              <option value="ส่วนภูมิภาค">ส่วนภูมิภาค</option>
+              <option value="">ไม่ระบุ</option>
+            </select>
+          </div>
+          <div>
+            <label>จังหวัด (province)</label>
+            <select id="f-province"></select>
+          </div>
+          <div>
+            <label>อำเภอ / เขต (district)</label>
+            <input type="text" id="f-district">
+          </div>
+          <div>
+            <label>ตำบล / แขวง (subdistrict)</label>
+            <input type="text" id="f-subdistrict">
+          </div>
+          <div>
+            <label>หมู่บ้าน / ชุมชน (village)</label>
+            <input type="text" id="f-village">
+          </div>
+          <div>
+            <label>ที่อยู่/เลขที่/หมู่ (address)</label>
+            <input type="text" id="f-address">
+          </div>
+          <div>
+            <label>รหัสไปรษณีย์ (zipcode)</label>
+            <input type="text" id="f-zipcode">
+          </div>
+          <div>
+            <label>พิกัดละติจูด (LAT)</label>
+            <input type="text" id="f-lat">
+          </div>
+          <div>
+            <label>พิกัดลองจิจูด (LONG)</label>
+            <input type="text" id="f-long">
+          </div>
+          <div>
+            <label>เว็บไซต์หน่วยงาน (website)</label>
+            <input type="text" id="f-website" placeholder="https://...">
+          </div>
+          <div>
+            <label>ลิงก์แหล่งข้อมูล (sourceUrl)</label>
+            <input type="text" id="f-url" placeholder="เช่น URL เอกสาร/ข้อมูลที่เกี่ยวข้อง">
+          </div>
+        </div>
+        <label>หมายเหตุ (remark)</label>
+        <textarea id="f-remark"></textarea>
+
+        <div class="btn-row">
+          <button type="submit" class="btn-primary">บันทึกข้อมูล</button>
+          <button type="button" class="btn-secondary" id="btnClearForm">ล้างฟอร์ม</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ปุ่มกลับ -->
+  <div style="margin-top:10px;">
+    <a href="fa-db-local.html" class="nav">
+      <span>⬅</span> กลับเมนูฐานข้อมูล อปท.
+    </a>
+    <a href="fa-db-menu.html" class="nav" style="margin-left:6px;">
+      <span>🏠</span> กลับเมนูฐานข้อมูลหลัก
+    </a>
+  </div>
+
+</div>
+
+<script>
+const STORAGE_KEY = "fa-db-data-gov";
+
+let db = [];
+let attachedDoc = null; // เก็บ info ของไฟล์เอกสารที่แนบล่าสุด
+
+function loadDB(){
+  try{
+    db = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+  }catch(e){
+    db = [];
+  }
+  document.getElementById("totalRecords").textContent = db.length;
+}
+
+function saveDB(){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(db));
+  document.getElementById("totalRecords").textContent = db.length;
+}
+
+/* SESSION DISPLAY (ไม่บังคับ redirect) */
+function displaySession(){
+  const el = document.getElementById("userEmail");
+  try{
+    const raw = localStorage.getItem("fas-session");
+    if(!raw){ el.textContent = "-"; return; }
+    const s = JSON.parse(raw);
+    if(s.expiresAt && Date.now() > s.expiresAt){
+      el.textContent = "-";
+      return;
+    }
+    el.textContent = s.email || "-";
+  }catch{
+    el.textContent = "-";
+  }
+}
+
+/* รายชื่อจังหวัด */
+const PROVINCES = [
+  "กรุงเทพมหานคร","กระบี่","กาญจนบุรี","กาฬสินธุ์","กำแพงเพชร",
+  "ขอนแก่น","จันทบุรี","ฉะเชิงเทรา","ชลบุรี","ชัยนาท",
+  "ชัยภูมิ","ชุมพร","เชียงใหม่","เชียงราย","ตรัง",
+  "ตราด","ตาก","นครนายก","นครปฐม","นครพนม",
+  "นครราชสีมา","นครศรีธรรมราช","นครสวรรค์","นนทบุรี","นราธิวาส",
+  "น่าน","บึงกาฬ","บุรีรัมย์","ปทุมธานี","ประจวบคีรีขันธ์",
+  "ปราจีนบุรี","ปัตตานี","พระนครศรีอยุธยา","พะเยา","พังงา",
+  "พัทลุง","พิจิตร","พิษณุโลก","เพชรบุรี","เพชรบูรณ์",
+  "แพร่","ภูเก็ต","มหาสารคาม","มุกดาหาร","แม่ฮ่องสอน",
+  "ยะลา","ยโสธร","ร้อยเอ็ด","ระนอง","ระยอง",
+  "ราชบุรี","ลพบุรี","ลำปาง","ลำพูน","เลย",
+  "ศรีสะเกษ","สกลนคร","สงขลา","สตูล","สมุทรปราการ",
+  "สมุทรสงคราม","สมุทรสาคร","สระแก้ว","สระบุรี","สิงห์บุรี",
+  "สุโขทัย","สุพรรณบุรี","สุราษฎร์ธานี","สุรินทร์","หนองคาย",
+  "หนองบัวลำภู","อ่างทอง","อำนาจเจริญ","อุดรธานี","อุตรดิตถ์",
+  "อุทัยธานี","อุบลราชธานี"
+];
+
+function populateProvinceSelect(){
+  const sel = document.getElementById("f-province");
+  sel.innerHTML = "";
+  const opt0 = document.createElement("option");
+  opt0.value = "";
+  opt0.textContent = "-- เลือกจังหวัด --";
+  sel.appendChild(opt0);
+  PROVINCES.forEach(p=>{
+    const o = document.createElement("option");
+    o.value = p;
+    o.textContent = p;
+    sel.appendChild(o);
+  });
+  sel.value = "ศรีสะเกษ";
+}
+
+/* Import CSV */
+document.getElementById("btnImportCsv").addEventListener("click", ()=>{
+  const file = document.getElementById("fileCsv").files[0];
+  if(!file){ alert("กรุณาเลือกไฟล์ CSV ก่อน"); return; }
+  const reader = new FileReader();
+  reader.onload = e => {
+    importFromCSVText(e.target.result, file.name);
+  };
+  reader.readAsText(file,"utf-8");
+});
+
+function importFromCSVText(text, fname){
+  const lines = text.split(/\r?\n/).filter(l=>l.trim()!=="");
+  if(lines.length < 2){
+    alert("ไฟล์ไม่มีข้อมูลเพียงพอ");
+    return;
+  }
+  const header = lines[0].split(",").map(h=>h.replace(/(^"|"$)/g,"").trim());
+
+  // ตรวจว่าคือไฟล์ อปท. ภาษาไทยหรือไม่
+  const isThaiLG =
+    header.indexOf("จังหวัด") !== -1 &&
+    header.indexOf("อำเภอ") !== -1 &&
+    header.indexOf("ตำบล") !== -1 &&
+    header.indexOf("รหัส อปท.") !== -1;
+
+  const imported = [];
+
+  if(isThaiLG){
+    const idx = {
+      province   : header.indexOf("จังหวัด"),
+      district   : header.indexOf("อำเภอ"),
+      subdistrict: header.indexOf("ตำบล"),
+      code       : header.indexOf("รหัส อปท."),
+      type       : header.indexOf("ประเภท อปท."),
+      name       : header.indexOf("อปท."),
+      addrNo     : header.indexOf("ที่ตั้งสำนักงานเลขที่"),
+      moo        : header.indexOf("หมู่ที่"),
+      zipcode    : header.indexOf("รหัสไปรษณีย์"),
+      latTH      : header.indexOf("LAT"),
+      longTH     : header.indexOf("LONG"),
+      websiteTH  : header.indexOf("เว็ปไซต์ของอปท")
+    };
+    const now = new Date().toISOString();
+    for(let i=1;i<lines.length;i++){
+      const cols = lines[i].split(",").map(c=>c.replace(/(^"|"$)/g,""));
+      if(cols.length === 0) continue;
+      const name = cols[idx.name] || "";
+      const province = cols[idx.province] || "";
+      const district = cols[idx.district] || "";
+      const subd = cols[idx.subdistrict] || "";
+      const code = (cols[idx.code] || "").toString();
+
+      imported.push({
+        code      : code,
+        name      : name,
+        unit      : name,
+        type      : cols[idx.type] || "",
+        ministry  : "มหาดไทย",
+        level     : "ท้องถิ่น",
+        province  : province,
+        district  : district,
+        subdistrict: subd,
+        village   : "",
+        address   : ((cols[idx.addrNo]||"") + (cols[idx.moo] ? " ม." + cols[idx.moo] : "")).trim(),
+        zipcode   : cols[idx.zipcode] || "",
+        lat       : (idx.latTH !== -1 ? cols[idx.latTH] : ""),
+        long      : (idx.longTH !== -1 ? cols[idx.longTH] : ""),
+        website   : (idx.websiteTH !== -1 ? cols[idx.websiteTH] : ""),
+        sourceType: "csv-thai-lg",
+        sourceUrl : document.getElementById("f-sourceUrl").value.trim() || "",
+        attachmentName: attachedDoc ? attachedDoc.name : "",
+        attachmentType: attachedDoc ? attachedDoc.type : "",
+        remark    : "",
+        createdAt : now,
+        updatedAt : now
+      });
+    }
+  }else{
+    // โครงสร้างอังกฤษภายในระบบ
+    const idx = {
+      code     : header.indexOf("code"),
+      name     : header.indexOf("name"),
+      unit     : header.indexOf("unit"),
+      type     : header.indexOf("type"),
+      ministry : header.indexOf("ministry"),
+      level    : header.indexOf("level"),
+      province : header.indexOf("province"),
+      district : header.indexOf("district"),
+      subdistrict: header.indexOf("subdistrict"),
+      village  : header.indexOf("village"),
+      address  : header.indexOf("address"),
+      zipcode  : header.indexOf("zipcode"),
+      lat      : header.indexOf("lat"),
+      long     : header.indexOf("long"),
+      website  : header.indexOf("website"),
+      remark   : header.indexOf("remark")
+    };
+    // ตรวจว่าครบพอใช้ได้ไหม
+    if(idx.code === -1 || idx.name === -1 || idx.province === -1){
+      alert("ไฟล์ CSV นี้ไม่ตรงโครงสร้างที่ระบบรองรับ (code/name/province ต้องมีอย่างน้อย)");
+      return;
+    }
+    const now = new Date().toISOString();
+    for(let i=1;i<lines.length;i++){
+      const cols = lines[i].split(",").map(c=>c.replace(/(^"|"$)/g,""));
+      if(cols.length === 0) continue;
+      imported.push({
+        code      : idx.code !== -1 ? (cols[idx.code]||"") : "",
+        name      : idx.name !== -1 ? (cols[idx.name]||"") : "",
+        unit      : idx.unit !== -1 ? (cols[idx.unit]||"") : (cols[idx.name]||""),
+        type      : idx.type !== -1 ? (cols[idx.type]||"") : "",
+        ministry  : idx.ministry !== -1 ? (cols[idx.ministry]||"") : "",
+        level     : idx.level !== -1 ? (cols[idx.level]||"") : "",
+        province  : idx.province !== -1 ? (cols[idx.province]||"") : "",
+        district  : idx.district !== -1 ? (cols[idx.district]||"") : "",
+        subdistrict: idx.subdistrict !== -1 ? (cols[idx.subdistrict]||"") : "",
+        village   : idx.village !== -1 ? (cols[idx.village]||"") : "",
+        address   : idx.address !== -1 ? (cols[idx.address]||"") : "",
+        zipcode   : idx.zipcode !== -1 ? (cols[idx.zipcode]||"") : "",
+        lat       : idx.lat !== -1 ? (cols[idx.lat]||"") : "",
+        long      : idx.long !== -1 ? (cols[idx.long]||"") : "",
+        website   : idx.website !== -1 ? (cols[idx.website]||"") : "",
+        sourceType: "csv-english",
+        sourceUrl : document.getElementById("f-sourceUrl").value.trim() || "",
+        attachmentName: attachedDoc ? attachedDoc.name : "",
+        attachmentType: attachedDoc ? attachedDoc.type : "",
+        remark    : idx.remark !== -1 ? (cols[idx.remark]||"") : "",
+        createdAt : now,
+        updatedAt : now
+      });
+    }
+  }
+
+  if(imported.length === 0){
+    alert("ไม่พบข้อมูลที่สามารถนำเข้าได้จากไฟล์นี้");
+    return;
+  }
+  db = db.concat(imported);
+  saveDB();
+
+  document.getElementById("importLog").textContent =
+    `นำเข้าไฟล์ "${fname}" เรียบร้อย จำนวน ${imported.length} รายการ (รวมในฐานทั้งหมด ${db.length} รายการ)`;
+}
+
+/* Import Excel */
+document.getElementById("btnImportXlsx").addEventListener("click", ()=>{
+  const file = document.getElementById("fileXlsx").files[0];
+  if(!file){ alert("กรุณาเลือกไฟล์ Excel ก่อน"); return; }
+  const reader = new FileReader();
+  reader.onload = e =>{
+    const data = new Uint8Array(e.target.result);
+    const workbook = XLSX.read(data,{type:"array"});
+    const sheetName = workbook.SheetNames[0];
+    const sheet = workbook.Sheets[sheetName];
+    const csv = XLSX.utils.sheet_to_csv(sheet);
+    importFromCSVText(csv, file.name);
+  };
+  reader.readAsArrayBuffer(file);
+});
+
+/* แนบไฟล์เอกสาร */
+document.getElementById("fileDoc").addEventListener("change", e=>{
+  const f = e.target.files[0];
+  if(!f){ attachedDoc = null; return; }
+  attachedDoc = { name:f.name, type:f.type || "document" };
+});
+
+/* ล้างไฟล์แนบ / ลิงก์ */
+document.getElementById("btnClearAttach").addEventListener("click", ()=>{
+  document.getElementById("fileCsv").value = "";
+  document.getElementById("fileXlsx").value = "";
+  document.getElementById("fileDoc").value = "";
+  document.getElementById("f-sourceUrl").value = "";
+  attachedDoc = null;
+  document.getElementById("importLog").textContent = "ล้างสถานะไฟล์และลิงก์แล้ว";
+});
+
+/* ฟอร์มเพิ่มข้อมูลทีละรายการ */
+function clearForm(){
+  document.getElementById("f-code").value = "";
+  document.getElementById("f-name").value = "";
+  document.getElementById("f-unit").value = "";
+  document.getElementById("f-type").value = "";
+  document.getElementById("f-ministry").value = "มหาดไทย";
+  document.getElementById("f-level").value = "ท้องถิ่น";
+  document.getElementById("f-province").value = "ศรีสะเกษ";
+  document.getElementById("f-district").value = "";
+  document.getElementById("f-subdistrict").value = "";
+  document.getElementById("f-village").value = "";
+  document.getElementById("f-address").value = "";
+  document.getElementById("f-zipcode").value = "";
+  document.getElementById("f-lat").value = "";
+  document.getElementById("f-long").value = "";
+  document.getElementById("f-website").value = "";
+  document.getElementById("f-url").value = "";
+  document.getElementById("f-remark").value = "";
+}
+document.getElementById("btnClearForm").addEventListener("click", clearForm);
+
+document.getElementById("formAdd").addEventListener("submit", e=>{
+  e.preventDefault();
+  const code = document.getElementById("f-code").value.trim();
+  const name = document.getElementById("f-name").value.trim();
+  if(!code || !name){
+    alert("กรุณากรอกรหัสหน่วยงานและชื่อหน่วยงานให้ครบ");
+    return;
+  }
+  const now = new Date().toISOString();
+  const rec = {
+    code      : code,
+    name      : name,
+    unit      : document.getElementById("f-unit").value.trim() || name,
+    type      : document.getElementById("f-type").value.trim(),
+    ministry  : document.getElementById("f-ministry").value.trim(),
+    level     : document.getElementById("f-level").value,
+    province  : document.getElementById("f-province").value,
+    district  : document.getElementById("f-district").value.trim(),
+    subdistrict: document.getElementById("f-subdistrict").value.trim(),
+    village   : document.getElementById("f-village").value.trim(),
+    address   : document.getElementById("f-address").value.trim(),
+    zipcode   : document.getElementById("f-zipcode").value.trim(),
+    lat       : document.getElementById("f-lat").value.trim(),
+    long      : document.getElementById("f-long").value.trim(),
+    website   : document.getElementById("f-website").value.trim(),
+    sourceType: "manual",
+    sourceUrl : document.getElementById("f-url").value.trim(),
+    attachmentName: attachedDoc ? attachedDoc.name : "",
+    attachmentType: attachedDoc ? attachedDoc.type : "",
+    remark    : document.getElementById("f-remark").value.trim(),
+    createdAt : now,
+    updatedAt : now
+  };
+  db.push(rec);
+  saveDB();
+  alert("บันทึกข้อมูลเรียบร้อย (รวมในฐานทั้งหมด "+db.length+" รายการ)");
+  clearForm();
+});
+
+/* init */
+displaySession();
+loadDB();
+populateProvinceSelect();
+clearForm();
+</script>
+
+</body>
+</html>
