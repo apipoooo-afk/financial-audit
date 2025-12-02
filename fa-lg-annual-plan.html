@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8">
-  <title>FA – LG Annual | Planning Stage</title>
+  <title>FA – Annual Audit Local Government (LG)</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <style>
@@ -43,23 +43,19 @@
     header .sub{ font-size:13px; opacity:.9; }
 
     main{
-      max-width:1040px;
-      margin:20px auto 32px;
-      padding:0 16px 24px;
+      max-width:980px;
+      margin:20px auto 28px;
+      padding:0 16px 20px;
     }
 
-    .intro{
-      font-size:13px;
-      color:var(--muted);
-      margin-bottom:10px;
-      line-height:1.5;
-    }
+    .intro{ font-size:13px; color:var(--muted); margin-bottom:12px; }
 
+    /* ปุ่มนำทางด้านบน */
     .nav-top{
       display:flex;
-      flex-wrap:wrap;
       gap:8px;
-      margin-bottom:16px;
+      flex-wrap:wrap;
+      margin-bottom:14px;
     }
     .btn-nav{
       padding:6px 12px;
@@ -73,74 +69,59 @@
       align-items:center;
       gap:6px;
     }
-    .btn-nav:hover{
-      background:rgba(0,0,0,0.6);
-    }
+    .btn-nav:hover{ background:rgba(0,0,0,0.6); }
 
-    .section-title{
-      margin:10px 0 6px;
-      font-size:15px;
-      font-weight:600;
-    }
-    .section-sub{
-      font-size:12px;
-      color:var(--muted);
-      margin-bottom:10px;
-    }
-
-    .form-grid{
+    /* โครงเมนูการ์ด 6 ขั้นตอน */
+    .menu-grid{
       display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
       gap:14px;
       margin-top:6px;
-      margin-bottom:18px;
     }
 
-    .form-card{
-      position:relative;
+    .menu-card{
       background:var(--card);
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,0.12);
-      padding:12px 12px 10px;
-      box-shadow:0 8px 22px rgba(0,0,0,0.9);
-      text-decoration:none;
       color:var(--text);
-      cursor:pointer;
-      transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,0.08);
+      padding:14px 12px 12px;
+      box-shadow:0 8px 24px rgba(0,0,0,0.85);
+      position:relative;
       overflow:hidden;
+      text-decoration:none;
+      cursor:pointer;
+      transition:transform .15s, box-shadow .15s, border-color .15s;
     }
-    .form-card:hover{
+    .menu-card:hover{
       transform:translateY(-2px);
-      border-color:rgba(244,143,177,0.7);
-      box-shadow:0 12px 30px rgba(0,0,0,1);
+      border-color:rgba(244,143,177,0.6);
+      box-shadow:0 12px 32px rgba(0,0,0,0.9);
     }
-    .form-card::before{
+
+    .menu-card::before{
       content:"";
       position:absolute;
       inset:-40%;
-      background:radial-gradient(circle at 0 0, rgba(66,165,245,0.24) 0, transparent 55%);
+      background:radial-gradient(circle at 0 0, rgba(66,165,245,0.22) 0, transparent 55%);
       opacity:0;
-      transition:opacity .2s ease;
-      pointer-events:none;
+      transition:opacity .2s;
     }
-    .form-card:hover::before{
-      opacity:1;
-    }
+    .menu-card:hover::before{ opacity:1; }
 
-    /* Tooltip */
-    .form-card .tooltip{
+    /* Tooltip เมื่อเอาเมาส์วางบนการ์ด */
+    .menu-card .tooltip {
       position:absolute;
       top:-10px;
       left:50%;
       transform:translateX(-50%);
       background:#111a3a;
       color:#fff;
-      padding:8px 10px;
+      padding:8px 12px;
       border-radius:10px;
-      font-size:11px;
+      font-size:12px;
       opacity:0;
       white-space:normal;
-      width:240px;
+      width:230px;
       text-align:center;
       pointer-events:none;
       transition:opacity 0.2s ease-out, top 0.2s ease-out;
@@ -148,433 +129,168 @@
       box-shadow:0 4px 12px rgba(0,0,0,0.55);
       z-index:20;
     }
-    .form-card:hover .tooltip{
+    .menu-card:hover .tooltip{
       opacity:1;
       top:-44px;
     }
 
-    .form-code{
-      font-size:11px;
-      opacity:.9;
-      margin-bottom:4px;
+    .menu-icon{ font-size:22px; margin-bottom:6px; }
+    .menu-title{ font-size:15px; font-weight:600; margin-bottom:2px; }
+    .menu-en{ font-size:12px; color:var(--muted); margin-bottom:6px; }
+    .menu-desc{ font-size:12px; color:var(--muted); margin-bottom:8px; }
+
+    .menu-footer{
       display:flex;
       justify-content:space-between;
       align-items:center;
-      gap:6px;
+      font-size:11px;
     }
-    .badge{
-      padding:1px 6px;
+    .tag{
+      padding:2px 8px;
       border-radius:999px;
-      border:1px solid rgba(255,255,255,0.3);
-      font-size:10px;
-      opacity:.9;
-    }
-
-    .form-title{
-      font-size:14px;
-      font-weight:600;
-      margin-bottom:2px;
-    }
-    .form-en{
+      border:1px solid rgba(255,255,255,0.25);
       font-size:11px;
-      color:var(--muted);
-      margin-bottom:6px;
-    }
-    .form-desc{
-      font-size:11px;
-      color:var(--muted);
-      line-height:1.5;
-      margin-bottom:6px;
-    }
-
-    .form-tags{
-      display:flex;
-      flex-wrap:wrap;
-      gap:4px;
-      font-size:10px;
-      margin-top:2px;
-    }
-    .tag-chip{
-      padding:1px 6px;
-      border-radius:999px;
-      background:rgba(0,0,0,0.4);
-      border:1px solid rgba(255,255,255,0.18);
-    }
-
-    /* Checklist Table */
-    .checklist-wrapper{
-      margin-top:10px;
-      font-size:11px;
-      color:var(--muted);
-      border-radius:12px;
-      border:1px solid rgba(255,255,255,0.16);
       background:rgba(0,0,0,0.35);
-      overflow:hidden;
     }
-    .checklist-header{
-      background:rgba(0,0,0,0.5);
-      padding:8px 10px;
-      font-weight:600;
-      font-size:12px;
-    }
-    table.checklist{
-      width:100%;
-      border-collapse:collapse;
-    }
-    table.checklist th,
-    table.checklist td{
-      padding:6px 8px;
-      border-top:1px solid rgba(255,255,255,0.12);
-      font-size:11px;
-      vertical-align:top;
-    }
-    table.checklist th{
-      text-align:left;
-      background:rgba(255,255,255,0.02);
-    }
-    table.checklist tr:nth-child(even) td{
-      background:rgba(0,0,0,0.25);
-    }
-
-    @media(max-width:600px){
-      header h2{font-size:18px;}
-    }
+    .step-label{ opacity:.8; }
   </style>
 </head>
 <body>
 
 <header>
-  <h2>🧭 FA – การวางแผนการตรวจสอบประจำปี ของ อปท.</h2>
-  <div class="sub">Planning Stage – Annual Financial Audit for Local Government (LG)</div>
+  <h2>🏛️ ระบบตรวจสอบการเงินประจำปี ของ อปท.</h2>
+  <div class="sub">Annual Financial Audit – Local Government (FA – LG Annual)</div>
 </header>
 
 <main>
 
   <div class="intro">
-    หน้านี้รวม <strong>แบบฟอร์มทั้งหมดในขั้นตอน “การวางแผนการตรวจสอบ (Planning Stage)”</strong>
-    ของการตรวจสอบรายงานการเงินประจำปีของ อปท.
-    ใช้เป็น checklist ให้ทีมตรวจสอบทำครบทุกส่วน ก่อนออกปฏิบัติงานตรวจจริง
+    กระบวนการตรวจสอบรายงานการเงินประจำปีของ อปท. ครบ 6 ขั้นตอน:
+    วางแผน → ปฏิบัติ → รายงาน → ชี้แจง → แจ้งผล → ติดตามผล
   </div>
 
-  <!-- ปุ่มกลับ -->
   <div class="nav-top">
-    <!-- กลับเมนู FA Annual LG (6 ขั้นตอน) -->
+    <!-- กลับไปหน้าเลือกปี/หน่วยรับตรวจ -->
     <a href="fa-lg-annual.html" class="btn-nav">
-      <span>⬅</span> กลับเมนู FA Annual LG
+      <span>↩</span> กลับหน้าเลือกปีและหน่วยรับตรวจ (FA – Annual LG)
     </a>
-    <!-- กลับหน้าหลักระบบ (index) -->
+    <!-- กลับเมนู FA หลัก -->
+    <a href="fa-menu.html" class="btn-nav">
+      <span>📂</span> กลับเมนู FA Main
+    </a>
+    <!-- กลับหน้าหลักระบบทั้งหมด -->
     <a href="index.html" class="btn-nav">
-      <span>🏠</span> กลับหน้าหลักระบบ
+      <span>🏠</span> กลับหน้าหลัก
     </a>
   </div>
 
-  <!-- กลุ่มแบบฟอร์มหลัก -->
-  <h3 class="section-title">1) แบบฟอร์มความเข้าใจหน่วยรับตรวจ & การดำเนินงานต่อเนื่อง</h3>
-  <div class="section-sub">
-    ใช้ทำความเข้าใจภาพรวม อปท. และประเมิน Going Concern ก่อนวางแผนความเสี่ยงเชิงลึก
-  </div>
-  
   <section class="menu-grid">
 
-  <!-- 1 Plan – ไปหน้า op3 -->
-  <a href="fa-lg-annual-plan-op3.html" class="menu-card">
-    <div class="tooltip">
-      กำหนด Scope, ความเสี่ยง, ทีมตรวจ และแผนงานตรวจประจำปีของแต่ละ อปท. 
-      ผ่านแบบ อปท.3 และฟอร์มอื่น ๆ
-    </div>
-    <div class="menu-icon">🧭</div>
-    <div class="menu-title">1. การวางแผนการตรวจสอบ FA ของ อปท.</div>
-    <div class="menu-en">1. Planning of Annual FA (LG)</div>
-    <div class="menu-desc">
-      บริหารแผนตรวจประจำปีของ อปท. กำหนดความสำคัญและลำดับการเข้าตรวจตามความเสี่ยง
-      และเชื่อมไปยังแบบฟอร์ม อปท.3 และฟอร์มการวางแผนอื่น ๆ
-    </div>
-    <div class="menu-footer">
-      <span class="tag">Step 1 – Planning</span>
-      <span class="step-label">เข้าสู่ระบบวางแผน ▸</span>
-    </div>
-  </a>
-
-  <!-- เมนู 2–6 ตามเดิม -->
-</section>
-
-    <!-- อปท.3.1 -->
-    <a href="#" class="form-card">
-      <div class="tooltip">ประเมินว่าหน่วยรับตรวจมีความเสี่ยงไม่สามารถดำเนินงานต่อเนื่องหรือไม่</div>
-      <div class="form-code">
-        <span>แบบ อปท. 3.1</span>
-        <span class="badge">Going Concern</span>
+    <!-- 1 Plan – ไปหน้า อปท.3 -->
+    <a href="fa-lg-annual-plan-op3.html" class="menu-card">
+      <div class="tooltip">
+        กำหนด Scope, ความเสี่ยง, ทีมตรวจ และแผนงานตรวจประจำปีของแต่ละ อปท.
+        ผ่านแบบ อปท.3 และฟอร์มการวางแผนอื่น ๆ
       </div>
-      <div class="form-title">การประเมินความสามารถในการดำเนินงานต่อเนื่อง (Going Concern)</div>
-      <div class="form-en">Assessment of Going Concern</div>
-      <div class="form-desc">
-        ประเมินสภาพคล่อง หนี้สิน ภาระผูกพัน ข้อจำกัดด้านงบประมาณ หรือปัญหาจากระบบบัญชี
-        เพื่อระบุว่ามีข้อบ่งชี้ด้าน Going Concern หรือไม่
+      <div class="menu-icon">🧭</div>
+      <div class="menu-title">1. การวางแผนการตรวจสอบ FA ของ อปท.</div>
+      <div class="menu-en">1. Planning of Annual FA (LG)</div>
+      <div class="menu-desc">
+        บริหารแผนตรวจประจำปีของ อปท. กำหนดความสำคัญและลำดับการเข้าตรวจตามความเสี่ยง
+        และเชื่อมไปยังแบบฟอร์ม อปท.3 และฟอร์มการวางแผนอื่น ๆ
       </div>
-      <div class="form-tags">
-        <span class="tag-chip">Risk Indicator</span>
-        <span class="tag-chip">Liquidity</span>
-        <span class="tag-chip">Financial Health</span>
+      <div class="menu-footer">
+        <span class="tag">Step 1 – Planning</span>
+        <span class="step-label">เข้าสู่ระบบวางแผน ▸</span>
+      </div>
+    </a>
+
+    <!-- 2 Fieldwork -->
+    <a href="fa-lg-annual-fieldwork.html" class="menu-card">
+      <div class="tooltip">
+        บริหารโปรแกรมการตรวจ สมุดทำการ และหลักฐานการตรวจสอบราย อปท.
+      </div>
+      <div class="menu-icon">📋</div>
+      <div class="menu-title">2. การปฏิบัติการตรวจสอบ FA ของ อปท.</div>
+      <div class="menu-en">2. Execution / Fieldwork (LG)</div>
+      <div class="menu-desc">
+        บันทึกขั้นตอนที่ทำจริง ข้อสังเกต ระดับความเสี่ยง และสถานะการตรวจของแต่ละเคส
+      </div>
+      <div class="menu-footer">
+        <span class="tag">Step 2 – Fieldwork</span>
+        <span class="step-label">เข้าสู่ระบบปฏิบัติ ▸</span>
+      </div>
+    </a>
+
+    <!-- 3 Report -->
+    <a href="fa-lg-annual-report.html" class="menu-card">
+      <div class="tooltip">
+        สรุปข้อค้นพบ จัดทำร่างรายงาน ตรวจทาน และเตรียมเสนออนุมัติ
+      </div>
+      <div class="menu-icon">📝</div>
+      <div class="menu-title">3. การจัดทำรายงานการตรวจสอบ FA ของ อปท.</div>
+      <div class="menu-en">3. Reporting (LG)</div>
+      <div class="menu-desc">
+        จัดโครงสร้างรายงาน เชื่อมข้อค้นพบกับข้อเสนอแนะ และบริหารเวอร์ชันรายงานของแต่ละ อปท.
+      </div>
+      <div class="menu-footer">
+        <span class="tag">Step 3 – Reporting</span>
+        <span class="step-label">เข้าสู่ระบบรายงาน ▸</span>
+      </div>
+    </a>
+
+    <!-- 4 Response -->
+    <a href="fa-lg-annual-response.html" class="menu-card">
+      <div class="tooltip">
+        ส่งข้อค้นพบให้ อปท. ชี้แจง ติดตามคำชี้แจง และบันทึกผลพิจารณา
+      </div>
+      <div class="menu-icon">💬</div>
+      <div class="menu-title">4. การเปิดโอกาสให้หน่วยรับตรวจชี้แจง FA ของ อปท.</div>
+      <div class="menu-en">4. Response & Clarification (LG)</div>
+      <div class="menu-desc">
+        บริหารคำชี้แจงเป็นรายข้อ เก็บเอกสารประกอบ และบันทึกผลการประชุมชี้แจง
+      </div>
+      <div class="menu-footer">
+        <span class="tag">Step 4 – Response</span>
+        <span class="step-label">เข้าสู่ระบบชี้แจง ▸</span>
+      </div>
+    </a>
+
+    <!-- 5 Communication -->
+    <a href="fa-lg-annual-communication.html" class="menu-card">
+      <div class="tooltip">
+        ออกหนังสือแจ้งผล ส่งรายงานให้ผู้เกี่ยวข้อง และจัดเก็บหลักฐานการสื่อสาร
+      </div>
+      <div class="menu-icon">📨</div>
+      <div class="menu-title">5. การแจ้งผลการตรวจสอบ FA ของ อปท.</div>
+      <div class="menu-en">5. Communication of Results (LG)</div>
+      <div class="menu-desc">
+        บริหารหนังสือแจ้งผล รายชื่อผู้รับ รายการผู้เกี่ยวข้อง และสรุปผลการประชุมสรุปผล (Exit Meeting)
+      </div>
+      <div class="menu-footer">
+        <span class="tag">Step 5 – Communication</span>
+        <span class="step-label">เข้าสู่ระบบแจ้งผล ▸</span>
+      </div>
+    </a>
+
+    <!-- 6 Follow-up -->
+    <a href="fa-lg-annual-followup.html" class="menu-card">
+      <div class="tooltip">
+        ติดตามการดำเนินการตามข้อเสนอแนะของ อปท. จนปิดเคสรายข้อได้
+      </div>
+      <div class="menu-icon">🔁</div>
+      <div class="menu-title">6. การติดตามผลการตรวจสอบ FA ของ อปท.</div>
+      <div class="menu-en">6. Follow-up of Recommendations (LG)</div>
+      <div class="menu-desc">
+        บริหาร Action Plan ของ อปท. ตรวจสอบการแก้ไข และบันทึกผลติดตามเพื่อปิดข้อสังเกต
+      </div>
+      <div class="menu-footer">
+        <span class="tag">Step 6 – Follow-up</span>
+        <span class="step-label">เข้าสู่ระบบติดตามผล ▸</span>
       </div>
     </a>
 
   </section>
-
-  <!-- กลุ่มควบคุมภายใน & Fraud Risk -->
-  <h3 class="section-title">2) การประเมินการควบคุมภายใน และความเสี่ยงทุจริต</h3>
-  <div class="section-sub">
-    ใช้มาตรฐานสอบบัญชี 315 และกรอบ Fraud Risk เป็นฐานในการประเมิน RMM ระดับงบการเงินและระดับรายการ
-  </div>
-
-  <section class="form-grid">
-
-    <!-- 11.1.3 / 11.1.4 -->
-    <a href="#" class="form-card">
-      <div class="tooltip">ประเมินองค์ประกอบการควบคุมภายใน 5 ด้านตามมาตรฐานสอบบัญชี 315</div>
-      <div class="form-code">
-        <span>แบบ อปท. 11.1.3 / 11.1.4</span>
-        <span class="badge">Internal Control</span>
-      </div>
-      <div class="form-title">การประเมินองค์ประกอบการควบคุมภายใน</div>
-      <div class="form-en">Assessment of Internal Control Components</div>
-      <div class="form-desc">
-        ประเมิน Control Environment, Risk Assessment, Control Activities,
-        Information & Communication และ Monitoring Activities ของ อปท.
-      </div>
-      <div class="form-tags">
-        <span class="tag-chip">ISA 315</span>
-        <span class="tag-chip">Control Environment</span>
-        <span class="tag-chip">IC Assessment</span>
-      </div>
-    </a>
-
-    <!-- 11.1.5 Fraud Risk -->
-    <a href="#" class="form-card">
-      <div class="tooltip">เน้นประเมินโอกาสทุจริต สาเหตุ และจุดอ่อนของกลไกควบคุมที่เกี่ยวข้อง</div>
-      <div class="form-code">
-        <span>แบบ อปท. 11.1.5</span>
-        <span class="badge">Fraud Risk</span>
-      </div>
-      <div class="form-title">การประเมินความเสี่ยงทุจริต</div>
-      <div class="form-en">Fraud Risk Assessment</div>
-      <div class="form-desc">
-        พิจารณา Fraud Triangle (แรงจูงใจ โอกาส ความชอบธรรม),
-        ประเด็นทุจริตที่อาจเกิดขึ้น และกลไกควบคุมที่อาจล้มเหลว
-      </div>
-      <div class="form-tags">
-        <span class="tag-chip">Fraud Triangle</span>
-        <span class="tag-chip">Control Weakness</span>
-        <span class="tag-chip">High Risk Area</span>
-      </div>
-    </a>
-
-  </section>
-
-  <!-- กลุ่ม RMM & Materiality -->
-  <h3 class="section-title">3) ความเสี่ยงการแสดงข้อมูลคลาดเคลื่อน และสาระสำคัญ (RMM & Materiality)</h3>
-  <div class="section-sub">
-    เซ็ตระดับความเสี่ยง (RMM) และตัวเลขสาระสำคัญ (Materiality) ซึ่งจะถูกใช้ต่อเนื่องในทุกขั้นตอนของการตรวจสอบ
-  </div>
-
-  <section class="form-grid">
-
-    <!-- อปท.4 -->
-    <a href="#" class="form-card">
-      <div class="tooltip">สรุปความเสี่ยงระดับงบการเงินและระดับรายการ พร้อมวิธีตอบสนองความเสี่ยง</div>
-      <div class="form-code">
-        <span>แบบ อปท. 4</span>
-        <span class="badge">RMM & Response</span>
-      </div>
-      <div class="form-title">กระดาษทำการประเมินความเสี่ยง และตอบสนองความเสี่ยง (RMM)</div>
-      <div class="form-en">Risk Assessment & Responses (RMM)</div>
-      <div class="form-desc">
-        ระบุความเสี่ยงการแสดงข้อมูลคลาดเคลื่อนที่มีนัยสำคัญ ทั้งระดับงบการเงินและระดับ Assertion
-        พร้อมกำหนดวิธีตอบสนอง เช่น ทดสอบควบคุม/ทดสอบเนื้อหา
-      </div>
-      <div class="form-tags">
-        <span class="tag-chip">RMM</span>
-        <span class="tag-chip">Assertions</span>
-        <span class="tag-chip">Audit Response</span>
-      </div>
-    </a>
-
-    <!-- Form 3.5 -->
-    <a href="#" class="form-card">
-      <div class="tooltip">กำหนด OM / PM / TE เป็นตัวเลขหลักของสาระสำคัญทั้งระบบ</div>
-      <div class="form-code">
-        <span>แบบฟอร์ม 3.5</span>
-        <span class="badge">Materiality (OM/PM/TE)</span>
-      </div>
-      <div class="form-title">การกำหนดความมีสาระสำคัญโดยรวม</div>
-      <div class="form-en">Overall / Performance Materiality & Threshold Errors</div>
-      <div class="form-desc">
-        คำนวณ Overall Materiality (OM), Performance Materiality (PM) และ Threshold for Errors (TE)
-        โดยอิงยอดสาระสำคัญที่เหมาะสมกับ อปท. นั้น ๆ
-      </div>
-      <div class="form-tags">
-        <span class="tag-chip">OM</span>
-        <span class="tag-chip">PM</span>
-        <span class="tag-chip">TE</span>
-      </div>
-    </a>
-
-    <!-- Form 3.6 -->
-    <a href="#" class="form-card">
-      <div class="tooltip">แบ่งสาระสำคัญลงในหมวดรายการที่สำคัญ เช่น รายได้ สินทรัพย์ ครุภัณฑ์</div>
-      <div class="form-code">
-        <span>แบบฟอร์ม 3.6</span>
-        <span class="badge">Specific Materiality</span>
-      </div>
-      <div class="form-title">การกำหนดสาระสำคัญเฉพาะเรื่อง</div>
-      <div class="form-en">Materiality by Class of Transactions / Balances</div>
-      <div class="form-desc">
-        กำหนดสาระสำคัญเฉพาะเรื่องสำหรับรายการสำคัญ เช่น รายได้ ครุภัณฑ์ ที่ดินอาคาร ลูกหนี้ภาษี
-        เพื่อใช้วางแผนทดสอบเฉพาะด้าน
-      </div>
-      <div class="form-tags">
-        <span class="tag-chip">Specific Materiality</span>
-        <span class="tag-chip">Key Balances</span>
-      </div>
-    </a>
-
-  </section>
-
-  <!-- กลุ่ม Overall Plan & Meeting & Assignment -->
-  <h3 class="section-title">4) แผนการสอบบัญชีโดยรวม การประชุมวางแผน และการมอบหมายงาน</h3>
-  <div class="section-sub">
-    สรุปทุกองค์ประกอบของแผนตรวจสอบในเชิงปฏิบัติการ และกำหนดบทบาทหน้าที่ของทีมตรวจ
-  </div>
-
-  <section class="form-grid">
-
-    <!-- อปท.5 -->
-    <a href="#" class="form-card">
-      <div class="tooltip">แผนภาพรวมของงานสอบบัญชี ประเด็นสำคัญ วิธีตรวจ และ Timeline</div>
-      <div class="form-code">
-        <span>แบบ อปท. 5</span>
-        <span class="badge">Overall Audit Plan</span>
-      </div>
-      <div class="form-title">แผนการสอบบัญชีโดยรวม</div>
-      <div class="form-en">Overall Audit Plan</div>
-      <div class="form-desc">
-        สรุปวัตถุประสงค์การสอบบัญชี วิธีตอบสนองความเสี่ยง รายการที่จะตรวจ
-        จำนวนคน–วัน และกำหนดเวลา (Timeline) เพื่อขออนุมัติแผน
-      </div>
-      <div class="form-tags">
-        <span class="tag-chip">Audit Strategy</span>
-        <span class="tag-chip">Timeline</span>
-        <span class="tag-chip">Man-day</span>
-      </div>
-    </a>
-
-    <!-- อปท.5.1 -->
-    <a href="#" class="form-card">
-      <div class="tooltip">บันทึกข้อสรุปจากการประชุมวางแผนระหว่างทีมตรวจและผู้เกี่ยวข้อง</div>
-      <div class="form-code">
-        <span>แบบ อปท. 5.1</span>
-        <span class="badge">Planning Meeting</span>
-      </div>
-      <div class="form-title">สรุปประเด็นการประชุมวางแผนตรวจสอบ</div>
-      <div class="form-en">Summary of Planning Meeting</div>
-      <div class="form-desc">
-        บันทึกหัวข้อการประชุม ประเด็นเสี่ยงที่ต้องจับตา ข้อจำกัดการตรวจสอบ
-        และรายการเอกสารที่ต้องประสานกับ อปท.
-      </div>
-      <div class="form-tags">
-        <span class="tag-chip">Meeting Minutes</span>
-        <span class="tag-chip">Key Issues</span>
-      </div>
-    </a>
-
-    <!-- อปท.5.2 -->
-    <a href="#" class="form-card">
-      <div class="tooltip">แจกแจงว่าใครทำงานอะไร ช่วงเวลาไหน และใครเป็นผู้ควบคุมงาน/สอบทาน</div>
-      <div class="form-code">
-        <span>แบบ อปท. 5.2</span>
-        <span class="badge">Assignment Sheet</span>
-      </div>
-      <div class="form-title">การมอบหมายงานตรวจสอบ</div>
-      <div class="form-en">Audit Assignment Sheet</div>
-      <div class="form-desc">
-        ระบุรายชื่อผู้ตรวจสอบ หน้าที่ ความรับผิดชอบ วันเริ่มต้น–สิ้นสุด
-        ผู้ควบคุมงาน และผู้สอบทาน ตามหลักการควบคุมคุณภาพงานสอบบัญชี
-      </div>
-      <div class="form-tags">
-        <span class="tag-chip">Team Roles</span>
-        <span class="tag-chip">Quality Control</span>
-      </div>
-    </a>
-
-  </section>
-
-  <!-- Checklist สรุปรวม -->
-  <div class="checklist-wrapper">
-    <div class="checklist-header">
-      📋 Planning Checklist – รายการแบบฟอร์มที่ต้องจัดทำให้ครบในขั้นตอนการวางแผน
-    </div>
-    <table class="checklist">
-      <thead>
-        <tr>
-          <th style="width:8%;">ลำดับ</th>
-          <th style="width:20%;">แบบฟอร์ม</th>
-          <th>รายละเอียดสั้น</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>1</td>
-          <td>อปท. 3</td>
-          <td>ทำความเข้าใจหน่วยรับตรวจ – โครงสร้าง หน้าที่ ระบบงาน ระเบียบที่เกี่ยวข้อง</td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td>อปท. 3.1</td>
-          <td>ประเมินความสามารถในการดำเนินงานต่อเนื่อง (Going Concern)</td>
-        </tr>
-        <tr>
-          <td>3</td>
-          <td>อปท. 11.1.3 / 11.1.4</td>
-          <td>ประเมินองค์ประกอบการควบคุมภายใน 5 ด้าน ตามมาตรฐานสอบบัญชี 315</td>
-        </tr>
-        <tr>
-          <td>4</td>
-          <td>อปท. 11.1.5</td>
-          <td>ประเมินความเสี่ยงทุจริต และจุดอ่อนของกลไกควบคุม</td>
-        </tr>
-        <tr>
-          <td>5</td>
-          <td>อปท. 4</td>
-          <td>ประเมินความเสี่ยงการแสดงข้อมูลคลาดเคลื่อน (RMM) และกำหนดวิธีตอบสนอง</td>
-        </tr>
-        <tr>
-          <td>6</td>
-          <td>ฟอร์ม 3.5</td>
-          <td>กำหนด Overall / Performance Materiality และ Threshold for Errors</td>
-        </tr>
-        <tr>
-          <td>7</td>
-          <td>ฟอร์ม 3.6</td>
-          <td>กำหนดสาระสำคัญเฉพาะเรื่อง แยกตามรายได้/สินทรัพย์/รายการสำคัญ</td>
-        </tr>
-        <tr>
-          <td>8</td>
-          <td>อปท. 5</td>
-          <td>แผนการสอบบัญชีโดยรวม – วัตถุประสงค์ วิธีตรวจ Timeline และ Man-day</td>
-        </tr>
-        <tr>
-          <td>9</td>
-          <td>อปท. 5.1</td>
-          <td>สรุปประเด็นการประชุมวางแผนตรวจสอบ ระหว่างทีมตรวจและผู้เกี่ยวข้อง</td>
-        </tr>
-        <tr>
-          <td>10</td>
-          <td>อปท. 5.2</td>
-          <td>การมอบหมายงาน – ระบุบทบาทหน้าที่ของผู้ตรวจสอบและผู้ควบคุมงาน</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
 </main>
 </body>
 </html>
