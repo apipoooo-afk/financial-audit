@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <title>FA – Fieldwork Stage | Financial Audit System</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root{
+      --primary:#0d47a1;
+      --primary-2:#42a5f5;
+      --accent:#ffd54f;
+      --bg:#060818;
+      --bg-soft:#0b1024;
+      --card:#11152b;
+      --text:#f5f7ff;
+      --muted:#a3acc7;
+      --border:#262b46;
+      --maroon:#7b1e3c;
+      --pink:#f48fb1;
+      --chip-bg:rgba(244,143,177,0.12);
+      --chip-border:rgba(244,143,177,0.5);
+      --success:#66bb6a;
+      --danger:#ef5350;
+      --shadow-soft:0 10px 30px rgba(0,0,0,0.55);
+      --radius-lg:18px;
+      --radius-sm:10px;
+    }
+
+    *{box-sizing:border-box;}
+
+    body{
+      margin:0;
+      font-family:"Segoe UI","Tahoma",sans-serif;
+      background:
+        radial-gradient(circle at 0% 0%,rgba(123,30,60,0.35) 0,transparent 50%),
+        radial-gradient(circle at 100% 100%,rgba(66,165,245,0.35) 0,transparent 55%),
+        var(--bg);
+      color:var(--text);
+      min-height:100vh;
+    }
+
+    header{
+      padding:18px 16px 14px;
+      background:linear-gradient(120deg,#7b1e3c,#0d47a1,#42a5f5);
+      box-shadow:var(--shadow-soft);
+      position:sticky;
+      top:0;
+      z-index:20;
+    }
+
+    .header-inner{
+      max-width:1120px;
+      margin:0 auto;
+      display:flex;
+      flex-wrap:wrap;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+    }
+
+    .header-main{
+      display:flex;
+      gap:14px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+
+    .stage-badge{
+      width:46px;
+      height:46px;
+      border-radius:50%;
+      border:2px solid rgba(255,255,255,0.85);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:700;
+      font-size:20px;
+      background:rgba(0,0,0,0.18);
+      box-shadow:0 0 0 3px rgba(0,0,0,0.25);
+    }
+
+    .title-block h1{
+      margin:0;
+      font-size:22px;
+      letter-spacing:0.03em;
+    }
+    .title-block .subtitle{
+      font-size:13px;
+      opacity:0.92;
+    }
+
+    .header-meta{
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+      font-size:12px;
+      text-align:right;
+    }
+
+    .crumbs a{
+      color:#ffe082;
+      text-decoration:none;
+      font-size:12px;
+    }
+    .crumbs span{
+      opacity:0.8;
+      font-size:12px;
+    }
+
+    .usage-stats{
+      display:flex;
+      gap:10px;
+      justify-content:flex-end;
+      flex-wrap:wrap;
+    }
+    .usage-pill{
+      padding:4px 9px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.35);
+      font-size:11px;
+      display:flex;
+      align-items:center;
+      gap:6px;
+      background:rgba(0,0,0,0.22);
+    }
+    .usage-pill strong{font-size:13px;}
+
+    main{
+      max-width:1120px;
+      margin:18px auto 32px;
+      padding:0 12px 28px;
+    }
+
+    .intro-card{
+      background:linear-gradient(135deg,rgba(17,21,43,0.98),rgba(6,8,24,0.98));
+      border-radius:var(--radius-lg);
+      border:1px solid var(--border);
+      box-shadow:var(--shadow-soft);
+      padding:16px 18px;
+      display:grid;
+      grid-template-columns:minmax(0,2fr) minmax(0,1.2fr);
+      gap:14px;
+    }
+    @media(max-width:800px){
+      .intro-card{
+        grid-template-columns:minmax(0,1fr);
+      }
+    }
+
+    .intro-main-title{
+      font-size:18px;
+      font-weight:600;
+      margin-bottom:4px;
+    }
+    .intro-text{
+      font-size:13px;
+      color:var(--muted);
+    }
+    .chips{
+      margin-top:8px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+    }
+    .chip{
+      font-size:11px;
+      padding:4px 8px;
+      border-radius:999px;
+      border:1px solid var(--chip-border);
+      background:var(--chip-bg);
+      color:#fce4ec;
+      white-space:nowrap;
+    }
+
+    .intro-side{
+      border-left:1px dashed rgba(255,255,255,0.12);
+      padding-left:14px;
+    }
+    @media(max-width:800px){
+      .intro-side{
+        border-left:none;
+        border-top:1px dashed rgba(255,255,255,0.12);
+        padding-left:0;
+        padding-top:10px;
+        margin-top:4px;
+      }
+    }
+    .intro-side h3{
+      margin:0 0 6px;
+      font-size:14px;
+    }
+    .intro-side ul{
+      margin:0;
+      padding-left:18px;
+      font-size:12px;
+      color:var(--muted);
+    }
+
+    .toolbar{
+      margin-top:18px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .search-box{
+      display:flex;
+      align-items:center;
+      gap:6px;
+      background:var(--card);
+      border-radius:999px;
+      padding:4px 10px;
+      border:1px solid var(--border);
+      min-width:220px;
+      max-width:320px;
+      flex:1 1 220px;
+    }
+    .search-box input{
+      flex:1;
+      background:transparent;
+      border:none;
+      outline:none;
+      color:var(--text);
+      font-size:13px;
+    }
+    .search-box input::placeholder{
+      color:var(--muted);
+    }
+    .search-icon{
+      font-size:14px;
+      opacity:0.9;
+    }
+
+    .filter-badges{
+      display:flex;
+      gap:6px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+      font-size:11px;
+    }
+    .filter-badge{
+      padding:4px 9px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background:rgba(11,16,36,0.96);
+      cursor:pointer;
+      opacity:0.9;
+    }
+    .filter-badge.active{
+      border-color:var(--primary-2);
+      box-shadow:0 0 0 1px rgba(66,165,245,0.55);
+    }
+
+    .sections{
+      margin-top:20px;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+
+    .section-card{
+      background:var(--card);
+      border-radius:var(--radius-lg);
+      border:1px solid var(--border);
+      box-shadow:0 8px 22px rgba(0,0,0,0.5);
+      overflow:hidden;
+    }
+
+    .section-header{
+      padding:10px 14px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      background:linear-gradient(135deg,rgba(13,71,161,0.18),rgba(123,30,60,0.22));
+      border-bottom:1px solid rgba(255,255,255,0.06);
+    }
+    .section-title{
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+    }
+    .section-title h2{
+      margin:0;
+      font-size:15px;
+    }
+    .section-title span{
+      font-size:11px;
+      color:var(--muted);
+    }
+
+    .section-tag{
+      font-size:11px;
+      padding:4px 8px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.4);
+      background:rgba(0,0,0,0.25);
+    }
+
+    .section-body{
+      padding:10px 14px 14px;
+    }
+
+    /* Accordions */
+    .accordion{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+
+    .acc-item{
+      border-radius:var(--radius-sm);
+      border:1px solid var(--border);
+      background:rgba(6,8,24,0.96);
+      overflow:hidden;
+    }
+    .acc-header{
+      padding:8px 10px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      cursor:pointer;
+    }
+    .acc-left{
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+    }
+    .acc-label{
+      font-size:13px;
+      font-weight:600;
+    }
+    .acc-sub{
+      font-size:11px;
+      color:var(--muted);
+    }
+    .acc-meta{
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+      align-items:flex-end;
+      font-size:10px;
+      color:var(--muted);
+    }
+    .acc-meta span strong{
+      color:#fff;
+    }
+    .acc-toggle-icon{
+      font-size:14px;
+      transform:rotate(0deg);
+      transition:transform .18s ease-out;
+    }
+    .acc-item.open .acc-toggle-icon{
+      transform:rotate(90deg);
+    }
+
+    .acc-panel{
+      max-height:0;
+      overflow:hidden;
+      transition:max-height .2s ease-out;
+      border-top:1px solid rgba(255,255,255,0.06);
+      background:rgba(9,12,30,0.96);
+    }
+    .acc-inner{
+      padding:8px 11px 9px;
+      font-size:12px;
+    }
+
+    /* Forms listing */
+    .forms-table{
+      width:100%;
+      border-collapse:collapse;
+      font-size:12px;
+    }
+    .forms-table thead{
+      background:rgba(255,255,255,0.03);
+    }
+    .forms-table th,
+    .forms-table td{
+      padding:5px 6px;
+      text-align:left;
+      border-bottom:1px solid rgba(255,255,255,0.06);
+    }
+    .forms-table th{
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:0.03em;
+      color:var(--muted);
+    }
+    .forms-table tr:last-child td{
+      border-bottom:none;
+    }
+
+    .form-code{
+      font-family:"Cascadia Code","Consolas",monospace;
+      font-size:12px;
+      padding:2px 6px;
+      border-radius:999px;
+      background:rgba(13,71,161,0.15);
+      border:1px solid rgba(66,165,245,0.45);
+    }
+    .form-desc{
+      font-size:12px;
+    }
+    .form-tag{
+      font-size:10px;
+      padding:2px 6px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.18);
+      background:rgba(0,0,0,0.22);
+      white-space:nowrap;
+    }
+
+    .no-result{
+      font-size:12px;
+      color:var(--muted);
+      padding:4px 0;
+    }
+
+    footer{
+      max-width:1120px;
+      margin:16px auto 10px;
+      padding:0 12px;
+      font-size:11px;
+      color:var(--muted);
+      display:flex;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      gap:6px;
+    }
+
+    .footer-left{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      align-items:center;
+    }
+    .footer-left a{
+      color:var(--primary-2);
+      text-decoration:none;
+      font-size:11px;
+    }
+    .footer-right{
+      text-align:right;
+    }
+
+    .highlight{
+      color:var(--accent);
+      font-weight:600;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <div class="header-main">
+      <div class="stage-badge">2</div>
+      <div class="title-block">
+        <h1>ขั้นที่ 2 : ปฏิบัติงานตรวจสอบ (Fieldwork Stage)</h1>
+        <div class="subtitle">
+          ลงพื้นที่ – ทดสอบรายการ – สรุปข้อเท็จจริงบนกระดาษทำการดิจิทัล
+        </div>
+      </div>
+    </div>
+    <div class="header-meta">
+      <div class="crumbs">
+        <a href="index.html">🏠 หน้าหลักระบบตรวจสอบการเงิน</a>
+        <span>›</span>
+        <a href="fa-lg-annual.html">FA-LG Annual</a>
+        <span>› Fieldwork</span>
+      </div>
+      <div class="usage-stats">
+        <div class="usage-pill">
+          ⏱ กำลังใช้งานอยู่:
+          <strong id="currentUsers">-</strong> คน
+        </div>
+        <div class="usage-pill">
+          📊 เข้าถึงสะสม:
+          <strong id="totalUsers">-</strong> ครั้ง
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- Intro -->
+  <section class="intro-card">
+    <div>
+      <div class="intro-main-title">
+        Fieldwork = หัวใจของการตรวจสอบรายงานการเงิน อปท.
+      </div>
+      <div class="intro-text">
+        ขั้นปฏิบัติงานตรวจสอบคือจุดที่ “แผนงาน” ถูกแปลงเป็น “หลักฐานตรวจสอบ”
+        ผ่านแบบฟอร์มชุด 8.x และฟอร์มกระดาษทำการอื่น ๆ
+        หน้านี้รวบรวมโครงสร้างแบบฟอร์มทั้งหมดสำหรับสร้างระบบ FA-LG-Fieldwork
+        ให้ใช้ได้จริงในงาน
+      </div>
+      <div class="chips">
+        <span class="chip">General Audit Procedures</span>
+        <span class="chip">8.x – Financial Statements</span>
+        <span class="chip">Working Papers & Review</span>
+      </div>
+    </div>
+    <div class="intro-side">
+      <h3>เป้าหมายของขั้น Fieldwork</h3>
+      <ul>
+        <li>เก็บหลักฐานเพียงพอ เหมาะสม และเชื่อถือได้</li>
+        <li>ครอบคลุมทุกสาระสำคัญในงบการเงิน</li>
+        <li>เชื่อมต่อไปยังขั้นสรุปผลและรายงาน (Step 3 – Report)</li>
+        <li>จัดทำกระดาษทำการที่สอบทานได้ง่ายในอนาคต</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Tools bar -->
+  <div class="toolbar">
+    <div class="search-box">
+      <span class="search-icon">🔎</span>
+      <input id="searchInput" type="text"
+             placeholder="ค้นหาเลขฟอร์ม หรือคำสำคัญ เช่น 8.2, เงินสด, รายได้">
+    </div>
+    <div class="filter-badges">
+      <div class="filter-badge active" data-filter="all">ทั้งหมด</div>
+      <div class="filter-badge" data-filter="general">งานทั่วไป</div>
+      <div class="filter-badge" data-filter="fs">ตามหมวดงบการเงิน</div>
+      <div class="filter-badge" data-filter="summary">ฟอร์มสรุป</div>
+    </div>
+  </div>
+
+  <!-- Sections -->
+  <div class="sections">
+
+    <!-- A) งานทั่วไป -->
+    <section class="section-card" data-section-type="general">
+      <div class="section-header">
+        <div class="section-title">
+          <h2>A) แบบฟอร์มทดสอบทั่วไป (General Audit Procedures)</h2>
+          <span>ใช้ในงานทุก อปท. – สอบทานงบการเงิน ภาระผูกพัน เหตุการณ์ภายหลัง และการสอบทานงานตรวจสอบ</span>
+        </div>
+        <div class="section-tag">Core Fieldwork Forms</div>
+      </div>
+      <div class="section-body">
+        <div class="accordion">
+
+          <!-- General – อปท.7 และ 8.1-8.1.4 -->
+          <div class="acc-item open">
+            <div class="acc-header">
+              <div class="acc-left">
+                <div class="acc-label">A1 – ทดสอบทั่วไป / รายงานการเงินรวม</div>
+                <div class="acc-sub">อปท. 7, 8.1, 8.1.1 – 8.1.4</div>
+              </div>
+              <div class="acc-meta">
+                <span>กลุ่ม <strong>General</strong></span>
+                <span><span class="acc-toggle-icon">▶</span></span>
+              </div>
+            </div>
+            <div class="acc-panel" style="max-height:400px;">
+              <div class="acc-inner">
+                <table class="forms-table">
+                  <thead>
+                    <tr>
+                      <th style="width:18%;">เลขฟอร์ม</th>
+                      <th>รายการ</th>
+                      <th style="width:22%;">กลุ่ม</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="form-row" data-keywords="อปท.7 ความครบถ้วน รายงานการเงิน">
+                      <td><span class="form-code">อปท. 7</span></td>
+                      <td class="form-desc">สอบทานความครบถ้วนของรายงานการเงิน</td>
+                      <td><span class="form-tag">General FS Review</span></td>
+                    </tr>
+                    <tr class="form-row" data-keywords="8.1 แนวการตรวจสอบ เรื่องทั่วไป">
+                      <td><span class="form-code">8.1</span></td>
+                      <td class="form-desc">แนวการตรวจสอบเรื่องทั่วไป</td>
+                      <td><span class="form-tag">General Procedures</span></td>
+                    </tr>
+                    <tr class="form-row" data-keywords="8.1.1 ตรวจสอบ งบการเงินรวม">
+                      <td><span class="form-code">8.1.1</span></td>
+                      <td class="form-desc">ตรวจสอบงบการเงินรวม</td>
+                      <td><span class="form-tag">FS Overview</span></td>
+                    </tr>
+                    <tr class="form-row" data-keywords="8.1.2 ภาระผูกพัน">
+                      <td><span class="form-code">8.1.2</span></td>
+                      <td class="form-desc">ตรวจสอบภาระผูกพัน</td>
+                      <td><span class="form-tag">Commitments</span></td>
+                    </tr>
+                    <tr class="form-row" data-keywords="8.1.3 หนี้สินที่อาจเกิดขึ้น contingent liabilities">
+                      <td><span class="form-code">8.1.3</span></td>
+                      <td class="form-desc">ตรวจสอบหนี้สินที่อาจเกิดขึ้น</td>
+                      <td><span class="form-tag">Contingent Liabilities</span></td>
+                    </tr>
+                    <tr class="form-row" data-keywords="8.1.4 เหตุการณ์ ภายหลัง รอบระยะเวลา รายงาน subsequent events">
+                      <td><span class="form-code">8.1.4</span></td>
+                      <td class="form-desc">ตรวจสอบเหตุการณ์ภายหลังรอบระยะเวลารายงาน</td>
+                      <td><span class="form-tag">Subsequent Events</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- General – Review Working Papers -->
+          <div class="acc-item">
+            <div class="acc-header">
+              <div class="acc-left">
+                <div class="acc-label">A2 – กระดาษทำการ / สอบทานงานตรวจสอบ</div>
+                <div class="acc-sub">ฟอร์ม 3.12, 3.13, 3.16, 3.17</div>
+              </div>
+              <div class="acc-meta">
+                <span>กลุ่ม <strong>Working Papers</strong></span>
+                <span><span class="acc-toggle-icon">▶</span></span>
+              </div>
+            </div>
+            <div class="acc-panel">
+              <div class="acc-inner">
+                <table class="forms-table">
+                  <thead>
+                    <tr>
+                      <th style="width:18%;">เลขฟอร์ม</th>
+                      <th>รายการ</th>
+                      <th style="width:22%;">กลุ่ม</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="form-row" data-keywords="3.12 ข้อเท็จจริง ขัดต่อข้อเท็จจริง misstatement finding">
+                      <td><span class="form-code">3.12</span></td>
+                      <td class="form-desc">สรุปข้อมูลที่ขัดต่อข้อเท็จจริง</td>
+                      <td><span class="form-tag">Findings</span></td>
+                    </tr>
+                    <tr class="form-row" data-keywords="3.13 ข้อเสนอแนะ ให้หน่วยรับตรวจ แก้ไข recommendation">
+                      <td><span class="form-code">3.13</span></td>
+                      <td class="form-desc">รายการข้อเท็จจริงที่เสนอให้หน่วยรับตรวจแก้ไข</td>
+                      <td><span class="form-tag">Recommendations</span></td>
+                    </tr>
+                    <tr class="form-row" data-keywords="3.16 สอบทาน กระดาษทำการ review working paper">
+                      <td><span class="form-code">3.16</span></td>
+                      <td class="form-desc">แบบสอบทานกระดาษทำการ</td>
+                      <td><span class="form-tag">WP Review</span></td>
+                    </tr>
+                    <tr class="form-row" data-keywords="3.17 สอบทาน งานตรวจสอบ review engagement">
+                      <td><span class="form-code">3.17</span></td>
+                      <td class="form-desc">แบบสอบทานงานตรวจสอบ</td>
+                      <td><span class="form-tag">Engagement Review</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="no-result" data-empty-msg style="display:none;">
+                  ไม่พบแบบฟอร์มที่ตรงกับคำค้นในกลุ่ม A2
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /accordion -->
+      </div>
+    </section>
+
+    <!-- B) หมวดงบการเงิน -->
+    <section class="section-card" data-section-type="fs">
+      <div class="section-header">
+        <div class="section-title">
+          <h2>B) แบบฟอร์มตรวจสอบตามหมวดงบการเงิน (Balances / Transactions – 8.x)</h2>
+          <span>กลุ่มฟอร์ม 8.x ครอบคลุมสินทรัพย์ หนี้สิน รายได้ ค่าใช้จ่าย – ใช้ในการทดสอบสาระสำคัญ</span>
+        </div>
+        <div class="section-tag">8.x Mapping to FS Line Items</div>
+      </div>
+      <div class="section-body">
+        <div class="accordion">
+
+          <!-- B1 Cash & Bank -->
+          <div class="acc-item">
+            <div class="acc-header">
+              <div class="acc-left">
+                <div class="acc-label">B1 – เงินสดและเงินฝากธนาคาร (Cash & Bank)</div>
+                <div class="acc-sub">8.2, 8.2.1, 8.2.1.1, 8.2.2, 8.2.3</div>
+              </div>
+              <div class="acc-meta">
+                <span>กลุ่ม <strong>Assets – Current</strong></span>
+                <span><span class="acc-toggle-icon">▶</span></span>
+              </div>
+            </div>
+            <div class="acc-panel">
+              <div class="acc-inner">
+                <table class="forms-table">
+                  <thead>
+                    <tr>
+                      <th style="width:18%;">เลขฟอร์ม</th>
+                      <th>รายการ</th>
+                      <th style="width:22%;">กลุ่ม</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="form-row" data-keywords="8.2 แนวการตรวจสอบ เงินสด รายการเทียบเท่าเงินสด cash equivalent">
+                      <td><span class="form-code">8.2</span></td>
+                      <td class="form-desc">แนวการตรวจสอบเงินสดและรายการเทียบเท่าเงินสด</td>
+                      <td><span class="form-tag">Cash Procedures</span></td>
+                    </tr>
+                    <tr class="form-row" data-keywords="8.2.1 วิเคราะห์ยอด ยกมา สิ้นงวด ก่อน หลัง ปรับปรุง">
+                      <td><span class="form-code">8.2.1</span></td>
+                      <td class="form-desc">วิเคราะห์ยอดยกมา–ยอดสิ้นงวด (ก่อน/หลังปรับปรุง)</td>
+                      <td><span class="form-tag">Analytical Review</span></td>
+                    </tr>
+                    <tr class="form-row" data-keywords="8.2.1.1 ตรวจสอบยอดคงเหลือ รายหน่วยงาน">
+                      <td><span class="form-code">8.2.1.1</span></td>
+                      <td class="form-desc">ตรวจสอบยอดคงเหลือเงินฝากรายหน่วยงาน</td>
+                      <td><span class="form-tag">Detail Test</span></td>
+                    </tr>
+                    <tr class="form-row" data-keywords="8.2.2 ตรวจนับเงินสด cash count">
+                      <td><span class="form-code">8.2.2</span></td>
+                      <td class="form-desc">ตรวจนับเงินสด</td>
+                      <td><span class="form-tag">Physical Count</span></td>
+                    </tr>
+                    <tr class="form-row" data-keywords="8.2.3 งบกระทบยอด เงินฝาก bank reconciliation">
+                      <td><span class="form-code">8.2.3</span></td>
+                      <td class="form-desc">ตรวจสอบงบกระทบยอดเงินฝาก</td>
+                      <td><span class="form-tag">Reconciliation</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- B2 Receivables -->
+          <div class="acc-item">
+            <div class="acc-header">
+              <div class="acc-left">
+                <div class="acc-label">B2 – ลูกหนี้และเงินให้กู้ยืมระยะสั้น (Receivables)</div>
+                <div class="acc-sub">8.3, 8.4, 8.5, 8.6 + ฟอร์มย่อยมาตรฐาน 8.x.1 / 8.x.1.1 / 8.x.2</div>
+              </div>
+              <div class="acc-meta">
+                <span>กลุ่ม <strong>Assets – Receivables</strong></span>
+                <span><span class="acc-toggle-icon">▶</span></span>
+              </div>
+            </div>
+            <div class="acc-panel">
+              <div class="acc-inner">
+                <table class="forms-table">
+                  <thead>
+                    <tr>
+                      <th style="width:18%;">เลขฟอร์ม</th>
+                      <th>รายการ</th>
+                      <th style="width:22%;">กลุ่ม</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="form-row" data-keywords="8.3 ลูกหนี้การค้า trade receivable">
+                      <td><span class="form-code">8.3</span></td>
+                      <td class="form-desc">ลูกหนี้การค้า – ฟอร์มหลัก</td>
+                      <td><span class="form-tag">Trade AR</span></td>
+                    </tr>
+                    <tr class="form-row" data-keywords="8.4 ลูกหนี้ เงินโอน อุดหนุน transfer grant receivable">
+                      <td><span class="form-code">8.4</span></td>
+                      <td class="form-desc">ลูกหนี้เงินโอน/อุดหนุน</td>
+                      <td><span class="form-tag">Grant Receivable</span></td>
+                    </tr>
+                    <tr class="form-row" data-keywords="8.5 ลูกหนี้อื่น ระยะสั้น other receivable">
+                      <td><span class="form-code">8.5</span></td>
+                      <td class="form-desc">ลูกหนี้อื่นระยะสั้น</td>
+                      <td><span class="form-tag">Other AR</span></td>
+                    </tr>
+                    <tr class="form-row" data-keywords="8.6 เงินให้กู้ยืม ระยะสั้น short-term loans">
+                      <td><span class="form-code">8.6</span></td>
+                      <td class="form-desc">เงินให้กู้ยืมระยะสั้น</td>
+                      <td><span class="form-tag">Short-term Loans</span></td>
+                    </tr>
+                    <tr class="form-row" data-keywords="8.x.1 วิเคราะห์ยอด ลูกหนี้ วิเคราะห์ก่อน หลัง ปรับปรุง">
+                      <td><span class="form-code">8.x.1</span></td>
+                      <td class="form-desc">ฟอร์มมาตรฐาน – วิเคราะห์ยอด (ก่อน–หลังปรับปรุง)</td>
+                      <td><span class="form-tag">Analytical Review</span></td>
+                    </tr>
+                    <tr class="form-row" data-keywords="8.x.1.1 ตรวจคงเหลือ รายหน่วย ลูกหนี้ รายลูกหนี้">
+                      <td><span class="form-code">8.x.1.1</span></td>
+                      <td class="form-desc">ฟอร์มมาตรฐาน – ตรวจคงเหลือรายหน่วยงาน/รายลูกหนี้</td>
+                      <td><span class="form-tag">Detail Test</span></td>
+                    </tr>
+                    <tr class="form-row" data-keywords="8.x.2 สรุปผล การยืนยันยอด confirmation">
+                      <td><span class="form-code">8.x.2</span></td>
+                      <td class="form-desc">ฟอร์มมาตรฐาน – สรุปผลการยืนยันยอด (ถ้ามี)</td>
+                      <td><span class="form-tag">Confirmation</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- B3 Inventories / Materials -->
+          <div class="acc-item">
+            <div class="acc-header">
+              <div class="acc-left">
+                <div class="acc-label">B3 – สินค้าคงเหลือและวัสดุคงเหลือ (Inventories)</div>
+                <div class="acc-sub">8.8, 8.8.2, 8.9, 8.9.2</div>
+              </div>
+              <div class="acc-meta">
+                <span>กลุ่ม <strong>Inventories</strong></span>
+                <span><span class="acc-toggle-icon">▶</span></span>
+              </div>
+            </div>
+            <div class="acc-panel">
+              <div class="acc-inner">
+                <table class="forms-table">
+                  <thead>
+                    <tr>
+                      <th style="width:18%;">เลขฟอร์ม</th>
+                      <th>รายการ</th>
+                      <th style="width:22%;">กลุ่ม</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="form-row" data-keywords="8.8 สินค้า inventory">
+                      <td><span class="form-code">8.8</span></td>
+                      <td class="form-desc">ตรวจสอบสินค้าคงเหลือ</td>
+                      <td><span class="form-tag">Goods</span></td>
+                    </tr>
+                    <tr class="form-row" data-keywords="8.8.2 ตรวจนับ สินค้า stock count">
+                      <td><span class="form-code">8.8.2</span></td>
+                      <td class="form-desc">ตรวจนับสินค้าคงเหลือ</td>
+                      <td><span class="form-tag">Physical Count</span></td>
+                    </tr>
+                    <tr class="form-row" data-keywords="8.9 วัสดุ คงเหลือ materials">
+                      <td><span class="form-code">8.9</span></td>
+                      <td class="form-desc">ตรวจสอบวัสดุคงเหลือ</td>
+                      <td><span class="form-tag">Materials</span></td>
+                    </tr>
+                    <tr class="form-row" data-keywords="8.9.2 ตรวจนับ วัสดุ stock count">
+                      <td><span class="form-code">8.9.2</span></td>
+                      <td class="form-desc">ตรวจนับวัสดุคงเหลือ</td>
+                      <td><span class="form-tag">Physical Count</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- B4 PPE & Long-term assets (กลุ่มใหญ่) -->
+          <div class="acc-item">
+            <div class="acc-header">
+              <div class="acc-left">
+                <div class="acc-label">B4 – สินทรัพย์ถาวร / โครงสร้างพื้นฐาน / สินทรัพย์ไม่มีตัวตน / ที่ดินอาคาร</div>
+                <div class="acc-sub">หมวด 8.11, 8.12, 8.13, 8.14 (ชุดใหญ่สุดใน Fieldwork)</div>
+              </div>
+              <div class="acc-meta">
+                <span>กลุ่ม <strong>Non-current Assets</strong></span>
+                <span><span class="acc-toggle-icon">▶</span></span>
+              </div>
+            </div>
+            <div class="acc-panel">
+              <div class="acc-inner">
+                <table class="forms-table">
+                  <thead>
+                    <tr>
+                      <th style="width:18%;">เลขฟอร์ม</th>
+                      <th>รายการ</th>
+                      <th style="width:22%;">กลุ่ม</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="form-row" data-keywords="8.13 ครุภัณฑ์ ที่ดิน อาคาร โครงสร้างพื้นฐาน PPE infrastructure">
+                      <td><span class="form-code">8.13</span></td>
+                      <td class="form-desc">ฟอร์มหลัก – สินทรัพย์ถาวร / ที่ดิน อาคาร และโครงสร้างพื้นฐาน</td>
+                      <td><span class="form-tag">PPE / Infra</span></td>
+                    </tr>
+                    <tr class="form-row" data-keywords="ตรวจนับ ครุภัณฑ์ fixed assets count">
+                      <td><span class="form-code">8.13.xx</span></td>
+                      <td class="form-desc">ตรวจนับครุภัณฑ์ – รายบัญชี/รายหน่วยงาน (ระบุรหัสย่อยในระบบ)</td>
+                      <td><span class="form-tag">Asset Count</span></td>
+                    </tr>
+                    <tr class="form-row" data-keywords="ที่ดิน อาคาร ตรวจสอบ เอกสารสิทธิ์">
+                      <td><span class="form-code">8.13.yy</span></td>
+                      <td class="form-desc">ตรวจสอบที่ดิน/อาคาร – เอกสารสิทธิ์และการใช้ประโยชน์</td>
+                      <td><span class="form-tag">Land & Building</span></td>
+                    </tr>
+                    <tr class="form-row" data-keywords="8.11 8.12 8.14 เงินลงทุนระยะยาว สินทรัพย์ไม่มีตัวตน investment intangible">
+                      <td><span class="form-code">8.11 / 8.12 / 8.14</span></td>
+                      <td class="form-desc">สินทรัพย์อื่นระยะยาว – เงินลงทุนระยะยาว / สินทรัพย์ไม่มีตัวตน / สินทรัพย์เพื่อการลงทุน</td>
+                      <td><span class="form-tag">Long-term Assets</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="no-result" data-empty-msg style="display:none;">
+                  หมายเหตุ: ในระบบจริงสามารถแตกฟอร์ม 8.13 เป็นรายหมวด (ครุภัณฑ์, ถนน, สะพาน, ระบบประปา ฯลฯ)
+                  โดยใช้รหัสย่อยเพิ่มเติม เช่น 8.13.1, 8.13.2, ...
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- B5 Liabilities -->
+          <div class="acc-item">
+            <div class="acc-header">
+              <div class="acc-left">
+                <div class="acc-label">B5 – เจ้าหนี้และหนี้สิน (Liabilities)</div>
+                <div class="acc-sub">
+                  8.15 – 8.23, 8.24, 8.25, 8.26, 8.27, 8.28 – ครอบคลุมเจ้าหนี้ เงินกู้ หนี้สินระยะสั้น–ยาว และเงินรับฝาก
+                </div>
+              </div>
+              <div class="acc-meta">
+                <span>กลุ่ม <strong>Liabilities</strong></span>
+                <span><span class="acc-toggle-icon">▶</span></span>
+              </div>
+            </div>
+            <div class="acc-panel">
+              <div class="acc-inner">
+                <table class="forms-table">
+                  <thead>
+                    <tr>
+                      <th style="width:18%;">เลขฟอร์ม</th>
+                      <th>รายการ</th>
+                      <th style="width:22%;">กลุ่ม</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="form-row" data-keywords="8.15 เจ้าหนี้ การค้า เจ้าหนี้อื่น ระยะสั้น">
+                      <td><span class="form-code">8.15</span></td>
+                      <td class="form-desc">เจ้าหนี้การค้าและเจ้าหนี้อื่นระยะสั้น</td>
+                      <td><span class="form-tag">Trade / Other AP</span></td>
+                    </tr>
+                    <tr class="form-row" data-keywords="8.16 เจ้าหนี้ เงินโอน อุดหนุน">
+                      <td><span class="form-code">8.16</span></td>
+                      <td class="form-desc">เจ้าหนี้เงินโอนและอุดหนุน</td>
+                      <td><span class="form-tag">Transfer Payable</span></td>
+                    </tr>
+                    <tr class="form-row" data-keywords="8.17 เงินกู้ยืม ระยะสั้น short-term loan payable">
+                      <td><span class="form-code">8.17</span></td>
+                      <td class="form-desc">เงินกู้ยืมระยะสั้น</td>
+                      <td><span class="form-tag">Short-term Loan</span></td>
+                    </tr>
+                    <tr class="form-row" data-keywords="8.18 ส่วนของเงินกู้ ถึงกำหนดชำระ ภายใน 1 ปี current portion">
+                      <td><span class="form-code">8.18</span></td>
+                      <td class="form-desc">ส่วนของเงินกู้ถึงกำหนดชำระภายใน 1 ปี</td>
+                      <td><span class="form-tag">Current Portion</span></td>
+                    </tr>
+                    <tr class="form-row" data-keywords="8.19 เจ้าหนี้ ตามสัญญาเช่า การเงิน lease liability">
+                      <td><span class="form-code">8.19</span></td>
+                      <td class="form-desc">เจ้าหนี้ตามสัญญาเช่าการเงิน</td>
+                      <td><span class="form-tag">Lease Liabilities</span></td>
+                    </tr>
+                    <tr class="form-row" data-keywords="8.20 เงินรับฝาก deposit">
+                      <td><span class="form-code">8.20</span></td>
+                      <td class="form-desc">เงินรับฝาก</td>
+                      <td><span class="form-tag">Deposits</span></td>
+                    </tr>
+                    <tr class="form-row" data-keywords="8.21 ประมาณการ หนี้สิน provision">
+                      <td><span class="form-code">8.21</span></td>
+                      <td class="form-desc">ประมาณการหนี้สิน</td>
+                      <td><span class="form-tag">Provisions</span></td>
+                    </tr>
+                    <tr class="form-row" data-keywords="8.22 หนี้สินหมุนเวียนอื่น other current liabilities">
+                      <td><span class="form-code">8.22</span></td>
+                      <td class="form-desc">หนี้สินหมุนเวียนอื่น</td>
+                      <td><span class="form-tag">Other Current Liab.</span></td>
+                    </tr>
+                    <tr class="form-row" data-keywords="8.23 8.24 8.25 8.26 8.27 8.28 หนี้สิน ระยะยาว long-term liabilities">
+                      <td><span class="form-code">8.23 – 8.28</span></td>
+                      <td class="form-desc">หนี้สินระยะยาว – เงินกู้ระยะยาว พันธบัตร หรือภาระผูกพันระยะยาวอื่น ๆ</td>
+                      <td><span class="form-tag">Long-term Liabilities</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- B6 Income & Expense -->
+          <div class="acc-item">
+            <div class="acc-header">
+              <div class="acc-left">
+                <div class="acc-label">B6 – รายได้และค่าใช้จ่าย (Income & Expenses)</div>
+                <div class="acc-sub">8.30 (รายได้) และ 8.31 (ค่าใช้จ่าย)</div>
+              </div>
+              <div class="acc-meta">
+                <span>กลุ่ม <strong>P&L</strong></span>
+                <span><span class="acc-toggle-icon">▶</span></span>
+              </div>
+            </div>
+            <div class="acc-panel">
+              <div class="acc-inner">
+                <table class="forms-table">
+                  <thead>
+                    <tr>
+                      <th style="width:18%;">เลขฟอร์ม</th>
+                      <th>รายการ</th>
+                      <th style="width:22%;">กลุ่ม</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="form-row" data-keywords="8.30 รายได้ ตรวจใบเสร็จ รับเงิน วิเคราะห์รายได้">
+                      <td><span class="form-code">8.30</span></td>
+                      <td class="form-desc">ตรวจรายได้ – ตรวจใบเสร็จ การรับเงิน และวิเคราะห์รายได้ตามประเภทงบ</td>
+                      <td><span class="form-tag">Revenue</span></td>
+                    </tr>
+                    <tr class="form-row" data-keywords="8.31 ค่าใช้จ่าย ตรวจการเบิกจ่าย วิเคราะห์ค่าใช้จ่าย เอกสารประกอบ">
+                      <td><span class="form-code">8.31</span></td>
+                      <td class="form-desc">ตรวจค่าใช้จ่าย – ตรวจการเบิกจ่าย เอกสารประกอบ และการใช้จ่ายงบประมาณ</td>
+                      <td><span class="form-tag">Expenses</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /accordion -->
+      </div>
+    </section>
+
+    <!-- C) สรุประหว่างการตรวจ -->
+    <section class="section-card" data-section-type="summary">
+      <div class="section-header">
+        <div class="section-title">
+          <h2>C) กลุ่มฟอร์มสรุปผลระหว่างการตรวจ (Working Summary)</h2>
+          <span>เชื่อม Fieldwork ไปสู่ขั้นสรุปผลและรายงาน – 3.12, 3.13, 3.14, 3.16, 3.17</span>
+        </div>
+        <div class="section-tag">Bridge to Reporting</div>
+      </div>
+      <div class="section-body">
+        <div class="accordion">
+
+          <div class="acc-item open">
+            <div class="acc-header">
+              <div class="acc-left">
+                <div class="acc-label">C1 – สรุปข้อเท็จจริง ข้อเสนอแนะ และผลการตรวจสอบ</div>
+                <div class="acc-sub">3.12, 3.13, 3.14</div>
+              </div>
+              <div class="acc-meta">
+                <span>กลุ่ม <strong>Findings & Summary</strong></span>
+                <span><span class="acc-toggle-icon">▶</span></span>
+              </div>
+            </div>
+            <div class="acc-panel" style="max-height:300px;">
+              <div class="acc-inner">
+                <table class="forms-table">
+                  <thead>
+                    <tr>
+                      <th style="width:18%;">เลขฟอร์ม</th>
+                      <th>รายการ</th>
+                      <th style="width:22%;">กลุ่ม</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="form-row" data-keywords="3.12 ข้อเท็จจริง ขัดต่อข้อเท็จจริง finding misstatement">
+                      <td><span class="form-code">3.12</span></td>
+                      <td class="form-desc">สรุปข้อเท็จจริงที่ขัดต่อข้อเท็จจริง (ฐานข้อมูล Findings)</td>
+                      <td><span class="form-tag">Findings</span></td>
+                    </tr>
+                    <tr class="form-row" data-keywords="3.13 ข้อเสนอแนะ ให้หน่วยรับตรวจ แก้ไข action plan">
+                      <td><span class="form-code">3.13</span></td>
+                      <td class="form-desc">รายการข้อเท็จจริงที่เสนอให้หน่วยรับตรวจแก้ไข (ข้อเสนอแนะ/Action Plan)</td>
+                      <td><span class="form-tag">Recommendations</span></td>
+                    </tr>
+                    <tr class="form-row" data-keywords="3.14 สรุปผล การตรวจสอบ summary sheet">
+                      <td><span class="form-code">3.14</span></td>
+                      <td class="form-desc">สรุปผลการตรวจสอบ (Summary Sheet)</td>
+                      <td><span class="form-tag">Audit Summary</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="acc-item">
+            <div class="acc-header">
+              <div class="acc-left">
+                <div class="acc-label">C2 – สอบทานกระดาษทำการและงานตรวจสอบ</div>
+                <div class="acc-sub">3.16, 3.17</div>
+              </div>
+              <div class="acc-meta">
+                <span>กลุ่ม <strong>Review & QA</strong></span>
+                <span><span class="acc-toggle-icon">▶</span></span>
+              </div>
+            </div>
+            <div class="acc-panel">
+              <div class="acc-inner">
+                <table class="forms-table">
+                  <thead>
+                    <tr>
+                      <th style="width:18%;">เลขฟอร์ม</th>
+                      <th>รายการ</th>
+                      <th style="width:22%;">กลุ่ม</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="form-row" data-keywords="3.16 สอบทาน กระดาษทำการ working paper review">
+                      <td><span class="form-code">3.16</span></td>
+                      <td class="form-desc">แบบสอบทานกระดาษทำการ (WP Review Checklist)</td>
+                      <td><span class="form-tag">WP Review</span></td>
+                    </tr>
+                    <tr class="form-row" data-keywords="3.17 สอบทาน งานตรวจสอบ quality control review">
+                      <td><span class="form-code">3.17</span></td>
+                      <td class="form-desc">แบบสอบทานงานตรวจสอบ (Quality Review)</td>
+                      <td><span class="form-tag">Engagement Review</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="no-result" data-empty-msg style="display:none;">
+                  ไม่พบแบบฟอร์มที่ตรงกับคำค้นในกลุ่ม C2
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /accordion -->
+      </div>
+    </section>
+
+  </div><!-- /sections -->
+</main>
+
+<footer>
+  <div class="footer-left">
+    <span>← กลับไปเลือกปี/หน่วยรับตรวจที่หน้า</span>
+    <a href="fa-lg-annual.html">FA-LG Annual Overview</a>
+  </div>
+  <div class="footer-right">
+    Fieldwork Stage · Digital LG Financial Audit Platform
+  </div>
+</footer>
+
+<script>
+  // Simple usage counters using localStorage
+  (function usageCounters(){
+    try{
+      const TOTAL_KEY = "fa_fieldwork_total_views";
+      let total = parseInt(localStorage.getItem(TOTAL_KEY) || "0",10);
+      total += 1;
+      localStorage.setItem(TOTAL_KEY,String(total));
+      const current = Math.floor(Math.random()*4)+1; // 1–4 as pseudo current users
+      document.getElementById("totalUsers").textContent = total.toLocaleString("th-TH");
+      document.getElementById("currentUsers").textContent = current.toLocaleString("th-TH");
+    }catch(e){
+      // ignore
+    }
+  })();
+
+  // Accordion behaviour
+  document.querySelectorAll(".acc-header").forEach(function(header){
+    header.addEventListener("click",function(){
+      const item = header.closest(".acc-item");
+      const panel = item.querySelector(".acc-panel");
+      const isOpen = item.classList.contains("open");
+      if(isOpen){
+        panel.style.maxHeight = "0px";
+        item.classList.remove("open");
+      }else{
+        panel.style.maxHeight = panel.scrollHeight + "px";
+        item.classList.add("open");
+      }
+    });
+  });
+
+  // Filter badges + search
+  const searchInput = document.getElementById("searchInput");
+  const badges = document.querySelectorAll(".filter-badge");
+
+  function normalize(text){
+    return (text || "").toLowerCase();
+  }
+
+  function getSectionTypeFromRow(row){
+    const section = row.closest(".section-card");
+    return section ? section.getAttribute("data-section-type") : "all";
+  }
+
+  function applyFilter(){
+    const term = normalize(searchInput.value);
+    const activeBadge = document.querySelector(".filter-badge.active");
+    const filterType = activeBadge ? activeBadge.dataset.filter : "all";
+
+    const allRows = document.querySelectorAll(".form-row");
+    let anyVisible = false;
+
+    allRows.forEach(function(row){
+      const keywords = normalize(row.dataset.keywords || row.textContent);
+      const sectionType = getSectionTypeFromRow(row);
+
+      const matchFilter = (filterType === "all") || (sectionType === filterType);
+      const matchSearch = !term || keywords.indexOf(term) !== -1;
+
+      if(matchFilter && matchSearch){
+        row.style.display = "";
+        anyVisible = true;
+      }else{
+        row.style.display = "none";
+      }
+    });
+
+    // handle empty messages within each accordion group
+    document.querySelectorAll(".acc-item").forEach(function(item){
+      const rows = item.querySelectorAll(".form-row");
+      let visibleInGroup = 0;
+      rows.forEach(function(r){
+        if(r.style.display !== "none"){ visibleInGroup++; }
+      });
+      const emptyMsg = item.querySelector("[data-empty-msg]");
+      if(emptyMsg){
+        emptyMsg.style.display = visibleInGroup === 0 ? "block" : "none";
+      }
+    });
+  }
+
+  searchInput.addEventListener("input",applyFilter);
+
+  badges.forEach(function(badge){
+    badge.addEventListener("click",function(){
+      badges.forEach(function(b){ b.classList.remove("active"); });
+      badge.classList.add("active");
+      applyFilter();
+    });
+  });
+
+  // initial filter
+  applyFilter();
+</script>
+</body>
+</html>
