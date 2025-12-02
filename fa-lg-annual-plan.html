@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8">
-  <title>FA – Annual Audit Local Government (LG)</title>
+  <title>FA – LG Annual | Planning Forms Menu</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <style>
@@ -28,7 +28,6 @@
         var(--bg);
       color:var(--text);
       min-height:100vh;
-      /* เพิ่มขนาดตัวอักษรทั้งหน้า +40% */
       font-size:140%;
     }
 
@@ -44,100 +43,17 @@
     header h2{ margin:0; font-size:20px; }
     header .sub{ font-size:13px; opacity:.9; }
 
-    /* กล่องค้นหามุมขวาบนของ header */
-    .search-container{
-      position:absolute;
-      right:12px;
-      top:50%;
-      transform:translateY(-50%);
-      display:flex;
-      align-items:center;
-      gap:6px;
-      font-size:11px;
-    }
-    .search-input{
-      padding:4px 8px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,0.6);
-      background:rgba(0,0,0,0.35);
-      color:#fff;
-      min-width:140px;
-      font-size:11px;
-    }
-    .search-input::placeholder{
-      color:rgba(255,255,255,0.7);
-    }
-    .search-btn{
-      padding:4px 8px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,0.6);
-      background:rgba(0,0,0,0.55);
-      color:#fff;
-      font-size:11px;
-      cursor:pointer;
-    }
-    .search-btn:hover{
-      background:rgba(0,0,0,0.85);
-    }
-
-    /* แผงแสดงผลการค้นหา */
-    .search-results-panel{
-      position:fixed;
-      right:12px;
-      top:76px;
-      max-width:360px;
-      max-height:60vh;
-      overflow:auto;
-      background:#0b1024;
-      border-radius:12px;
-      border:1px solid rgba(255,255,255,0.25);
-      box-shadow:0 10px 28px rgba(0,0,0,0.9);
-      padding:8px 10px;
-      font-size:11px;
-      z-index:30;
-      display:none;
-    }
-    .search-results-panel h4{
-      margin:0 0 6px;
-      font-size:12px;
-      color:#f5f7ff;
-    }
-    .search-result-item{
-      padding:6px 4px;
-      border-radius:8px;
-      cursor:pointer;
-      margin-bottom:4px;
-    }
-    .search-result-item:hover{
-      background:rgba(66,165,245,0.18);
-    }
-    .search-result-title{
-      font-weight:600;
-      margin-bottom:2px;
-      color:#e3f2fd;
-    }
-    .search-result-snippet{
-      color:var(--muted);
-    }
-    .search-close{
-      text-align:right;
-      margin-bottom:4px;
-      color:var(--muted);
-      cursor:pointer;
-    }
-    .search-highlight{
-      background:rgba(66,165,245,0.45);
-      padding:0 1px;
-      border-radius:2px;
-    }
-
     main{
       max-width:980px;
       margin:20px auto 28px;
       padding:0 16px 20px;
     }
 
-    .intro{ font-size:13px; color:var(--muted); margin-bottom:12px; }
+    .intro{
+      font-size:13px;
+      color:var(--muted);
+      margin-bottom:14px;
+    }
 
     /* ปุ่มนำทางด้านบน */
     .nav-top{
@@ -160,10 +76,10 @@
     }
     .btn-nav:hover{ background:rgba(0,0,0,0.6); }
 
-    /* โครงเมนูการ์ด 6 ขั้นตอน */
+    /* โครงเมนูการ์ด */
     .menu-grid{
       display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
       gap:14px;
       margin-top:6px;
     }
@@ -228,31 +144,25 @@
         linear-gradient(135deg,#d5000033,#ff408122),
         var(--card);
     }
-
-    /* Tooltip เมื่อเอาเมาส์วางบนการ์ด */
-    .menu-card .tooltip {
-      position:absolute;
-      top:-10px;
-      left:50%;
-      transform:translateX(-50%);
-      background:#111a3a;
-      color:#fff;
-      padding:8px 12px;
-      border-radius:10px;
-      font-size:12px;
-      opacity:0;
-      white-space:normal;
-      width:260px;
-      text-align:center;
-      pointer-events:none;
-      transition:opacity 0.2s ease-out, top 0.2s ease-out;
-      border:1px solid rgba(255,255,255,0.25);
-      box-shadow:0 4px 12px rgba(0,0,0,0.55);
-      z-index:20;
+    .card-bg-7{
+      background:
+        linear-gradient(135deg,#8e24aa33,#ff80ab22),
+        var(--card);
     }
-    .menu-card:hover .tooltip{
-      opacity:1;
-      top:-52px;
+    .card-bg-8{
+      background:
+        linear-gradient(135deg,#1b5e2033,#a5d6a722),
+        var(--card);
+    }
+    .card-bg-9{
+      background:
+        linear-gradient(135deg,#01579b33,#26c6da22),
+        var(--card);
+    }
+    .card-bg-10{
+      background:
+        linear-gradient(135deg,#4e342e33,#ffab9122),
+        var(--card);
     }
 
     .menu-icon{ font-size:22px; margin-bottom:6px; }
@@ -273,40 +183,51 @@
       font-size:11px;
       background:rgba(0,0,0,0.35);
     }
-    .step-label{ opacity:.8; }
+    .step-label{ opacity:.85; }
+
+    /* tooltip เล็ก ๆ เมื่อ hover */
+    .tooltip{
+      position:absolute;
+      top:-10px;
+      left:50%;
+      transform:translateX(-50%);
+      background:#111a3a;
+      color:#fff;
+      padding:8px 12px;
+      border-radius:10px;
+      font-size:11px;
+      opacity:0;
+      white-space:normal;
+      width:260px;
+      text-align:center;
+      pointer-events:none;
+      transition:opacity 0.2s ease-out, top 0.2s ease-out;
+      border:1px solid rgba(255,255,255,0.25);
+      box-shadow:0 4px 12px rgba(0,0,0,0.55);
+      z-index:20;
+    }
+    .menu-card:hover .tooltip{
+      opacity:1;
+      top:-52px;
+    }
+
   </style>
 </head>
 <body>
 
 <header>
-  <h2>🏛️ ระบบตรวจสอบการเงินประจำปี ของ อปท.</h2>
-  <div class="sub">Annual Financial Audit – Local Government (FA – LG Annual)</div>
-
-  <!-- กล่องค้นหามุมขวาบน -->
-  <div class="search-container">
-    <input id="faSearchInput" class="search-input" type="text" placeholder="ค้นหาทางลัด...">
-    <button type="button" class="search-btn" onclick="runFaSearch()">🔍</button>
+  <h2>📌 เมนูแบบฟอร์มการวางแผน FA – อปท.</h2>
+  <div class="sub">
+    Planning Forms – Local Government Financial Audit (FA – LG Annual)
   </div>
 </header>
 
-<!-- แผงผลการค้นหา -->
-<div id="faSearchResults" class="search-results-panel">
-  <div class="search-close" onclick="closeFaSearch()">✕ ปิด</div>
-  <h4>ผลการค้นหา</h4>
-  <div id="faSearchResultsBody"></div>
-</div>
-
 <main>
-
-  <div class="intro">
-    กระบวนการตรวจสอบรายงานการเงินประจำปีของ อปท. ครบ 6 ขั้นตอน:
-    วางแผน → ปฏิบัติ → รายงาน → ชี้แจง → แจ้งผล → ติดตามผล
-  </div>
 
   <div class="nav-top">
     <!-- กลับไปหน้าเลือกปี/หน่วยรับตรวจ -->
     <a href="fa-lg-annual.html" class="btn-nav">
-      <span>↩</span> กลับหน้าเลือกปีและหน่วยรับตรวจ (FA – Annual LG)
+      <span>↩</span> กลับหน้า FA – Annual LG
     </a>
     <!-- กลับเมนู FA หลัก -->
     <a href="fa-menu.html" class="btn-nav">
@@ -318,292 +239,216 @@
     </a>
   </div>
 
+  <div class="intro">
+    เมนูนี้รวบรวมแบบฟอร์มในขั้นตอน <strong>การวางแผนการตรวจสอบ</strong> ทั้ง 10 แบบ
+    แต่ละเมนูคลิกแล้วจะเปิดหน้าแบบฟอร์มฉบับละเอียดของตนเอง
+    (เช่น เมนูข้อ 1 อปท.3 ใช้โค้ดที่คุณมีอยู่แล้วเป็นเนื้อหาภายในหน้า)
+  </div>
+
   <section class="menu-grid">
 
-    <!-- 1 Plan – ไปหน้า อปท.3 -->
+    <!-- 1 อปท. 3 -->
     <a href="fa-lg-annual-plan-op3.html" class="menu-card card-bg-1">
       <div class="tooltip">
-        ภายในมีแบบฟอร์มการวางแผน เช่น อปท.3, 3.1, 11.1.3–11.1.5, อปท.4, ฟอร์ม 3.5–3.6, อปท.5–5.2
-        ใช้กำหนด Scope, ความเสี่ยง, Materiality และแผนการสอบบัญชีโดยรวมของ อปท.
+        อปท. 3 – แบบฟอร์มรวบรวมความรู้และความเข้าใจหน่วยรับตรวจ
+        ใช้บันทึกโครงสร้างงาน ระบบ ระเบียบ และประเด็นเสี่ยงพื้นฐานของ อปท.
       </div>
-      <div class="menu-icon">🧭</div>
-      <div class="menu-title">1. การวางแผนการตรวจสอบ FA ของ อปท.</div>
-      <div class="menu-en">1. Planning of Annual FA (LG)</div>
+      <div class="menu-icon">📘</div>
+      <div class="menu-title">1. อปท. 3 – ความรู้และความเข้าใจหน่วยรับตรวจ</div>
+      <div class="menu-en">Form 3 – Understanding the Entity</div>
       <div class="menu-desc">
-        บริหารแผนตรวจประจำปีของ อปท. กำหนดความสำคัญและลำดับการเข้าตรวจตามความเสี่ยง
-        และเชื่อมไปยังแบบฟอร์ม อปท.3 และแบบฟอร์มการวางแผนอื่น ๆ
+        กลุ่ม: <strong>Understanding</strong><br>
+        ใช้รวบรวมข้อมูลพื้นฐานของ อปท. ทั้งโครงสร้างองค์กร ระบบงาน ระเบียบ และบริบทที่มีผลต่อการสอบบัญชี
       </div>
       <div class="menu-footer">
-        <span class="tag">Step 1 – Planning</span>
-        <span class="step-label">เข้าสู่ระบบวางแผน ▸</span>
+        <span class="tag">Understanding</span>
+        <span class="step-label">เปิดแบบฟอร์ม อปท.3 ▸</span>
       </div>
     </a>
 
-    <!-- 2 Fieldwork -->
-    <a href="fa-lg-annual-fieldwork.html" class="menu-card card-bg-2">
+    <!-- 2 อปท. 3.1 -->
+    <a href="fa-lg-annual-plan-op3-1.html" class="menu-card card-bg-2">
       <div class="tooltip">
-        ภายในจะมีโปรแกรมตรวจสอบ (Audit Program) กระดาษทำการ หลักฐานการตรวจสอบ
-        และสถานะงานตรวจราย อปท. แยกตามประเด็นและรายการสำคัญ
+        อปท. 3.1 – แบบฟอร์มประเมิน Going Concern ของ อปท.
+        ประเมินสภาพคล่อง หนี้สิน งบประมาณ และความสามารถดำเนินงานต่อเนื่อง
       </div>
-      <div class="menu-icon">📋</div>
-      <div class="menu-title">2. การปฏิบัติการตรวจสอบ FA ของ อปท.</div>
-      <div class="menu-en">2. Execution / Fieldwork (LG)</div>
+      <div class="menu-icon">💹</div>
+      <div class="menu-title">2. อปท. 3.1 – Going Concern</div>
+      <div class="menu-en">Form 3.1 – Going Concern Assessment</div>
       <div class="menu-desc">
-        บันทึกขั้นตอนการตรวจสอบจริง ข้อสังเกต ระดับความเสี่ยง และสถานะของแต่ละเคส
-        ตามโปรแกรมตรวจสอบและ RMM จากขั้นวางแผน
+        กลุ่ม: <strong>Going Concern</strong><br>
+        ใช้ประเมินเสถียรภาพทางการเงินและความสามารถในการดำเนินงานต่อเนื่องของ อปท.
+        จากข้อมูลงบประมาณ กระแสเงินสด และข้อจำกัดสำคัญ
       </div>
       <div class="menu-footer">
-        <span class="tag">Step 2 – Fieldwork</span>
-        <span class="step-label">เข้าสู่ระบบปฏิบัติ ▸</span>
+        <span class="tag">Going Concern</span>
+        <span class="step-label">เปิดแบบฟอร์ม อปท.3.1 ▸</span>
       </div>
     </a>
 
-    <!-- 3 Report -->
-    <a href="fa-lg-annual-report.html" class="menu-card card-bg-3">
+    <!-- 3 11.1.3 / 11.1.4 -->
+    <a href="fa-lg-annual-plan-ic-1113.html" class="menu-card card-bg-3">
       <div class="tooltip">
-        ภายในจะจัดทำร่างรายงาน ข้อค้นพบเชิงระบบ/เชิงรายการ เชื่อมโยงกับหลักฐาน
-        และรองรับการสอบทาน/ปรับปรุงเวอร์ชันก่อนออกเล่มรายงานจริง
+        11.1.3 / 11.1.4 – แบบประเมินองค์ประกอบการควบคุมภายในตามมาตรฐานสอบบัญชี 315
+        ครบทั้ง 5 องค์ประกอบ
       </div>
-      <div class="menu-icon">📝</div>
-      <div class="menu-title">3. การจัดทำรายงานการตรวจสอบ FA ของ อปท.</div>
-      <div class="menu-en">3. Reporting (LG)</div>
+      <div class="menu-icon">🛡️</div>
+      <div class="menu-title">3. อปท. 11.1.3 / 11.1.4 – Internal Control</div>
+      <div class="menu-en">Forms 11.1.3 / 11.1.4 – Internal Control Evaluation</div>
       <div class="menu-desc">
-        จัดโครงสร้างรายงาน สรุปข้อค้นพบข้อเสนอแนะ และบริหารเวอร์ชันรายงาน
-        เพื่อเสนอขออนุมัติรายงานผลการตรวจสอบของแต่ละ อปท.
+        กลุ่ม: <strong>Internal Control</strong><br>
+        ประเมินสภาพแวดล้อมการควบคุม การประเมินความเสี่ยง กิจกรรมควบคุม
+        ระบบสารสนเทศ/การสื่อสาร และการติดตามผลภายใน อปท.
       </div>
       <div class="menu-footer">
-        <span class="tag">Step 3 – Reporting</span>
-        <span class="step-label">เข้าสู่ระบบรายงาน ▸</span>
+        <span class="tag">Internal Control</span>
+        <span class="step-label">เปิดแบบฟอร์ม 11.1.3/11.1.4 ▸</span>
       </div>
     </a>
 
-    <!-- 4 Response -->
-    <a href="fa-lg-annual-response.html" class="menu-card card-bg-4">
+    <!-- 4 11.1.5 -->
+    <a href="fa-lg-annual-plan-fraud-1115.html" class="menu-card card-bg-4">
       <div class="tooltip">
-        ภายในจะบันทึกคำชี้แจงของหน่วยรับตรวจรายข้อ แนบเอกสารประกอบ
-        และสรุปผลการพิจารณาคำชี้แจงของทีมตรวจสอบ/ผู้บังคับบัญชา
+        11.1.5 – แบบประเมินความเสี่ยงทุจริต (Fraud Risk)
+        เชื่อมโยงแนวคิด Fraud Triangle และจุดอ่อนของการควบคุมภายใน
       </div>
-      <div class="menu-icon">💬</div>
-      <div class="menu-title">4. การเปิดโอกาสให้หน่วยรับตรวจชี้แจง FA ของ อปท.</div>
-      <div class="menu-en">4. Response & Clarification (LG)</div>
+      <div class="menu-icon">⚠️</div>
+      <div class="menu-title">4. อปท. 11.1.5 – Fraud Risk</div>
+      <div class="menu-en">Form 11.1.5 – Fraud Risk Assessment</div>
       <div class="menu-desc">
-        บริหารกระบวนการชี้แจงของ อปท. เป็นรายประเด็น สะท้อนข้อโต้แย้ง ข้อเท็จจริงเพิ่มเติม
-        และมติ/ข้อสรุปของผู้ตรวจสอบต่อคำชี้แจงนั้น ๆ
+        กลุ่ม: <strong>Fraud Risk</strong><br>
+        ใช้ระบุและประเมินความเสี่ยงทุจริตทั้งระดับองค์กรและระดับกระบวนการ
+        เพื่อนำไปวางแผนการทดสอบเพิ่มเติม
       </div>
       <div class="menu-footer">
-        <span class="tag">Step 4 – Response</span>
-        <span class="step-label">เข้าสู่ระบบชี้แจง ▸</span>
+        <span class="tag">Fraud Risk</span>
+        <span class="step-label">เปิดแบบฟอร์ม 11.1.5 ▸</span>
       </div>
     </a>
 
-    <!-- 5 Communication -->
-    <a href="fa-lg-annual-communication.html" class="menu-card card-bg-5">
+    <!-- 5 อปท. 4 -->
+    <a href="fa-lg-annual-plan-rmm-op4.html" class="menu-card card-bg-5">
       <div class="tooltip">
-        ภายในจะจัดการหนังสือแจ้งผลรายงาน ผู้รับสำเนา ช่องทางการส่งมอบ
-        และการบันทึกผลการประชุมชี้แจง/ประชุมสรุปผลกับผู้บริหาร อปท.
+        อปท. 4 – กระดาษทำการประเมินความเสี่ยงและตอบสนองความเสี่ยง (RMM)
+        สรุปความเสี่ยงระดับงบการเงินและระดับ assertion
       </div>
-      <div class="menu-icon">📨</div>
-      <div class="menu-title">5. การแจ้งผลการตรวจสอบ FA ของ อปท.</div>
-      <div class="menu-en">5. Communication of Results (LG)</div>
+      <div class="menu-icon">📊</div>
+      <div class="menu-title">5. อปท. 4 – RMM</div>
+      <div class="menu-en">Form 4 – Risk Assessment & Responses (RMM)</div>
       <div class="menu-desc">
-        บริหารขั้นตอนการสื่อสารผลการตรวจสอบกับผู้มีส่วนได้เสีย ใช้เป็นหลักฐานการแจ้งผล
-        และเป็นจุดเริ่มต้นสำหรับการติดตามผลในขั้นตอนถัดไป
+        กลุ่ม: <strong>RMM</strong><br>
+        ใช้รวบรวมและจัดลำดับความเสี่ยงที่มีสาระสำคัญ และกำหนดวิธีตอบสนอง
+        ทั้งการทดสอบควบคุมและการทดสอบเนื้อหารายการ
       </div>
       <div class="menu-footer">
-        <span class="tag">Step 5 – Communication</span>
-        <span class="step-label">เข้าสู่ระบบแจ้งผล ▸</span>
+        <span class="tag">RMM</span>
+        <span class="step-label">เปิดแบบฟอร์ม อปท.4 ▸</span>
       </div>
     </a>
 
-    <!-- 6 Follow-up -->
-    <a href="fa-lg-annual-followup.html" class="menu-card card-bg-6">
+    <!-- 6 ฟอร์ม 3.5 -->
+    <a href="fa-lg-annual-plan-mat-3-5.html" class="menu-card card-bg-6">
       <div class="tooltip">
-        ภายในจะติดตาม Action Plan ของ อปท. รายข้อ ว่ามีการดำเนินการแก้ไขแล้วหรือไม่
-        และใช้สรุปสถานะ ปิดข้อสังเกต/คงข้อสังเกตในรอบถัดไป
+        ฟอร์ม 3.5 – กำหนดความมีสาระสำคัญระดับงบการเงิน (OM/PM/TE)
+        เป็นตัวเลขสำคัญสำหรับการออกแบบขอบเขตการตรวจสอบ
       </div>
-      <div class="menu-icon">🔁</div>
-      <div class="menu-title">6. การติดตามผลการตรวจสอบ FA ของ อปท.</div>
-      <div class="menu-en">6. Follow-up of Recommendations (LG)</div>
+      <div class="menu-icon">🎯</div>
+      <div class="menu-title">6. ฟอร์ม 3.5 – OM / PM / TE</div>
+      <div class="menu-en">Form 3.5 – Materiality (OM, PM, TE)</div>
       <div class="menu-desc">
-        บริหารข้อมูลการดำเนินการตามข้อเสนอแนะของ อปท. จนสามารถปิดข้อสังเกตได้
-        หรือบันทึกเหตุผลประกอบกรณียังไม่สามารถปิดข้อสังเกตได้
+        กลุ่ม: <strong>OM/PM/TE</strong><br>
+        ใช้คำนวณความมีสาระสำคัญโดยรวมและระดับปฏิบัติการ รวมถึง Threshold
+        สำหรับจับข้อผิดพลาดที่มีนัยสำคัญ
       </div>
       <div class="menu-footer">
-        <span class="tag">Step 6 – Follow-up</span>
-        <span class="step-label">เข้าสู่ระบบติดตามผล ▸</span>
+        <span class="tag">Materiality</span>
+        <span class="step-label">เปิดแบบฟอร์ม 3.5 ▸</span>
+      </div>
+    </a>
+
+    <!-- 7 ฟอร์ม 3.6 -->
+    <a href="fa-lg-annual-plan-mat-3-6.html" class="menu-card card-bg-7">
+      <div class="tooltip">
+        ฟอร์ม 3.6 – ความมีสาระสำคัญเฉพาะเรื่อง (Specific Materiality)
+        แยกตามรายการ เช่น รายได้ ค่าใช้จ่าย ครุภัณฑ์ ฯลฯ
+      </div>
+      <div class="menu-icon">📐</div>
+      <div class="menu-title">7. ฟอร์ม 3.6 – Specific Materiality</div>
+      <div class="menu-en">Form 3.6 – Specific Materiality by Class</div>
+      <div class="menu-desc">
+        กลุ่ม: <strong>Specific Materiality</strong><br>
+        ใช้กำหนดระดับสาระสำคัญรายหมวดบัญชีหรือรายการเฉพาะ
+        เพื่อใช้กำหนดการสุ่มทดสอบและความลึกของการตรวจสอบ
+      </div>
+      <div class="menu-footer">
+        <span class="tag">Specific Materiality</span>
+        <span class="step-label">เปิดแบบฟอร์ม 3.6 ▸</span>
+      </div>
+    </a>
+
+    <!-- 8 อปท. 5 -->
+    <a href="fa-lg-annual-plan-op5.html" class="menu-card card-bg-8">
+      <div class="tooltip">
+        อปท. 5 – แผนการสอบบัญชีโดยรวม (Overall Audit Plan)
+        รวมวัตถุประสงค์ กลยุทธ์ ตัวชี้วัด และ Man-day
+      </div>
+      <div class="menu-icon">🧾</div>
+      <div class="menu-title">8. อปท. 5 – Overall Audit Plan</div>
+      <div class="menu-en">Form 5 – Overall Audit Plan</div>
+      <div class="menu-desc">
+        กลุ่ม: <strong>Overall Audit Plan</strong><br>
+        ใช้จัดทำแผนสอบบัญชีระดับสูงของปีนั้น ครอบคลุมขอบเขต วิธีการ
+        ทรัพยากร และกำหนดการสำคัญ
+      </div>
+      <div class="menu-footer">
+        <span class="tag">Overall Plan</span>
+        <span class="step-label">เปิดแบบฟอร์ม อปท.5 ▸</span>
+      </div>
+    </a>
+
+    <!-- 9 อปท. 5.1 -->
+    <a href="fa-lg-annual-plan-op5-1.html" class="menu-card card-bg-9">
+      <div class="tooltip">
+        อปท. 5.1 – สรุปการประชุมวางแผนการตรวจสอบ
+        บันทึกประเด็นเสี่ยงและมติที่ประชุม สตภ./สตจ./ทีมตรวจ
+      </div>
+      <div class="menu-icon">📑</div>
+      <div class="menu-title">9. อปท. 5.1 – Planning Meeting</div>
+      <div class="menu-en">Form 5.1 – Planning Meeting Minutes</div>
+      <div class="menu-desc">
+        กลุ่ม: <strong>Planning Meeting</strong><br>
+        ใช้บันทึกสาระสำคัญจากการประชุมวางแผน เช่น ประเด็นเสี่ยงหลัก
+        เอกสารที่ต้องขอ และข้อจำกัดการตรวจสอบ
+      </div>
+      <div class="menu-footer">
+        <span class="tag">Planning Meeting</span>
+        <span class="step-label">เปิดแบบฟอร์ม อปท.5.1 ▸</span>
+      </div>
+    </a>
+
+    <!-- 10 อปท. 5.2 -->
+    <a href="fa-lg-annual-plan-op5-2.html" class="menu-card card-bg-10">
+      <div class="tooltip">
+        อปท. 5.2 – การมอบหมายงาน (Assignment)
+        ระบุผู้รับผิดชอบงานตรวจ ผู้สอบทาน และระยะเวลา
+      </div>
+      <div class="menu-icon">👥</div>
+      <div class="menu-title">10. อปท. 5.2 – Assignment</div>
+      <div class="menu-en">Form 5.2 – Assignment of Duties</div>
+      <div class="menu-desc">
+        กลุ่ม: <strong>Assignment</strong><br>
+        ใช้กำหนดโครงสร้างทีมตรวจสอบว่าใครทำอะไร
+        ใครควบคุมงาน ใครสอบทาน และกำหนดเส้นตายของแต่ละภารกิจ
+      </div>
+      <div class="menu-footer">
+        <span class="tag">Assignment</span>
+        <span class="step-label">เปิดแบบฟอร์ม อปท.5.2 ▸</span>
       </div>
     </a>
 
   </section>
+
 </main>
-
-<script>
-  // -----------------------------
-  // FA Universal Search (Cross-Page)
-  // -----------------------------
-  const FA_BASE_PAGES = [
-    'index.html',
-    'fa-menu.html',
-    'fa-lg-annual.html',
-    'fa-lg-annual-plan.html',
-    'fa-lg-annual-plan-op3.html',
-    'fa-lg-annual-fieldwork.html',
-    'fa-lg-annual-report.html',
-    'fa-lg-annual-response.html',
-    'fa-lg-annual-communication.html',
-    'fa-lg-annual-followup.html',
-    'fa-login.html',
-    'fa-database-login.html',
-    'fa-chatbot.html',
-    'fa-review-login.html'
-  ];
-
-  // รองรับไฟล์ใหม่ในอนาคตผ่าน localStorage:
-  // localStorage.setItem('fa_search_pages_extra', '["fa-new1.html","fa-new2.html"]')
-  function getAllSearchPages(){
-    let pages = FA_BASE_PAGES.slice();
-    try{
-      const raw = localStorage.getItem('fa_search_pages_extra');
-      if(raw){
-        const extra = JSON.parse(raw);
-        if(Array.isArray(extra)){
-          extra.forEach(p => {
-            if(typeof p === 'string' && !pages.includes(p)){
-              pages.push(p);
-            }
-          });
-        }
-      }
-    }catch(e){}
-    return pages;
-  }
-
-  function sanitizeRegexTerm(term){
-    return term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  }
-
-  function extractTextAndTitle(html, filename){
-    let title = filename;
-    const titleMatch = html.match(/<title>([^<]*)<\/title>/i);
-    if(titleMatch && titleMatch[1]){
-      title = titleMatch[1].trim();
-    }
-    const div = document.createElement('div');
-    div.innerHTML = html;
-    const text = (div.innerText || div.textContent || '').replace(/\s+/g,' ');
-    return { title, text };
-  }
-
-  function buildSnippets(text, term, maxSnippets){
-    const safeTerm = sanitizeRegexTerm(term);
-    const regex = new RegExp(safeTerm,'gi');
-    const snippets = [];
-    let match;
-    while((match = regex.exec(text)) && snippets.length < maxSnippets){
-      const start = Math.max(0, match.index - 50);
-      const end   = Math.min(text.length, match.index + 50);
-      let snippet = text.slice(start, end);
-      snippet = snippet.replace(regex, m => '[[[' + m + ']]]');
-      snippets.push(snippet);
-    }
-    return snippets;
-  }
-
-  function renderSnippets(snippets){
-    return snippets.map(s => {
-      return s
-        .replace(/&/g,'&amp;')
-        .replace(/</g,'&lt;')
-        .replace(/>/g,'&gt;')
-        .replace(/\[\[\[(.*?)\]\]\]/g,'<span class="search-highlight">$1</span>');
-    }).join(' … ');
-  }
-
-  function runFaSearch(){
-    const input = document.getElementById('faSearchInput');
-    if(!input) return;
-    const term = (input.value || '').trim();
-    const panel = document.getElementById('faSearchResults');
-    const body  = document.getElementById('faSearchResultsBody');
-    if(!panel || !body) return;
-
-    if(!term){
-      panel.style.display = 'none';
-      body.innerHTML = '';
-      return;
-    }
-
-    panel.style.display = 'block';
-    body.innerHTML = '<div style="color:#a3acc7;">กำลังค้นหา…</div>';
-
-    const pages = getAllSearchPages();
-
-    const fetches = pages.map(filename => {
-      return fetch(filename, {cache:'no-cache'})
-        .then(res => {
-          if(!res.ok) throw new Error('HTTP ' + res.status);
-          return res.text();
-        })
-        .then(html => {
-          const {title,text} = extractTextAndTitle(html, filename);
-          const snippets = buildSnippets(text, term, 2);
-          if(snippets.length === 0) return null;
-          return { filename, title, snippets };
-        })
-        .catch(() => null);
-    });
-
-    Promise.all(fetches).then(results => {
-      const found = results.filter(r => !!r);
-      if(found.length === 0){
-        body.innerHTML = '<div style="color:#a3acc7;">ไม่พบคำว่า "<span class="search-highlight">'+term+'</span>" ในระบบ FA</div>';
-        return;
-      }
-      body.innerHTML = '';
-      found.forEach(r => {
-        const item = document.createElement('div');
-        item.className = 'search-result-item';
-        item.onclick = () => {
-          // เปิดหน้าใหม่ตามไฟล์ที่พบ
-          window.location.href = r.filename;
-        };
-
-        const titleEl = document.createElement('div');
-        titleEl.className = 'search-result-title';
-        titleEl.innerHTML = r.title + ' <span style="opacity:.7;">(' + r.filename + ')</span>';
-
-        const snippetEl = document.createElement('div');
-        snippetEl.className = 'search-result-snippet';
-        snippetEl.innerHTML = renderSnippets(r.snippets);
-
-        item.appendChild(titleEl);
-        item.appendChild(snippetEl);
-        body.appendChild(item);
-      });
-    }).catch(() => {
-      body.innerHTML = '<div style="color:#ef9a9a;">เกิดข้อผิดพลาดในการค้นหา</div>';
-    });
-  }
-
-  function closeFaSearch(){
-    const panel = document.getElementById('faSearchResults');
-    const body  = document.getElementById('faSearchResultsBody');
-    if(panel) panel.style.display = 'none';
-    if(body) body.innerHTML = '';
-  }
-
-  // กด Enter ในช่องค้นหาเพื่อเริ่มค้นหา
-  (function bindSearchKey(){
-    const input = document.getElementById('faSearchInput');
-    if(!input) return;
-    input.addEventListener('keydown', function(e){
-      if(e.key === 'Enter'){
-        e.preventDefault();
-        runFaSearch();
-      }
-    });
-  })();
-</script>
 
 </body>
 </html>
