@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8">
-  <title>FA – LG Annual | ฟอร์ม 3.6 – Specific Materiality</title>
+  <title>FA – LG Annual | ฟอร์ม 3.6 – Specific Materiality ตามรายการสำคัญ</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <style>
@@ -181,22 +181,39 @@
       margin-top:6px;
     }
 
-    .spec-table{
+    /* ตาราง Specific Materiality (บนจอ) */
+    .sm-table-wrapper{
+      overflow-x:auto;
+      margin-top:4px;
+    }
+    .sm-table{
       width:100%;
       border-collapse:collapse;
       font-size:11px;
-      margin-top:6px;
     }
-    .spec-table th,
-    .spec-table td{
-      border:1px solid rgba(255,255,255,0.15);
+    .sm-table th,
+    .sm-table td{
+      border:1px solid rgba(255,255,255,0.18);
       padding:4px 4px;
       vertical-align:top;
     }
-    .spec-table th{
+    .sm-table th{
       background:#0b1024;
       font-weight:600;
+    }
+    .sm-id{
       text-align:center;
+      font-weight:600;
+    }
+    .num-input{
+      width:100%;
+      padding:4px 6px;
+      border-radius:8px;
+      border:1px solid var(--border);
+      background:#050816;
+      color:var(--text);
+      font-size:11px;
+      text-align:right;
     }
 
     /* ---------- A4 PREVIEW ---------- */
@@ -342,9 +359,9 @@
 <body>
 
 <header>
-  <h2>🧮 ฟอร์ม 3.6 – การกำหนดความมีนัยสำคัญเฉพาะเรื่อง (Specific Materiality)</h2>
+  <h2>📊 ฟอร์ม 3.6 – Specific Materiality ตามประเภทรายการ / ยอดคงเหลือ</h2>
   <div class="sub">
-    Form 3.6 – Specific Materiality by Class of Transactions / Account Balances | FA – Local Government
+    Form 3.6 – Specific Materiality by Class of Transactions / Balances | FA – Local Government (Annual)
   </div>
 </header>
 
@@ -365,16 +382,16 @@
     </a>
   </div>
 
-  <!-- CARD 1: ฟอร์มกรอกดิจิทัล -->
+  <!-- CARD 1: Digital Form -->
   <section class="card">
     <div class="card-header">
       <div>
         <div class="card-title">ส่วนที่ 1 – ข้อมูลพื้นฐาน และการกำหนด Specific Materiality</div>
         <div class="card-sub">
-          กำหนดปีงบประมาณ หน่วยรับตรวจ และ Specific Materiality สำหรับกลุ่มรายการสำคัญ (เช่น รายได้ ค่าใช้จ่าย ทรัพย์สิน ลูกหนี้ ฯลฯ)
+          ระบุปี หน่วยรับตรวจ และกำหนดระดับสาระสำคัญเฉพาะเรื่องสำหรับแต่ละประเภทของรายการ / ยอดคงเหลือ
         </div>
       </div>
-      <div class="chip">Digital Form • Input</div>
+      <div class="chip">Digital Form • Specific Materiality</div>
     </div>
 
     <div class="form-grid">
@@ -409,185 +426,175 @@
       </div>
     </div>
 
-    <div class="section-title">1.2 Specific Materiality ตามกลุ่มรายการสำคัญ</div>
-    <div class="hint">
-      ตัวอย่างกลุ่มรายการ: รายได้, ค่าใช้จ่าย, ทรัพย์สินถาวร, ลูกหนี้–เจ้าหนี้, รายการเฉพาะเรื่องอื่น ๆ ฯลฯ  
-      คุณสามารถกำหนด % จาก OM หรือจำนวนเงินที่เห็นว่าเหมาะสม
+    <div class="section-title">1.2 ข้อมูลอ้างอิงจากฟอร์ม 3.5 (OM / PM) และหมายเหตุ</div>
+    <div class="form-grid">
+      <div>
+        <label for="refOm">OM ตามฟอร์ม 3.5 (บาท)</label>
+        <input id="refOm" class="input" type="text" placeholder="เช่น 1,000,000.00">
+      </div>
+      <div>
+        <label for="refPm">PM ตามฟอร์ม 3.5 (บาท)</label>
+        <input id="refPm" class="input" type="text" placeholder="เช่น 750,000.00">
+      </div>
+      <div>
+        <label for="refNote">หมายเหตุเพิ่มเติม</label>
+        <input id="refNote" class="input" type="text" placeholder="เช่น ใช้ PM เป็นกรอบตั้ง Specific Materiality">
+      </div>
     </div>
 
-    <div style="overflow-x:auto;">
-      <table class="spec-table" id="specTable">
+    <div class="section-title">1.3 ตารางกำหนด Specific Materiality ตามประเภทของรายการ</div>
+    <div class="hint">
+      ตัวอย่างประเภท: รายได้, ค่าใช้จ่าย, สินทรัพย์ถาวร, ลูกหนี้-เจ้าหนี้, เงินสด และรายการสำคัญอื่น ๆ  
+      สามารถปรับหัวข้อ/จำนวนแถวให้ตรงกับแบบฟอร์ม Excel ของคุณในขั้นพัฒนาระบบ
+    </div>
+
+    <div class="sm-table-wrapper">
+      <table class="sm-table" id="smTable">
         <thead>
         <tr>
           <th style="width:4%;">#</th>
-          <th style="width:24%;">กลุ่มรายการ / บัญชี</th>
-          <th style="width:12%;">ฐานอ้างอิง (บาท)</th>
-          <th style="width:12%;">Specific Mat. (%)</th>
-          <th style="width:16%;">Specific Mat. (บาท)</th>
-          <th>เหตุผล / หลักเกณฑ์</th>
+          <th style="width:20%;">ประเภทของรายการ / ยอดคงเหลือ</th>
+          <th style="width:12%;">จำนวนฐาน (บาท)</th>
+          <th style="width:12%;">% ของ OM / PM</th>
+          <th style="width:16%;">Specific Materiality (บาท)</th>
+          <th>เหตุผล/เกณฑ์ที่ใช้กำหนด</th>
         </tr>
         </thead>
         <tbody>
-        <!-- 6 แถวตัวอย่าง -->
-        <!-- row 1 -->
+        <!-- Row 1: รายได้ -->
         <tr data-row="1">
-          <td style="text-align:center;">1</td>
+          <td class="sm-id">1</td>
           <td>
-            <input class="input" id="className-1" type="text"
-                   placeholder="เช่น รายได้รวม / รายได้ภาษี ฯลฯ">
+            <input id="smClass-1" class="input" type="text" value="รายได้รวม" />
           </td>
           <td>
-            <input class="input" id="baseAmount-1" type="number" min="0" step="0.01"
-                   placeholder="เช่น 50000000">
+            <input id="smBase-1" class="num-input" type="number" min="0" step="0.01" placeholder="เช่น 120000000" oninput="calcSmRow(1)">
           </td>
           <td>
-            <input class="input" id="specPct-1" type="number" min="0" step="0.01"
-                   placeholder="% เช่น 0.8" oninput="calcSpecRow(1)">
+            <input id="smPct-1" class="num-input" type="number" min="0" step="0.01" placeholder="%" oninput="calcSmRow(1)">
           </td>
           <td>
-            <input class="input" id="specAmt-1" type="text" readonly placeholder="ระบบคำนวณให้">
+            <input id="smAmt-1" class="input" type="text" readonly placeholder="ระบบคำนวณให้">
           </td>
           <td>
-            <textarea class="input" id="reason-1"
-                      placeholder="เช่น รายได้มีความเสี่ยงสูง จึงกำหนด Specific Materiality ต่ำกว่า OM ฯลฯ"></textarea>
+            <textarea id="smReason-1" class="input" placeholder="เช่น เป็นรายการมีนัยสำคัญสูง จึงใช้ % ต่ำกว่า OM เพื่อเพิ่มความเข้มข้นในการตรวจสอบ"></textarea>
           </td>
         </tr>
 
-        <!-- row 2 -->
+        <!-- Row 2: ค่าใช้จ่าย -->
         <tr data-row="2">
-          <td style="text-align:center;">2</td>
+          <td class="sm-id">2</td>
           <td>
-            <input class="input" id="className-2" type="text"
-                   placeholder="เช่น ค่าใช้จ่ายดำเนินงาน ฯลฯ">
+            <input id="smClass-2" class="input" type="text" value="ค่าใช้จ่ายรวม" />
           </td>
           <td>
-            <input class="input" id="baseAmount-2" type="number" min="0" step="0.01"
-                   placeholder="เช่น 30000000">
+            <input id="smBase-2" class="num-input" type="number" min="0" step="0.01" oninput="calcSmRow(2)">
           </td>
           <td>
-            <input class="input" id="specPct-2" type="number" min="0" step="0.01"
-                   placeholder="% เช่น 0.5" oninput="calcSpecRow(2)">
+            <input id="smPct-2" class="num-input" type="number" min="0" step="0.01" oninput="calcSmRow(2)">
           </td>
           <td>
-            <input class="input" id="specAmt-2" type="text" readonly placeholder="ระบบคำนวณให้">
+            <input id="smAmt-2" class="input" type="text" readonly>
           </td>
           <td>
-            <textarea class="input" id="reason-2"
-                      placeholder="ระบุเหตุผลและเกณฑ์ที่ใช้กำหนด"></textarea>
+            <textarea id="smReason-2" class="input" placeholder="เหตุผลในการตั้งสาระสำคัญเฉพาะของค่าใช้จ่าย"></textarea>
           </td>
         </tr>
 
-        <!-- row 3 -->
+        <!-- Row 3: สินทรัพย์ถาวร -->
         <tr data-row="3">
-          <td style="text-align:center;">3</td>
+          <td class="sm-id">3</td>
           <td>
-            <input class="input" id="className-3" type="text"
-                   placeholder="เช่น สินทรัพย์ถาวร / ครุภัณฑ์ ฯลฯ">
+            <input id="smClass-3" class="input" type="text" value="สินทรัพย์ถาวร / ครุภัณฑ์ / โครงการก่อสร้าง" />
           </td>
           <td>
-            <input class="input" id="baseAmount-3" type="number" min="0" step="0.01"
-                   placeholder="">
+            <input id="smBase-3" class="num-input" type="number" min="0" step="0.01" oninput="calcSmRow(3)">
           </td>
           <td>
-            <input class="input" id="specPct-3" type="number" min="0" step="0.01"
-                   placeholder="% เช่น 2.0" oninput="calcSpecRow(3)">
+            <input id="smPct-3" class="num-input" type="number" min="0" step="0.01" oninput="calcSmRow(3)">
           </td>
           <td>
-            <input class="input" id="specAmt-3" type="text" readonly placeholder="ระบบคำนวณให้">
+            <input id="smAmt-3" class="input" type="text" readonly>
           </td>
           <td>
-            <textarea class="input" id="reason-3"
-                      placeholder=""></textarea>
+            <textarea id="smReason-3" class="input" placeholder="เช่น ความเสี่ยงด้านการจัดซื้อจัดจ้าง / งานก่อสร้าง ฯลฯ"></textarea>
           </td>
         </tr>
 
-        <!-- row 4 -->
+        <!-- Row 4: ลูกหนี้/เจ้าหนี้ -->
         <tr data-row="4">
-          <td style="text-align:center;">4</td>
+          <td class="sm-id">4</td>
           <td>
-            <input class="input" id="className-4" type="text"
-                   placeholder="เช่น ลูกหนี้–เจ้าหนี้ ฯลฯ">
+            <input id="smClass-4" class="input" type="text" value="ลูกหนี้ / เจ้าหนี้ / ภาระผูกพัน" />
           </td>
           <td>
-            <input class="input" id="baseAmount-4" type="number" min="0" step="0.01"
-                   placeholder="">
+            <input id="smBase-4" class="num-input" type="number" min="0" step="0.01" oninput="calcSmRow(4)">
           </td>
           <td>
-            <input class="input" id="specPct-4" type="number" min="0" step="0.01"
-                   placeholder="% เช่น 1.5" oninput="calcSpecRow(4)">
+            <input id="smPct-4" class="num-input" type="number" min="0" step="0.01" oninput="calcSmRow(4)">
           </td>
           <td>
-            <input class="input" id="specAmt-4" type="text" readonly placeholder="ระบบคำนวณให้">
+            <input id="smAmt-4" class="input" type="text" readonly>
           </td>
           <td>
-            <textarea class="input" id="reason-4"
-                      placeholder=""></textarea>
+            <textarea id="smReason-4" class="input" placeholder="เช่น ความไม่แน่นอนของยอดหนี้ การตั้งสำรอง ฯลฯ"></textarea>
           </td>
         </tr>
 
-        <!-- row 5 -->
+        <!-- Row 5: เงินสด -->
         <tr data-row="5">
-          <td style="text-align:center;">5</td>
+          <td class="sm-id">5</td>
           <td>
-            <input class="input" id="className-5" type="text"
-                   placeholder="รายการเฉพาะเรื่องที่มีนัยสำคัญ (1)">
+            <input id="smClass-5" class="input" type="text" value="เงินสดและรายการเทียบเท่าเงินสด" />
           </td>
           <td>
-            <input class="input" id="baseAmount-5" type="number" min="0" step="0.01"
-                   placeholder="">
+            <input id="smBase-5" class="num-input" type="number" min="0" step="0.01" oninput="calcSmRow(5)">
           </td>
           <td>
-            <input class="input" id="specPct-5" type="number" min="0" step="0.01"
-                   placeholder="" oninput="calcSpecRow(5)">
+            <input id="smPct-5" class="num-input" type="number" min="0" step="0.01" oninput="calcSmRow(5)">
           </td>
           <td>
-            <input class="input" id="specAmt-5" type="text" readonly placeholder="ระบบคำนวณให้">
+            <input id="smAmt-5" class="input" type="text" readonly>
           </td>
           <td>
-            <textarea class="input" id="reason-5"
-                      placeholder=""></textarea>
+            <textarea id="smReason-5" class="input" placeholder="เช่น ความเสี่ยงการยักยอกเงินสด ฯลฯ"></textarea>
           </td>
         </tr>
 
-        <!-- row 6 -->
+        <!-- Row 6: อื่น ๆ -->
         <tr data-row="6">
-          <td style="text-align:center;">6</td>
+          <td class="sm-id">6</td>
           <td>
-            <input class="input" id="className-6" type="text"
-                   placeholder="รายการเฉพาะเรื่องที่มีนัยสำคัญ (2)">
+            <input id="smClass-6" class="input" type="text" value="รายการอื่น ๆ ที่มีนัยสำคัญ" />
           </td>
           <td>
-            <input class="input" id="baseAmount-6" type="number" min="0" step="0.01"
-                   placeholder="">
+            <input id="smBase-6" class="num-input" type="number" min="0" step="0.01" oninput="calcSmRow(6)">
           </td>
           <td>
-            <input class="input" id="specPct-6" type="number" min="0" step="0.01"
-                   placeholder="" oninput="calcSpecRow(6)">
+            <input id="smPct-6" class="num-input" type="number" min="0" step="0.01" oninput="calcSmRow(6)">
           </td>
           <td>
-            <input class="input" id="specAmt-6" type="text" readonly placeholder="ระบบคำนวณให้">
+            <input id="smAmt-6" class="input" type="text" readonly>
           </td>
           <td>
-            <textarea class="input" id="reason-6"
-                      placeholder=""></textarea>
+            <textarea id="smReason-6" class="input" placeholder="เช่น โครงการเฉพาะกิจ / รายการที่ถูกจับตา ฯลฯ"></textarea>
           </td>
         </tr>
-
         </tbody>
       </table>
     </div>
 
     <div class="btn-row no-print">
-      <button type="button" class="btn btn-primary" onclick="calcAllSpec()">คำนวณ Specific Materiality ทุกแถว</button>
+      <button type="button" class="btn btn-primary" onclick="calcAllSm()">คำนวณ Specific Materiality ทุกแถว</button>
       <button type="button" class="btn" onclick="pushToA4()">อัปเดตข้อมูลไปยังแบบฟอร์ม A4</button>
     </div>
 
     <div class="footer-note">
-      * สามารถเชื่อมค่าจากฟอร์ม 3.5 (OM/PM/TE) เพื่อกำหนดเพดาน Specific Materiality ในระบบจริงได้
+      * เวอร์ชันระบบจริงสามารถเพิ่ม/ลดแถวแบบ Dynamic และเชื่อมกับข้อมูลยอดคงเหลือจากระบบบัญชีหรือ Excel ได้
     </div>
   </section>
 
-  <!-- CARD 2: Export / A4 -->
+  <!-- CARD 2: A4 + Export -->
   <section class="card card-a4">
     <div class="card-header">
       <div>
@@ -649,32 +656,51 @@
         </div>
 
         <div style="margin-top:10px; font-size:10pt;">
-          <strong>1. การกำหนดความมีนัยสำคัญเฉพาะเรื่องตามกลุ่มรายการสำคัญ</strong>
+          <strong>1. ข้อมูลอ้างอิงจากฟอร์ม 3.5</strong>
+        </div>
+        <div class="a4-row">
+          <div>
+            <span>OM (บาท)</span>
+            <span class="value" id="a4RefOm">&nbsp;</span>
+          </div>
+          <div>
+            <span>PM (บาท)</span>
+            <span class="value" id="a4RefPm">&nbsp;</span>
+          </div>
+        </div>
+        <div class="a4-row">
+          <div style="flex:1;">
+            <span>หมายเหตุ</span>
+            <span class="value" id="a4RefNote">&nbsp;</span>
+          </div>
         </div>
 
-        <table class="a4-table" id="a4SpecTable">
+        <div style="margin-top:10px; font-size:10pt;">
+          <strong>2. ตารางกำหนด Specific Materiality ตามประเภทของรายการ / ยอดคงเหลือ</strong>
+        </div>
+
+        <table class="a4-table" id="a4SmTable">
           <thead>
           <tr>
-            <th style="width:6%;">ลำดับ</th>
-            <th style="width:30%;">กลุ่มรายการ / บัญชี</th>
-            <th style="width:16%;">ฐานอ้างอิง (บาท)</th>
-            <th style="width:12%;">Specific Mat. (%)</th>
-            <th style="width:18%;">Specific Mat. (บาท)</th>
-            <th>เหตุผล / หลักเกณฑ์</th>
+            <th style="width:4%;">#</th>
+            <th style="width:23%;">ประเภทของรายการ / ยอดคงเหลือ</th>
+            <th style="width:16%;">จำนวนฐาน (บาท)</th>
+            <th style="width:12%;">% ของ OM / PM</th>
+            <th style="width:20%;">Specific Materiality (บาท)</th>
+            <th>เหตุผล/เกณฑ์ที่ใช้กำหนด</th>
           </tr>
           </thead>
-          <tbody id="a4SpecBody">
-          <!-- แถวจะถูกเติมจาก JS -->
+          <tbody>
+          <!-- แถวจะถูกเติมจาก pushToA4() -->
           </tbody>
         </table>
 
         <div style="margin-top:12px; font-size:10pt;">
-          <strong>2. การเชื่อมโยง Specific Materiality กับการวางแผนตรวจสอบ</strong>
+          <strong>3. หมายเหตุเพิ่มเติม</strong>
         </div>
         <div style="font-size:10pt; margin-top:4px;">
-          - Specific Materiality แต่ละกลุ่มรายการใช้เป็นเกณฑ์สำหรับออกแบบขนาดตัวอย่างและการคัดกรองการผิดพลาดในกระดาษทำการ  
-          - รายการที่มีความเสี่ยงสูงหรือมีสาระสำคัญมากอาจกำหนด Specific Materiality ต่ำกว่า OM เพื่อเพิ่มระดับความเข้มข้นในการตรวจสอบ  
-          - การกำหนดค่าเหล่านี้ควรสอดคล้องกับ RMM และ Fraud Risk ที่ประเมินไว้ในแบบฟอร์มอื่น
+          - Specific Materiality ในแต่ละประเภทถูกกำหนดโดยพิจารณาจากระดับความเสี่ยง ความสำคัญต่อผู้ใช้รายงาน และ OM / PM รวม<br>
+          - จำนวนดังกล่าวจะถูกใช้เป็นเกณฑ์ในการออกแบบขนาดตัวอย่างและการประเมินผลการผิดพลาดในกระดาษทำการของผู้ตรวจสอบ
         </div>
 
         <div class="a4-sign-row">
@@ -708,56 +734,67 @@
     return num.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
   }
 
-  function calcSpecRow(row){
-    const base = parseFloat(document.getElementById('baseAmount-'+row).value || '0');
-    const pct  = parseFloat(document.getElementById('specPct-'+row).value || '0');
+  function calcSmRow(rowId){
+    const baseEl = document.getElementById('smBase-'+rowId);
+    const pctEl  = document.getElementById('smPct-'+rowId);
+    const amtEl  = document.getElementById('smAmt-'+rowId);
+    if(!baseEl || !pctEl || !amtEl) return;
+
+    const base = parseFloat(baseEl.value || '0');
+    const pct  = parseFloat(pctEl.value || '0');
+
     if(base <= 0 || pct <= 0){
-      document.getElementById('specAmt-'+row).value = '';
+      amtEl.value = '';
       return;
     }
     const amt = base * (pct/100);
-    document.getElementById('specAmt-'+row).value = formatNumber(amt);
+    amtEl.value = formatNumber(amt);
   }
 
-  function calcAllSpec(){
+  function calcAllSm(){
     for(let r=1;r<=6;r++){
-      calcSpecRow(r);
+      calcSmRow(r);
     }
   }
 
   function pushToA4(){
     // ข้อมูลทั่วไป
-    document.getElementById('a4Fy').textContent         = document.getElementById('fy').value || '';
-    document.getElementById('a4Auditee').textContent    = document.getElementById('auditee').value || '';
-    document.getElementById('a4Amphoe').textContent     = document.getElementById('amphoe').value || '';
-    document.getElementById('a4Province').textContent   = document.getElementById('province').value || '';
-    document.getElementById('a4PreparedBy').textContent = document.getElementById('preparedBy').value || '';
-    document.getElementById('a4ReviewedBy').textContent = document.getElementById('reviewedBy').value || '';
+    document.getElementById('a4Fy').textContent        = document.getElementById('fy').value || '';
+    document.getElementById('a4Auditee').textContent   = document.getElementById('auditee').value || '';
+    document.getElementById('a4Amphoe').textContent    = document.getElementById('amphoe').value || '';
+    document.getElementById('a4Province').textContent  = document.getElementById('province').value || '';
+    document.getElementById('a4PreparedBy').textContent= document.getElementById('preparedBy').value || '';
+    document.getElementById('a4ReviewedBy').textContent= document.getElementById('reviewedBy').value || '';
 
-    // ล้าง tbody ก่อน
-    const body = document.getElementById('a4SpecBody');
-    body.innerHTML = '';
+    // อ้างอิง OM / PM
+    document.getElementById('a4RefOm').textContent   = document.getElementById('refOm').value || '';
+    document.getElementById('a4RefPm').textContent   = document.getElementById('refPm').value || '';
+    document.getElementById('a4RefNote').textContent = document.getElementById('refNote').value || '';
 
-    // เติมแถวจากข้อมูล 1–6
+    // เติมตาราง Specific Materiality
+    const tbody = document.querySelector('#a4SmTable tbody');
+    if(!tbody) return;
+    tbody.innerHTML = '';
+
     for(let r=1;r<=6;r++){
-      const name = document.getElementById('className-'+r).value;
-      const base = parseFloat(document.getElementById('baseAmount-'+r).value || '0');
-      const pct  = document.getElementById('specPct-'+r).value;
-      const amt  = document.getElementById('specAmt-'+r).value;
-      const rsn  = document.getElementById('reason-'+r).value;
+      const cls   = document.getElementById('smClass-'+r)?.value || '';
+      const base  = parseFloat(document.getElementById('smBase-'+r)?.value || '0');
+      const pct   = document.getElementById('smPct-'+r)?.value || '';
+      const amt   = document.getElementById('smAmt-'+r)?.value || '';
+      const reason= document.getElementById('smReason-'+r)?.value || '';
 
-      if(!name && !base && !pct && !amt && !rsn){
+      if(!cls && !base && !pct && !amt && !reason){
         continue; // ข้ามแถวว่าง
       }
 
       const tr = document.createElement('tr');
 
       const td1 = document.createElement('td');
-      td1.style.textAlign = 'center';
       td1.textContent = r.toString();
+      td1.style.textAlign = 'center';
 
       const td2 = document.createElement('td');
-      td2.textContent = name || '';
+      td2.textContent = cls;
 
       const td3 = document.createElement('td');
       td3.style.textAlign = 'right';
@@ -765,14 +802,14 @@
 
       const td4 = document.createElement('td');
       td4.style.textAlign = 'center';
-      td4.textContent = pct ? (pct + ' %') : '';
+      td4.textContent = pct ? pct + ' %' : '';
 
       const td5 = document.createElement('td');
       td5.style.textAlign = 'right';
       td5.textContent = amt || '';
 
       const td6 = document.createElement('td');
-      td6.textContent = rsn || '';
+      td6.textContent = reason;
 
       tr.appendChild(td1);
       tr.appendChild(td2);
@@ -780,11 +817,9 @@
       tr.appendChild(td4);
       tr.appendChild(td5);
       tr.appendChild(td6);
-
-      body.appendChild(tr);
+      tbody.appendChild(tr);
     }
 
-    // Footer meta – เวลา
     const now = new Date();
     const ts = now.toLocaleString('th-TH');
     document.getElementById('a4FooterMeta').textContent = 'พิมพ์จากระบบ FA – LG ณ ' + ts;
@@ -813,28 +848,31 @@
   }
 
   function exportJson(){
-    const header = {
-      fiscalYear : document.getElementById('fy').value || '',
-      auditee    : document.getElementById('auditee').value || '',
-      amphoe     : document.getElementById('amphoe').value || '',
-      province   : document.getElementById('province').value || '',
-      preparedBy : document.getElementById('preparedBy').value || '',
-      reviewedBy : document.getElementById('reviewedBy').value || ''
+    const data = {
+      fiscalYear    : document.getElementById('fy').value || '',
+      auditee       : document.getElementById('auditee').value || '',
+      amphoe        : document.getElementById('amphoe').value || '',
+      province      : document.getElementById('province').value || '',
+      preparedBy    : document.getElementById('preparedBy').value || '',
+      reviewedBy    : document.getElementById('reviewedBy').value || '',
+      refOm         : document.getElementById('refOm').value || '',
+      refPm         : document.getElementById('refPm').value || '',
+      refNote       : document.getElementById('refNote').value || '',
+      specificItems : []
     };
 
-    const lines = [];
     for(let r=1;r<=6;r++){
-      lines.push({
-        index      : r,
-        className  : document.getElementById('className-'+r).value || '',
-        baseAmount : document.getElementById('baseAmount-'+r).value || '',
-        specPct    : document.getElementById('specPct-'+r).value || '',
-        specAmt    : document.getElementById('specAmt-'+r).value || '',
-        reason     : document.getElementById('reason-'+r).value || ''
-      });
+      const row = {
+        className: document.getElementById('smClass-'+r)?.value || '',
+        base     : document.getElementById('smBase-'+r)?.value || '',
+        pct      : document.getElementById('smPct-'+r)?.value || '',
+        amount   : document.getElementById('smAmt-'+r)?.value || '',
+        reason   : document.getElementById('smReason-'+r)?.value || ''
+      };
+      if(row.className || row.base || row.pct || row.amount || row.reason){
+        data.specificItems.push(row);
+      }
     }
-
-    const data = { header, specificMateriality: lines };
 
     const blob = new Blob([JSON.stringify(data,null,2)], {type:'application/json'});
     const url  = URL.createObjectURL(blob);
