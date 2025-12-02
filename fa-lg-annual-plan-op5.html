@@ -167,11 +167,21 @@
       border-color:#f44336;
       background:linear-gradient(120deg,#b71c1c,#f44336);
     }
+    .btn-success{
+      border-color:#4caf50;
+      background:linear-gradient(120deg,#1b5e20,#4caf50);
+    }
+    .btn-info{
+      border-color:#26c6da;
+      background:linear-gradient(120deg,#006064,#26c6da);
+    }
     .btn:hover{
       background:rgba(0,0,0,0.7);
     }
     .btn-primary:hover,
-    .btn-danger:hover{
+    .btn-danger:hover,
+    .btn-success:hover,
+    .btn-info:hover{
       filter:brightness(1.1);
     }
 
@@ -353,11 +363,17 @@
       <div>
         <div class="card-title">ส่วนที่ 1 – ข้อมูลพื้นฐาน และภาพรวมการสอบบัญชี</div>
         <div class="card-sub">
-          ระบุปีงบประมาณ หน่วยรับตรวจ วัตถุประสงค์ ขอบเขต และแนวทางสอบบัญชีที่สอดคล้องกับ RMM / Materiality
+          ใช้ข้อมูลจากฐานกลาง <strong>fa-db-data-gov</strong> (localStorage) เพื่อเลือกจังหวัด อำเภอ และหน่วยรับตรวจให้เป็นมาตรฐานเดียวกันทุกระบบ
         </div>
       </div>
       <div class="chip">Digital Form • Overall Plan</div>
     </div>
+
+    <div class="hint">
+      ⚙️ ข้อมูลหน่วยรับตรวจจะดึงจาก <code>localStorage["fa-db-data-gov"]</code>  
+      หากยังไม่มีข้อมูล กรุณาเปิดหน้า <code>fa-db-data-gov.html</code> ก่อนอย่างน้อย 1 ครั้งเพื่อโหลดฐานกลาง
+    </div>
+    <div id="govDbStatus" class="hint"></div>
 
     <div class="form-grid">
       <div>
@@ -387,18 +403,28 @@
           <option>2582</option>
         </select>
       </div>
+
       <div>
-        <label for="auditee">ชื่อหน่วยรับตรวจ (อปท.)</label>
-        <input id="auditee" class="input" type="text" placeholder="เช่น เทศบาลเมืองตัวอย่าง">
+        <label for="province">จังหวัด (จากฐานข้อมูลกลาง)</label>
+        <select id="province" class="input">
+          <option value="">— เลือกจังหวัด —</option>
+        </select>
       </div>
+
       <div>
-        <label for="amphoe">อำเภอ</label>
-        <input id="amphoe" class="input" type="text" placeholder="อำเภอ">
+        <label for="amphoe">อำเภอ / เขต (จากฐานข้อมูลกลาง)</label>
+        <select id="amphoe" class="input">
+          <option value="">— เลือกอำเภอ / เขต —</option>
+        </select>
       </div>
+
       <div>
-        <label for="province">จังหวัด</label>
-        <input id="province" class="input" type="text" placeholder="จังหวัด">
+        <label for="auditee">ชื่อหน่วยรับตรวจ / อปท. (จากฐานข้อมูลกลาง)</label>
+        <select id="auditee" class="input">
+          <option value="">— เลือกหน่วยรับตรวจ —</option>
+        </select>
       </div>
+
       <div>
         <label for="teamLead">หัวหน้าคณะผู้ตรวจสอบ</label>
         <input id="teamLead" class="input" type="text" placeholder="ชื่อหัวหน้าคณะ">
@@ -481,10 +507,13 @@
 
     <div class="btn-row no-print">
       <button type="button" class="btn" onclick="pushToA4()">อัปเดตข้อมูลไปยังแบบฟอร์ม A4</button>
+      <button type="button" class="btn-success" onclick="sendToReviewSystem()">ส่งไประบบสอบทาน (Review)</button>
+      <button type="button" class="btn-info" onclick="sendToWorkingpaperDb()">ส่งไประบบฐานข้อมูลกระดาษทำการ (WP DB)</button>
     </div>
 
     <div class="footer-note">
-      * เวอร์ชันระบบจริงสามารถเชื่อมข้อมูลจาก อปท.3–4, ฟอร์ม 3.5–3.6 และฐานข้อมูลตาราง Audit Program ของคุณเพื่อให้กรอกอัตโนมัติได้
+      * ระบบนี้ดึงชื่อจังหวัด อำเภอ และหน่วยรับตรวจจากฐานกลาง <code>fa-db-data-gov</code>  
+      * ปุ่มส่งไป “ระบบสอบทาน / ฐานข้อมูลกระดาษทำการ” ตอนนี้จำลองเก็บข้อมูลใน <code>localStorage</code> และเตรียมตำแหน่งไว้สำหรับเชื่อม API จริง
     </div>
   </section>
 
@@ -494,7 +523,7 @@
       <div>
         <div class="card-title">ส่วนที่ 2 – แบบฟอร์ม อปท.5 รูปแบบกระดาษ A4 (สำหรับพิมพ์ / Export)</div>
         <div class="card-sub">
-          แบบฟอร์ม A4 จะดึงข้อมูลจากแบบดิจิทัลด้านบน — สามารถพิมพ์เป็น PDF (A4) หรือ Export เป็นไฟล์ HTML / JSON ได้
+          แบบฟอร์ม A4 จะดึงข้อมูลจากแบบดิจิทัลด้านบน — ใช้เป็นไฟล์ PDF / HTML แนบในกระดาษทำการ หรือสำหรับการสอบทาน
         </div>
       </div>
       <div class="chip">A4 Layout • Export</div>
@@ -505,6 +534,8 @@
       <button type="button" class="btn btn-primary" onclick="window.print()">พิมพ์ / Export PDF (A4)</button>
       <button type="button" class="btn" onclick="exportA4Html()">Export เป็น HTML (A4 เฉพาะหน้า)</button>
       <button type="button" class="btn btn-danger" onclick="exportJson()">Export เป็น JSON (ข้อมูลแบบฟอร์ม)</button>
+      <button type="button" class="btn-success" onclick="sendToReviewSystem()">ส่งไประบบสอบทาน (Review)</button>
+      <button type="button" class="btn-info" onclick="sendToWorkingpaperDb()">ส่งไประบบฐานข้อมูลกระดาษทำการ (WP DB)</button>
     </div>
 
     <div class="a4-wrapper">
@@ -653,6 +684,8 @@
 </main>
 
 <script>
+  /* ---------- Helper แปลงข้อความ/วันที่ ---------- */
+
   function nl2br(text){
     if(!text) return '';
     return text.replace(/\n/g,'<br>');
@@ -670,8 +703,125 @@
            year.toString();
   }
 
+  /* ---------- ดึงข้อมูลจาก fa-db-data-gov ใน localStorage ---------- */
+
+  let LG_DB = [];
+
+  function getProvinceField(row){
+    return row.province || row.Province || row.prov || row['จังหวัด'] || '';
+  }
+  function getAmphoeField(row){
+    return row.amphoe || row.district || row.District || row['อำเภอ'] || row['เขต'] || '';
+  }
+  function getAuditeeNameField(row){
+    // พยายามเดาชื่อฟิลด์จากตารางหลัก
+    return (
+      row.auditee ||
+      row.unitName ||
+      row.unit ||
+      row['หน่วยรับตรวจ'] ||
+      row['ชื่อหน่วยงาน'] ||
+      ''
+    );
+  }
+
+  function setStatus(msg, isError){
+    const el = document.getElementById('govDbStatus');
+    if(!el) return;
+    el.textContent = msg || '';
+    el.style.color = isError ? '#ffab91' : '#a3acc7';
+  }
+
+  function fillSelectOptions(select, items, placeholder){
+    if(!select) return;
+    select.innerHTML = '';
+    const opt0 = document.createElement('option');
+    opt0.value = '';
+    opt0.textContent = placeholder;
+    select.appendChild(opt0);
+    items.forEach(v => {
+      const o = document.createElement('option');
+      o.value = v;
+      o.textContent = v;
+      select.appendChild(o);
+    });
+  }
+
+  function initGovDbFromLocalStorage(){
+    try{
+      const raw = localStorage.getItem('fa-db-data-gov');
+      if(!raw){
+        setStatus('⚠ ยังไม่พบข้อมูลใน localStorage["fa-db-data-gov"] – กรุณาเปิดหน้า fa-db-data-gov.html ให้โหลดข้อมูลก่อน', true);
+        return;
+      }
+      const data = JSON.parse(raw);
+      if(!Array.isArray(data)){
+        setStatus('⚠ โครงสร้างข้อมูล fa-db-data-gov ไม่ใช่ Array', true);
+        return;
+      }
+      LG_DB = data;
+
+      const provinces = [...new Set(
+        LG_DB.map(getProvinceField).filter(Boolean)
+      )].sort((a,b)=>a.localeCompare(b,'th-TH'));
+
+      const provinceSelect = document.getElementById('province');
+      fillSelectOptions(provinceSelect, provinces, '— เลือกจังหวัด —');
+
+      setStatus(`✅ โหลดข้อมูลหน่วยรับตรวจจากฐานกลางสำเร็จ: ${LG_DB.length} รายการ`, false);
+    }catch(e){
+      console.error(e);
+      setStatus('⚠ เกิดข้อผิดพลาดขณะอ่านข้อมูล fa-db-data-gov จาก localStorage', true);
+    }
+  }
+
+  function onProvinceChange(){
+    const province = document.getElementById('province').value || '';
+    const amphoeSelect = document.getElementById('amphoe');
+    const auditeeSelect = document.getElementById('auditee');
+
+    if(!province){
+      fillSelectOptions(amphoeSelect, [], '— เลือกอำเภอ / เขต —');
+      fillSelectOptions(auditeeSelect, [], '— เลือกหน่วยรับตรวจ —');
+      return;
+    }
+
+    const amphoeList = [...new Set(
+      LG_DB
+        .filter(row => getProvinceField(row) === province)
+        .map(getAmphoeField)
+        .filter(Boolean)
+    )].sort((a,b)=>a.localeCompare(b,'th-TH'));
+
+    fillSelectOptions(amphoeSelect, amphoeList, '— เลือกอำเภอ / เขต —');
+    fillSelectOptions(auditeeSelect, [], '— เลือกหน่วยรับตรวจ —');
+  }
+
+  function onAmphoeChange(){
+    const province = document.getElementById('province').value || '';
+    const amphoe = document.getElementById('amphoe').value || '';
+    const auditeeSelect = document.getElementById('auditee');
+
+    if(!province || !amphoe){
+      fillSelectOptions(auditeeSelect, [], '— เลือกหน่วยรับตรวจ —');
+      return;
+    }
+
+    const units = LG_DB.filter(row =>
+      getProvinceField(row) === province &&
+      getAmphoeField(row) === amphoe
+    );
+
+    const names = [...new Set(
+      units.map(getAuditeeNameField).filter(Boolean)
+    )].sort((a,b)=>a.localeCompare(b,'th-TH'));
+
+    fillSelectOptions(auditeeSelect, names, '— เลือกหน่วยรับตรวจ —');
+  }
+
+  /* ---------- Sync ไป A4 ---------- */
+
   function pushToA4(){
-    // ข้อมูลทั่วไป
     document.getElementById('a4Fy').textContent        = document.getElementById('fy').value || '';
     document.getElementById('a4Auditee').textContent   = document.getElementById('auditee').value || '';
     document.getElementById('a4Amphoe').textContent    = document.getElementById('amphoe').value || '';
@@ -680,25 +830,20 @@
     document.getElementById('a4TeamMembers').textContent = document.getElementById('teamMembers').value || '';
     document.getElementById('a4ReviewedBy').textContent= document.getElementById('reviewedBy').value || '';
 
-    // วัตถุประสงค์ / ขอบเขต
     document.getElementById('a4Objectives').innerHTML  = nl2br(document.getElementById('objectives').value || '');
     document.getElementById('a4Scope').innerHTML       = nl2br(document.getElementById('scope').value || '');
 
-    // Focus / Risks
     document.getElementById('a4FsFocus').innerHTML     = nl2br(document.getElementById('fsFocus').value || '');
     document.getElementById('a4RiskSummary').innerHTML = nl2br(document.getElementById('riskSummary').value || '');
 
-    // Strategy
     document.getElementById('a4ApproachSummary').innerHTML   = nl2br(document.getElementById('approachSummary').value || '');
     document.getElementById('a4ControlTestPlan').innerHTML   = nl2br(document.getElementById('controlTestPlan').value || '');
     document.getElementById('a4SubstantiveTestPlan').innerHTML = nl2br(document.getElementById('substantiveTestPlan').value || '');
 
-    // Experts / IT / Sampling
     document.getElementById('a4ExpertsUse').innerHTML   = nl2br(document.getElementById('expertsUse').value || '');
     document.getElementById('a4ItUse').innerHTML        = nl2br(document.getElementById('itUse').value || '');
     document.getElementById('a4SamplingPlan').innerHTML = nl2br(document.getElementById('samplingPlan').value || '');
 
-    // Schedule
     const startVal = document.getElementById('scheduleStart').value || '';
     const endVal   = document.getElementById('scheduleEnd').value || '';
     const manDays  = document.getElementById('manDays').value || '';
@@ -707,11 +852,45 @@
     document.getElementById('a4ScheduleEnd').textContent   = formatDateThaiInput(endVal);
     document.getElementById('a4ManDays').textContent       = manDays;
 
-    // Footer meta – เวลา
     const now = new Date();
     const ts = now.toLocaleString('th-TH');
     document.getElementById('a4FooterMeta').textContent = 'พิมพ์จากระบบ FA – LG ณ ' + ts;
   }
+
+  /* ---------- Build data กลาง ---------- */
+
+  function buildFormData(){
+    const data = {
+      fiscalYear   : document.getElementById('fy').value || '',
+      auditee      : document.getElementById('auditee').value || '',
+      amphoe       : document.getElementById('amphoe').value || '',
+      province     : document.getElementById('province').value || '',
+      teamLead     : document.getElementById('teamLead').value || '',
+      teamMembers  : document.getElementById('teamMembers').value || '',
+      reviewedBy   : document.getElementById('reviewedBy').value || '',
+      objectives   : document.getElementById('objectives').value || '',
+      scope        : document.getElementById('scope').value || '',
+      fsFocus      : document.getElementById('fsFocus').value || '',
+      riskSummary  : document.getElementById('riskSummary').value || '',
+      approachSummary    : document.getElementById('approachSummary').value || '',
+      controlTestPlan    : document.getElementById('controlTestPlan').value || '',
+      substantiveTestPlan: document.getElementById('substantiveTestPlan').value || '',
+      expertsUse   : document.getElementById('expertsUse').value || '',
+      itUse        : document.getElementById('itUse').value || '',
+      samplingPlan : document.getElementById('samplingPlan').value || '',
+      scheduleStart: document.getElementById('scheduleStart').value || '',
+      scheduleEnd  : document.getElementById('scheduleEnd').value || '',
+      manDays      : document.getElementById('manDays').value || '',
+      meta: {
+        formCode : 'อปท.5',
+        module   : 'FA-LG-Annual-Planning',
+        exportedAt: new Date().toISOString()
+      }
+    };
+    return data;
+  }
+
+  /* ---------- Export ---------- */
 
   function exportA4Html(){
     const a4 = document.getElementById('a4Page');
@@ -736,29 +915,7 @@
   }
 
   function exportJson(){
-    const data = {
-      fiscalYear   : document.getElementById('fy').value || '',
-      auditee      : document.getElementById('auditee').value || '',
-      amphoe       : document.getElementById('amphoe').value || '',
-      province     : document.getElementById('province').value || '',
-      teamLead     : document.getElementById('teamLead').value || '',
-      teamMembers  : document.getElementById('teamMembers').value || '',
-      reviewedBy   : document.getElementById('reviewedBy').value || '',
-      objectives   : document.getElementById('objectives').value || '',
-      scope        : document.getElementById('scope').value || '',
-      fsFocus      : document.getElementById('fsFocus').value || '',
-      riskSummary  : document.getElementById('riskSummary').value || '',
-      approachSummary    : document.getElementById('approachSummary').value || '',
-      controlTestPlan    : document.getElementById('controlTestPlan').value || '',
-      substantiveTestPlan: document.getElementById('substantiveTestPlan').value || '',
-      expertsUse   : document.getElementById('expertsUse').value || '',
-      itUse        : document.getElementById('itUse').value || '',
-      samplingPlan : document.getElementById('samplingPlan').value || '',
-      scheduleStart: document.getElementById('scheduleStart').value || '',
-      scheduleEnd  : document.getElementById('scheduleEnd').value || '',
-      manDays      : document.getElementById('manDays').value || ''
-    };
-
+    const data = buildFormData();
     const blob = new Blob([JSON.stringify(data,null,2)], {type:'application/json'});
     const url  = URL.createObjectURL(blob);
     const a    = document.createElement('a');
@@ -769,6 +926,68 @@
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
   }
+
+  /* ---------- Integration: Review & Working Papers ---------- */
+
+  function sendToReviewSystem(){
+    const data = buildFormData();
+
+    // จำลองการส่งไป “ระบบสอบทาน” ด้วย localStorage
+    try{
+      localStorage.setItem('fa_op5_last_for_review', JSON.stringify(data));
+    }catch(e){
+      console.error('localStorage error', e);
+    }
+
+    // จุดเชื่อมต่อจริง (API) – คอมเมนต์ไว้เป็นตัวอย่าง
+    /*
+    fetch('/api/review-system/op5', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(data)
+    });
+    */
+
+    alert('บันทึกแบบฟอร์ม อปท.5 ส่งไป “ระบบสอบทาน” (จำลอง) แล้ว \n(เก็บที่ localStorage: fa_op5_last_for_review)');
+  }
+
+  function sendToWorkingpaperDb(){
+    const data = buildFormData();
+
+    // จำลองการส่งไป “ฐานข้อมูลกระดาษทำการ”
+    try{
+      localStorage.setItem('fa_op5_last_workingpaper', JSON.stringify(data));
+    }catch(e){
+      console.error('localStorage error', e);
+    }
+
+    // จุดเชื่อมต่อจริง (API) – คอมเมนต์ไว้เป็นตัวอย่าง
+    /*
+    fetch('/api/workingpapers/op5', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(data)
+    });
+    */
+
+    alert('บันทึกแบบฟอร์ม อปท.5 ส่งไป “ฐานข้อมูลกระดาษทำการ” (จำลอง) แล้ว \n(เก็บที่ localStorage: fa_op5_last_workingpaper)');
+  }
+
+  /* ---------- Bind Event & Init ---------- */
+
+  document.addEventListener('DOMContentLoaded', function(){
+    initGovDbFromLocalStorage();
+
+    const provinceSelect = document.getElementById('province');
+    const amphoeSelect   = document.getElementById('amphoe');
+
+    if(provinceSelect){
+      provinceSelect.addEventListener('change', onProvinceChange);
+    }
+    if(amphoeSelect){
+      amphoeSelect.addEventListener('change', onAmphoeChange);
+    }
+  });
 </script>
 
 </body>
