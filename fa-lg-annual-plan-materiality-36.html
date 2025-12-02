@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>FA – LG Annual | ฟอร์ม 3.6 – Specific Materiality</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    :root{
+      --bg:#060818;
+      --card:#11152b;
+      --border:#262b46;
+      --accent:#42a5f5;
+      --accent2:#26c6da;
+      --muted:#a3acc7;
+      --text:#f5f7ff;
+      --pink:#f48fb1;
+    }
+    *{box-sizing:border-box;}
+
+    body{
+      margin:0;
+      font-family:"Segoe UI", Tahoma, sans-serif;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(123,30,60,0.36) 0, transparent 55%),
+        radial-gradient(circle at 90% 100%, rgba(66,165,245,0.32) 0, transparent 55%),
+        radial-gradient(circle at 0% 100%, rgba(38,198,218,0.22) 0, transparent 55%),
+        var(--bg);
+      color:var(--text);
+      min-height:100vh;
+      font-size:140%;
+    }
+
+    header{
+      padding:16px 10px 12px;
+      text-align:center;
+      background:linear-gradient(120deg,#0d47a1,#42a5f5,#26c6da);
+      box-shadow:0 4px 16px rgba(0,0,0,0.7);
+      position:sticky;
+      top:0;
+      z-index:20;
+    }
+    header h2{ margin:0; font-size:20px; }
+    header .sub{ font-size:13px; opacity:.9; }
+
+    main{
+      max-width:1100px;
+      margin:20px auto 28px;
+      padding:0 16px 20px;
+    }
+
+    .nav-top{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-bottom:14px;
+    }
+    .btn-nav{
+      padding:6px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.45);
+      background:rgba(0,0,0,0.35);
+      color:#fff;
+      font-size:12px;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+    }
+    .btn-nav:hover{ background:rgba(0,0,0,0.6); }
+
+    .card{
+      background:var(--card);
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,0.12);
+      padding:16px 14px 16px;
+      box-shadow:0 10px 30px rgba(0,0,0,0.9);
+      margin-bottom:16px;
+    }
+    .card-header{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:flex-start;
+      margin-bottom:10px;
+    }
+    .card-title{
+      font-size:16px;
+      font-weight:600;
+    }
+    .card-sub{
+      font-size:12px;
+      color:var(--muted);
+    }
+    .chip{
+      padding:4px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.2);
+      font-size:11px;
+      background:rgba(0,0,0,0.35);
+      white-space:nowrap;
+    }
+
+    .form-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:10px 14px;
+      margin-top:4px;
+    }
+
+    label{
+      font-size:12px;
+      display:block;
+      margin-bottom:2px;
+      color:#e3f2fd;
+    }
+    .input, select, textarea{
+      width:100%;
+      padding:6px 8px;
+      border-radius:10px;
+      border:1px solid var(--border);
+      background:#080c1b;
+      color:var(--text);
+      font-size:12px;
+    }
+    textarea{
+      min-height:80px;
+      resize:vertical;
+    }
+    .input:focus, select:focus, textarea:focus{
+      outline:none;
+      border-color:var(--accent2);
+      box-shadow:0 0 0 1px rgba(38,198,218,0.5);
+    }
+
+    .section-title{
+      font-size:14px;
+      font-weight:600;
+      margin:10px 0 6px;
+    }
+    .hint{
+      font-size:11px;
+      color:var(--muted);
+      margin-bottom:6px;
+    }
+
+    .btn-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:10px;
+    }
+    .btn{
+      padding:6px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.4);
+      background:rgba(0,0,0,0.4);
+      color:#fff;
+      font-size:12px;
+      cursor:pointer;
+    }
+    .btn-primary{
+      border-color:var(--accent);
+      background:linear-gradient(120deg,#0d47a1,#42a5f5);
+    }
+    .btn-danger{
+      border-color:#f44336;
+      background:linear-gradient(120deg,#b71c1c,#f44336);
+    }
+    .btn:hover{
+      background:rgba(0,0,0,0.7);
+    }
+    .btn-primary:hover,
+    .btn-danger:hover{
+      filter:brightness(1.1);
+    }
+
+    .footer-note{
+      font-size:10px;
+      color:var(--muted);
+      margin-top:6px;
+    }
+
+    .spec-table{
+      width:100%;
+      border-collapse:collapse;
+      font-size:11px;
+      margin-top:6px;
+    }
+    .spec-table th,
+    .spec-table td{
+      border:1px solid rgba(255,255,255,0.15);
+      padding:4px 4px;
+      vertical-align:top;
+    }
+    .spec-table th{
+      background:#0b1024;
+      font-weight:600;
+      text-align:center;
+    }
+
+    /* ---------- A4 PREVIEW ---------- */
+    .a4-wrapper{
+      margin-top:18px;
+    }
+
+    .a4-title{
+      font-size:14px;
+      font-weight:600;
+      margin-bottom:6px;
+    }
+
+    .a4-page{
+      width:210mm;
+      min-height:297mm;
+      margin:0 auto 16px;
+      background:#ffffff;
+      color:#000000;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      padding:12mm;
+      font-size:11pt;
+      position:relative;
+    }
+
+    .a4-header-center{
+      text-align:center;
+      margin-bottom:6px;
+      font-size:12pt;
+      font-weight:600;
+    }
+    .a4-subheader{
+      text-align:center;
+      font-size:10pt;
+      margin-bottom:8px;
+    }
+    .a4-row{
+      display:flex;
+      justify-content:space-between;
+      font-size:10pt;
+      margin-bottom:4px;
+    }
+    .a4-row span{
+      display:inline-block;
+      min-width:80px;
+    }
+    .a4-row .value{
+      border-bottom:1px solid #000;
+      min-width:160px;
+      display:inline-block;
+      padding:0 2px;
+    }
+
+    .a4-table{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:8px;
+      font-size:10pt;
+    }
+    .a4-table th,
+    .a4-table td{
+      border:1px solid #000;
+      padding:4px 4px;
+      vertical-align:top;
+    }
+    .a4-table th{
+      text-align:center;
+      font-weight:600;
+    }
+
+    .a4-sign-row{
+      margin-top:40px;
+      display:flex;
+      justify-content:space-between;
+      font-size:10pt;
+    }
+    .a4-sign-block{
+      width:45%;
+      text-align:center;
+    }
+    .a4-sign-line{
+      border-bottom:1px solid #000;
+      margin:18px 0 2px;
+      height:0;
+    }
+
+    .a4-footer{
+      position:absolute;
+      bottom:8mm;
+      left:12mm;
+      right:12mm;
+      font-size:8pt;
+      display:flex;
+      justify-content:space-between;
+    }
+
+    /* PRINT */
+    @page{
+      size:A4;
+      margin:12mm;
+    }
+    @media print{
+      body{
+        background:#ffffff;
+        color:#000000;
+        font-size:11pt;
+      }
+      header,
+      .nav-top,
+      .card:not(.card-a4),
+      .no-print{
+        display:none !important;
+      }
+      .a4-page{
+        box-shadow:none;
+        margin:0;
+        width:auto;
+        min-height:auto;
+        padding:0;
+      }
+      main{
+        max-width:100%;
+        margin:0;
+        padding:0;
+      }
+    }
+
+    @media (max-width:900px){
+      .a4-page{
+        width:100%;
+        min-height:auto;
+      }
+    }
+
+    @media (max-width:600px){
+      .card-header{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h2>🧮 ฟอร์ม 3.6 – การกำหนดความมีนัยสำคัญเฉพาะเรื่อง (Specific Materiality)</h2>
+  <div class="sub">
+    Form 3.6 – Specific Materiality by Class of Transactions / Account Balances | FA – Local Government
+  </div>
+</header>
+
+<main>
+
+  <div class="nav-top">
+    <a href="fa-lg-annual-plan.html" class="btn-nav">
+      <span>↩</span> กลับเมนูแบบฟอร์มการวางแผน
+    </a>
+    <a href="fa-lg-annual.html" class="btn-nav">
+      <span>📅</span> กลับหน้าเลือกปี / หน่วยรับตรวจ
+    </a>
+    <a href="fa-menu.html" class="btn-nav">
+      <span>📂</span> FA Main Menu
+    </a>
+    <a href="index.html" class="btn-nav">
+      <span>🏠</span> หน้าหลักระบบ
+    </a>
+  </div>
+
+  <!-- CARD 1: ฟอร์มกรอกดิจิทัล -->
+  <section class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">ส่วนที่ 1 – ข้อมูลพื้นฐาน และการกำหนด Specific Materiality</div>
+        <div class="card-sub">
+          กำหนดปีงบประมาณ หน่วยรับตรวจ และ Specific Materiality สำหรับกลุ่มรายการสำคัญ (เช่น รายได้ ค่าใช้จ่าย ทรัพย์สิน ลูกหนี้ ฯลฯ)
+        </div>
+      </div>
+      <div class="chip">Digital Form • Input</div>
+    </div>
+
+    <div class="form-grid">
+      <div>
+        <label for="fy">ปีงบประมาณ</label>
+        <select id="fy" class="input">
+          <option value="">— เลือกปีงบประมาณ —</option>
+          <option>2567</option>
+          <option>2568</option>
+          <option>2569</option>
+        </select>
+      </div>
+      <div>
+        <label for="auditee">ชื่อหน่วยรับตรวจ (อปท.)</label>
+        <input id="auditee" class="input" type="text" placeholder="เช่น เทศบาลเมืองตัวอย่าง">
+      </div>
+      <div>
+        <label for="amphoe">อำเภอ</label>
+        <input id="amphoe" class="input" type="text" placeholder="อำเภอ">
+      </div>
+      <div>
+        <label for="province">จังหวัด</label>
+        <input id="province" class="input" type="text" placeholder="จังหวัด">
+      </div>
+      <div>
+        <label for="preparedBy">ผู้จัดทำ</label>
+        <input id="preparedBy" class="input" type="text" placeholder="ชื่อผู้จัดทำแบบฟอร์ม">
+      </div>
+      <div>
+        <label for="reviewedBy">ผู้สอบทาน</label>
+        <input id="reviewedBy" class="input" type="text" placeholder="ชื่อผู้สอบทาน / ผตจ.">
+      </div>
+    </div>
+
+    <div class="section-title">1.2 Specific Materiality ตามกลุ่มรายการสำคัญ</div>
+    <div class="hint">
+      ตัวอย่างกลุ่มรายการ: รายได้, ค่าใช้จ่าย, ทรัพย์สินถาวร, ลูกหนี้–เจ้าหนี้, รายการเฉพาะเรื่องอื่น ๆ ฯลฯ  
+      คุณสามารถกำหนด % จาก OM หรือจำนวนเงินที่เห็นว่าเหมาะสม
+    </div>
+
+    <div style="overflow-x:auto;">
+      <table class="spec-table" id="specTable">
+        <thead>
+        <tr>
+          <th style="width:4%;">#</th>
+          <th style="width:24%;">กลุ่มรายการ / บัญชี</th>
+          <th style="width:12%;">ฐานอ้างอิง (บาท)</th>
+          <th style="width:12%;">Specific Mat. (%)</th>
+          <th style="width:16%;">Specific Mat. (บาท)</th>
+          <th>เหตุผล / หลักเกณฑ์</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- 6 แถวตัวอย่าง -->
+        <!-- row 1 -->
+        <tr data-row="1">
+          <td style="text-align:center;">1</td>
+          <td>
+            <input class="input" id="className-1" type="text"
+                   placeholder="เช่น รายได้รวม / รายได้ภาษี ฯลฯ">
+          </td>
+          <td>
+            <input class="input" id="baseAmount-1" type="number" min="0" step="0.01"
+                   placeholder="เช่น 50000000">
+          </td>
+          <td>
+            <input class="input" id="specPct-1" type="number" min="0" step="0.01"
+                   placeholder="% เช่น 0.8" oninput="calcSpecRow(1)">
+          </td>
+          <td>
+            <input class="input" id="specAmt-1" type="text" readonly placeholder="ระบบคำนวณให้">
+          </td>
+          <td>
+            <textarea class="input" id="reason-1"
+                      placeholder="เช่น รายได้มีความเสี่ยงสูง จึงกำหนด Specific Materiality ต่ำกว่า OM ฯลฯ"></textarea>
+          </td>
+        </tr>
+
+        <!-- row 2 -->
+        <tr data-row="2">
+          <td style="text-align:center;">2</td>
+          <td>
+            <input class="input" id="className-2" type="text"
+                   placeholder="เช่น ค่าใช้จ่ายดำเนินงาน ฯลฯ">
+          </td>
+          <td>
+            <input class="input" id="baseAmount-2" type="number" min="0" step="0.01"
+                   placeholder="เช่น 30000000">
+          </td>
+          <td>
+            <input class="input" id="specPct-2" type="number" min="0" step="0.01"
+                   placeholder="% เช่น 0.5" oninput="calcSpecRow(2)">
+          </td>
+          <td>
+            <input class="input" id="specAmt-2" type="text" readonly placeholder="ระบบคำนวณให้">
+          </td>
+          <td>
+            <textarea class="input" id="reason-2"
+                      placeholder="ระบุเหตุผลและเกณฑ์ที่ใช้กำหนด"></textarea>
+          </td>
+        </tr>
+
+        <!-- row 3 -->
+        <tr data-row="3">
+          <td style="text-align:center;">3</td>
+          <td>
+            <input class="input" id="className-3" type="text"
+                   placeholder="เช่น สินทรัพย์ถาวร / ครุภัณฑ์ ฯลฯ">
+          </td>
+          <td>
+            <input class="input" id="baseAmount-3" type="number" min="0" step="0.01"
+                   placeholder="">
+          </td>
+          <td>
+            <input class="input" id="specPct-3" type="number" min="0" step="0.01"
+                   placeholder="% เช่น 2.0" oninput="calcSpecRow(3)">
+          </td>
+          <td>
+            <input class="input" id="specAmt-3" type="text" readonly placeholder="ระบบคำนวณให้">
+          </td>
+          <td>
+            <textarea class="input" id="reason-3"
+                      placeholder=""></textarea>
+          </td>
+        </tr>
+
+        <!-- row 4 -->
+        <tr data-row="4">
+          <td style="text-align:center;">4</td>
+          <td>
+            <input class="input" id="className-4" type="text"
+                   placeholder="เช่น ลูกหนี้–เจ้าหนี้ ฯลฯ">
+          </td>
+          <td>
+            <input class="input" id="baseAmount-4" type="number" min="0" step="0.01"
+                   placeholder="">
+          </td>
+          <td>
+            <input class="input" id="specPct-4" type="number" min="0" step="0.01"
+                   placeholder="% เช่น 1.5" oninput="calcSpecRow(4)">
+          </td>
+          <td>
+            <input class="input" id="specAmt-4" type="text" readonly placeholder="ระบบคำนวณให้">
+          </td>
+          <td>
+            <textarea class="input" id="reason-4"
+                      placeholder=""></textarea>
+          </td>
+        </tr>
+
+        <!-- row 5 -->
+        <tr data-row="5">
+          <td style="text-align:center;">5</td>
+          <td>
+            <input class="input" id="className-5" type="text"
+                   placeholder="รายการเฉพาะเรื่องที่มีนัยสำคัญ (1)">
+          </td>
+          <td>
+            <input class="input" id="baseAmount-5" type="number" min="0" step="0.01"
+                   placeholder="">
+          </td>
+          <td>
+            <input class="input" id="specPct-5" type="number" min="0" step="0.01"
+                   placeholder="" oninput="calcSpecRow(5)">
+          </td>
+          <td>
+            <input class="input" id="specAmt-5" type="text" readonly placeholder="ระบบคำนวณให้">
+          </td>
+          <td>
+            <textarea class="input" id="reason-5"
+                      placeholder=""></textarea>
+          </td>
+        </tr>
+
+        <!-- row 6 -->
+        <tr data-row="6">
+          <td style="text-align:center;">6</td>
+          <td>
+            <input class="input" id="className-6" type="text"
+                   placeholder="รายการเฉพาะเรื่องที่มีนัยสำคัญ (2)">
+          </td>
+          <td>
+            <input class="input" id="baseAmount-6" type="number" min="0" step="0.01"
+                   placeholder="">
+          </td>
+          <td>
+            <input class="input" id="specPct-6" type="number" min="0" step="0.01"
+                   placeholder="" oninput="calcSpecRow(6)">
+          </td>
+          <td>
+            <input class="input" id="specAmt-6" type="text" readonly placeholder="ระบบคำนวณให้">
+          </td>
+          <td>
+            <textarea class="input" id="reason-6"
+                      placeholder=""></textarea>
+          </td>
+        </tr>
+
+        </tbody>
+      </table>
+    </div>
+
+    <div class="btn-row no-print">
+      <button type="button" class="btn btn-primary" onclick="calcAllSpec()">คำนวณ Specific Materiality ทุกแถว</button>
+      <button type="button" class="btn" onclick="pushToA4()">อัปเดตข้อมูลไปยังแบบฟอร์ม A4</button>
+    </div>
+
+    <div class="footer-note">
+      * สามารถเชื่อมค่าจากฟอร์ม 3.5 (OM/PM/TE) เพื่อกำหนดเพดาน Specific Materiality ในระบบจริงได้
+    </div>
+  </section>
+
+  <!-- CARD 2: Export / A4 -->
+  <section class="card card-a4">
+    <div class="card-header">
+      <div>
+        <div class="card-title">ส่วนที่ 2 – แบบฟอร์ม 3.6 รูปแบบกระดาษ A4 (สำหรับพิมพ์ / Export)</div>
+        <div class="card-sub">
+          แบบฟอร์ม A4 จะดึงข้อมูลจากแบบดิจิทัลด้านบน — สามารถพิมพ์เป็น PDF (A4) หรือ Export เป็นไฟล์ HTML / JSON ได้
+        </div>
+      </div>
+      <div class="chip">A4 Layout • Export</div>
+    </div>
+
+    <div class="btn-row no-print">
+      <button type="button" class="btn" onclick="pushToA4()">อัปเดตแบบฟอร์ม A4</button>
+      <button type="button" class="btn btn-primary" onclick="window.print()">พิมพ์ / Export PDF (A4)</button>
+      <button type="button" class="btn" onclick="exportA4Html()">Export เป็น HTML (A4 เฉพาะหน้า)</button>
+      <button type="button" class="btn btn-danger" onclick="exportJson()">Export เป็น JSON (ข้อมูลแบบฟอร์ม)</button>
+    </div>
+
+    <div class="a4-wrapper">
+      <div class="a4-title">ตัวอย่างแสดงผลแบบฟอร์มในหน้ากระดาษ A4</div>
+
+      <div class="a4-page" id="a4Page">
+        <div class="a4-header-center">
+          แบบฟอร์ม 3.6 – การกำหนดความมีนัยสำคัญเฉพาะเรื่อง (Specific Materiality)
+        </div>
+        <div class="a4-subheader">
+          สำนักงานการตรวจเงินแผ่นดิน – การตรวจสอบรายงานการเงินขององค์กรปกครองส่วนท้องถิ่น
+        </div>
+
+        <div class="a4-row">
+          <div>
+            <span>ปีงบประมาณ</span>
+            <span class="value" id="a4Fy">&nbsp;</span>
+          </div>
+          <div>
+            <span>หน่วยรับตรวจ</span>
+            <span class="value" id="a4Auditee">&nbsp;</span>
+          </div>
+        </div>
+        <div class="a4-row">
+          <div>
+            <span>อำเภอ</span>
+            <span class="value" id="a4Amphoe">&nbsp;</span>
+          </div>
+          <div>
+            <span>จังหวัด</span>
+            <span class="value" id="a4Province">&nbsp;</span>
+          </div>
+        </div>
+        <div class="a4-row">
+          <div>
+            <span>ผู้จัดทำ</span>
+            <span class="value" id="a4PreparedBy">&nbsp;</span>
+          </div>
+          <div>
+            <span>ผู้สอบทาน</span>
+            <span class="value" id="a4ReviewedBy">&nbsp;</span>
+          </div>
+        </div>
+
+        <div style="margin-top:10px; font-size:10pt;">
+          <strong>1. การกำหนดความมีนัยสำคัญเฉพาะเรื่องตามกลุ่มรายการสำคัญ</strong>
+        </div>
+
+        <table class="a4-table" id="a4SpecTable">
+          <thead>
+          <tr>
+            <th style="width:6%;">ลำดับ</th>
+            <th style="width:30%;">กลุ่มรายการ / บัญชี</th>
+            <th style="width:16%;">ฐานอ้างอิง (บาท)</th>
+            <th style="width:12%;">Specific Mat. (%)</th>
+            <th style="width:18%;">Specific Mat. (บาท)</th>
+            <th>เหตุผล / หลักเกณฑ์</th>
+          </tr>
+          </thead>
+          <tbody id="a4SpecBody">
+          <!-- แถวจะถูกเติมจาก JS -->
+          </tbody>
+        </table>
+
+        <div style="margin-top:12px; font-size:10pt;">
+          <strong>2. การเชื่อมโยง Specific Materiality กับการวางแผนตรวจสอบ</strong>
+        </div>
+        <div style="font-size:10pt; margin-top:4px;">
+          - Specific Materiality แต่ละกลุ่มรายการใช้เป็นเกณฑ์สำหรับออกแบบขนาดตัวอย่างและการคัดกรองการผิดพลาดในกระดาษทำการ  
+          - รายการที่มีความเสี่ยงสูงหรือมีสาระสำคัญมากอาจกำหนด Specific Materiality ต่ำกว่า OM เพื่อเพิ่มระดับความเข้มข้นในการตรวจสอบ  
+          - การกำหนดค่าเหล่านี้ควรสอดคล้องกับ RMM และ Fraud Risk ที่ประเมินไว้ในแบบฟอร์มอื่น
+        </div>
+
+        <div class="a4-sign-row">
+          <div class="a4-sign-block">
+            ลงชื่อ
+            <div class="a4-sign-line"></div>
+            (.......................................................)<br>
+            ผู้จัดทำ
+          </div>
+          <div class="a4-sign-block">
+            ลงชื่อ
+            <div class="a4-sign-line"></div>
+            (.......................................................)<br>
+            ผู้สอบทาน / ผตจ.
+          </div>
+        </div>
+
+        <div class="a4-footer">
+          <div>ฟอร์ม 3.6 – Specific Materiality</div>
+          <div id="a4FooterMeta">พิมพ์จากระบบ FA – LG</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  function formatNumber(num){
+    if(num === null || num === undefined || isNaN(num)) return '';
+    return num.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
+  }
+
+  function calcSpecRow(row){
+    const base = parseFloat(document.getElementById('baseAmount-'+row).value || '0');
+    const pct  = parseFloat(document.getElementById('specPct-'+row).value || '0');
+    if(base <= 0 || pct <= 0){
+      document.getElementById('specAmt-'+row).value = '';
+      return;
+    }
+    const amt = base * (pct/100);
+    document.getElementById('specAmt-'+row).value = formatNumber(amt);
+  }
+
+  function calcAllSpec(){
+    for(let r=1;r<=6;r++){
+      calcSpecRow(r);
+    }
+  }
+
+  function pushToA4(){
+    // ข้อมูลทั่วไป
+    document.getElementById('a4Fy').textContent         = document.getElementById('fy').value || '';
+    document.getElementById('a4Auditee').textContent    = document.getElementById('auditee').value || '';
+    document.getElementById('a4Amphoe').textContent     = document.getElementById('amphoe').value || '';
+    document.getElementById('a4Province').textContent   = document.getElementById('province').value || '';
+    document.getElementById('a4PreparedBy').textContent = document.getElementById('preparedBy').value || '';
+    document.getElementById('a4ReviewedBy').textContent = document.getElementById('reviewedBy').value || '';
+
+    // ล้าง tbody ก่อน
+    const body = document.getElementById('a4SpecBody');
+    body.innerHTML = '';
+
+    // เติมแถวจากข้อมูล 1–6
+    for(let r=1;r<=6;r++){
+      const name = document.getElementById('className-'+r).value;
+      const base = parseFloat(document.getElementById('baseAmount-'+r).value || '0');
+      const pct  = document.getElementById('specPct-'+r).value;
+      const amt  = document.getElementById('specAmt-'+r).value;
+      const rsn  = document.getElementById('reason-'+r).value;
+
+      if(!name && !base && !pct && !amt && !rsn){
+        continue; // ข้ามแถวว่าง
+      }
+
+      const tr = document.createElement('tr');
+
+      const td1 = document.createElement('td');
+      td1.style.textAlign = 'center';
+      td1.textContent = r.toString();
+
+      const td2 = document.createElement('td');
+      td2.textContent = name || '';
+
+      const td3 = document.createElement('td');
+      td3.style.textAlign = 'right';
+      td3.textContent = base ? formatNumber(base) : '';
+
+      const td4 = document.createElement('td');
+      td4.style.textAlign = 'center';
+      td4.textContent = pct ? (pct + ' %') : '';
+
+      const td5 = document.createElement('td');
+      td5.style.textAlign = 'right';
+      td5.textContent = amt || '';
+
+      const td6 = document.createElement('td');
+      td6.textContent = rsn || '';
+
+      tr.appendChild(td1);
+      tr.appendChild(td2);
+      tr.appendChild(td3);
+      tr.appendChild(td4);
+      tr.appendChild(td5);
+      tr.appendChild(td6);
+
+      body.appendChild(tr);
+    }
+
+    // Footer meta – เวลา
+    const now = new Date();
+    const ts = now.toLocaleString('th-TH');
+    document.getElementById('a4FooterMeta').textContent = 'พิมพ์จากระบบ FA – LG ณ ' + ts;
+  }
+
+  function exportA4Html(){
+    const a4 = document.getElementById('a4Page');
+    if(!a4){
+      alert('ไม่พบเนื้อหา A4');
+      return;
+    }
+    const htmlContent =
+      '<!DOCTYPE html><html lang="th"><head><meta charset="UTF-8"><title>Form3.6-A4</title>' +
+      '<style>@page{size:A4;margin:12mm;}body{font-family:\"TH Sarabun New\",\"Segoe UI\",sans-serif;font-size:11pt;} .a4-page{width:100%;min-height:100%;}</style>' +
+      '</head><body>' + a4.outerHTML + '</body></html>';
+
+    const blob = new Blob([htmlContent], {type:'text/html'});
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href = url;
+    a.download = 'form3_6_specific_materiality_a4.html';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  function exportJson(){
+    const header = {
+      fiscalYear : document.getElementById('fy').value || '',
+      auditee    : document.getElementById('auditee').value || '',
+      amphoe     : document.getElementById('amphoe').value || '',
+      province   : document.getElementById('province').value || '',
+      preparedBy : document.getElementById('preparedBy').value || '',
+      reviewedBy : document.getElementById('reviewedBy').value || ''
+    };
+
+    const lines = [];
+    for(let r=1;r<=6;r++){
+      lines.push({
+        index      : r,
+        className  : document.getElementById('className-'+r).value || '',
+        baseAmount : document.getElementById('baseAmount-'+r).value || '',
+        specPct    : document.getElementById('specPct-'+r).value || '',
+        specAmt    : document.getElementById('specAmt-'+r).value || '',
+        reason     : document.getElementById('reason-'+r).value || ''
+      });
+    }
+
+    const data = { header, specificMateriality: lines };
+
+    const blob = new Blob([JSON.stringify(data,null,2)], {type:'application/json'});
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href = url;
+    a.download = 'form3_6_specific_materiality.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+</script>
+
+</body>
+</html>
