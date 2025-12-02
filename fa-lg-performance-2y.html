@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <title>งบแสดงผลการดำเนินงานทางการเงิน (2 ปี)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    body{
+      margin:0;
+      font-family:"Segoe UI", Tahoma, sans-serif;
+      background:#060818;
+      color:#f5f7ff;
+    }
+    header{
+      padding:18px 20px;
+      background:linear-gradient(120deg,#7b1e3c,#0d47a1,#42a5f5);
+      box-shadow:0 4px 12px rgba(0,0,0,0.45);
+    }
+    header h1{
+      margin:0;
+      font-size:24px;
+      font-weight:700;
+    }
+    header p{
+      margin:4px 0 0 0;
+      font-size:13px;
+      opacity:0.9;
+    }
+
+    .container{
+      padding:20px;
+    }
+
+    .upload-box{
+      background:#11152b;
+      padding:18px 20px;
+      border-radius:14px;
+      border:1px solid #262b46;
+      margin-bottom:20px;
+    }
+    .upload-box h3{
+      margin-top:0;
+      font-size:18px;
+    }
+    .upload-box label{
+      font-size:14px;
+    }
+    .upload-box input[type="file"]{
+      margin-top:6px;
+      margin-bottom:10px;
+    }
+    .btn-primary{
+      padding:8px 18px;
+      border:none;
+      border-radius:999px;
+      background:#42a5f5;
+      color:#fff;
+      font-size:14px;
+      cursor:pointer;
+      box-shadow:0 4px 10px rgba(0,0,0,0.4);
+    }
+    .btn-primary:hover{
+      background:#64b5f6;
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:16px;
+      background:#11152b;
+    }
+    th,td{
+      border:1px solid #262b46;
+      padding:6px 8px;
+      font-size:13px;
+    }
+    th{
+      background:#0d47a1;
+      text-align:center;
+      position:sticky;
+      top:0;
+      z-index:5;
+    }
+    td.num{
+      text-align:right;
+      font-variant-numeric:tabular-nums;
+    }
+    td.note-col{
+      text-align:center;
+      width:70px;
+    }
+
+    .row-header{
+      background:#1b2142;
+      font-weight:700;
+    }
+    .row-header td{
+      border-top:2px solid #42a5f5;
+    }
+
+    .row-subtotal{
+      background:#172844;
+      font-weight:700;
+    }
+
+    .row-grand{
+      background:#264d79;
+      font-weight:800;
+    }
+
+    .caption{
+      margin-top:10px;
+      font-size:13px;
+      opacity:0.85;
+    }
+    a.note-link{
+      color:#ffd54f;
+      text-decoration:none;
+    }
+    a.note-link:hover{
+      text-decoration:underline;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>งบแสดงผลการดำเนินงานทางการเงิน (2 ปี)</h1>
+  <p>ดึงข้อมูลจากกระดาษทำการ แผ่น <strong>PL</strong> – เทียบปีปัจจุบันกับปีก่อน</p>
+</header>
+
+<div class="container">
+
+  <div class="upload-box">
+    <h3>นำเข้าไฟล์ Excel กระดาษทำการ</h3>
+    <p class="caption">
+      เลือกไฟล์กระดาษทำการปีปัจจุบัน (ปี N) และไฟล์กระดาษทำการปีก่อน (ปี N-1)
+      ระบบจะอ่านค่าตามแถวที่กำหนดในแบบโครงสร้าง SOPL โดยอัตโนมัติ
+    </p>
+
+    <div>
+      <label>ไฟล์ปีปัจจุบัน (ปี N):<br>
+        <input type="file" id="fileCurrent" accept=".xlsx,.xls,.xlsm" />
+      </label>
+    </div>
+
+    <div>
+      <label>ไฟล์ปีก่อน (ปี N-1):<br>
+        <input type="file" id="filePrevious" accept=".xlsx,.xls,.xlsm" />
+      </label>
+    </div>
+
+    <button class="btn-primary" onclick="processSOPL()">
+      ประมวลผลงบผลการดำเนินงาน (2 ปี)
+    </button>
+  </div>
+
+  <div id="plContainer"></div>
+
+</div>
+
+<!-- XLSX -->
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.20.0/dist/xlsx.full.min.js"></script>
+
+<script>
+// ----------------------------------------------------
+// 1) โครงสร้าง SOPL ที่คุณให้
+// ----------------------------------------------------
+const SOPL_SPEC = {
+  fs_type: "SOPL",
+  sheet_name: "PL",
+  description: "งบแสดงผลการดำเนินงานทางการเงิน",
+  lines: [
+    {"line_code":"SOPL_001","excel_row":6,"label":"รายได้","note_ref":null,"line_type":"header"},
+    {"line_code":"SOPL_002","excel_row":7,"label":"รายได้จากงบประมาณ","note_ref":41,"line_type":"detail"},
+    {"line_code":"SOPL_003","excel_row":8,"label":"รายได้ภาษีจัดสรร","note_ref":42,"line_type":"detail"},
+    {"line_code":"SOPL_004","excel_row":9,"label":"รายได้จากการขายสินค้าและบริการ","note_ref":43,"line_type":"detail"},
+    {"line_code":"SOPL_005","excel_row":10,"label":"รายได้จากการอุดหนุนจากหน่วยงานภาครัฐ","note_ref":44,"line_type":"detail"},
+    {"line_code":"SOPL_006","excel_row":11,"label":"รายได้จากการจัดเก็บภาษี ค่าธรรมเนียม ค่าปรับ และใบอนุญาต","note_ref":45,"line_type":"detail"},
+    {"line_code":"SOPL_007","excel_row":12,"label":"รายได้จากการอุดหนุนอื่นและบริจาค","note_ref":46,"line_type":"detail"},
+    {"line_code":"SOPL_008","excel_row":13,"label":"รายได้ของกิจการเฉพาะการและหน่วยงานภายใต้สังกัด","note_ref":47,"line_type":"detail"},
+    {"line_code":"SOPL_009","excel_row":14,"label":"รายได้อื่น","note_ref":48,"line_type":"detail"},
+    {"line_code":"SOPL_010","excel_row":15,"label":"รวมรายได้","note_ref":null,"line_type":"subtotal"},
+    {"line_code":"SOPL_011","excel_row":16,"label":"ค่าใช้จ่าย","note_ref":null,"line_type":"header"},
+    {"line_code":"SOPL_012","excel_row":17,"label":"ค่าใช้จ่ายบุคลากร","note_ref":49,"line_type":"detail"},
+    {"line_code":"SOPL_013","excel_row":18,"label":"ค่าบำเหน็จบำนาญ","note_ref":50,"line_type":"detail"},
+    {"line_code":"SOPL_014","excel_row":19,"label":"ค่าตอบแทน","note_ref":51,"line_type":"detail"},
+    {"line_code":"SOPL_015","excel_row":20,"label":"ค่าใช้สอย","note_ref":52,"line_type":"detail"},
+    {"line_code":"SOPL_016","excel_row":21,"label":"ค่าวัสดุ","note_ref":53,"line_type":"detail"},
+    {"line_code":"SOPL_017","excel_row":22,"label":"ค่าสาธารณูปโภค","note_ref":54,"line_type":"detail"},
+    {"line_code":"SOPL_018","excel_row":23,"label":"ต้นทุนขายสินค้าและบริการ","note_ref":55,"line_type":"detail"},
+    {"line_code":"SOPL_019","excel_row":24,"label":"ค่าเสื่อมราคาและค่าตัดจำหน่าย","note_ref":56,"line_type":"detail"},
+    {"line_code":"SOPL_020","excel_row":25,"label":"ค่าใช้จ่ายจากการอุดหนุนจากหน่วยงานภาครัฐ","note_ref":57,"line_type":"detail"},
+    {"line_code":"SOPL_021","excel_row":26,"label":"ค่าใช้จ่ายจากการอุดหนุนอื่นและบริจาค","note_ref":58,"line_type":"detail"},
+    {"line_code":"SOPL_022","excel_row":27,"label":"ค่าใช้จ่ายอื่น","note_ref":59,"line_type":"detail"},
+    {"line_code":"SOPL_023","excel_row":28,"label":"รวมค่าใช้จ่าย","note_ref":null,"line_type":"subtotal"},
+    {"line_code":"SOPL_024","excel_row":29,"label":"รายได้สูง/(ต่ำ) กว่าค่าใช้จ่ายก่อนต้นทุนทางการเงิน","note_ref":null,"line_type":"subtotal"},
+    {"line_code":"SOPL_025","excel_row":30,"label":"ต้นทุนทางการเงิน","note_ref":60,"line_type":"detail"},
+    {"line_code":"SOPL_026","excel_row":31,"label":"รายได้สูง/(ต่ำ) กว่าค่าใช้จ่ายสุทธิ","note_ref":null,"line_type":"grand_total"}
+  ]
+};
+
+// ----------------------------------------------------
+// 2) อ่าน Excel เป็น workbook
+// ----------------------------------------------------
+function readExcel(file){
+  return new Promise((resolve, reject)=>{
+    const reader = new FileReader();
+    reader.onload = e => {
+      try{
+        const data = new Uint8Array(e.target.result);
+        const wb = XLSX.read(data, {type:"array"});
+        resolve(wb);
+      }catch(err){
+        reject(err);
+      }
+    };
+    reader.onerror = reject;
+    reader.readAsArrayBuffer(file);
+  });
+}
+
+// ----------------------------------------------------
+// 3) ดึงค่าตาม row/column จาก sheet
+//    — สมมติค่าปีเดียวอยู่ในคอลัมน์ C (index 2)
+// ----------------------------------------------------
+function getValue(sheet, excelRow, colIndex=2){
+  const cellAddr = XLSX.utils.encode_cell({r: excelRow-1, c: colIndex});
+  const cell = sheet[cellAddr];
+  return cell ? cell.v : "";
+}
+
+// ----------------------------------------------------
+// 4) ประมวลผลงบ PL 2 ปี
+// ----------------------------------------------------
+async function processSOPL(){
+  const fileN   = document.getElementById("fileCurrent").files[0];
+  const fileN1  = document.getElementById("filePrevious").files[0];
+
+  if(!fileN || !fileN1){
+    alert("กรุณาเลือกไฟล์กระดาษทำการให้ครบทั้งปี N และปี N-1");
+    return;
+  }
+
+  const wbN  = await readExcel(fileN);
+  const wbP  = await readExcel(fileN1);
+
+  const sheetName = SOPL_SPEC.sheet_name;
+  const sheetN = wbN.Sheets[sheetName];
+  const sheetP = wbP.Sheets[sheetName];
+
+  if(!sheetN || !sheetP){
+    alert("ไม่พบแผ่นงานชื่อ 'PL' ในหนึ่งในไฟล์ที่เลือก");
+    return;
+  }
+
+  let html = `
+    <table>
+      <tr>
+        <th>รายการ</th>
+        <th>หมายเหตุ</th>
+        <th>ปี N</th>
+        <th>ปี N-1</th>
+      </tr>
+  `;
+
+  SOPL_SPEC.lines.forEach(line=>{
+    const row = line.excel_row;
+    const vN  = getValue(sheetN, row);
+    const vP  = getValue(sheetP, row);
+
+    // เลือก class ตาม line_type
+    let trClass = "";
+    if(line.line_type === "header") trClass = "row-header";
+    else if(line.line_type === "subtotal") trClass = "row-subtotal";
+    else if(line.line_type === "grand_total") trClass = "row-grand";
+
+    if(line.line_type === "header"){
+      // แถวหัวข้อใหญ่ — รวมคอลัมน์
+      html += `
+        <tr class="${trClass}">
+          <td colspan="4">${line.label}</td>
+        </tr>
+      `;
+    }else{
+      // รูปแบบแถวปกติ
+      let noteCell = "";
+      if(line.note_ref){
+        const n = line.note_ref;
+        noteCell = `<a class="note-link" href="fa-lg-notes-2y.html#note-${n}" target="_blank">${n}</a>`;
+      }else{
+        noteCell = "";
+      }
+
+      html += `
+        <tr class="${trClass}">
+          <td>${line.label}</td>
+          <td class="note-col">${noteCell}</td>
+          <td class="num">${vN ?? ""}</td>
+          <td class="num">${vP ?? ""}</td>
+        </tr>
+      `;
+    }
+  });
+
+  html += `</table>
+    <p class="caption">
+      * หมายเหตุคลิกได้เพื่อเปิดรายละเอียดในหน้า <code>fa-lg-notes-2y.html</code>
+      (ระบบจับคู่หมายเหตุ 41–60 กับบรรทัดรายได้/ค่าใช้จ่าย)
+    </p>
+  `;
+
+  document.getElementById("plContainer").innerHTML = html;
+}
+</script>
+
+</body>
+</html>
