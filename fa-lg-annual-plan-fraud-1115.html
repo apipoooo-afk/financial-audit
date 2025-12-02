@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>FA – LG Annual | อปท. 11.1.5 Fraud Risk Assessment</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    :root{
+      --bg:#060818;
+      --card:#11152b;
+      --border:#262b46;
+      --accent:#42a5f5;
+      --accent2:#26c6da;
+      --muted:#a3acc7;
+      --text:#f5f7ff;
+      --pink:#f48fb1;
+      --danger:#ef5350;
+      --warn:#ffb300;
+      --ok:#66bb6a;
+    }
+    *{box-sizing:border-box;}
+
+    body{
+      margin:0;
+      font-family:"Segoe UI", Tahoma, sans-serif;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(123,30,60,0.36) 0, transparent 55%),
+        radial-gradient(circle at 90% 100%, rgba(66,165,245,0.32) 0, transparent 55%),
+        radial-gradient(circle at 0% 100%, rgba(38,198,218,0.22) 0, transparent 55%),
+        var(--bg);
+      color:var(--text);
+      min-height:100vh;
+      font-size:140%;
+    }
+
+    header{
+      padding:16px 10px 12px;
+      text-align:center;
+      background:linear-gradient(120deg,#b71c1c,#f44336,#ffb300);
+      box-shadow:0 4px 16px rgba(0,0,0,0.7);
+      position:sticky;
+      top:0;
+      z-index:20;
+    }
+    header h2{ margin:0; font-size:20px; }
+    header .sub{ font-size:13px; opacity:.9; }
+
+    main{
+      max-width:980px;
+      margin:20px auto 28px;
+      padding:0 16px 20px;
+    }
+
+    .nav-top{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-bottom:14px;
+    }
+    .btn-nav{
+      padding:6px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.45);
+      background:rgba(0,0,0,0.35);
+      color:#fff;
+      font-size:12px;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+    }
+    .btn-nav:hover{ background:rgba(0,0,0,0.6); }
+
+    .card{
+      background:var(--card);
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,0.12);
+      padding:16px 14px 16px;
+      box-shadow:0 10px 30px rgba(0,0,0,0.9);
+      margin-bottom:16px;
+    }
+    .card-header{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:flex-start;
+      margin-bottom:10px;
+    }
+    .card-title{
+      font-size:16px;
+      font-weight:600;
+    }
+    .card-sub{
+      font-size:12px;
+      color:var(--muted);
+    }
+    .chip{
+      padding:4px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.2);
+      font-size:11px;
+      background:rgba(0,0,0,0.35);
+      white-space:nowrap;
+    }
+
+    .form-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:10px 14px;
+      margin-top:4px;
+    }
+
+    label{
+      font-size:12px;
+      display:block;
+      margin-bottom:2px;
+      color:#e3f2fd;
+    }
+    .input, select, textarea{
+      width:100%;
+      padding:6px 8px;
+      border-radius:10px;
+      border:1px solid var(--border);
+      background:#080c1b;
+      color:var(--text);
+      font-size:12px;
+    }
+    textarea{
+      min-height:80px;
+      resize:vertical;
+    }
+    .input:focus, select:focus, textarea:focus{
+      outline:none;
+      border-color:var(--accent2);
+      box-shadow:0 0 0 1px rgba(38,198,218,0.5);
+    }
+
+    .section-title{
+      font-size:14px;
+      font-weight:600;
+      margin:10px 0 6px;
+    }
+    .hint{
+      font-size:11px;
+      color:var(--muted);
+      margin-bottom:6px;
+    }
+
+    .fraud-table{
+      width:100%;
+      border-collapse:collapse;
+      font-size:12px;
+      margin-top:4px;
+    }
+    .fraud-table th,
+    .fraud-table td{
+      border:1px solid rgba(255,255,255,0.08);
+      padding:6px 6px;
+      vertical-align:top;
+    }
+    .fraud-table th{
+      background:#0b1024;
+      font-weight:600;
+    }
+    .fraud-name{
+      font-weight:600;
+    }
+
+    .pill-select{
+      width:100%;
+      padding:5px 8px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.3);
+      background:#080c1b;
+      color:var(--text);
+      font-size:12px;
+    }
+
+    .radio-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      font-size:12px;
+      margin:6px 0 4px;
+    }
+    .pill-radio{
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+      padding:4px 9px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.3);
+      background:rgba(0,0,0,0.25);
+      cursor:pointer;
+    }
+    .pill-radio input{
+      accent-color:#f44336;
+    }
+
+    .flex-between{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:center;
+      margin-top:8px;
+      flex-wrap:wrap;
+    }
+
+    .status-pill{
+      padding:4px 10px;
+      border-radius:999px;
+      font-size:11px;
+      border:1px solid rgba(255,255,255,0.25);
+      background:rgba(0,0,0,0.45);
+    }
+    .status-ok{ border-color:var(--ok); color:var(--ok); }
+    .status-warn{ border-color:var(--warn); color:var(--warn); }
+    .status-danger{ border-color:var(--danger); color:var(--danger); }
+
+    .btn-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:10px;
+    }
+    .btn{
+      padding:6px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.4);
+      background:rgba(0,0,0,0.4);
+      color:#fff;
+      font-size:12px;
+      cursor:pointer;
+    }
+    .btn-primary{
+      border-color:var(--danger);
+      background:linear-gradient(120deg,#b71c1c,#f44336);
+    }
+    .btn:hover{
+      background:rgba(0,0,0,0.7);
+    }
+    .btn-primary:hover{
+      filter:brightness(1.1);
+    }
+
+    .footer-note{
+      font-size:10px;
+      color:var(--muted);
+      margin-top:6px;
+    }
+
+    @media (max-width:600px){
+      .card-header{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h2>⚠️ อปท. 11.1.5 – การประเมินความเสี่ยงทุจริต (Fraud Risk)</h2>
+  <div class="sub">
+    Form 11.1.5 – Fraud Risk Assessment | FA – Local Government (Annual)
+  </div>
+</header>
+
+<main>
+
+  <div class="nav-top">
+    <a href="fa-lg-annual-plan.html" class="btn-nav">
+      <span>↩</span> กลับเมนูแบบฟอร์มการวางแผน
+    </a>
+    <a href="fa-lg-annual.html" class="btn-nav">
+      <span>📅</span> กลับหน้าเลือกปี / หน่วยรับตรวจ
+    </a>
+    <a href="fa-menu.html" class="btn-nav">
+      <span>📂</span> FA Main Menu
+    </a>
+    <a href="index.html" class="btn-nav">
+      <span>🏠</span> หน้าหลักระบบ
+    </a>
+  </div>
+
+  <!-- CARD 1: ข้อมูลพื้นฐาน -->
+  <section class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">ส่วนที่ 1 – ข้อมูลพื้นฐานสำหรับการประเมินความเสี่ยงทุจริต</div>
+        <div class="card-sub">
+          ผูกปีงบประมาณ หน่วยรับตรวจ และแบบฟอร์มอื่น ๆ ที่เกี่ยวข้อง เพื่อใช้เป็นฐานข้อมูลการวิเคราะห์ Fraud Risk
+        </div>
+      </div>
+      <div class="chip">Fraud Risk • Overview</div>
+    </div>
+
+    <div class="form-grid">
+      <div>
+        <label for="fiscalYear">ปีงบประมาณ</label>
+        <select id="fiscalYear" class="input">
+          <option value="">— เลือกปีงบประมาณ —</option>
+          <option>2567</option>
+          <option>2568</option>
+          <option>2569</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="auditeeName">ชื่อหน่วยรับตรวจ (อปท.)</label>
+        <input id="auditeeName" class="input" type="text" placeholder="เช่น เทศบาลตำบลตัวอย่าง">
+      </div>
+
+      <div>
+        <label for="amphoe">อำเภอ</label>
+        <input id="amphoe" class="input" type="text" placeholder="อำเภอ">
+      </div>
+
+      <div>
+        <label for="province">จังหวัด</label>
+        <input id="province" class="input" type="text" placeholder="จังหวัด">
+      </div>
+
+      <div>
+        <label for="auditPeriod">งวดที่ประเมิน</label>
+        <input id="auditPeriod" class="input" type="text" placeholder="เช่น สำหรับปีสิ้นสุดวันที่ 30 กันยายน 2567">
+      </div>
+
+      <div>
+        <label for="preparedBy">ผู้จัดทำ</label>
+        <input id="preparedBy" class="input" type="text" placeholder="ชื่อผู้จัดทำแบบฟอร์ม">
+      </div>
+
+      <div>
+        <label for="reviewedBy">ผู้สอบทาน</label>
+        <input id="reviewedBy" class="input" type="text" placeholder="ชื่อผู้สอบทาน / ผตจ.">
+      </div>
+
+      <div>
+        <label for="refForms">อ้างอิงแบบฟอร์ม / แหล่งข้อมูลที่ใช้ประเมิน</label>
+        <input id="refForms" class="input" type="text"
+               placeholder="เช่น อปท.3, 3.1, 11.1.3–11.1.4, อปท.4, ฟอร์ม 3.5–3.6, รายงานสอบทานปีก่อน ฯลฯ">
+      </div>
+    </div>
+
+    <div class="footer-note">
+      * ช่องข้อมูลนี้สามารถเชื่อมกับฐานข้อมูลกลาง และระบบดึงข้อมูลอัตโนมัติ (Web อปท., e-LAAS, ฯลฯ) ในขั้นพัฒนาต่อไป
+    </div>
+  </section>
+
+  <!-- CARD 2: Fraud Triangle -->
+  <section class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">ส่วนที่ 2 – การประเมิน Fraud Triangle (แรงจูงใจ / โอกาส / การให้เหตุผล)</div>
+        <div class="card-sub">
+          ใช้หลัก Fraud Triangle ประเมินสภาพแวดล้อมที่เอื้อต่อการทุจริตในหน่วยรับตรวจ
+        </div>
+      </div>
+      <div class="chip">Fraud Triangle</div>
+    </div>
+
+    <div class="form-grid">
+      <div>
+        <label for="pressureLevel">2.1 แรงจูงใจ / แรงกดดัน (Pressure)</label>
+        <select id="pressureLevel" class="pill-select">
+          <option value="">— เลือกระดับแรงกดดัน —</option>
+          <option value="low">ต่ำ</option>
+          <option value="medium">ปานกลาง</option>
+          <option value="high">สูง</option>
+        </select>
+        <textarea id="pressureNote" class="input"
+                  placeholder="เช่น เป้าหมายรายได้สูงกว่าศักยภาพ ปัญหาหนี้ส่วนบุคคลของเจ้าหน้าที่ แรงกดดันทางการเมือง ฯลฯ"></textarea>
+      </div>
+
+      <div>
+        <label for="opportunityLevel">2.2 โอกาสในการทุจริต (Opportunity)</label>
+        <select id="opportunityLevel" class="pill-select">
+          <option value="">— เลือกระดับโอกาส —</option>
+          <option value="low">ต่ำ</option>
+          <option value="medium">ปานกลาง</option>
+          <option value="high">สูง</option>
+        </select>
+        <textarea id="opportunityNote" class="input"
+                  placeholder="เช่น ขาดการแบ่งแยกหน้าที่ ขาดการตรวจสอบถ่วงดุล ระบบ IT อ่อนแอ ขาดการติดตาม ฯลฯ"></textarea>
+      </div>
+
+      <div>
+        <label for="rationalLevel">2.3 การให้เหตุผลสนับสนุนการทุจริต (Rationalization)</label>
+        <select id="rationalLevel" class="pill-select">
+          <option value="">— เลือกระดับ —</option>
+          <option value="low">ต่ำ</option>
+          <option value="medium">ปานกลาง</option>
+          <option value="high">สูง</option>
+        </select>
+        <textarea id="rationalNote" class="input"
+                  placeholder="เช่น วัฒนธรรมองค์กรยอมรับการละเมิดเล็กน้อย การใช้คำอ้างว่าเพื่อประโยชน์ส่วนรวม แต่ผิดระเบียบ ฯลฯ"></textarea>
+      </div>
+    </div>
+
+    <div class="footer-note">
+      * ข้อมูลส่วนนี้ควรอ้างอิงจากแบบฟอร์ม Internal Control, การสัมภาษณ์, ประวัติข้อร้องเรียน/ตรวจสอบในอดีต และข่าวสารภายนอก
+    </div>
+  </section>
+
+  <!-- CARD 3: Fraud Risk ตามกระบวนการสำคัญ -->
+  <section class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">ส่วนที่ 3 – การประเมินความเสี่ยงทุจริตตามกระบวนการ/กิจกรรมสำคัญ</div>
+        <div class="card-sub">
+          ระบุประเด็นเสี่ยงในแต่ละด้าน เช่น รายได้ พัสดุ ทรัพย์สิน เงินเดือน และด้านอื่น ๆ พร้อมระบุระดับความเสี่ยงและมาตรการควบคุมที่มีอยู่
+        </div>
+      </div>
+      <div class="chip">Process-based Fraud Risk</div>
+    </div>
+
+    <table class="fraud-table">
+      <thead>
+      <tr>
+        <th style="width:26%;">ด้าน / กระบวนการ</th>
+        <th style="width:18%;">ระดับความเสี่ยงทุจริต</th>
+        <th style="width:28%;">ตัวอย่างรูปแบบความเสี่ยง</th>
+        <th>ควบคุมที่มีอยู่ / ช่องโหว่ / หมายเหตุ</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td class="fraud-name">
+          1) ด้านรายได้ (เช่น ภาษี ค่าธรรมเนียม ค่าน้ำบาดาล ฯลฯ)
+        </td>
+        <td>
+          <select id="riskRevenue" class="pill-select">
+            <option value="">— เลือก —</option>
+            <option value="low">ต่ำ</option>
+            <option value="medium">ปานกลาง</option>
+            <option value="high">สูง</option>
+          </select>
+        </td>
+        <td>
+          <textarea id="riskRevenuePattern" class="input"
+                    placeholder="เช่น การไม่ออกใบเสร็จครบถ้วน การลดหย่อนเกินจริง การไม่บันทึกรายได้ ฯลฯ"></textarea>
+        </td>
+        <td>
+          <textarea id="riskRevenueControl" class="input"
+                    placeholder="สรุปการควบคุมที่มีอยู่ เช่น การกระทบยอดรายรับ การแยกหน้าที่ การตรวจสอบข้ามฐานข้อมูล และช่องโหว่ที่พบ"></textarea>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="fraud-name">
+          2) ด้านการจัดซื้อจัดจ้าง / พัสดุ
+        </td>
+        <td>
+          <select id="riskProcure" class="pill-select">
+            <option value="">— เลือก —</option>
+            <option value="low">ต่ำ</option>
+            <option value="medium">ปานกลาง</option>
+            <option value="high">สูง</option>
+          </select>
+        </td>
+        <td>
+          <textarea id="riskProcurePattern" class="input"
+                    placeholder="เช่น ฮั้วประมูล แบ่งซอยงบ ขาดการแข่งขันจริง การจัดซื้อเกินราคา ฯลฯ"></textarea>
+        </td>
+        <td>
+          <textarea id="riskProcureControl" class="input"
+                    placeholder="สรุประบบควบคุม/การตรวจสอบก่อน–หลัง และช่องโหว่จากการทบทวนเอกสาร / ระบบ e-GP ฯลฯ"></textarea>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="fraud-name">
+          3) ด้านการบริหารทรัพย์สิน / ครุภัณฑ์ / ที่ดินและสิ่งปลูกสร้าง
+        </td>
+        <td>
+          <select id="riskAsset" class="pill-select">
+            <option value="">— เลือก —</option>
+            <option value="low">ต่ำ</option>
+            <option value="medium">ปานกลาง</option>
+            <option value="high">สูง</option>
+          </select>
+        </td>
+        <td>
+          <textarea id="riskAssetPattern" class="input"
+                    placeholder="เช่น การบันทึกสินทรัพย์ไม่ครบ การขโมย/ยักยอก การจำหน่ายสินทรัพย์ไม่โปร่งใส ฯลฯ"></textarea>
+        </td>
+        <td>
+          <textarea id="riskAssetControl" class="input"
+                    placeholder="สรุประบบการตรวจนับ การทำทะเบียนทรัพย์สิน การควบคุมการโอนย้าย/จำหน่าย และจุดอ่อนที่พบ"></textarea>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="fraud-name">
+          4) ด้านเงินเดือน ค่าตอบแทน และค่าใช้จ่ายบุคลากร
+        </td>
+        <td>
+          <select id="riskPayroll" class="pill-select">
+            <option value="">— เลือก —</option>
+            <option value="low">ต่ำ</option>
+            <option value="medium">ปานกลาง</option>
+            <option value="high">สูง</option>
+          </select>
+        </td>
+        <td>
+          <textarea id="riskPayrollPattern" class="input"
+                    placeholder="เช่น ลูกจ้างผี เบิกจ่ายเกินจริง การปรับเบี้ยยังชีพ/เงินเพิ่มผิดเงื่อนไข ฯลฯ"></textarea>
+        </td>
+        <td>
+          <textarea id="riskPayrollControl" class="input"
+                    placeholder="สรุประบบการอนุมัติ การตรวจสอบรายชื่อ การใช้ระบบสารสนเทศ และช่องโหว่ที่สัมพันธ์กับการทุจริต"></textarea>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="fraud-name">
+          5) ด้านอื่น ๆ ที่มีนัยสำคัญในบริบทของ อปท. แห่งนี้
+        </td>
+        <td>
+          <select id="riskOther" class="pill-select">
+            <option value="">— เลือก —</option>
+            <option value="low">ต่ำ</option>
+            <option value="medium">ปานกลาง</option>
+            <option value="high">สูง</option>
+          </select>
+        </td>
+        <td>
+          <textarea id="riskOtherPattern" class="input"
+                    placeholder="เช่น โครงการเฉพาะกิจขนาดใหญ่ การร่วมลงทุน การให้สิทธิประโยชน์กับเอกชน ฯลฯ"></textarea>
+        </td>
+        <td>
+          <textarea id="riskOtherControl" class="input"
+                    placeholder="สรุปการควบคุมและจุดอ่อนในกิจกรรมเฉพาะที่อาจเสี่ยงต่อการทุจริต"></textarea>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+    <div class="footer-note">
+      * ในระบบจริง สามารถเชื่อมแต่ละบรรทัดไปยังหลักฐาน ตรวจรายการ และกระดาษทำการในขั้น Fieldwork ได้
+    </div>
+  </section>
+
+  <!-- CARD 4: สรุประดับ Fraud Risk และผลต่อ RMM -->
+  <section class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">ส่วนที่ 4 – สรุประดับความเสี่ยงทุจริต และผลต่อการวางแผน RMM / โปรแกรมตรวจสอบ</div>
+        <div class="card-sub">
+          ระบุข้อสรุปว่าความเสี่ยงทุจริตโดยรวมอยู่ในระดับใด และต้องตอบสนองอย่างไรในแบบฟอร์ม อปท.4 และ Audit Program
+        </div>
+      </div>
+      <div class="chip">Conclusion • Link to RMM</div>
+    </div>
+
+    <div class="section-title">4.1 ระดับความเสี่ยงทุจริตโดยรวมของหน่วยรับตรวจ</div>
+    <div class="radio-row">
+      <label class="pill-radio">
+        <input type="radio" name="fraudOverall" value="low">
+        <span>ต่ำ – ไม่มีสัญญาณทุจริตเด่นชัด / การควบคุมเข้มแข็ง</span>
+      </label>
+      <label class="pill-radio">
+        <input type="radio" name="fraudOverall" value="medium">
+        <span>ปานกลาง – มีบางส่วนที่ต้องเฝ้าระวังและตรวจเชิงลึกเฉพาะด้าน</span>
+      </label>
+      <label class="pill-radio">
+        <input type="radio" name="fraudOverall" value="high">
+        <span>สูง – มีสัญญาณ/ปัจจัยเสี่ยงหลายด้าน ต้องวางแผนตอบสนองเชิงรุก</span>
+      </label>
+    </div>
+
+    <label for="fraudReason" style="margin-top:6px;">เหตุผลประกอบการสรุประดับความเสี่ยงทุจริต</label>
+    <textarea id="fraudReason" class="input"
+              placeholder="เชื่อมโยงผลจาก Fraud Triangle (ส่วนที่ 2) และความเสี่ยงตามกระบวนการ (ส่วนที่ 3) รวมถึงประวัติการร้องเรียน/สอบสวนในอดีต"></textarea>
+
+    <div class="section-title">4.2 การตอบสนองต่อความเสี่ยงทุจริต (จะใช้บันทึกใน อปท.4 – RMM และ Audit Program)</div>
+    <textarea id="fraudResponse" class="input"
+              placeholder="เช่น เพิ่มการทดสอบควบคุมด้านรายได้ / พัสดุ เพิ่มขนาดตัวอย่างการตรวจ เพิ่มการตรวจเอกสารย้อนหลังหลายปี ใช้ Data Analytics ตรวจจับรายการผิดปกติ ฯลฯ"></textarea>
+
+    <div class="section-title">4.3 ประเด็นที่ต้องนำไปเป็น “Key Audit Matters / High Risk Areas” ในการวางแผน</div>
+    <textarea id="fraudKeyMatters" class="input"
+              placeholder="ระบุประเด็นสูงสำคัญ ที่ควรขึ้นสถานะ High Risk ใน RMM และถูกติดตามต่อเนื่องในขั้น Fieldwork และ Reporting"></textarea>
+
+    <div class="flex-between">
+      <div>
+        <div class="section-title" style="margin-top:10px;">ผลช่วยประเมินระดับความเสี่ยงทุจริตโดยสังเขป</div>
+        <div id="fraudStatusPill" class="status-pill">
+          ยังไม่ประเมิน
+        </div>
+      </div>
+      <div class="btn-row">
+        <button type="button" class="btn" onclick="clearFraudForm()">ล้างข้อมูลชั่วคราว</button>
+        <button type="button" class="btn btn-primary" onclick="computeFraudLevel()">
+          ประเมินระดับ Fraud Risk แบบคร่าว ๆ
+        </button>
+      </div>
+    </div>
+
+    <div class="footer-note">
+      * Logic ในปุ่มช่วยประเมินเป็นเพียงเบื้องต้น – ในการใช้งานจริงสามารถเชื่อมกับคะแนน/น้ำหนักจาก Excel หรือฐานข้อมูลเพื่อใช้เป็น Scoring Model ด้าน Fraud Risk ได้
+    </div>
+  </section>
+
+</main>
+
+<script>
+  function computeFraudLevel(){
+    const tri = [
+      document.getElementById('pressureLevel')?.value,
+      document.getElementById('opportunityLevel')?.value,
+      document.getElementById('rationalLevel')?.value
+    ].filter(Boolean);
+
+    const proc = [
+      document.getElementById('riskRevenue')?.value,
+      document.getElementById('riskProcure')?.value,
+      document.getElementById('riskAsset')?.value,
+      document.getElementById('riskPayroll')?.value,
+      document.getElementById('riskOther')?.value
+    ].filter(Boolean);
+
+    const pill = document.getElementById('fraudStatusPill');
+    if(!pill) return;
+
+    if(tri.length === 0 && proc.length === 0){
+      pill.textContent = 'ยังไม่มีข้อมูลเพียงพอสำหรับการประเมินแบบอัตโนมัติ';
+      pill.className = 'status-pill';
+      return;
+    }
+
+    const allVals = tri.concat(proc);
+
+    // ถ้ามี high อย่างน้อย 1 จุด → ระดับเสี่ยงสูง
+    if(allVals.includes('high')){
+      pill.textContent = 'ผลช่วยประเมินเบื้องต้น: ความเสี่ยงทุจริตอยู่ในระดับสูง – ควรกำหนดเป็น High Risk Area และวางแผนตอบสนองเข้มข้น';
+      pill.className = 'status-pill status-danger';
+      return;
+    }
+
+    // ถ้าไม่มี high แต่มี medium → เสี่ยงปานกลาง
+    if(allVals.includes('medium')){
+      pill.textContent = 'ผลช่วยประเมินเบื้องต้น: มีความเสี่ยงทุจริตระดับปานกลาง – ต้องออกแบบขั้นตอนตรวจสอบเพิ่มเติมเฉพาะด้าน';
+      pill.className = 'status-pill status-warn';
+      return;
+    }
+
+    // ทั้งหมดเป็น low
+    pill.textContent = 'ผลช่วยประเมินเบื้องต้น: ความเสี่ยงทุจริตโดยรวมอยู่ในระดับต่ำ – อย่างไรก็ดี ยังต้องพิจารณาข้อเท็จจริงเชิงคุณภาพและข้อมูลใหม่ที่อาจเกิดขึ้นระหว่างปี';
+    pill.className = 'status-pill status-ok';
+  }
+
+  function clearFraudForm(){
+    const inputs = document.querySelectorAll('input.input, textarea.input, select.input, .pill-select');
+    inputs.forEach(el => {
+      if(el.tagName === 'SELECT'){
+        el.selectedIndex = 0;
+      }else{
+        el.value = '';
+      }
+    });
+
+    const pill = document.getElementById('fraudStatusPill');
+    if(pill){
+      pill.textContent = 'ยังไม่ประเมิน';
+      pill.className = 'status-pill';
+    }
+
+    const radios = document.querySelectorAll('input[type="radio"][name="fraudOverall"]');
+    radios.forEach(r => r.checked = false);
+  }
+</script>
+
+</body>
+</html>
