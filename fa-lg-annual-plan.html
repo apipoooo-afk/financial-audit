@@ -28,6 +28,8 @@
         var(--bg);
       color:var(--text);
       min-height:100vh;
+      /* เพิ่มขนาดตัวอักษรทั้งหน้า +40% */
+      font-size:140%;
     }
 
     header{
@@ -37,10 +39,97 @@
       box-shadow:0 4px 16px rgba(0,0,0,0.7);
       position:sticky;
       top:0;
-      z-index:10;
+      z-index:20;
     }
     header h2{ margin:0; font-size:20px; }
     header .sub{ font-size:13px; opacity:.9; }
+
+    /* กล่องค้นหามุมขวาบนของ header */
+    .search-container{
+      position:absolute;
+      right:12px;
+      top:50%;
+      transform:translateY(-50%);
+      display:flex;
+      align-items:center;
+      gap:6px;
+      font-size:11px;
+    }
+    .search-input{
+      padding:4px 8px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.6);
+      background:rgba(0,0,0,0.35);
+      color:#fff;
+      min-width:140px;
+      font-size:11px;
+    }
+    .search-input::placeholder{
+      color:rgba(255,255,255,0.7);
+    }
+    .search-btn{
+      padding:4px 8px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.6);
+      background:rgba(0,0,0,0.55);
+      color:#fff;
+      font-size:11px;
+      cursor:pointer;
+    }
+    .search-btn:hover{
+      background:rgba(0,0,0,0.85);
+    }
+
+    /* แผงแสดงผลการค้นหา */
+    .search-results-panel{
+      position:fixed;
+      right:12px;
+      top:76px;
+      max-width:360px;
+      max-height:60vh;
+      overflow:auto;
+      background:#0b1024;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.25);
+      box-shadow:0 10px 28px rgba(0,0,0,0.9);
+      padding:8px 10px;
+      font-size:11px;
+      z-index:30;
+      display:none;
+    }
+    .search-results-panel h4{
+      margin:0 0 6px;
+      font-size:12px;
+      color:#f5f7ff;
+    }
+    .search-result-item{
+      padding:6px 4px;
+      border-radius:8px;
+      cursor:pointer;
+      margin-bottom:4px;
+    }
+    .search-result-item:hover{
+      background:rgba(66,165,245,0.18);
+    }
+    .search-result-title{
+      font-weight:600;
+      margin-bottom:2px;
+      color:#e3f2fd;
+    }
+    .search-result-snippet{
+      color:var(--muted);
+    }
+    .search-close{
+      text-align:right;
+      margin-bottom:4px;
+      color:var(--muted);
+      cursor:pointer;
+    }
+    .search-highlight{
+      background:rgba(66,165,245,0.45);
+      padding:0 1px;
+      border-radius:2px;
+    }
 
     main{
       max-width:980px;
@@ -108,6 +197,38 @@
     }
     .menu-card:hover::before{ opacity:1; }
 
+    /* พื้นหลังเฉพาะของแต่ละเมนู (ไม่ซ้ำกัน) */
+    .card-bg-1{
+      background:
+        linear-gradient(135deg,#0099ff33,#00e5ff22),
+        var(--card);
+    }
+    .card-bg-2{
+      background:
+        linear-gradient(135deg,#00c85333,#64ffda22),
+        var(--card);
+    }
+    .card-bg-3{
+      background:
+        linear-gradient(135deg,#7e57c233,#f48fb122),
+        var(--card);
+    }
+    .card-bg-4{
+      background:
+        linear-gradient(135deg,#ff8f0033,#ff174422),
+        var(--card);
+    }
+    .card-bg-5{
+      background:
+        linear-gradient(135deg,#3d5afe33,#00b0ff22),
+        var(--card);
+    }
+    .card-bg-6{
+      background:
+        linear-gradient(135deg,#d5000033,#ff408122),
+        var(--card);
+    }
+
     /* Tooltip เมื่อเอาเมาส์วางบนการ์ด */
     .menu-card .tooltip {
       position:absolute;
@@ -121,7 +242,7 @@
       font-size:12px;
       opacity:0;
       white-space:normal;
-      width:230px;
+      width:260px;
       text-align:center;
       pointer-events:none;
       transition:opacity 0.2s ease-out, top 0.2s ease-out;
@@ -131,7 +252,7 @@
     }
     .menu-card:hover .tooltip{
       opacity:1;
-      top:-44px;
+      top:-52px;
     }
 
     .menu-icon{ font-size:22px; margin-bottom:6px; }
@@ -160,7 +281,20 @@
 <header>
   <h2>🏛️ ระบบตรวจสอบการเงินประจำปี ของ อปท.</h2>
   <div class="sub">Annual Financial Audit – Local Government (FA – LG Annual)</div>
+
+  <!-- กล่องค้นหามุมขวาบน -->
+  <div class="search-container">
+    <input id="faSearchInput" class="search-input" type="text" placeholder="ค้นหาทางลัด...">
+    <button type="button" class="search-btn" onclick="runFaSearch()">🔍</button>
+  </div>
 </header>
+
+<!-- แผงผลการค้นหา -->
+<div id="faSearchResults" class="search-results-panel">
+  <div class="search-close" onclick="closeFaSearch()">✕ ปิด</div>
+  <h4>ผลการค้นหา</h4>
+  <div id="faSearchResultsBody"></div>
+</div>
 
 <main>
 
@@ -187,17 +321,17 @@
   <section class="menu-grid">
 
     <!-- 1 Plan – ไปหน้า อปท.3 -->
-    <a href="fa-lg-annual-plan-op3.html" class="menu-card">
+    <a href="fa-lg-annual-plan-op3.html" class="menu-card card-bg-1">
       <div class="tooltip">
-        กำหนด Scope, ความเสี่ยง, ทีมตรวจ และแผนงานตรวจประจำปีของแต่ละ อปท.
-        ผ่านแบบ อปท.3 และฟอร์มการวางแผนอื่น ๆ
+        ภายในมีแบบฟอร์มการวางแผน เช่น อปท.3, 3.1, 11.1.3–11.1.5, อปท.4, ฟอร์ม 3.5–3.6, อปท.5–5.2
+        ใช้กำหนด Scope, ความเสี่ยง, Materiality และแผนการสอบบัญชีโดยรวมของ อปท.
       </div>
       <div class="menu-icon">🧭</div>
       <div class="menu-title">1. การวางแผนการตรวจสอบ FA ของ อปท.</div>
       <div class="menu-en">1. Planning of Annual FA (LG)</div>
       <div class="menu-desc">
         บริหารแผนตรวจประจำปีของ อปท. กำหนดความสำคัญและลำดับการเข้าตรวจตามความเสี่ยง
-        และเชื่อมไปยังแบบฟอร์ม อปท.3 และฟอร์มการวางแผนอื่น ๆ
+        และเชื่อมไปยังแบบฟอร์ม อปท.3 และแบบฟอร์มการวางแผนอื่น ๆ
       </div>
       <div class="menu-footer">
         <span class="tag">Step 1 – Planning</span>
@@ -205,33 +339,37 @@
       </div>
     </a>
 
-<!-- 2 Fieldwork -->
-<a href="fa-lg-annual-fieldwork.html" class="menu-card">
-  <div class="tooltip">
-    บริหารโปรแกรมการตรวจ สมุดทำการ และหลักฐานการตรวจสอบราย อปท.
-  </div>
-  <div class="menu-icon">📋</div>
-  <div class="menu-title">2. การปฏิบัติการตรวจสอบ FA ของ อปท.</div>
-  <div class="menu-en">2. Execution / Fieldwork (LG)</div>
-  <div class="menu-desc">
-    บันทึกขั้นตอนที่ทำจริง ข้อสังเกต ระดับความเสี่ยง และสถานะการตรวจของแต่ละเคส
-  </div>
-  <div class="menu-footer">
-    <span class="tag">Step 2 – Fieldwork</span>
-    <span class="step-label">เข้าสู่ระบบปฏิบัติ ▸</span>
-  </div>
-</a>
+    <!-- 2 Fieldwork -->
+    <a href="fa-lg-annual-fieldwork.html" class="menu-card card-bg-2">
+      <div class="tooltip">
+        ภายในจะมีโปรแกรมตรวจสอบ (Audit Program) กระดาษทำการ หลักฐานการตรวจสอบ
+        และสถานะงานตรวจราย อปท. แยกตามประเด็นและรายการสำคัญ
+      </div>
+      <div class="menu-icon">📋</div>
+      <div class="menu-title">2. การปฏิบัติการตรวจสอบ FA ของ อปท.</div>
+      <div class="menu-en">2. Execution / Fieldwork (LG)</div>
+      <div class="menu-desc">
+        บันทึกขั้นตอนการตรวจสอบจริง ข้อสังเกต ระดับความเสี่ยง และสถานะของแต่ละเคส
+        ตามโปรแกรมตรวจสอบและ RMM จากขั้นวางแผน
+      </div>
+      <div class="menu-footer">
+        <span class="tag">Step 2 – Fieldwork</span>
+        <span class="step-label">เข้าสู่ระบบปฏิบัติ ▸</span>
+      </div>
+    </a>
 
     <!-- 3 Report -->
-    <a href="fa-lg-annual-report.html" class="menu-card">
+    <a href="fa-lg-annual-report.html" class="menu-card card-bg-3">
       <div class="tooltip">
-        สรุปข้อค้นพบ จัดทำร่างรายงาน ตรวจทาน และเตรียมเสนออนุมัติ
+        ภายในจะจัดทำร่างรายงาน ข้อค้นพบเชิงระบบ/เชิงรายการ เชื่อมโยงกับหลักฐาน
+        และรองรับการสอบทาน/ปรับปรุงเวอร์ชันก่อนออกเล่มรายงานจริง
       </div>
       <div class="menu-icon">📝</div>
       <div class="menu-title">3. การจัดทำรายงานการตรวจสอบ FA ของ อปท.</div>
       <div class="menu-en">3. Reporting (LG)</div>
       <div class="menu-desc">
-        จัดโครงสร้างรายงาน เชื่อมข้อค้นพบกับข้อเสนอแนะ และบริหารเวอร์ชันรายงานของแต่ละ อปท.
+        จัดโครงสร้างรายงาน สรุปข้อค้นพบข้อเสนอแนะ และบริหารเวอร์ชันรายงาน
+        เพื่อเสนอขออนุมัติรายงานผลการตรวจสอบของแต่ละ อปท.
       </div>
       <div class="menu-footer">
         <span class="tag">Step 3 – Reporting</span>
@@ -240,15 +378,17 @@
     </a>
 
     <!-- 4 Response -->
-    <a href="fa-lg-annual-response.html" class="menu-card">
+    <a href="fa-lg-annual-response.html" class="menu-card card-bg-4">
       <div class="tooltip">
-        ส่งข้อค้นพบให้ อปท. ชี้แจง ติดตามคำชี้แจง และบันทึกผลพิจารณา
+        ภายในจะบันทึกคำชี้แจงของหน่วยรับตรวจรายข้อ แนบเอกสารประกอบ
+        และสรุปผลการพิจารณาคำชี้แจงของทีมตรวจสอบ/ผู้บังคับบัญชา
       </div>
       <div class="menu-icon">💬</div>
       <div class="menu-title">4. การเปิดโอกาสให้หน่วยรับตรวจชี้แจง FA ของ อปท.</div>
       <div class="menu-en">4. Response & Clarification (LG)</div>
       <div class="menu-desc">
-        บริหารคำชี้แจงเป็นรายข้อ เก็บเอกสารประกอบ และบันทึกผลการประชุมชี้แจง
+        บริหารกระบวนการชี้แจงของ อปท. เป็นรายประเด็น สะท้อนข้อโต้แย้ง ข้อเท็จจริงเพิ่มเติม
+        และมติ/ข้อสรุปของผู้ตรวจสอบต่อคำชี้แจงนั้น ๆ
       </div>
       <div class="menu-footer">
         <span class="tag">Step 4 – Response</span>
@@ -257,15 +397,17 @@
     </a>
 
     <!-- 5 Communication -->
-    <a href="fa-lg-annual-communication.html" class="menu-card">
+    <a href="fa-lg-annual-communication.html" class="menu-card card-bg-5">
       <div class="tooltip">
-        ออกหนังสือแจ้งผล ส่งรายงานให้ผู้เกี่ยวข้อง และจัดเก็บหลักฐานการสื่อสาร
+        ภายในจะจัดการหนังสือแจ้งผลรายงาน ผู้รับสำเนา ช่องทางการส่งมอบ
+        และการบันทึกผลการประชุมชี้แจง/ประชุมสรุปผลกับผู้บริหาร อปท.
       </div>
       <div class="menu-icon">📨</div>
       <div class="menu-title">5. การแจ้งผลการตรวจสอบ FA ของ อปท.</div>
       <div class="menu-en">5. Communication of Results (LG)</div>
       <div class="menu-desc">
-        บริหารหนังสือแจ้งผล รายชื่อผู้รับ รายการผู้เกี่ยวข้อง และสรุปผลการประชุมสรุปผล (Exit Meeting)
+        บริหารขั้นตอนการสื่อสารผลการตรวจสอบกับผู้มีส่วนได้เสีย ใช้เป็นหลักฐานการแจ้งผล
+        และเป็นจุดเริ่มต้นสำหรับการติดตามผลในขั้นตอนถัดไป
       </div>
       <div class="menu-footer">
         <span class="tag">Step 5 – Communication</span>
@@ -274,15 +416,17 @@
     </a>
 
     <!-- 6 Follow-up -->
-    <a href="fa-lg-annual-followup.html" class="menu-card">
+    <a href="fa-lg-annual-followup.html" class="menu-card card-bg-6">
       <div class="tooltip">
-        ติดตามการดำเนินการตามข้อเสนอแนะของ อปท. จนปิดเคสรายข้อได้
+        ภายในจะติดตาม Action Plan ของ อปท. รายข้อ ว่ามีการดำเนินการแก้ไขแล้วหรือไม่
+        และใช้สรุปสถานะ ปิดข้อสังเกต/คงข้อสังเกตในรอบถัดไป
       </div>
       <div class="menu-icon">🔁</div>
       <div class="menu-title">6. การติดตามผลการตรวจสอบ FA ของ อปท.</div>
       <div class="menu-en">6. Follow-up of Recommendations (LG)</div>
       <div class="menu-desc">
-        บริหาร Action Plan ของ อปท. ตรวจสอบการแก้ไข และบันทึกผลติดตามเพื่อปิดข้อสังเกต
+        บริหารข้อมูลการดำเนินการตามข้อเสนอแนะของ อปท. จนสามารถปิดข้อสังเกตได้
+        หรือบันทึกเหตุผลประกอบกรณียังไม่สามารถปิดข้อสังเกตได้
       </div>
       <div class="menu-footer">
         <span class="tag">Step 6 – Follow-up</span>
@@ -292,5 +436,174 @@
 
   </section>
 </main>
+
+<script>
+  // -----------------------------
+  // FA Universal Search (Cross-Page)
+  // -----------------------------
+  const FA_BASE_PAGES = [
+    'index.html',
+    'fa-menu.html',
+    'fa-lg-annual.html',
+    'fa-lg-annual-plan.html',
+    'fa-lg-annual-plan-op3.html',
+    'fa-lg-annual-fieldwork.html',
+    'fa-lg-annual-report.html',
+    'fa-lg-annual-response.html',
+    'fa-lg-annual-communication.html',
+    'fa-lg-annual-followup.html',
+    'fa-login.html',
+    'fa-database-login.html',
+    'fa-chatbot.html',
+    'fa-review-login.html'
+  ];
+
+  // รองรับไฟล์ใหม่ในอนาคตผ่าน localStorage:
+  // localStorage.setItem('fa_search_pages_extra', '["fa-new1.html","fa-new2.html"]')
+  function getAllSearchPages(){
+    let pages = FA_BASE_PAGES.slice();
+    try{
+      const raw = localStorage.getItem('fa_search_pages_extra');
+      if(raw){
+        const extra = JSON.parse(raw);
+        if(Array.isArray(extra)){
+          extra.forEach(p => {
+            if(typeof p === 'string' && !pages.includes(p)){
+              pages.push(p);
+            }
+          });
+        }
+      }
+    }catch(e){}
+    return pages;
+  }
+
+  function sanitizeRegexTerm(term){
+    return term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  }
+
+  function extractTextAndTitle(html, filename){
+    let title = filename;
+    const titleMatch = html.match(/<title>([^<]*)<\/title>/i);
+    if(titleMatch && titleMatch[1]){
+      title = titleMatch[1].trim();
+    }
+    const div = document.createElement('div');
+    div.innerHTML = html;
+    const text = (div.innerText || div.textContent || '').replace(/\s+/g,' ');
+    return { title, text };
+  }
+
+  function buildSnippets(text, term, maxSnippets){
+    const safeTerm = sanitizeRegexTerm(term);
+    const regex = new RegExp(safeTerm,'gi');
+    const snippets = [];
+    let match;
+    while((match = regex.exec(text)) && snippets.length < maxSnippets){
+      const start = Math.max(0, match.index - 50);
+      const end   = Math.min(text.length, match.index + 50);
+      let snippet = text.slice(start, end);
+      snippet = snippet.replace(regex, m => '[[[' + m + ']]]');
+      snippets.push(snippet);
+    }
+    return snippets;
+  }
+
+  function renderSnippets(snippets){
+    return snippets.map(s => {
+      return s
+        .replace(/&/g,'&amp;')
+        .replace(/</g,'&lt;')
+        .replace(/>/g,'&gt;')
+        .replace(/\[\[\[(.*?)\]\]\]/g,'<span class="search-highlight">$1</span>');
+    }).join(' … ');
+  }
+
+  function runFaSearch(){
+    const input = document.getElementById('faSearchInput');
+    if(!input) return;
+    const term = (input.value || '').trim();
+    const panel = document.getElementById('faSearchResults');
+    const body  = document.getElementById('faSearchResultsBody');
+    if(!panel || !body) return;
+
+    if(!term){
+      panel.style.display = 'none';
+      body.innerHTML = '';
+      return;
+    }
+
+    panel.style.display = 'block';
+    body.innerHTML = '<div style="color:#a3acc7;">กำลังค้นหา…</div>';
+
+    const pages = getAllSearchPages();
+
+    const fetches = pages.map(filename => {
+      return fetch(filename, {cache:'no-cache'})
+        .then(res => {
+          if(!res.ok) throw new Error('HTTP ' + res.status);
+          return res.text();
+        })
+        .then(html => {
+          const {title,text} = extractTextAndTitle(html, filename);
+          const snippets = buildSnippets(text, term, 2);
+          if(snippets.length === 0) return null;
+          return { filename, title, snippets };
+        })
+        .catch(() => null);
+    });
+
+    Promise.all(fetches).then(results => {
+      const found = results.filter(r => !!r);
+      if(found.length === 0){
+        body.innerHTML = '<div style="color:#a3acc7;">ไม่พบคำว่า "<span class="search-highlight">'+term+'</span>" ในระบบ FA</div>';
+        return;
+      }
+      body.innerHTML = '';
+      found.forEach(r => {
+        const item = document.createElement('div');
+        item.className = 'search-result-item';
+        item.onclick = () => {
+          // เปิดหน้าใหม่ตามไฟล์ที่พบ
+          window.location.href = r.filename;
+        };
+
+        const titleEl = document.createElement('div');
+        titleEl.className = 'search-result-title';
+        titleEl.innerHTML = r.title + ' <span style="opacity:.7;">(' + r.filename + ')</span>';
+
+        const snippetEl = document.createElement('div');
+        snippetEl.className = 'search-result-snippet';
+        snippetEl.innerHTML = renderSnippets(r.snippets);
+
+        item.appendChild(titleEl);
+        item.appendChild(snippetEl);
+        body.appendChild(item);
+      });
+    }).catch(() => {
+      body.innerHTML = '<div style="color:#ef9a9a;">เกิดข้อผิดพลาดในการค้นหา</div>';
+    });
+  }
+
+  function closeFaSearch(){
+    const panel = document.getElementById('faSearchResults');
+    const body  = document.getElementById('faSearchResultsBody');
+    if(panel) panel.style.display = 'none';
+    if(body) body.innerHTML = '';
+  }
+
+  // กด Enter ในช่องค้นหาเพื่อเริ่มค้นหา
+  (function bindSearchKey(){
+    const input = document.getElementById('faSearchInput');
+    if(!input) return;
+    input.addEventListener('keydown', function(e){
+      if(e.key === 'Enter'){
+        e.preventDefault();
+        runFaSearch();
+      }
+    });
+  })();
+</script>
+
 </body>
 </html>
