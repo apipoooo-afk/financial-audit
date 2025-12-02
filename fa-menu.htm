@@ -50,7 +50,7 @@
 
     .menu-box {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       gap: 14px;
       padding: 18px 18px;
       border-radius: 18px;
@@ -100,6 +100,7 @@
     .menu-text {
       font-size: 14px;
       line-height: 1.45;
+      flex: 1;
     }
     .menu-text strong{
       font-size:15px;
@@ -111,12 +112,58 @@
       font-size: 12px;
     }
 
+    /* คำแนะนำเมนู (TH/EN) */
+    .menu-tip{
+      margin-top: 6px;
+      font-size: 12px;
+      color:#cfd8ff;
+    }
+    .menu-tip .tip-en{
+      display:block;
+      opacity:0.85;
+      font-size:11px;
+    }
+
+    /* สถิติการเข้าใช้ */
+    .menu-stats{
+      margin-top: 8px;
+      padding-top: 6px;
+      border-top:1px dashed rgba(255,255,255,0.22);
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px 14px;
+      font-size:12px;
+      color:#e1f5fe;
+    }
+    .menu-stats span{
+      display:flex;
+      align-items:center;
+      gap:4px;
+    }
+    .menu-stats strong{
+      font-size:13px;
+      min-width:20px;
+      text-align:right;
+    }
+    .stat-label{
+      opacity:0.9;
+    }
+    .stat-en{
+      opacity:0.75;
+      font-size:11px;
+    }
+
     .info-bar{
       max-width:900px;
       margin:0 auto 18px;
       padding:0 18px;
       font-size:13px;
       color:#a3acc7;
+    }
+
+    .info-bar a{
+      color:#90caf9;
+      text-decoration:underline;
     }
 
     @media (max-width: 620px) {
@@ -139,40 +186,118 @@
 </header>
 
 <div class="info-bar">
-  เลือกโมดูลที่ต้องการตรวจสอบ หากต้องการเปลี่ยนบัญชีเข้าใช้งาน กรุณาออกจากระบบแล้ว Login ใหม่จากหน้า <code>fa-login.html</code>
+  เลือกโมดูลที่ต้องการตรวจสอบ หากต้องการเปลี่ยนบัญชีเข้าใช้งาน กรุณาออกจากระบบแล้ว Login ใหม่จากหน้า <code>fa-login.html</code><br>
+  ดูข้อมูลสรุปภาพรวมและฐานข้อมูลกลางได้ที่
+  <a href="fa-db-data-gov.html" target="_blank" rel="noopener">FA Central Database (ฐานข้อมูลกลาง)</a>
 </div>
 
 <div class="menu-wrapper">
 
-  <a href="fa-lg-annual.html" class="menu-box menu-lg-annual">
+  <!-- LG Annual -->
+  <a href="fa-lg-annual.html" class="menu-box menu-lg-annual" data-module-key="lg-annual">
     <div class="menu-icon">🏛️</div>
     <div class="menu-text">
       <strong>ระบบตรวจสอบการเงินประจำปี ของ อปท.</strong>
       <small>Annual Financial Audit – Local Government</small>
+
+      <div class="menu-tip">
+        คำแนะนำ: ใช้สำหรับการตรวจสอบงบการเงินประจำปีขององค์กรปกครองส่วนท้องถิ่นทุกประเภท
+        <span class="tip-en">Tip: Use for year-end audits of local government financial statements (all LG entities).</span>
+      </div>
+
+      <div class="menu-stats">
+        <span>
+          <span class="stat-label">กำลังใช้</span>
+          <span class="stat-en">(Today)</span>:
+          <strong id="ms-lg-annual-current">0</strong>
+        </span>
+        <span>
+          <span class="stat-label">สะสม</span>
+          <span class="stat-en">(Total)</span>:
+          <strong id="ms-lg-annual-total">0</strong>
+        </span>
+      </div>
     </div>
   </a>
 
-  <a href="fa-lg-midyear.html" class="menu-box menu-lg-mid">
+  <!-- LG Mid-year -->
+  <a href="fa-lg-midyear.html" class="menu-box menu-lg-mid" data-module-key="lg-mid">
     <div class="menu-icon">📆</div>
     <div class="menu-text">
       <strong>ระบบตรวจสอบการเงินระหว่างปี ของ อปท.</strong>
       <small>Mid-Year Financial Audit – Local Government</small>
+
+      <div class="menu-tip">
+        คำแนะนำ: ใช้ติดตามผลและประเมินความเสี่ยงระหว่างปี งบประมาณของ อปท.
+        <span class="tip-en">Tip: Use to monitor mid-year financial performance and risks of local governments.</span>
+      </div>
+
+      <div class="menu-stats">
+        <span>
+          <span class="stat-label">กำลังใช้</span>
+          <span class="stat-en">(Today)</span>:
+          <strong id="ms-lg-mid-current">0</strong>
+        </span>
+        <span>
+          <span class="stat-label">สะสม</span>
+          <span class="stat-en">(Total)</span>:
+          <strong id="ms-lg-mid-total">0</strong>
+        </span>
+      </div>
     </div>
   </a>
 
-  <a href="fa-gov-annual.html" class="menu-box menu-gov-annual">
+  <!-- GOV Annual -->
+  <a href="fa-gov-annual.html" class="menu-box menu-gov-annual" data-module-key="gov-annual">
     <div class="menu-icon">🏢</div>
     <div class="menu-text">
       <strong>ระบบตรวจสอบการเงินประจำปี ของ ส่วนราชการ</strong>
       <small>Annual Financial Audit – Government Agencies</small>
+
+      <div class="menu-tip">
+        คำแนะนำ: ใช้ตรวจสอบงบการเงินประจำปีของส่วนราชการในสังกัดต่าง ๆ
+        <span class="tip-en">Tip: Use for annual financial audits of central and regional government agencies.</span>
+      </div>
+
+      <div class="menu-stats">
+        <span>
+          <span class="stat-label">กำลังใช้</span>
+          <span class="stat-en">(Today)</span>:
+          <strong id="ms-gov-annual-current">0</strong>
+        </span>
+        <span>
+          <span class="stat-label">สะสม</span>
+          <span class="stat-en">(Total)</span>:
+          <strong id="ms-gov-annual-total">0</strong>
+        </span>
+      </div>
     </div>
   </a>
 
-  <a href="fa-gov-interim.html" class="menu-box menu-gov-interim">
+  <!-- GOV Interim -->
+  <a href="fa-gov-interim.html" class="menu-box menu-gov-interim" data-module-key="gov-interim">
     <div class="menu-icon">⏱️</div>
     <div class="menu-text">
       <strong>ระบบตรวจสอบการเงินระหว่างกาล ของ ส่วนราชการ</strong>
       <small>Interim Financial Audit – Government Agencies</small>
+
+      <div class="menu-tip">
+        คำแนะนำ: ใช้สำหรับการทดสอบรายการสำคัญระหว่างกาล และการติดตามความเสี่ยงด้านการเบิกจ่าย
+        <span class="tip-en">Tip: Use to test key interim transactions and monitor disbursement risks.</span>
+      </div>
+
+      <div class="menu-stats">
+        <span>
+          <span class="stat-label">กำลังใช้</span>
+          <span class="stat-en">(Today)</span>:
+          <strong id="ms-gov-interim-current">0</strong>
+        </span>
+        <span>
+          <span class="stat-label">สะสม</span>
+          <span class="stat-en">(Total)</span>:
+          <strong id="ms-gov-interim-total">0</strong>
+        </span>
+      </div>
     </div>
   </a>
 
@@ -207,6 +332,76 @@
     }
   }
 
+  /* ---------- ส่วนจัดการสถิติเมนู (ใช้ร่วมกับฐานข้อมูลกลางได้) ---------- */
+
+  const MENU_STATS_KEY = "fas-menu-stats";
+
+  function getTodayKey(){
+    const d = new Date();
+    const y = d.getFullYear();
+    const m = String(d.getMonth()+1).padStart(2,"0");
+    const day = String(d.getDate()).padStart(2,"0");
+    return `${y}-${m}-${day}`;
+  }
+
+  function loadMenuStats(){
+    try{
+      const raw = localStorage.getItem(MENU_STATS_KEY);
+      if(!raw) return {};
+      const data = JSON.parse(raw);
+      return data && typeof data === "object" ? data : {};
+    }catch(e){
+      console.warn("โหลดสถิติเมนูไม่สำเร็จ", e);
+      return {};
+    }
+  }
+
+  function saveMenuStats(stats){
+    try{
+      localStorage.setItem(MENU_STATS_KEY, JSON.stringify(stats));
+    }catch(e){
+      console.warn("บันทึกสถิติเมนูไม่สำเร็จ", e);
+    }
+  }
+
+  function increaseMenuStat(moduleKey){
+    const today = getTodayKey();
+    const stats = loadMenuStats();
+    if(!stats[moduleKey]){
+      stats[moduleKey] = {total:0, todayCount:0, lastDate:today};
+    }
+    const rec = stats[moduleKey];
+    if(rec.lastDate !== today){
+      rec.lastDate = today;
+      rec.todayCount = 0;
+    }
+    rec.todayCount += 1;
+    rec.total += 1;
+    saveMenuStats(stats);
+  }
+
+  function renderMenuStats(){
+    const stats = loadMenuStats();
+    const mapId = {
+      "lg-annual":   {cur:"ms-lg-annual-current",   tot:"ms-lg-annual-total"},
+      "lg-mid":      {cur:"ms-lg-mid-current",      tot:"ms-lg-mid-total"},
+      "gov-annual":  {cur:"ms-gov-annual-current",  tot:"ms-gov-annual-total"},
+      "gov-interim": {cur:"ms-gov-interim-current", tot:"ms-gov-interim-total"}
+    };
+    const today = getTodayKey();
+
+    Object.keys(mapId).forEach(key=>{
+      const rec = stats[key] || {total:0, todayCount:0, lastDate:today};
+      if(rec.lastDate !== today){
+        rec.todayCount = 0;
+      }
+      const curEl = document.getElementById(mapId[key].cur);
+      const totEl = document.getElementById(mapId[key].tot);
+      if(curEl) curEl.textContent = rec.todayCount || 0;
+      if(totEl) totEl.textContent = rec.total || 0;
+    });
+  }
+
   document.addEventListener("DOMContentLoaded", function(){
     const sess = loadSession();
     if(!sess){
@@ -230,6 +425,24 @@
         userLine.textContent = `ผู้ใช้ปัจจุบัน: ${sess.email}`;
       }
     }
+
+    // แสดงสถิติเริ่มต้น
+    renderMenuStats();
+
+    // ผูก event เพิ่มสถิติ และสามารถให้หน้าอื่นอ่านจาก localStorage / ฐานข้อมูลกลางได้
+    const menuLinks = document.querySelectorAll(".menu-box[data-module-key]");
+    menuLinks.forEach(link=>{
+      link.addEventListener("click", function(){
+        const moduleKey = this.getAttribute("data-module-key");
+        if(moduleKey){
+          // เพิ่มสถิติการเข้าใช้งานเมนู
+          increaseMenuStat(moduleKey);
+
+          // ถ้าต้องการ "เชื่อมฐานข้อมูลกลาง" แบบอ่าน localStorage
+          // หน้า fa-db-data-gov.html สามารถมาอ่านค่า MENU_STATS_KEY ต่อได้
+        }
+      });
+    });
   });
 </script>
 
