@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>FA – LG Annual | แบบฟอร์มอ้างอิง + AI วิเคราะห์ข้อมูล</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    :root{
+      --bg:#060818;
+      --card:#11152b;
+      --border:#262b46;
+      --accent:#42a5f5;
+      --accent2:#26c6da;
+      --muted:#a3acc7;
+      --text:#f5f7ff;
+      --pink:#f48fb1;
+    }
+    *{box-sizing:border-box;}
+
+    body{
+      margin:0;
+      font-family:"Segoe UI", Tahoma, sans-serif;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(123,30,60,0.36) 0, transparent 55%),
+        radial-gradient(circle at 90% 100%, rgba(66,165,245,0.32) 0, transparent 55%),
+        radial-gradient(circle at 0% 100%, rgba(38,198,218,0.22) 0, transparent 55%),
+        var(--bg);
+      color:var(--text);
+      min-height:100vh;
+      font-size:140%;
+    }
+
+    header{
+      padding:16px 10px 12px;
+      text-align:center;
+      background:linear-gradient(120deg,#0d47a1,#42a5f5,#26c6da);
+      box-shadow:0 4px 16px rgba(0,0,0,0.7);
+      position:sticky;
+      top:0;
+      z-index:20;
+    }
+    header h2{ margin:0; font-size:20px; }
+    header .sub{ font-size:13px; opacity:.9; }
+
+    main{
+      max-width:1100px;
+      margin:20px auto 28px;
+      padding:0 16px 20px;
+    }
+
+    .nav-top{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-bottom:14px;
+    }
+    .btn-nav{
+      padding:6px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.45);
+      background:rgba(0,0,0,0.35);
+      color:#fff;
+      font-size:12px;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+    }
+    .btn-nav:hover{ background:rgba(0,0,0,0.6); }
+
+    .card{
+      background:var(--card);
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,0.12);
+      padding:16px 14px 16px;
+      box-shadow:0 10px 30px rgba(0,0,0,0.9);
+      margin-bottom:16px;
+    }
+    .card-header{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:flex-start;
+      margin-bottom:10px;
+    }
+    .card-title{
+      font-size:16px;
+      font-weight:600;
+    }
+    .card-sub{
+      font-size:12px;
+      color:var(--muted);
+    }
+    .chip{
+      padding:4px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.2);
+      font-size:11px;
+      background:rgba(0,0,0,0.35);
+      white-space:nowrap;
+    }
+
+    .form-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:10px 14px;
+      margin-top:4px;
+    }
+
+    label{
+      font-size:12px;
+      display:block;
+      margin-bottom:2px;
+      color:#e3f2fd;
+    }
+    .input, select, textarea{
+      width:100%;
+      padding:6px 8px;
+      border-radius:10px;
+      border:1px solid var(--border);
+      background:#080c1b;
+      color:var(--text);
+      font-size:12px;
+    }
+    textarea{
+      min-height:70px;
+      resize:vertical;
+    }
+    .input:focus, select:focus, textarea:focus{
+      outline:none;
+      border-color:var(--accent2);
+      box-shadow:0 0 0 1px rgba(38,198,218,0.5);
+    }
+
+    .section-title{
+      font-size:14px;
+      font-weight:600;
+      margin:10px 0 6px;
+    }
+    .hint{
+      font-size:11px;
+      color:var(--muted);
+      margin-bottom:6px;
+    }
+
+    .btn-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:10px;
+    }
+    .btn{
+      padding:6px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.4);
+      background:rgba(0,0,0,0.4);
+      color:#fff;
+      font-size:12px;
+      cursor:pointer;
+    }
+    .btn-primary{
+      border-color:var(--accent);
+      background:linear-gradient(120deg,#0d47a1,#42a5f5);
+    }
+    .btn-danger{
+      border-color:#f44336;
+      background:linear-gradient(120deg,#b71c1c,#f44336);
+    }
+    .btn-success{
+      border-color:#4caf50;
+      background:linear-gradient(120deg,#1b5e20,#4caf50);
+    }
+    .btn-info{
+      border-color:#26c6da;
+      background:linear-gradient(120deg,#006064,#26c6da);
+    }
+    .btn-ai{
+      border-color:#f48fb1;
+      background:linear-gradient(120deg,#7b1e3c,#f48fb1);
+    }
+    .btn:hover{
+      background:rgba(0,0,0,0.7);
+    }
+    .btn-primary:hover,
+    .btn-danger:hover,
+    .btn-success:hover,
+    .btn-info:hover,
+    .btn-ai:hover{
+      filter:brightness(1.1);
+    }
+
+    .footer-note{
+      font-size:10px;
+      color:var(--muted);
+      margin-top:6px;
+    }
+
+    /* ---------- A4 PREVIEW ---------- */
+    .a4-wrapper{
+      margin-top:18px;
+    }
+
+    .a4-title{
+      font-size:14px;
+      font-weight:600;
+      margin-bottom:6px;
+    }
+
+    .a4-page{
+      width:210mm;
+      min-height:297mm;
+      margin:0 auto 16px;
+      background:#ffffff;
+      color:#000000;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      padding:12mm;
+      font-size:11pt;
+      position:relative;
+    }
+
+    .a4-header-center{
+      text-align:center;
+      margin-bottom:6px;
+      font-size:12pt;
+      font-weight:600;
+    }
+    .a4-subheader{
+      text-align:center;
+      font-size:10pt;
+      margin-bottom:8px;
+    }
+    .a4-row{
+      display:flex;
+      justify-content:space-between;
+      font-size:10pt;
+      margin-bottom:4px;
+    }
+    .a4-row span{
+      display:inline-block;
+      min-width:80px;
+    }
+    .a4-row .value{
+      border-bottom:1px solid #000;
+      min-width:160px;
+      display:inline-block;
+      padding:0 2px;
+    }
+
+    .a4-table{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:8px;
+      font-size:10pt;
+    }
+    .a4-table th,
+    .a4-table td{
+      border:1px solid #000;
+      padding:4px 4px;
+      vertical-align:top;
+    }
+    .a4-table th{
+      text-align:center;
+      font-weight:600;
+    }
+
+    .a4-footer{
+      position:absolute;
+      bottom:8mm;
+      left:12mm;
+      right:12mm;
+      font-size:8pt;
+      display:flex;
+      justify-content:space-between;
+    }
+
+    /* PRINT */
+    @page{
+      size:A4;
+      margin:12mm;
+    }
+    @media print{
+      body{
+        background:#ffffff;
+        color:#000000;
+        font-size:11pt;
+      }
+      header,
+      .nav-top,
+      .card:not(.card-a4),
+      .no-print{
+        display:none !important;
+      }
+      .a4-page{
+        box-shadow:none;
+        margin:0;
+        width:auto;
+        min-height:auto;
+        padding:0;
+      }
+      main{
+        max-width:100%;
+        margin:0;
+        padding:0;
+      }
+    }
+
+    @media (max-width:900px){
+      .a4-page{
+        width:100%;
+        min-height:auto;
+      }
+    }
+
+    @media (max-width:600px){
+      .card-header{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h2>📊 แบบฟอร์มอ้างอิง + AI วิเคราะห์ข้อมูล (FA – LG Annual)</h2>
+  <div class="sub">
+    Reference to Working Papers & AI-assisted Analysis – สำหรับตรวจสอบรายงานการเงิน อปท.
+  </div>
+</header>
+
+<main>
+
+  <div class="nav-top">
+    <a href="fa-lg-annual-plan.html" class="btn-nav">
+      <span>🧭</span> เมนูแบบฟอร์มการวางแผน
+    </a>
+    <a href="fa-lg-annual.html" class="btn-nav">
+      <span>📅</span> เลือกปี / หน่วยรับตรวจ
+    </a>
+    <a href="fa-menu.html" class="btn-nav">
+      <span>📂</span> FA Main Menu
+    </a>
+    <a href="index.html" class="btn-nav">
+      <span>🏠</span> หน้าหลักระบบ
+    </a>
+  </div>
+
+  <!-- CARD 1: Digital Form -->
+  <section class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">ส่วนที่ 1 – ข้อมูลพื้นฐาน และการอ้างอิงแบบฟอร์ม</div>
+        <div class="card-sub">
+          ใช้เชื่อมโยงหน่วยรับตรวจ-ปีงบประมาณ-งวดวันที่ กับแบบฟอร์ม อปท.3 – อปท.8.31 และเตรียมข้อมูลสำหรับ AI วิเคราะห์
+        </div>
+      </div>
+      <div class="chip">Digital Form • Reference & AI</div>
+    </div>
+
+    <div class="hint">
+      ⚙️ ข้อมูลหน่วยรับตรวจจะดึงจาก <code>localStorage["fa-db-data-gov"]</code>  
+      หากยังไม่มีข้อมูล กรุณาเปิดหน้า <code>fa-db-data-gov.html</code> อย่างน้อย 1 ครั้งเพื่อโหลดฐานกลาง
+    </div>
+    <div id="govDbStatus" class="hint"></div>
+
+    <div class="form-grid">
+      <div>
+        <label for="fy">ปีงบประมาณ</label>
+        <select id="fy" class="input">
+          <option value="">— เลือกปีงบประมาณ —</option>
+          <option>2562</option>
+          <option>2563</option>
+          <option>2564</option>
+          <option>2565</option>
+          <option>2566</option>
+          <option>2567</option>
+          <option>2568</option>
+          <option>2569</option>
+          <option>2570</option>
+          <option>2571</option>
+          <option>2572</option>
+          <option>2573</option>
+          <option>2574</option>
+          <option>2575</option>
+          <option>2576</option>
+          <option>2577</option>
+          <option>2578</option>
+          <option>2579</option>
+          <option>2580</option>
+          <option>2581</option>
+          <option>2582</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="period">งวดวันที่ (30 กันยายน 2566 – 2582)</label>
+        <select id="period" class="input">
+          <option value="">— เลือกงวดวันที่ —</option>
+          <!-- เติมด้วย JS -->
+        </select>
+      </div>
+
+      <div>
+        <label for="province">จังหวัด (จากฐานข้อมูลกลาง)</label>
+        <select id="province" class="input">
+          <option value="">— เลือกจังหวัด —</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="amphoe">อำเภอ / เขต (จากฐานข้อมูลกลาง)</label>
+        <select id="amphoe" class="input">
+          <option value="">— เลือกอำเภอ / เขต —</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="auditee">ชื่อหน่วยรับตรวจ / อปท. (จากฐานข้อมูลกลาง)</label>
+        <select id="auditee" class="input">
+          <option value="">— เลือกหน่วยรับตรวจ —</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="formRef">อ้างอิงแบบฟอร์ม (อปท.3 – อปท.8.31)</label>
+        <select id="formRef" class="input">
+          <option value="">— เลือกแบบฟอร์ม —</option>
+          <!-- เติมด้วย JS -->
+        </select>
+      </div>
+    </div>
+
+    <div class="section-title">1.2 สรุปข้อมูลจากแบบฟอร์มที่อ้างอิง</div>
+    <textarea id="formSummary" class="input" placeholder="สรุปสาระสำคัญจากแบบฟอร์มที่เลือก เช่น รายการที่ตรวจ จำนวนตัวอย่าง ข้อค้นพบสำคัญ ตัวเลขสาระสำคัญ ฯลฯ"></textarea>
+
+    <div class="section-title">1.3 บริบทเพิ่มเติม / ข้อมูลประกอบ</div>
+    <textarea id="contextInfo" class="input" placeholder="บันทึกบริบทเพิ่มเติม เช่น ข้อมูลจากงบการเงิน, รายงานเดิม, ข้อมูลจาก e-LAAS, สถานการณ์พิเศษของ อปท. ฯลฯ"></textarea>
+  </section>
+
+  <!-- CARD 2: AI Analysis -->
+  <section class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">ส่วนที่ 2 – AI ช่วยวิเคราะห์ข้อมูล</div>
+        <div class="card-sub">
+          ออกแบบให้เชื่อมต่อ AI ภายนอกภายหลัง – ขณะนี้เป็น Prototype สำหรับจำลองผลวิเคราะห์ และจัดโครงข้อมูลให้เป็นมาตรฐาน
+        </div>
+      </div>
+      <div class="chip">AI Assistant • Prototype</div>
+    </div>
+
+    <div class="form-grid">
+      <div>
+        <label for="aiQuestion">สิ่งที่ต้องการให้ AI วิเคราะห์</label>
+        <textarea id="aiQuestion" class="input" placeholder="เช่น วิเคราะห์ความเสี่ยงหลักจากรายการนี้, ตรวจจับรายการผิดปกติ, สรุปข้อค้นพบเชิงระบบ ฯลฯ"></textarea>
+      </div>
+      <div>
+        <label for="aiSourceData">ข้อมูลตัวอย่างที่ใช้วิเคราะห์ (ตัดตอนจากฟอร์ม/ระบบ)</label>
+        <textarea id="aiSourceData" class="input" placeholder="คัดลอกข้อความ/ตัวเลขสำคัญจากแบบฟอร์ม หรือจากระบบ BI มาไว้ที่นี่ เพื่อใช้เป็น Input ให้ AI"></textarea>
+      </div>
+    </div>
+
+    <div class="section-title">ผลการวิเคราะห์โดย AI / ผู้ตรวจสอบ</div>
+    <textarea id="aiResult" class="input" placeholder="ผลการวิเคราะห์จะถูกสรุปแสดงที่นี่ (ขณะนี้เป็นการจำลองใน Browser – สามารถเชื่อมต่อ API ของ AI ภายนอกในอนาคต)"></textarea>
+
+    <div class="btn-row no-print">
+      <button type="button" class="btn-ai" onclick="fakeAiAnalyze()">🤖 ให้ AI ช่วยวิเคราะห์ข้อมูล (Prototype)</button>
+      <button type="button" class="btn" onclick="pushToA4()">อัปเดตข้อมูลไปยังแบบฟอร์ม A4</button>
+      <button type="button" class="btn-success" onclick="sendToReviewSystem()">ส่งไประบบสอบทาน (Review)</button>
+      <button type="button" class="btn-info" onclick="sendToWorkingpaperDb()">ส่งไประบบฐานข้อมูลกระดาษทำการ (WP DB)</button>
+    </div>
+
+    <div class="footer-note">
+      * ฟังก์ชัน AI ในปัจจุบันเป็นเพียงตัวอย่างใน Browser – สามารถเปลี่ยนส่วน <code>fakeAiAnalyze()</code> ให้เรียก API จริงของ OpenAI / Gemini / ฯลฯ ได้ในอนาคต  
+      * ข้อมูลทั้งหมดจะถูกส่งออกไปพร้อมกันทั้งใน A4 / JSON / ระบบสอบทาน / ฐานข้อมูลกระดาษทำการ
+    </div>
+  </section>
+
+  <!-- CARD 3: A4 + Export -->
+  <section class="card card-a4">
+    <div class="card-header">
+      <div>
+        <div class="card-title">ส่วนที่ 3 – แบบฟอร์ม A4 เพื่อพิมพ์ / แนบกระดาษทำการ</div>
+        <div class="card-sub">
+          แสดงข้อมูลปีงบประมาณ-งวดวันที่-หน่วยรับตรวจ-แบบฟอร์มที่อ้างอิง และสรุปผลการวิเคราะห์ในรูปแบบกระดาษ A4
+        </div>
+      </div>
+      <div class="chip">A4 Layout • Export</div>
+    </div>
+
+    <div class="btn-row no-print">
+      <button type="button" class="btn" onclick="pushToA4()">อัปเดตแบบฟอร์ม A4</button>
+      <button type="button" class="btn btn-primary" onclick="window.print()">พิมพ์ / Export PDF (A4)</button>
+      <button type="button" class="btn" onclick="exportA4Html()">Export เป็น HTML (A4 เฉพาะหน้า)</button>
+      <button type="button" class="btn btn-danger" onclick="exportJson()">Export เป็น JSON (ข้อมูลแบบฟอร์ม)</button>
+      <button type="button" class="btn-success" onclick="sendToReviewSystem()">ส่งไประบบสอบทาน (Review)</button>
+      <button type="button" class="btn-info" onclick="sendToWorkingpaperDb()">ส่งไประบบฐานข้อมูลกระดาษทำการ (WP DB)</button>
+    </div>
+
+    <div class="a4-wrapper">
+      <div class="a4-title">ตัวอย่างแสดงผลแบบฟอร์มในหน้ากระดาษ A4</div>
+
+      <div class="a4-page" id="a4Page">
+        <div class="a4-header-center">
+          แบบฟอร์มอ้างอิง + AI วิเคราะห์ข้อมูล
+        </div>
+        <div class="a4-subheader">
+          การตรวจสอบรายงานการเงินขององค์กรปกครองส่วนท้องถิ่น – ใช้ประกอบกระดาษทำการและระบบสอบทาน
+        </div>
+
+        <div class="a4-row">
+          <div>
+            <span>ปีงบประมาณ</span>
+            <span class="value" id="a4Fy">&nbsp;</span>
+          </div>
+          <div>
+            <span>งวดวันที่</span>
+            <span class="value" id="a4Period">&nbsp;</span>
+          </div>
+        </div>
+        <div class="a4-row">
+          <div>
+            <span>หน่วยรับตรวจ</span>
+            <span class="value" id="a4Auditee">&nbsp;</span>
+          </div>
+          <div>
+            <span>อำเภอ / เขต</span>
+            <span class="value" id="a4Amphoe">&nbsp;</span>
+          </div>
+        </div>
+        <div class="a4-row">
+          <div>
+            <span>จังหวัด</span>
+            <span class="value" id="a4Province">&nbsp;</span>
+          </div>
+          <div>
+            <span>อ้างอิงแบบฟอร์ม</span>
+            <span class="value" id="a4FormRef">&nbsp;</span>
+          </div>
+        </div>
+
+        <div style="margin-top:10px; font-size:10pt;">
+          <strong>1. สรุปข้อมูลจากแบบฟอร์มที่อ้างอิง</strong>
+        </div>
+        <div style="font-size:10pt; margin-top:4px;" id="a4FormSummary"></div>
+
+        <div style="margin-top:10px; font-size:10pt;">
+          <strong>2. บริบทเพิ่มเติม / ข้อมูลประกอบ</strong>
+        </div>
+        <div style="font-size:10pt; margin-top:4px;" id="a4ContextInfo"></div>
+
+        <div style="margin-top:10px; font-size:10pt;">
+          <strong>3. สิ่งที่ต้องการให้ AI วิเคราะห์</strong>
+        </div>
+        <div style="font-size:10pt; margin-top:4px;" id="a4AiQuestion"></div>
+
+        <div style="margin-top:10px; font-size:10pt;">
+          <strong>4. ข้อมูลตัวอย่างที่ใช้วิเคราะห์</strong>
+        </div>
+        <div style="font-size:10pt; margin-top:4px;" id="a4AiSourceData"></div>
+
+        <div style="margin-top:10px; font-size:10pt;">
+          <strong>5. สรุปผลการวิเคราะห์โดย AI / ผู้ตรวจสอบ</strong>
+        </div>
+        <div style="font-size:10pt; margin-top:4px;" id="a4AiResult"></div>
+
+        <div class="a4-footer">
+          <div>แบบฟอร์มอ้างอิง + AI วิเคราะห์ข้อมูล – FA LG Annual</div>
+          <div id="a4FooterMeta">พิมพ์จากระบบ FA – LG</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  /* ---------- Helper แปลงข้อความ/วันที่ ---------- */
+
+  function nl2br(text){
+    if(!text) return '';
+    return text.replace(/\n/g,'<br>');
+  }
+
+  /* ---------- ดึงข้อมูลจาก fa-db-data-gov ใน localStorage ---------- */
+
+  let LG_DB = [];
+
+  function getProvinceField(row){
+    return row.province || row.Province || row.prov || row['จังหวัด'] || '';
+  }
+  function getAmphoeField(row){
+    return row.amphoe || row.district || row.District || row['อำเภอ'] || row['เขต'] || '';
+  }
+  function getAuditeeNameField(row){
+    return (
+      row.auditee ||
+      row.unitName ||
+      row.unit ||
+      row['หน่วยรับตรวจ'] ||
+      row['ชื่อหน่วยงาน'] ||
+      ''
+    );
+  }
+
+  function setStatus(msg, isError){
+    const el = document.getElementById('govDbStatus');
+    if(!el) return;
+    el.textContent = msg || '';
+    el.style.color = isError ? '#ffab91' : '#a3acc7';
+  }
+
+  function fillSelectOptions(select, items, placeholder){
+    if(!select) return;
+    select.innerHTML = '';
+    const opt0 = document.createElement('option');
+    opt0.value = '';
+    opt0.textContent = placeholder;
+    select.appendChild(opt0);
+    items.forEach(v => {
+      const o = document.createElement('option');
+      o.value = v;
+      o.textContent = v;
+      select.appendChild(o);
+    });
+  }
+
+  function initGovDbFromLocalStorage(){
+    try{
+      const raw = localStorage.getItem('fa-db-data-gov');
+      if(!raw){
+        setStatus('⚠ ยังไม่พบข้อมูลใน localStorage["fa-db-data-gov"] – กรุณาเปิดหน้า fa-db-data-gov.html ให้โหลดข้อมูลก่อน', true);
+        return;
+      }
+      const data = JSON.parse(raw);
+      if(!Array.isArray(data)){
+        setStatus('⚠ โครงสร้างข้อมูล fa-db-data-gov ไม่ใช่ Array', true);
+        return;
+      }
+      LG_DB = data;
+
+      const provinces = [...new Set(
+        LG_DB.map(getProvinceField).filter(Boolean)
+      )].sort((a,b)=>a.localeCompare(b,'th-TH'));
+
+      const provinceSelect = document.getElementById('province');
+      fillSelectOptions(provinceSelect, provinces, '— เลือกจังหวัด —');
+
+      setStatus(`✅ โหลดข้อมูลหน่วยรับตรวจจากฐานกลางสำเร็จ: ${LG_DB.length} รายการ`, false);
+    }catch(e){
+      console.error(e);
+      setStatus('⚠ เกิดข้อผิดพลาดขณะอ่านข้อมูล fa-db-data-gov จาก localStorage', true);
+    }
+  }
+
+  function onProvinceChange(){
+    const province = document.getElementById('province').value || '';
+    const amphoeSelect = document.getElementById('amphoe');
+    const auditeeSelect = document.getElementById('auditee');
+
+    if(!province){
+      fillSelectOptions(amphoeSelect, [], '— เลือกอำเภอ / เขต —');
+      fillSelectOptions(auditeeSelect, [], '— เลือกหน่วยรับตรวจ —');
+      return;
+    }
+
+    const amphoeList = [...new Set(
+      LG_DB
+        .filter(row => getProvinceField(row) === province)
+        .map(getAmphoeField)
+        .filter(Boolean)
+    )].sort((a,b)=>a.localeCompare(b,'th-TH'));
+
+    fillSelectOptions(amphoeSelect, amphoeList, '— เลือกอำเภอ / เขต —');
+    fillSelectOptions(auditeeSelect, [], '— เลือกหน่วยรับตรวจ —');
+  }
+
+  function onAmphoeChange(){
+    const province = document.getElementById('province').value || '';
+    const amphoe = document.getElementById('amphoe').value || '';
+    const auditeeSelect = document.getElementById('auditee');
+
+    if(!province || !amphoe){
+      fillSelectOptions(auditeeSelect, [], '— เลือกหน่วยรับตรวจ —');
+      return;
+    }
+
+    const units = LG_DB.filter(row =>
+      getProvinceField(row) === province &&
+      getAmphoeField(row) === amphoe
+    );
+
+    const names = [...new Set(
+      units.map(getAuditeeNameField).filter(Boolean)
+    )].sort((a,b)=>a.localeCompare(b,'th-TH'));
+
+    fillSelectOptions(auditeeSelect, names, '— เลือกหน่วยรับตรวจ —');
+  }
+
+  /* ---------- เติมงวดวันที่ และรายการแบบฟอร์ม ---------- */
+
+  function initPeriods(){
+    const periodSelect = document.getElementById('period');
+    if(!periodSelect) return;
+    const years = [];
+    for(let y=2566; y<=2582; y++){
+      years.push(y);
+    }
+    years.forEach(y => {
+      const text = '30 กันยายน ' + y;
+      const opt = document.createElement('option');
+      opt.value = text;
+      opt.textContent = text;
+      periodSelect.appendChild(opt);
+    });
+  }
+
+  function initFormRefs(){
+    const select = document.getElementById('formRef');
+    if(!select) return;
+
+    const formsSet = new Set();
+
+    // ฟอร์มหลัก
+    [
+      'อปท.3',
+      'อปท.3.1',
+      'อปท.4',
+      'อปท.5',
+      'อปท.5.1',
+      'อปท.5.2',
+      'อปท.8.2',
+      'อปท.8.2.1',
+      'อปท.8.2.2',
+      'อปท.8.2.3'
+    ].forEach(f => formsSet.add(f));
+
+    // ฟอร์ม 8.1 – 8.31
+    for(let i=1; i<=31; i++){
+      formsSet.add('อปท.8.' + i);
+    }
+
+    const forms = Array.from(formsSet).sort((a,b)=>a.localeCompare(b,'th-TH',{numeric:true}));
+
+    forms.forEach(f => {
+      const opt = document.createElement('option');
+      opt.value = f;
+      opt.textContent = f;
+      select.appendChild(opt);
+    });
+  }
+
+  /* ---------- Sync ไป A4 ---------- */
+
+  function pushToA4(){
+    document.getElementById('a4Fy').textContent       = document.getElementById('fy').value || '';
+    document.getElementById('a4Period').textContent   = document.getElementById('period').value || '';
+    document.getElementById('a4Auditee').textContent  = document.getElementById('auditee').value || '';
+    document.getElementById('a4Amphoe').textContent   = document.getElementById('amphoe').value || '';
+    document.getElementById('a4Province').textContent = document.getElementById('province').value || '';
+    document.getElementById('a4FormRef').textContent  = document.getElementById('formRef').value || '';
+
+    document.getElementById('a4FormSummary').innerHTML   = nl2br(document.getElementById('formSummary').value || '');
+    document.getElementById('a4ContextInfo').innerHTML   = nl2br(document.getElementById('contextInfo').value || '');
+    document.getElementById('a4AiQuestion').innerHTML    = nl2br(document.getElementById('aiQuestion').value || '');
+    document.getElementById('a4AiSourceData').innerHTML  = nl2br(document.getElementById('aiSourceData').value || '');
+    document.getElementById('a4AiResult').innerHTML      = nl2br(document.getElementById('aiResult').value || '');
+
+    const now = new Date();
+    const ts = now.toLocaleString('th-TH');
+    document.getElementById('a4FooterMeta').textContent = 'พิมพ์จากระบบ FA – LG ณ ' + ts;
+  }
+
+  /* ---------- Build data กลาง ---------- */
+
+  function buildFormData(){
+    const data = {
+      fiscalYear   : document.getElementById('fy').value || '',
+      period       : document.getElementById('period').value || '',
+      auditee      : document.getElementById('auditee').value || '',
+      amphoe       : document.getElementById('amphoe').value || '',
+      province     : document.getElementById('province').value || '',
+      formRef      : document.getElementById('formRef').value || '',
+      formSummary  : document.getElementById('formSummary').value || '',
+      contextInfo  : document.getElementById('contextInfo').value || '',
+      aiQuestion   : document.getElementById('aiQuestion').value || '',
+      aiSourceData : document.getElementById('aiSourceData').value || '',
+      aiResult     : document.getElementById('aiResult').value || '',
+      meta: {
+        formCode : 'FA-LG-REF-AI',
+        module   : 'FA-LG-Annual',
+        exportedAt: new Date().toISOString()
+      }
+    };
+    return data;
+  }
+
+  /* ---------- Export ---------- */
+
+  function exportA4Html(){
+    const a4 = document.getElementById('a4Page');
+    if(!a4){
+      alert('ไม่พบเนื้อหา A4');
+      return;
+    }
+    const htmlContent =
+      '<!DOCTYPE html><html lang="th"><head><meta charset="UTF-8"><title>FA-LG-REF-AI-A4</title>' +
+      '<style>@page{size:A4;margin:12mm;}body{font-family:"TH Sarabun New","Segoe UI",sans-serif;font-size:11pt;} .a4-page{width:100%;min-height:100%;}</style>' +
+      '</head><body>' + a4.outerHTML + '</body></html>';
+
+    const blob = new Blob([htmlContent], {type:'text/html'});
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href = url;
+    a.download = 'fa_lg_ref_ai_a4.html';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  function exportJson(){
+    const data = buildFormData();
+    const blob = new Blob([JSON.stringify(data,null,2)], {type:'application/json'});
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href = url;
+    a.download = 'fa_lg_ref_ai.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  /* ---------- Integration: Review & Working Papers ---------- */
+
+  function sendToReviewSystem(){
+    const data = buildFormData();
+
+    // จำลองการส่งไป “ระบบสอบทาน”
+    try{
+      localStorage.setItem('fa_ref_ai_last_for_review', JSON.stringify(data));
+    }catch(e){
+      console.error('localStorage error', e);
+    }
+
+    // จุดเชื่อมต่อจริง (API) – ตัวอย่าง
+    /*
+    fetch('/api/review-system/ref-ai', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(data)
+    });
+    */
+
+    alert('บันทึกแบบฟอร์ม ส่งไป “ระบบสอบทาน” (จำลอง) แล้ว \n(เก็บที่ localStorage: fa_ref_ai_last_for_review)');
+  }
+
+  function sendToWorkingpaperDb(){
+    const data = buildFormData();
+
+    // จำลองการส่งไป “ฐานข้อมูลกระดาษทำการ”
+    try{
+      localStorage.setItem('fa_ref_ai_last_workingpaper', JSON.stringify(data));
+    }catch(e){
+      console.error('localStorage error', e);
+    }
+
+    // จุดเชื่อมต่อจริง (API) – ตัวอย่าง
+    /*
+    fetch('/api/workingpapers/ref-ai', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(data)
+    });
+    */
+
+    alert('บันทึกแบบฟอร์ม ส่งไป “ฐานข้อมูลกระดาษทำการ” (จำลอง) แล้ว \n(เก็บที่ localStorage: fa_ref_ai_last_workingpaper)');
+  }
+
+  /* ---------- AI Prototype ---------- */
+
+  function fakeAiAnalyze(){
+    const fy       = document.getElementById('fy').value || '—';
+    const period   = document.getElementById('period').value || '—';
+    const auditee  = document.getElementById('auditee').value || '—';
+    const formRef  = document.getElementById('formRef').value || '—';
+    const question = document.getElementById('aiQuestion').value || '';
+    const source   = document.getElementById('aiSourceData').value || '';
+    const summary  = document.getElementById('formSummary').value || '';
+
+    let result = '';
+    result += '★ สรุปกรอบการวิเคราะห์\n';
+    result += '- ปีงบประมาณ: ' + fy + '\n';
+    result += '- งวดวันที่: ' + period + '\n';
+    result += '- หน่วยรับตรวจ: ' + auditee + '\n';
+    result += '- อ้างอิงแบบฟอร์ม: ' + formRef + '\n\n';
+
+    if(question){
+      result += '★ สิ่งที่ต้องการให้ AI วิเคราะห์\n';
+      result += question + '\n\n';
+    }
+    if(summary){
+      result += '★ สาระสำคัญจากแบบฟอร์มที่อ้างอิง (สรุป)\n';
+      result += summary + '\n\n';
+    }
+    if(source){
+      result += '★ ข้อมูลตัวอย่างที่นำมาใช้วิเคราะห์ (ตัดตอน)\n';
+      result += source.substring(0,800);
+      if(source.length > 800){
+        result += '\n...[ตัดข้อความบางส่วนเพื่อความกระชับ]...\n';
+      }
+      result += '\n\n';
+    }
+
+    result += '★ แนวคิดการวิเคราะห์เบื้องต้น (ตัวอย่างข้อความ – ปรับแก้เองได้)\n';
+    result += '- ตรวจจับความเสี่ยงเชิงตัวเลข: เปรียบเทียบยอดที่บันทึกในฟอร์มกับแนวโน้มปีก่อน ๆ และกับฐานภาษี/รายได้ที่ควรเกิดขึ้น\n';
+    result += '- ตรวจสอบความครบถ้วน: ดูว่ามีช่องว่างข้อมูลหรือรายการที่ควรมีแต่หายไปหรือไม่ (เช่น ไม่มีรายการบางประเภทที่ควรเกิดทุกปี)\n';
+    result += '- ตรวจจับความผิดปกติ: มองหายอดที่เพิ่ม/ลดผิดปกติอย่างมีนัยสำคัญ หรือรายการที่ตัดจ่าย/กันเงินในช่วงใกล้สิ้นปี\n';
+    result += '- เชื่อมโยงกับความเสี่ยงทุจริต: ถ้าเป็นฟอร์มกลุ่ม อปท.8.x ให้โฟกัสกระบวนการอนุมัติ/เบิกจ่าย เอกสารหลักฐาน และการแบ่งหน้าที่ควบคุมภายใน\n';
+    result += '\n(หมายเหตุ: ส่วนนี้เป็นเพียง Prototype ใน Browser – เมื่อต่อ API AI จริง สามารถแทนที่ข้อความนี้ด้วยผลวิเคราะห์จากโมเดล AI ได้)\n';
+
+    document.getElementById('aiResult').value = result;
+    alert('สร้างข้อความผลวิเคราะห์ตัวอย่างแล้ว\n(สามารถแก้ไข/ปรับปรุงก่อนส่งต่อได้)');
+  }
+
+  /* ---------- Bind Event & Init ---------- */
+
+  document.addEventListener('DOMContentLoaded', function(){
+    initGovDbFromLocalStorage();
+    initPeriods();
+    initFormRefs();
+
+    const provinceSelect = document.getElementById('province');
+    const amphoeSelect   = document.getElementById('amphoe');
+
+    if(provinceSelect){
+      provinceSelect.addEventListener('change', onProvinceChange);
+    }
+    if(amphoeSelect){
+      amphoeSelect.addEventListener('change', onAmphoeChange);
+    }
+  });
+</script>
+
+</body>
+</html>
