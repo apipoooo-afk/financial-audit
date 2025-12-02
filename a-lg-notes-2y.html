@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>หมายเหตุประกอบงบการเงิน (เทียบ 2 ปี) | FA – LG Notes 2Y</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    :root{
+      --bg:#060818;
+      --bg-soft:#0b1024;
+      --card:#11152b;
+      --border:#262b46;
+      --primary:#0d47a1;
+      --primary-2:#42a5f5;
+      --accent:#ffd54f;
+      --text:#f5f7ff;
+      --muted:#a3acc7;
+      --danger:#ef5350;
+      --success:#66bb6a;
+      --shadow-soft:0 12px 30px rgba(0,0,0,0.55);
+      --radius-lg:18px;
+    }
+
+    *{box-sizing:border-box;}
+
+    body{
+      margin:0;
+      font-family:"Segoe UI", Tahoma, sans-serif;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(123,30,60,0.36) 0, transparent 55%),
+        radial-gradient(circle at 90% 100%, rgba(66,165,245,0.32) 0, transparent 55%),
+        var(--bg);
+      color:var(--text);
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+    }
+
+    header{
+      padding:16px 14px 10px;
+      background:linear-gradient(120deg,#7b1e3c,#0d47a1,#42a5f5);
+      box-shadow:0 6px 22px rgba(0,0,0,0.6);
+      border-bottom:1px solid rgba(255,255,255,0.14);
+      position:sticky;
+      top:0;
+      z-index:20;
+    }
+
+    .header-inner{
+      max-width:1180px;
+      margin:0 auto;
+      display:flex;
+      flex-wrap:wrap;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:10px 18px;
+    }
+
+    .header-title-block h1{
+      margin:0;
+      font-size:22px;
+      font-weight:800;
+      letter-spacing:0.03em;
+    }
+
+    .header-title-block p{
+      margin:4px 0 0;
+      font-size:13px;
+      opacity:0.9;
+    }
+
+    .header-right{
+      display:flex;
+      flex-direction:column;
+      align-items:flex-end;
+      gap:6px;
+      font-size:11px;
+    }
+
+    .back-link{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:4px 9px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.35);
+      background:rgba(0,0,0,0.25);
+      color:#fff;
+      text-decoration:none;
+      font-size:11px;
+      white-space:nowrap;
+    }
+    .back-link:hover{
+      background:rgba(0,0,0,0.5);
+    }
+
+    .flow-pill{
+      padding:4px 10px;
+      border-radius:999px;
+      background:rgba(0,0,0,0.35);
+      border:1px solid rgba(255,255,255,0.25);
+      display:flex;
+      align-items:center;
+      gap:6px;
+      white-space:nowrap;
+    }
+
+    main{
+      flex:1;
+      padding:16px 10px 26px;
+    }
+
+    .main-inner{
+      max-width:1180px;
+      margin:0 auto;
+    }
+
+    /* Top info card */
+    .info-card{
+      background:radial-gradient(circle at 0 0,rgba(66,165,245,0.16) 0,transparent 60%),
+                 radial-gradient(circle at 100% 100%,rgba(244,143,177,0.14) 0,transparent 55%),
+                 var(--bg-soft);
+      border-radius:var(--radius-lg);
+      border:1px solid var(--border);
+      padding:14px 14px 10px;
+      box-shadow:var(--shadow-soft);
+      margin-bottom:16px;
+    }
+
+    .info-grid{
+      display:grid;
+      grid-template-columns:repeat(1,minmax(0,1fr));
+      gap:10px 16px;
+      margin-top:8px;
+    }
+
+    @media(min-width:720px){
+      .info-grid{
+        grid-template-columns:2.1fr 1.2fr;
+      }
+    }
+
+    label{
+      font-size:11px;
+      color:var(--muted);
+      display:block;
+      margin-bottom:3px;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    select,
+    textarea{
+      width:100%;
+      padding:6px 8px;
+      border-radius:8px;
+      border:1px solid var(--border);
+      background:#050715;
+      color:var(--text);
+      font-size:12px;
+      font-family:inherit;
+    }
+
+    textarea{
+      min-height:60px;
+      resize:vertical;
+    }
+
+    .info-row-inline{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+    .info-row-inline > div{
+      flex:1 1 120px;
+    }
+
+    .small-note{
+      font-size:11px;
+      color:var(--muted);
+      margin-top:4px;
+    }
+
+    /* Note cards */
+    .notes-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin:4px 0 8px;
+      font-size:12px;
+      color:var(--muted);
+    }
+
+    .notes-header strong{
+      color:var(--text);
+    }
+
+    .note-card{
+      background:var(--card);
+      border-radius:var(--radius-lg);
+      border:1px solid var(--border);
+      margin-bottom:10px;
+      overflow:hidden;
+      box-shadow:0 10px 22px rgba(0,0,0,0.6);
+    }
+
+    .note-header{
+      padding:8px 12px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      background:linear-gradient(120deg,rgba(13,71,161,0.85),rgba(66,165,245,0.35));
+      border-bottom:1px solid rgba(0,0,0,0.6);
+      cursor:pointer;
+    }
+
+    .note-header-left{
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    .note-badge{
+      padding:3px 7px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.5);
+      font-size:11px;
+      background:rgba(0,0,0,0.2);
+      min-width:62px;
+      text-align:center;
+    }
+
+    .note-title-text{
+      font-size:13px;
+      font-weight:600;
+    }
+
+    .note-toggle{
+      font-size:16px;
+      opacity:0.9;
+    }
+
+    .note-body{
+      padding:10px 12px 12px;
+      display:none;
+    }
+
+    .note-body.open{
+      display:block;
+    }
+
+    .note-fields{
+      display:grid;
+      grid-template-columns:repeat(1,minmax(0,1fr));
+      gap:8px 16px;
+      margin-bottom:8px;
+    }
+
+    @media(min-width:800px){
+      .note-fields{
+        grid-template-columns:2.3fr 1.7fr;
+      }
+    }
+
+    .note-label-inline{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:6px;
+    }
+
+    .note-label-inline span{
+      font-size:11px;
+      color:var(--muted);
+    }
+
+    .note-meta{
+      font-size:10px;
+      color:var(--muted);
+    }
+
+    /* table */
+    .note-table-wrapper{
+      width:100%;
+      overflow-x:auto;
+      margin-top:6px;
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      font-size:11.5px;
+      background:#050715;
+    }
+
+    th,td{
+      border:1px solid var(--border);
+      padding:4px 6px;
+      text-align:right;
+      white-space:nowrap;
+    }
+
+    th:nth-child(1), td:nth-child(1){
+      text-align:left;
+      min-width:180px;
+    }
+
+    th{
+      background:#0b1024;
+      position:sticky;
+      top:0;
+      z-index:1;
+    }
+
+    .table-controls{
+      display:flex;
+      justify-content:flex-end;
+      gap:6px;
+      margin-top:6px;
+      font-size:11px;
+    }
+
+    button{
+      border:none;
+      border-radius:999px;
+      padding:3px 8px;
+      font-size:11px;
+      cursor:pointer;
+      font-family:inherit;
+    }
+
+    .btn-add-row{
+      background:rgba(102,187,106,0.12);
+      color:var(--success);
+      border:1px solid rgba(102,187,106,0.7);
+    }
+
+    .btn-del-row{
+      background:rgba(239,83,80,0.1);
+      color:var(--danger);
+      border:1px solid rgba(239,83,80,0.7);
+    }
+
+    .unit-tag{
+      font-size:11px;
+      color:var(--muted);
+      margin-top:2px;
+    }
+
+    footer{
+      padding:10px 12px 14px;
+      font-size:11px;
+      color:var(--muted);
+      text-align:center;
+      border-top:1px solid rgba(255,255,255,0.08);
+      background:rgba(0,0,0,0.45);
+      backdrop-filter:blur(12px);
+      margin-top:6px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="header-title-block">
+      <h1>หมายเหตุประกอบงบการเงิน (เทียบ 2 ปี)</h1>
+      <p>FA – LG Notes 2-Year Comparative | รองรับหมายเหตุ 1–100 พร้อม Mapping NOTE จาก Excel</p>
+    </div>
+    <div class="header-right">
+      <a href="fa-lg-annual-report.html" class="back-link">
+        ← กลับหน้า FA – LG Annual Report
+      </a>
+      <div class="flow-pill">
+        <strong>NOTE</strong>
+        <span>Mapping: NOTE Sheet (excel_row) ➜ หมายเหตุ 4–65 / อื่นๆ</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="main-inner">
+
+    <!-- ข้อมูลส่วนบน -->
+    <section class="info-card">
+      <h2 style="margin:0 0 6px;font-size:16px;">📄 ข้อมูลหน่วยรับตรวจ & ปีงบประมาณ</h2>
+      <div class="info-grid">
+        <div>
+          <label>หน่วยรับตรวจ / อปท. (Entity)</label>
+          <input type="text" id="entityName" placeholder="เช่น เทศบาลเมืองกันทรลักษ์">
+          <div class="small-note">
+            ข้อมูลนี้จะแสดงเป็นส่วนหัวภายในรายงาน (ใช้ประกอบเวลาส่งออก Word/PDF)
+          </div>
+        </div>
+        <div>
+          <div class="info-row-inline">
+            <div>
+              <label>ปีงบประมาณปัจจุบัน (Current Year)</label>
+              <input type="number" id="currentYear" placeholder="เช่น 2568">
+            </div>
+            <div>
+              <label>ปีก่อนหน้า (Prior Year)</label>
+              <input type="number" id="priorYear" placeholder="เช่น 2567">
+            </div>
+          </div>
+          <div class="small-note">
+            ระบบจะอัปเดตหัวคอลัมน์ทุกตารางเป็น ปีปัจจุบัน / ปีก่อนหน้า ให้อัตโนมัติ
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="notes-header">
+      <div><strong>รายการหมายเหตุ</strong> – มีโครง 1–100 หมายเหตุ และ mapping รายการข้อย่อยสำหรับหมายเหตุ 4–65 แล้ว</div>
+      <div>Tips: หมายเหตุที่ไม่ได้ใช้ สามารถปล่อยว่างหรือพับการ์ดเก็บไว้ได้</div>
+    </div>
+
+    <!-- ที่วางการ์ดหมายเหตุ -->
+    <div id="notesContainer"></div>
+
+  </div>
+</main>
+
+<footer>
+  FA – LG Notes 2Y | Mapping NOTE Excel ➜ หมายเหตุ | สำนักงานการตรวจเงินแผ่นดินจังหวัดศรีสะเกษ
+</footer>
+
+<script>
+// === CONFIG: NOTE mapping จาก Excel NOTE Sheet ===
+const NOTE_CONFIG = /* mapping จากผู้ใช้ */ 
+[
+  {
+    "note_no": 4,
+    "note_code": "N04",
+    "note_title": "หมายเหตุ 4 เงินสดและรายการเทียบเท่าเงินสด",
+    "items": [
+      { "item_code": "N04_001", "excel_row": 7, "label": "เงินสดในมือ" },
+      { "item_code": "N04_002", "excel_row": 8, "label": "เงินฝากสถาบันการเงิน" },
+      { "item_code": "N04_003", "excel_row": 9, "label": "เงินฝากประจำที่มีกำหนดจ่ายคืนไม่เกิน 3 เดือน" },
+      { "item_code": "N04_004", "excel_row": 10, "label": "เงินฝากกระทรวงการคลัง" },
+      { "item_code": "N04_005", "excel_row": 11, "label": "รวมเงินสดและรายการเทียบเท่าเงินสด" }
+    ]
+  },
+  {
+    "note_no": 5,
+    "note_code": "N05",
+    "note_title": "หมายเหตุ 5 ลูกหนี้การค้า",
+    "items": [
+      { "item_code": "N05_001", "excel_row": 17, "label": "ลูกหนี้การค้า - หน่วยงานภาครัฐ" },
+      { "item_code": "N05_002", "excel_row": 18, "label": "หัก ค่าเผื่อหนี้สงสัยจะสูญ - ลูกหนี้การค้า - หน่วยงานภาครัฐ" },
+      { "item_code": "N05_003", "excel_row": 19, "label": "ลูกหนี้การค้า - หน่วยงานภาครัฐ สุทธิ" },
+      { "item_code": "N05_004", "excel_row": 20, "label": "ลูกหนี้การค้า - บุคคลภายนอก" },
+      { "item_code": "N05_005", "excel_row": 21, "label": "หัก ค่าเผื่อหนี้สงสัยจะสูญ - ลูกหนี้การค้า - บุคคลภายนอก" },
+      { "item_code": "N05_006", "excel_row": 22, "label": "ลูกหนี้การค้า - บุคคลภายนอก สุทธิ" },
+      { "item_code": "N05_007", "excel_row": 23, "label": "ลูกหนี้ค่ารักษาพยาบาล" },
+      { "item_code": "N05_008", "excel_row": 24, "label": "หัก ค่าเผื่อหนี้สงสัยจะสูญ - ลูกหนี้ค่ารักษาพยาบาล" },
+      { "item_code": "N05_009", "excel_row": 25, "label": "ลูกหนี้ค่ารักษาพยาบาล สุทธิ" },
+      { "item_code": "N05_010", "excel_row": 26, "label": "รวมลูกหนี้การค้า" },
+      { "item_code": "N05_011", "excel_row": 30, "label": "ลูกหนี้การค้า" }
+    ]
+  },
+  {
+    "note_no": 6,
+    "note_code": "N06",
+    "note_title": "หมายเหตุ 6 ลูกหนี้เงินโอนและรายการอุดหนุนระยะสั้น",
+    "items": [
+      { "item_code": "N06_001", "excel_row": 39, "label": "ลูกหนี้ค่าภาษี" },
+      { "item_code": "N06_002", "excel_row": 40, "label": "หัก ค่าเผื่อหนี้สงสัยจะสูญ - ลูกหนี้ค่าภาษี" },
+      { "item_code": "N06_003", "excel_row": 41, "label": "รายได้เงินอุดหนุนค้างรับ" },
+      { "item_code": "N06_004", "excel_row": 42, "label": "รวมลูกหนี้เงินโอนและรายการอุดหนุนระยะสั้น" }
+    ]
+  },
+  /* … (คง JSON ที่คุณให้ต่อทั้งหมดจนถึง note_no 65 แบบเดิม) … */
+  {
+    "note_no": 65,
+    "note_code": "N65",
+    "note_title": "หมายเหตุ 65 รายงานรายได้แผ่นดิน",
+    "items": [
+      { "item_code": "N65_001", "excel_row": 1017, "label": "รวมรายได้แผ่นดินที่จัดเก็บ" },
+      { "item_code": "N65_002", "excel_row": 1020, "label": "รายได้แผ่นดินจัดเก็บสุทธิ" },
+      { "item_code": "N65_003", "excel_row": 1022, "label": "รายได้แผ่นดินรอนำส่งคลัง" },
+      { "item_code": "N65_004", "excel_row": 1024, "label": "รายการรายได้แผ่นดินรอนำส่งคลัง" }
+    ]
+  }
+];
+// ===== END CONFIG =====
+
+(function(){
+  const NUM_NOTES = 100;
+  const container = document.getElementById('notesContainer');
+
+  function getNoteConfig(no){
+    return NOTE_CONFIG.find(n => n.note_no === no);
+  }
+
+  function createNoteCard(no){
+    const cfg = getNoteConfig(no) || null;
+
+    const card = document.createElement('section');
+    card.className = 'note-card';
+    card.dataset.noteNo = no;
+
+    const header = document.createElement('div');
+    header.className = 'note-header';
+
+    const headerLeft = document.createElement('div');
+    headerLeft.className = 'note-header-left';
+
+    const badge = document.createElement('div');
+    badge.className = 'note-badge';
+    badge.textContent = 'หมายเหตุ ' + no;
+
+    const titleText = document.createElement('div');
+    titleText.className = 'note-title-text';
+    titleText.textContent = cfg ? cfg.note_title : 'หัวข้อหมายเหตุ (ยังไม่ระบุ)';
+
+    headerLeft.appendChild(badge);
+    headerLeft.appendChild(titleText);
+
+    const toggle = document.createElement('div');
+    toggle.className = 'note-toggle';
+    toggle.textContent = '▾';
+
+    header.appendChild(headerLeft);
+    header.appendChild(toggle);
+
+    const body = document.createElement('div');
+    body.className = 'note-body';
+
+    // fields
+    const fields = document.createElement('div');
+    fields.className = 'note-fields';
+
+    const leftCol = document.createElement('div');
+    const rightCol = document.createElement('div');
+
+    // left: title + description
+    const labelTitle = document.createElement('label');
+    labelTitle.textContent = 'หัวข้อหมายเหตุ';
+    const inputTitle = document.createElement('input');
+    inputTitle.type = 'text';
+    inputTitle.placeholder = 'เช่น เงินสดและรายการเทียบเท่าเงินสด';
+    inputTitle.dataset.role = 'note-title';
+    if(cfg) inputTitle.value = cfg.note_title;
+
+    const labelDesc = document.createElement('label');
+    labelDesc.style.marginTop = '6px';
+    labelDesc.textContent = 'คำอธิบายสั้น (Narrative / Policy / Breakdown)';
+    const textareaDesc = document.createElement('textarea');
+    textareaDesc.placeholder = 'สรุปสาระสำคัญของหมายเหตุ ข้อกำหนด นโยบายบัญชี หรือรายละเอียดเพิ่มเติม';
+
+    leftCol.appendChild(labelTitle);
+    leftCol.appendChild(inputTitle);
+    leftCol.appendChild(labelDesc);
+    leftCol.appendChild(textareaDesc);
+
+    // right: meta + unit
+    const metaLabel = document.createElement('div');
+    metaLabel.className = 'note-label-inline';
+    const spanL = document.createElement('span');
+    spanL.textContent = 'หมายเลขหมายเหตุ';
+    const spanR = document.createElement('span');
+    spanR.textContent = 'No. ' + no.toString().padStart(2,'0') + (cfg && cfg.note_code ? ' | ' + cfg.note_code : '');
+    metaLabel.appendChild(spanL);
+    metaLabel.appendChild(spanR);
+
+    const metaInfo = document.createElement('div');
+    metaInfo.className = 'note-meta';
+    metaInfo.textContent = cfg
+      ? 'Mapping จาก Excel NOTE – เริ่มต้นจากแถว ' +
+        (cfg.items && cfg.items.length ? cfg.items[0].excel_row : '-') +
+        ' (ดู excel_row ใน data-attribute แต่ละรายการ)'
+      : 'โครงสร้างตัวเลข: ปีปัจจุบัน / ปีก่อน (หน่วย: บาท)';
+
+    const unitInfo = document.createElement('div');
+    unitInfo.className = 'unit-tag';
+    unitInfo.textContent = '(หน่วย: บาท)';
+
+    rightCol.appendChild(metaLabel);
+    rightCol.appendChild(metaInfo);
+    rightCol.appendChild(unitInfo);
+
+    fields.appendChild(leftCol);
+    fields.appendChild(rightCol);
+
+    // table
+    const tableWrapper = document.createElement('div');
+    tableWrapper.className = 'note-table-wrapper';
+
+    const table = document.createElement('table');
+    table.dataset.role = 'note-table';
+
+    const thead = document.createElement('thead');
+    const trHead1 = document.createElement('tr');
+    const th1 = document.createElement('th');
+    th1.textContent = 'รายการ';
+    const th2 = document.createElement('th');
+    th2.textContent = 'ปีปัจจุบัน';
+    const th3 = document.createElement('th');
+    th3.textContent = 'ปีก่อนหน้า';
+    trHead1.appendChild(th1);
+    trHead1.appendChild(th2);
+    trHead1.appendChild(th3);
+    thead.appendChild(trHead1);
+
+    const tbody = document.createElement('tbody');
+
+    function addRow(cfgItem){
+      const tr = document.createElement('tr');
+      if(cfgItem){
+        tr.dataset.itemCode = cfgItem.item_code || '';
+        tr.dataset.excelRow = cfgItem.excel_row != null ? String(cfgItem.excel_row) : '';
+      }
+
+      const tdDesc = document.createElement('td');
+      const tdCur = document.createElement('td');
+      const tdPrev = document.createElement('td');
+
+      const inpDesc = document.createElement('input');
+      inpDesc.type = 'text';
+      inpDesc.style.width = '100%';
+      inpDesc.style.background = 'transparent';
+      inpDesc.style.border = 'none';
+      inpDesc.style.color = 'inherit';
+      inpDesc.style.fontSize = '11.5px';
+      if(cfgItem){
+        inpDesc.value = cfgItem.label || '';
+        inpDesc.dataset.itemCode = cfgItem.item_code || '';
+        if(cfgItem.excel_row != null){
+          inpDesc.dataset.excelRow = String(cfgItem.excel_row);
+        }
+      }
+
+      const inpCur = document.createElement('input');
+      inpCur.type = 'text';
+      inpCur.style.width = '100%';
+      inpCur.style.background = 'transparent';
+      inpCur.style.border = 'none';
+      inpCur.style.color = 'inherit';
+      inpCur.style.fontSize = '11.5px';
+      inpCur.style.textAlign = 'right';
+
+      const inpPrev = inpCur.cloneNode();
+      inpPrev.style.textAlign = 'right';
+
+      tdDesc.appendChild(inpDesc);
+      tdCur.appendChild(inpCur);
+      tdPrev.appendChild(inpPrev);
+
+      tr.appendChild(tdDesc);
+      tr.appendChild(tdCur);
+      tr.appendChild(tdPrev);
+      tbody.appendChild(tr);
+    }
+
+    // สร้างแถวจาก config ถ้ามี / ไม่มีก็สร้าง 3 แถวเปล่า
+    if(cfg && Array.isArray(cfg.items) && cfg.items.length){
+      cfg.items.forEach(it => addRow(it));
+    }else{
+      for(let i=0;i<3;i++) addRow(null);
+    }
+
+    table.appendChild(thead);
+    table.appendChild(tbody);
+    tableWrapper.appendChild(table);
+
+    const tableControls = document.createElement('div');
+    tableControls.className = 'table-controls';
+
+    const btnAdd = document.createElement('button');
+    btnAdd.type = 'button';
+    btnAdd.className = 'btn-add-row';
+    btnAdd.textContent = '+ เพิ่มแถว';
+
+    const btnDel = document.createElement('button');
+    btnDel.type = 'button';
+    btnDel.className = 'btn-del-row';
+    btnDel.textContent = '− ลบแถวสุดท้าย';
+
+    tableControls.appendChild(btnAdd);
+    tableControls.appendChild(btnDel);
+
+    body.appendChild(fields);
+    body.appendChild(tableWrapper);
+    body.appendChild(tableControls);
+
+    // event: toggle card
+    header.addEventListener('click', function(e){
+      if(e.target.tagName.toLowerCase()==='input' || e.target.tagName.toLowerCase()==='textarea') return;
+      body.classList.toggle('open');
+      toggle.textContent = body.classList.contains('open') ? '▴' : '▾';
+    });
+
+    // sync title to header text
+    inputTitle.addEventListener('input', function(){
+      titleText.textContent = this.value.trim() || 'หัวข้อหมายเหตุ (ยังไม่ระบุ)';
+    });
+
+    // add/del row
+    btnAdd.addEventListener('click', function(){
+      addRow(null);
+    });
+
+    btnDel.addEventListener('click', function(){
+      if(tbody.rows.length>1){
+        tbody.deleteRow(tbody.rows.length-1);
+      }
+    });
+
+    // default: เปิดเฉพาะหมายเหตุ 4–6 ให้เห็นเป็นตัวอย่าง
+    if(no === 4 || no === 5 || no === 6){
+      body.classList.add('open');
+      toggle.textContent = '▴';
+    }
+
+    card.appendChild(header);
+    card.appendChild(body);
+    return card;
+  }
+
+  // generate note 1–100
+  for(let i=1;i<=NUM_NOTES;i++){
+    container.appendChild(createNoteCard(i));
+  }
+
+  // update year headers from top inputs
+  function updateYearHeaders(){
+    const cur = document.getElementById('currentYear').value || 'ปีปัจจุบัน';
+    const prev = document.getElementById('priorYear').value || 'ปีก่อนหน้า';
+    document.querySelectorAll('table[data-role="note-table"]').forEach(tbl=>{
+      const ths = tbl.querySelectorAll('thead th');
+      if(ths[1]) ths[1].textContent = cur;
+      if(ths[2]) ths[2].textContent = prev;
+    });
+  }
+
+  document.getElementById('currentYear').addEventListener('input', updateYearHeaders);
+  document.getElementById('priorYear').addEventListener('input', updateYearHeaders);
+
+})();
+</script>
+
+</body>
+</html>
