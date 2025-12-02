@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8">
-  <title>FA – LG Annual | อปท. 3.1 Going Concern</title>
+  <title>FA – LG Annual | อปท.3.1 – การประเมินความสามารถในการดำเนินงานต่อเนื่อง (Going Concern)</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <style>
@@ -15,9 +15,6 @@
       --muted:#a3acc7;
       --text:#f5f7ff;
       --pink:#f48fb1;
-      --danger:#ef5350;
-      --warn:#ffb300;
-      --ok:#66bb6a;
     }
     *{box-sizing:border-box;}
 
@@ -47,7 +44,7 @@
     header .sub{ font-size:13px; opacity:.9; }
 
     main{
-      max-width:980px;
+      max-width:1100px;
       margin:20px auto 28px;
       padding:0 16px 20px;
     }
@@ -127,7 +124,7 @@
       font-size:12px;
     }
     textarea{
-      min-height:80px;
+      min-height:70px;
       resize:vertical;
     }
     .input:focus, select:focus, textarea:focus{
@@ -146,80 +143,6 @@
       color:var(--muted);
       margin-bottom:6px;
     }
-
-    .indicator-table{
-      width:100%;
-      border-collapse:collapse;
-      font-size:12px;
-      margin-top:4px;
-    }
-    .indicator-table th,
-    .indicator-table td{
-      border:1px solid rgba(255,255,255,0.08);
-      padding:6px 6px;
-      vertical-align:top;
-    }
-    .indicator-table th{
-      background:#0b1024;
-      font-weight:600;
-    }
-    .indicator-name{
-      font-weight:600;
-    }
-    .badge{
-      display:inline-block;
-      padding:2px 7px;
-      border-radius:999px;
-      font-size:10px;
-      border:1px solid rgba(255,255,255,0.2);
-      background:rgba(0,0,0,0.45);
-    }
-
-    .badge-ok{ border-color:var(--ok); color:var(--ok); }
-    .badge-warn{ border-color:var(--warn); color:var(--warn); }
-    .badge-danger{ border-color:var(--danger); color:var(--danger); }
-
-    .radio-row{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      font-size:12px;
-      margin:6px 0 2px;
-    }
-
-    .pill-radio{
-      display:inline-flex;
-      align-items:center;
-      gap:4px;
-      padding:4px 9px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,0.3);
-      background:rgba(0,0,0,0.25);
-      cursor:pointer;
-      font-size:12px;
-    }
-    .pill-radio input{
-      accent-color:#42a5f5;
-    }
-
-    .flex-between{
-      display:flex;
-      justify-content:space-between;
-      gap:10px;
-      align-items:center;
-      margin-top:8px;
-    }
-
-    .status-pill{
-      padding:4px 10px;
-      border-radius:999px;
-      font-size:11px;
-      border:1px solid rgba(255,255,255,0.25);
-      background:rgba(0,0,0,0.45);
-    }
-    .status-ok{ border-color:var(--ok); color:var(--ok); }
-    .status-warn{ border-color:var(--warn); color:var(--warn); }
-    .status-danger{ border-color:var(--danger); color:var(--danger); }
 
     .btn-row{
       display:flex;
@@ -240,17 +163,171 @@
       border-color:var(--accent);
       background:linear-gradient(120deg,#0d47a1,#42a5f5);
     }
-    .btn:hover{
+    .btn-danger{
+      border-color:#f44336;
+      background:linear-gradient(120deg,#b71c1c,#f44336);
+    }
+    .btn-success{
+      border-color:#4caf50;
+      background:linear-gradient(120deg,#1b5e20,#4caf50);
+    }
+    .btn-info{
+      border-color:#26c6da;
+      background:linear-gradient(120deg,#006064,#26c6da);
+    }
+    .btn-ai{
+      border-color:#f48fb1;
+      background:linear-gradient(120deg,#7b1e3c,#f48fb1);
+    }
+    .btn-sm{
+      font-size:11px;
+      padding:3px 8px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.4);
+      background:rgba(0,0,0,0.45);
+      color:#fff;
+      cursor:pointer;
+    }
+    .btn:hover,
+    .btn-sm:hover{
       background:rgba(0,0,0,0.7);
     }
-    .btn-primary:hover{
+    .btn-primary:hover,
+    .btn-danger:hover,
+    .btn-success:hover,
+    .btn-info:hover,
+    .btn-ai:hover{
       filter:brightness(1.1);
+    }
+
+    .ai-btn-inline{
+      margin-top:4px;
+      display:inline-flex;
+      gap:6px;
+      flex-wrap:wrap;
     }
 
     .footer-note{
       font-size:10px;
       color:var(--muted);
       margin-top:6px;
+    }
+
+    .file-list{
+      font-size:11px;
+      color:var(--muted);
+      margin-top:4px;
+      max-height:80px;
+      overflow:auto;
+    }
+
+    /* ---------- A4 PREVIEW ---------- */
+    .a4-wrapper{
+      margin-top:18px;
+    }
+
+    .a4-title{
+      font-size:14px;
+      font-weight:600;
+      margin-bottom:6px;
+    }
+
+    .a4-page{
+      width:210mm;
+      min-height:297mm;
+      margin:0 auto 16px;
+      background:#ffffff;
+      color:#000000;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      padding:12mm;
+      font-size:11pt;
+      position:relative;
+    }
+
+    .a4-header-center{
+      text-align:center;
+      margin-bottom:6px;
+      font-size:12pt;
+      font-weight:600;
+    }
+    .a4-subheader{
+      text-align:center;
+      font-size:10pt;
+      margin-bottom:8px;
+    }
+    .a4-row{
+      display:flex;
+      justify-content:space-between;
+      font-size:10pt;
+      margin-bottom:4px;
+    }
+    .a4-row span{
+      display:inline-block;
+      min-width:80px;
+    }
+    .a4-row .value{
+      border-bottom:1px solid #000;
+      min-width:160px;
+      display:inline-block;
+      padding:0 2px;
+    }
+
+    .a4-block-title{
+      font-size:10pt;
+      font-weight:600;
+      margin-top:8px;
+    }
+    .a4-block-content{
+      font-size:10pt;
+      margin-top:3px;
+    }
+
+    .a4-footer{
+      position:absolute;
+      bottom:8mm;
+      left:12mm;
+      right:12mm;
+      font-size:8pt;
+      display:flex;
+      justify-content:space-between;
+    }
+
+    /* PRINT */
+    @page{
+      size:A4;
+      margin:12mm;
+    }
+    @media print{
+      body{
+        background:#ffffff;
+        color:#000000;
+        font-size:11pt;
+      }
+      header,
+      .nav-top,
+      .card:not(.card-a4),
+      .no-print{
+        display:none !important;
+      }
+      .a4-page{
+        box-shadow:none;
+        margin:0;
+        width:auto;
+        min-height:auto;
+        padding:0;
+      }
+      main{
+        max-width:100%;
+        margin:0;
+        padding:0;
+      }
+    }
+
+    @media (max-width:900px){
+      .a4-page{
+        width:100%;
+        min-height:auto;
+      }
     }
 
     @media (max-width:600px){
@@ -264,9 +341,9 @@
 <body>
 
 <header>
-  <h2>📊 อปท. 3.1 – การประเมิน Going Concern ของหน่วยรับตรวจ</h2>
+  <h2>🏛️ อปท.3.1 – การประเมินความสามารถในการดำเนินงานต่อเนื่อง (Going Concern)</h2>
   <div class="sub">
-    Form 3.1 – Going Concern Assessment | FA – Local Government (Annual)
+    Going Concern Assessment – การตรวจสอบรายงานการเงินขององค์กรปกครองส่วนท้องถิ่น
   </div>
 </header>
 
@@ -274,10 +351,10 @@
 
   <div class="nav-top">
     <a href="fa-lg-annual-plan.html" class="btn-nav">
-      <span>↩</span> กลับเมนูแบบฟอร์มการวางแผน
+      <span>🧭</span> เมนูแบบฟอร์มการวางแผน
     </a>
     <a href="fa-lg-annual.html" class="btn-nav">
-      <span>📅</span> กลับหน้าเลือกปี / หน่วยรับตรวจ
+      <span>📅</span> เลือกปี / หน่วยรับตรวจ
     </a>
     <a href="fa-menu.html" class="btn-nav">
       <span>📂</span> FA Main Menu
@@ -287,394 +364,879 @@
     </a>
   </div>
 
-  <!-- CARD 1: ข้อมูลพื้นฐาน -->
+  <!-- CARD 1: Basic info -->
   <section class="card">
     <div class="card-header">
       <div>
-        <div class="card-title">ส่วนที่ 1 – ข้อมูลพื้นฐานหน่วยรับตรวจและงวดการตรวจสอบ</div>
+        <div class="card-title">ส่วนที่ 1 – ข้อมูลพื้นฐาน และการเชื่อมโยงแบบฟอร์ม</div>
         <div class="card-sub">
-          กำหนดปีงบประมาณ หน่วยรับตรวจ และข้อมูลภาพรวมที่จะใช้ประกอบการประเมิน Going Concern
+          ผูกปีงบประมาณ–งวดวันที่–หน่วยรับตรวจกับแบบฟอร์มที่เกี่ยวข้อง (อปท.3 – อปท.8.31)
+          เพื่อใช้เป็นบริบทในการพิจารณา Going Concern
         </div>
       </div>
-      <div class="chip">Planning • Going Concern</div>
+      <div class="chip">อปท.3.1 • Going Concern</div>
     </div>
+
+    <div class="hint">
+      ⚙️ ข้อมูลหน่วยรับตรวจจะดึงจาก <code>localStorage["fa-db-data-gov"]</code>  
+      หากยังไม่มีข้อมูล กรุณาเปิดหน้า <code>fa-db-data-gov.html</code> อย่างน้อย 1 ครั้งเพื่อโหลดฐานกลาง
+    </div>
+    <div id="govDbStatus" class="hint"></div>
 
     <div class="form-grid">
       <div>
-        <label for="fiscalYear">ปีงบประมาณ</label>
-        <select id="fiscalYear" class="input">
+        <label for="fy">ปีงบประมาณ (2565 – 2582)</label>
+        <select id="fy" class="input">
           <option value="">— เลือกปีงบประมาณ —</option>
-          <option>2567</option>
-          <option>2568</option>
-          <option>2569</option>
+          <option>2565</option><option>2566</option><option>2567</option>
+          <option>2568</option><option>2569</option><option>2570</option>
+          <option>2571</option><option>2572</option><option>2573</option>
+          <option>2574</option><option>2575</option><option>2576</option>
+          <option>2577</option><option>2578</option><option>2579</option>
+          <option>2580</option><option>2581</option><option>2582</option>
         </select>
       </div>
 
       <div>
-        <label for="auditeeName">ชื่อหน่วยรับตรวจ (อปท.)</label>
-        <input id="auditeeName" class="input" type="text" placeholder="เช่น เทศบาลเมืองตัวอย่าง">
+        <label for="period">งวดวันที่ (30 กันยายน 2566 – 2582)</label>
+        <select id="period" class="input">
+          <option value="">— เลือกงวดวันที่ —</option>
+          <!-- เติมด้วย JS -->
+        </select>
       </div>
 
       <div>
-        <label for="amphoe">อำเภอ</label>
-        <input id="amphoe" class="input" type="text" placeholder="อำเภอ">
+        <label for="province">จังหวัด (จากฐานข้อมูลกลาง)</label>
+        <select id="province" class="input">
+          <option value="">— เลือกจังหวัด —</option>
+        </select>
       </div>
 
       <div>
-        <label for="province">จังหวัด</label>
-        <input id="province" class="input" type="text" placeholder="จังหวัด">
+        <label for="amphoe">อำเภอ / เขต (จากฐานข้อมูลกลาง)</label>
+        <select id="amphoe" class="input">
+          <option value="">— เลือกอำเภอ / เขต —</option>
+        </select>
       </div>
 
       <div>
-        <label for="auditPeriod">งวดที่ตรวจสอบ / ณ วันที่</label>
-        <input id="auditPeriod" class="input" type="text" placeholder="เช่น สำหรับปีสิ้นสุดวันที่ 30 กันยายน 2567">
+        <label for="auditee">ชื่อหน่วยรับตรวจ / อปท. (จากฐานข้อมูลกลาง)</label>
+        <select id="auditee" class="input">
+          <option value="">— เลือกหน่วยรับตรวจ —</option>
+        </select>
       </div>
 
       <div>
-        <label for="preparedBy">ผู้จัดทำ</label>
-        <input id="preparedBy" class="input" type="text" placeholder="ชื่อผู้ตรวจสอบ / ทีมงาน">
-      </div>
-
-      <div>
-        <label for="reviewedBy">ผู้สอบทาน</label>
-        <input id="reviewedBy" class="input" type="text" placeholder="ชื่อผู้สอบทาน / ผตจ.">
-      </div>
-
-      <div>
-        <label for="refOtherForms">อ้างอิงแบบฟอร์มที่เกี่ยวข้อง</label>
-        <input id="refOtherForms" class="input" type="text"
-               placeholder="เช่น อปท.3, 11.1.3, 11.1.5, อปท.4, ฟอร์ม 3.5–3.6">
+        <label for="formRef">อ้างอิงแบบฟอร์ม (อปท.3 – อปท.8.31)</label>
+        <select id="formRef" class="input">
+          <option value="">— เลือกแบบฟอร์ม —</option>
+          <!-- เติมด้วย JS -->
+        </select>
       </div>
     </div>
 
-    <div class="footer-note">
-      * ข้อมูลส่วนนี้จะเชื่อมโยงกับฐานข้อมูลหน่วยรับตรวจ / ระบบเลือกปีอัตโนมัติได้ในขั้นพัฒนาต่อไป
-    </div>
-  </section>
-
-  <!-- CARD 2: ตัวชี้วัดเชิงปริมาณ -->
-  <section class="card">
-    <div class="card-header">
-      <div>
-        <div class="card-title">ส่วนที่ 2 – ตัวชี้วัดเชิงปริมาณด้านการเงิน (Quantitative Indicators)</div>
-        <div class="card-sub">
-          รวบรวมอัตราส่วนทางการเงินและตัวเลขสำคัญที่สะท้อนความสามารถในการดำเนินงานต่อเนื่อง
-        </div>
-      </div>
-      <div class="chip">Financial Ratios</div>
-    </div>
-
-    <div class="hint">
-      ใส่ค่าที่ได้จากการวิเคราะห์งบการเงิน / ระบบ e-LAAS / ฐานข้อมูลกลาง (รวมทั้งประมาณการปีถัดไปถ้ามี)
-    </div>
-
-    <table class="indicator-table">
-      <thead>
-      <tr>
-        <th style="width:26%;">ตัวชี้วัด</th>
-        <th style="width:20%;">ค่าที่คำนวณได้</th>
-        <th>เกณฑ์ / การตีความ</th>
-        <th style="width:20%;">การประเมินเบื้องต้น</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr>
-        <td class="indicator-name">
-          1) สภาพคล่อง (เช่น Current Ratio)
-        </td>
-        <td>
-          <label for="ratioLiquidity">ค่า (เท่า)</label>
-          <input id="ratioLiquidity" class="input" type="text" placeholder="เช่น 1.25 เท่า">
-        </td>
-        <td>
-          <textarea id="ratioLiquidityNote" class="input"
-                    placeholder="เช่น &gt; 1.0 ถือว่าพอใช้, &lt; 1.0 เสี่ยงสภาพคล่องตึงตัว"></textarea>
-        </td>
-        <td>
-          <select id="ratioLiquidityEval" class="input">
-            <option value="">— เลือก —</option>
-            <option value="ok">ปกติ</option>
-            <option value="warn">เริ่มมีความเสี่ยง</option>
-            <option value="danger">เสี่ยงสูง</option>
-          </select>
-        </td>
-      </tr>
-
-      <tr>
-        <td class="indicator-name">
-          2) ฐานะงบประมาณ (ดุลขาดดุลต่อเนื่อง)
-        </td>
-        <td>
-          <label for="budgetBalance">ผลดุลปีล่าสุด</label>
-          <input id="budgetBalance" class="input" type="text" placeholder="เช่น ขาดดุล 12 ล้านบาท">
-        </td>
-        <td>
-          <textarea id="budgetBalanceNote" class="input"
-                    placeholder="เช่น ขาดดุลต่อเนื่องมากกว่า 2 ปี, พึ่งพาเงินอุดหนุนเฉพาะกิจสูง"></textarea>
-        </td>
-        <td>
-          <select id="budgetBalanceEval" class="input">
-            <option value="">— เลือก —</option>
-            <option value="ok">ปกติ</option>
-            <option value="warn">เสี่ยง</option>
-            <option value="danger">เสี่ยงรุนแรง</option>
-          </select>
-        </td>
-      </tr>
-
-      <tr>
-        <td class="indicator-name">
-          3) ระดับหนี้สินและภาระผูกพัน
-        </td>
-        <td>
-          <label for="debtLevel">ยอดหนี้รวม / ภาระผูกพัน</label>
-          <input id="debtLevel" class="input" type="text" placeholder="เช่น หนี้เงินกู้ 50 ล้านบาท ภาระผูกพัน 30 ล้านบาท">
-        </td>
-        <td>
-          <textarea id="debtLevelNote" class="input"
-                    placeholder="เช่น ภาระผูกพันสูงเมื่อเทียบกับงบประมาณประจำปี / กระแสเงินสดในอนาคต"></textarea>
-        </td>
-        <td>
-          <select id="debtLevelEval" class="input">
-            <option value="">— เลือก —</option>
-            <option value="ok">ควบคุมได้</option>
-            <option value="warn">เริ่มกดดัน</option>
-            <option value="danger">เสี่ยงต่อการขาดเสถียรภาพ</option>
-          </select>
-        </td>
-      </tr>
-
-      <tr>
-        <td class="indicator-name">
-          4) ความพึ่งพิงเงินอุดหนุน / รายได้เฉพาะกิจ
-        </td>
-        <td>
-          <label for="grantDepend">สัดส่วน (%)</label>
-          <input id="grantDepend" class="input" type="text" placeholder="เช่น 70% ของรายได้รวม">
-        </td>
-        <td>
-          <textarea id="grantDependNote" class="input"
-                    placeholder="เช่น สัดส่วนสูง อาจสะท้อนความเสี่ยงด้านการพึ่งพาแหล่งงบประมาณภายนอก"></textarea>
-        </td>
-        <td>
-          <select id="grantDependEval" class="input">
-            <option value="">— เลือก —</option>
-            <option value="ok">อยู่ในเกณฑ์ที่ยอมรับได้</option>
-            <option value="warn">พึ่งพาสูง</option>
-            <option value="danger">พึ่งพาสูงมาก</option>
-          </select>
-        </td>
-      </tr>
-
-      <tr>
-        <td class="indicator-name">
-          5) ตัวชี้วัดอื่น ๆ ที่สำคัญ
-        </td>
-        <td>
-          <label for="otherIndicator">ระบุรายการ</label>
-          <input id="otherIndicator" class="input" type="text" placeholder="เช่น อัตราการเก็บรายได้ค่าน้ำบาดาล ฯลฯ">
-        </td>
-        <td>
-          <textarea id="otherIndicatorNote" class="input"
-                    placeholder="สรุปผลและเกณฑ์การตีความของตัวชี้วัดดังกล่าว"></textarea>
-        </td>
-        <td>
-          <select id="otherIndicatorEval" class="input">
-            <option value="">— เลือก —</option>
-            <option value="ok">หนุนให้ดำเนินงานต่อเนื่องได้</option>
-            <option value="warn">ต้องติดตามใกล้ชิด</option>
-            <option value="danger">เป็นสัญญาณเตือนสำคัญ</option>
-          </select>
-        </td>
-      </tr>
-      </tbody>
-    </table>
-
-    <div class="footer-note">
-      * สามารถเชื่อมการดึงข้อมูลอัตโนมัติจาก e-LAAS / ฐานข้อมูล Big Data ของ อปท. ในระยะพัฒนาต่อไป
+    <div class="section-title">1.2 สรุปสาระสำคัญจากแบบฟอร์มที่เกี่ยวข้องกับ Going Concern</div>
+    <textarea id="gcContext" class="input" placeholder="สรุปประเด็นจากแบบฟอร์ม/งบที่เกี่ยวข้องกับ Going Concern เช่น ผลการประเมินความเสี่ยง RMM (อปท.4), Materiality (3.5–3.6), ประเด็นจาก 8.x ฯลฯ"></textarea>
+    <div class="ai-btn-inline no-print">
+      <button type="button" class="btn-sm btn-ai" onclick="aiSuggestForField('gcContext','บริบทและสาระสำคัญจากแบบฟอร์มที่เกี่ยวข้องกับ Going Concern')">🤖 AI ช่วยร่าง/สรุป</button>
+      <button type="button" class="btn-sm" onclick="appendRawDataTo('gcContext')">📎 แนบข้อมูลดิบจากไฟล์/เว็บ</button>
     </div>
   </section>
 
-  <!-- CARD 3: ปัจจัยเชิงคุณภาพ -->
+  <!-- CARD 2: Data source (file / web) -->
   <section class="card">
     <div class="card-header">
       <div>
-        <div class="card-title">ส่วนที่ 3 – ปัจจัยเชิงคุณภาพและเหตุการณ์ที่มีนัยสำคัญ</div>
+        <div class="card-title">ส่วนที่ 2 – แหล่งข้อมูลสำหรับประเมิน Going Concern</div>
         <div class="card-sub">
-          ประเมินเหตุการณ์ สภาพแวดล้อม และปัจจัยที่อาจทำให้เกิดข้อสงสัยต่อการดำเนินงานต่อเนื่อง
+          รองรับการดึงข้อมูลจากไฟล์ (CSV/Excel/Text) หรือจากเว็บ (เช่น e-LAAS, เว็บไซต์ อปท., BI) มาใช้เป็นฐานวิเคราะห์
         </div>
       </div>
-      <div class="chip">Qualitative Factors</div>
+      <div class="chip">Data Source • File / Web</div>
     </div>
 
-    <div class="section-title">3.1 เหตุการณ์หรือปัจจัยเสี่ยงที่ตรวจพบ</div>
-    <div class="hint">
-      เลือกและอธิบายปัจจัยที่เกี่ยวข้อง (สามารถใช้ร่วมกับผลการประเมินจากแบบ อปท.3 / 11.1.3–11.1.5 / อปท.4)
-    </div>
-
+    <div class="section-title">2.1 ดึงข้อมูลจากไฟล์</div>
     <div class="form-grid">
       <div>
-        <label>🧩 ด้านกฎหมาย / นโยบาย</label>
-        <textarea id="qualLaw" class="input"
-                  placeholder="เช่น การเปลี่ยนแปลงกฎหมายสำคัญ การถ่ายโอนภารกิจ การถูกฟ้องร้องคดี ฯลฯ"></textarea>
+        <label for="dataFiles">เลือกไฟล์ข้อมูล (เช่น CSV, TXT, JSON ฯลฯ)</label>
+        <input id="dataFiles" class="input" type="file" multiple onchange="handleFiles(this.files)">
       </div>
-
       <div>
-        <label>🏛️ ด้านโครงสร้างการบริหาร / ธรรมาภิบาล</label>
-        <textarea id="qualGovernance" class="input"
-                  placeholder="เช่น การเปลี่ยนแปลงผู้บริหารบ่อย การขาดเสถียรภาพองค์กร ฯลฯ"></textarea>
-      </div>
-
-      <div>
-        <label>💼 ด้านการบริหารงบประมาณและการเงิน</label>
-        <textarea id="qualFinance" class="input"
-                  placeholder="เช่น การจัดทำงบประมาณล่าช้า ปรับลดงบประมาณอย่างมีนัยสำคัญ ฯลฯ"></textarea>
-      </div>
-
-      <div>
-        <label>👥 ด้านบุคลากรและระบบงาน</label>
-        <textarea id="qualStaff" class="input"
-                  placeholder="เช่น ขาดบุคลากรบัญชีหลัก ขาดผู้ปฏิบัติงานสำคัญ ระบบงานไม่เสถียร ฯลฯ"></textarea>
-      </div>
-
-      <div>
-        <label>🌐 ปัจจัยภายนอก / ภัยพิบัติ / เหตุฉุกเฉิน</label>
-        <textarea id="qualExternal" class="input"
-                  placeholder="เช่น ภัยพิบัติรุนแรง เศรษฐกิจถดถอย โรคระบาด ฯลฯ"></textarea>
-      </div>
-
-      <div>
-        <label>📝 ข้อสังเกตเพิ่มเติมอื่น ๆ</label>
-        <textarea id="qualOther" class="input"
-                  placeholder="ระบุปัจจัยอื่นที่อาจกระทบต่อการดำเนินงานต่อเนื่องของหน่วยรับตรวจ"></textarea>
+        <label>ไฟล์ที่เลือก</label>
+        <div id="fileList" class="file-list">ยังไม่เลือกไฟล์</div>
       </div>
     </div>
-  </section>
 
-  <!-- CARD 4: สรุปการประเมิน Going Concern -->
-  <section class="card">
-    <div class="card-header">
+    <div class="section-title">2.2 ดึงข้อมูลจาก Web / API</div>
+    <div class="form-grid">
       <div>
-        <div class="card-title">ส่วนที่ 4 – สรุปผลการประเมิน Going Concern และผลกระทบต่อการวางแผนตรวจสอบ</div>
-        <div class="card-sub">
-          ระบุข้อสรุปว่ามี/ไม่มีข้อสงสัย หรือมีข้อสงสัยอย่างมีนัยสำคัญต่อความสามารถในการดำเนินงานต่อเนื่อง
-        </div>
+        <label for="dataUrl">URL (เช่น หน้าเว็บรายงานการเงิน, API ภายใน)</label>
+        <input id="dataUrl" class="input" type="url" placeholder="เช่น https://example.go.th/report/2567">
       </div>
-      <div class="chip">Conclusion</div>
-    </div>
-
-    <div class="section-title">4.1 ระดับข้อสงสัยต่อ Going Concern</div>
-    <div class="radio-row">
-      <label class="pill-radio">
-        <input type="radio" name="gcLevel" value="ok">
-        <span>ไม่มีข้อสงสัยที่มีนัยสำคัญ</span>
-      </label>
-      <label class="pill-radio">
-        <input type="radio" name="gcLevel" value="warn">
-        <span>มีข้อสงสัยบางส่วน (ต้องเฝ้าระวัง)</span>
-      </label>
-      <label class="pill-radio">
-        <input type="radio" name="gcLevel" value="danger">
-        <span>มีข้อสงสัยอย่างมีนัยสำคัญ</span>
-      </label>
-    </div>
-
-    <label for="gcReason" style="margin-top:6px;">เหตุผลประกอบการตัดสินใจ (อ้างอิงตัวชี้วัดและปัจจัยจากส่วนที่ 2–3)</label>
-    <textarea id="gcReason" class="input"
-              placeholder="ระบุเหตุผลสนับสนุนการประเมิน เช่น สภาพคล่องต่ำ ขาดดุลต่อเนื่อง หนี้สูง ปัจจัยเชิงคุณภาพ ฯลฯ"></textarea>
-
-    <div class="section-title">4.2 ผลกระทบต่อรูปแบบและขอบเขตการตรวจสอบ</div>
-    <div class="hint">
-      ระบุว่าการประเมิน Going Concern ส่งผลให้ออกแบบขั้นตอนการตรวจสอบเพิ่มเติมอย่างไร
-      (เช่น เพิ่มการวิเคราะห์ความสามารถในการชำระหนี้ เพิ่มขั้นตอนในด้านการเปิดเผยข้อมูล ฯลฯ)
-    </div>
-    <textarea id="gcImpact" class="input"
-              placeholder="เช่น เพิ่มการทดสอบการประมาณการทางบัญชี เพิ่มการทดสอบเอกสารสนับสนุนการกู้ยืม / ภาระผูกพัน ฯลฯ"></textarea>
-
-    <div class="flex-between">
       <div>
-        <div class="section-title" style="margin-top:10px;">ระดับความเสี่ยงโดยรวมจากมุมมอง Going Concern</div>
-        <div id="gcStatusPill" class="status-pill">
-          ยังไม่ประเมิน
-        </div>
+        <label>&nbsp;</label>
+        <button type="button" class="btn" onclick="fetchFromWeb()">🌐 ดึงข้อมูลจาก Web (ทดลอง)</button>
       </div>
-      <div class="btn-row">
-        <button type="button" class="btn" onclick="clearForm()">ล้างข้อมูลชั่วคราว</button>
-        <button type="button" class="btn btn-primary" onclick="quickAssess()">
-          ประเมินระดับความเสี่ยงโดยสรุป
-        </button>
-      </div>
+    </div>
+
+    <div class="section-title">2.3 ข้อมูลดิบที่ใช้ประกอบการประเมิน Going Concern</div>
+    <textarea id="rawData" class="input" placeholder="ระบบจะรวบรวมข้อความ/ข้อมูลที่อ่านได้จากไฟล์และจาก URL มาไว้ที่นี่ เพื่อให้ AI/ผู้ตรวจใช้วิเคราะห์ต่อ"></textarea>
+    <div class="ai-btn-inline no-print">
+      <button type="button" class="btn-sm btn-ai" onclick="aiSuggestForField('rawData','สรุปข้อมูลดิบที่รวบรวมสำหรับ Going Concern')">🤖 AI ช่วยจัดโครง/สรุปข้อมูลดิบ</button>
     </div>
 
     <div class="footer-note">
-      * ปุ่ม “ประเมินระดับความเสี่ยงโดยสรุป” เป็นเพียง Logical Helper เบื้องต้น
-      ไม่ใช่การตัดสินใจแทนนักตรวจสอบ – สามารถปรับเกณฑ์ในโค้ด JavaScript ให้เข้ากับแนวปฏิบัติจริงของหน่วยงานได้
+      * การอ่านไฟล์ Excel/ไฟล์ไบนารี ซับซ้อน อาจต้องแปลงเป็น CSV/TXT ก่อน  
+      * การดึงข้อมูลจาก Web อาจถูกจำกัดด้วย CORS ของเว็บไซต์ปลายทาง
+    </div>
+  </section>
+
+  <!-- CARD 3: Going Concern assessment fields -->
+  <section class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">ส่วนที่ 3 – การประเมินปัจจัยที่เกี่ยวข้องกับ Going Concern</div>
+        <div class="card-sub">
+          บันทึกข้อเท็จจริง สัญญาณความเสี่ยง และการวิเคราะห์ตามมุมมองด้านการเงิน การดำเนินงาน กฎหมาย/ข้อผูกพัน
+          และแผนของผู้บริหาร
+        </div>
+      </div>
+      <div class="chip">Risk Indicators • Management Plans</div>
+    </div>
+
+    <div class="section-title">3.1 ด้านการเงินและสภาพคล่อง</div>
+    <div class="hint">
+      เช่น ฐานรายได้หลัก, การขาดดุลงบประมาณต่อเนื่อง, หนี้สินค้างชำระ, ข้อจำกัดด้านกระแสเงินสด, ข้อสังเกตจากรายงานก่อนหน้า ฯลฯ
+    </div>
+    <textarea id="gcFinancial" class="input" placeholder="บรรยายสถานะการเงิน/สภาพคล่องที่เกี่ยวข้องกับความสามารถในการดำเนินงานต่อเนื่อง"></textarea>
+    <div class="ai-btn-inline no-print">
+      <button type="button" class="btn-sm btn-ai" onclick="aiSuggestForField('gcFinancial','ด้านการเงินและสภาพคล่อง')">🤖 AI ช่วยวิเคราะห์ด้านการเงิน</button>
+      <button type="button" class="btn-sm" onclick="appendRawDataTo('gcFinancial')">📎 ดึงจากข้อมูลดิบ</button>
+    </div>
+
+    <div class="section-title">3.2 ด้านการดำเนินงาน / การให้บริการประชาชน</div>
+    <div class="hint">
+      เช่น การหยุดชะงักของบริการสาธารณะ, โครงการลงทุนขนาดใหญ่, ปัญหาโครงสร้างพื้นฐาน, การสูญเสียบุคลากรหลัก ฯลฯ
+    </div>
+    <textarea id="gcOperations" class="input" placeholder="บรรยายประเด็นด้านการดำเนินงานที่มีผลต่อ Going Concern"></textarea>
+    <div class="ai-btn-inline no-print">
+      <button type="button" class="btn-sm btn-ai" onclick="aiSuggestForField('gcOperations','ด้านการดำเนินงาน/บริการสาธารณะ')">🤖 AI ช่วยวิเคราะห์ด้านการดำเนินงาน</button>
+      <button type="button" class="btn-sm" onclick="appendRawDataTo('gcOperations')">📎 ดึงจากข้อมูลดิบ</button>
+    </div>
+
+    <div class="section-title">3.3 ด้านกฎหมาย ข้อผูกพัน และคดีความ</div>
+    <div class="hint">
+      เช่น คดีความจำนวนมาก, ข้อพิพาทที่อาจส่งผลการเงินอย่างมีนัยสำคัญ, ข้อจำกัดตามกฎหมาย/คำสั่งศาล ฯลฯ
+    </div>
+    <textarea id="gcLegal" class="input" placeholder="บรรยายคดีความ/ข้อผูกพัน/ประเด็นกฎหมายที่มีผลต่อ Going Concern"></textarea>
+    <div class="ai-btn-inline no-print">
+      <button type="button" class="btn-sm btn-ai" onclick="aiSuggestForField('gcLegal','ด้านกฎหมาย ข้อผูกพัน และคดีความ')">🤖 AI ช่วยวิเคราะห์ด้านกฎหมาย</button>
+      <button type="button" class="btn-sm" onclick="appendRawDataTo('gcLegal')">📎 ดึงจากข้อมูลดิบ</button>
+    </div>
+
+    <div class="section-title">3.4 ปัจจัยอื่น ๆ ที่อาจกระทบความสามารถในการดำเนินงานต่อเนื่อง</div>
+    <div class="hint">
+      เช่น ภัยพิบัติ, ความขัดแย้งทางการเมืองในพื้นที่, การเปลี่ยนแปลงเชิงโครงสร้างใหญ่ ฯลฯ
+    </div>
+    <textarea id="gcOther" class="input" placeholder="ปัจจัยอื่น ๆ นอกเหนือจากข้อ 3.1–3.3"></textarea>
+    <div class="ai-btn-inline no-print">
+      <button type="button" class="btn-sm btn-ai" onclick="aiSuggestForField('gcOther','ปัจจัยอื่น ๆ ที่เกี่ยวข้องกับ Going Concern')">🤖 AI ช่วยวิเคราะห์ปัจจัยอื่น ๆ</button>
+      <button type="button" class="btn-sm" onclick="appendRawDataTo('gcOther')">📎 ดึงจากข้อมูลดิบ</button>
+    </div>
+
+    <div class="section-title">3.5 แผนและการตอบสนองของฝ่ายบริหาร</div>
+    <div class="hint">
+      เช่น แผนเพิ่มรายได้, ปรับโครงสร้างหนี้, ลดค่าใช้จ่าย, ปรับโครงสร้างองค์กร, แผนแก้ไขบริการ ฯลฯ
+    </div>
+    <textarea id="gcMgmtPlan" class="input" placeholder="บันทึกแผน/มาตรการที่ฝ่ายบริหารจะดำเนินการเพื่อลดความเสี่ยง Going Concern"></textarea>
+    <div class="ai-btn-inline no-print">
+      <button type="button" class="btn-sm btn-ai" onclick="aiSuggestForField('gcMgmtPlan','แผนและการตอบสนองของฝ่ายบริหาร')">🤖 AI ช่วยจัดโครงแผน</button>
+      <button type="button" class="btn-sm" onclick="appendRawDataTo('gcMgmtPlan')">📎 ดึงจากข้อมูลดิบ</button>
+    </div>
+
+    <div class="section-title">3.6 ข้อสรุปของผู้ตรวจสอบเกี่ยวกับ Going Concern</div>
+    <div class="hint">
+      ให้สรุประดับความไม่แน่นอนที่มีนัยสำคัญหรือไม่ วิธีการตอบสนองในการตรวจสอบ และผลกระทบต่อรายงานผู้สอบบัญชี
+    </div>
+    <textarea id="gcConclusion" class="input" placeholder="สรุปผลประเมิน Going Concern (มี/ไม่มีเหตุสงสัยอย่างมีนัยสำคัญ + เหตุผล + แนวทางสะท้อนในรายงาน)"></textarea>
+    <div class="ai-btn-inline no-print">
+      <button type="button" class="btn-sm btn-ai" onclick="aiSuggestConclusion()">🤖 AI ช่วยร่างข้อสรุป Going Concern</button>
+      <button type="button" class="btn-sm" onclick="appendRawDataTo('gcConclusion')">📎 ดึงจากข้อมูลดิบ</button>
+    </div>
+  </section>
+
+  <!-- CARD 4: AI Overall + integration -->
+  <section class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">ส่วนที่ 4 – ให้ AI ช่วยวิเคราะห์ภาพรวม และการส่งต่อระบบ</div>
+        <div class="card-sub">
+          สร้างข้อความสรุปเพื่อนำไปใช้ในระบบสอบทาน และฐานข้อมูลกระดาษทำการ
+        </div>
+      </div>
+      <div class="chip">AI Summary • Review / Working Paper</div>
+    </div>
+
+    <div class="section-title">4.1 โจทย์ที่ต้องการให้ AI/ผู้ตรวจวิเคราะห์</div>
+    <textarea id="aiQuestion" class="input" placeholder="เช่น ประเมินว่ามีเหตุสงสัยอย่างมีนัยสำคัญต่อ Going Concern หรือไม่ และควรเสนอรูปแบบความเห็นผู้สอบบัญชีอย่างไร"></textarea>
+
+    <div class="section-title">4.2 ผลการวิเคราะห์ภาพรวมโดย AI / ผู้ตรวจสอบ</div>
+    <textarea id="aiOverall" class="input" placeholder="สรุปวิเคราะห์ภาพรวม (จะถูกส่งไปแสดงในแบบฟอร์ม A4 ด้วย)"></textarea>
+
+    <div class="btn-row no-print">
+      <button type="button" class="btn-ai" onclick="fakeAiAnalyzeAll()">🤖 ให้ AI ช่วยวิเคราะห์ข้อมูลทุกช่องว่าง (Prototype)</button>
+      <button type="button" class="btn" onclick="pushToA4()">อัปเดตข้อมูลไปยังแบบฟอร์ม A4</button>
+      <button type="button" class="btn-success" onclick="sendToReviewSystem()">ส่งไประบบสอบทาน (Review)</button>
+      <button type="button" class="btn-info" onclick="sendToWorkingpaperDb()">ส่งไประบบฐานข้อมูลกระดาษทำการ (WP DB)</button>
+    </div>
+
+    <div class="footer-note">
+      * ฟังก์ชัน AI ในหน้านี้เป็น Prototype ใน Browser – สามารถเชื่อมต่อ API AI จริงภายหลังได้  
+      * ข้อมูลทั้งหมดจะถูกจัดเก็บในรูป JSON เพื่อส่งต่อระบบอื่น
+    </div>
+  </section>
+
+  <!-- CARD 5: A4 + Export -->
+  <section class="card card-a4">
+    <div class="card-header">
+      <div>
+        <div class="card-title">ส่วนที่ 5 – แบบฟอร์ม อปท.3.1 รูปแบบ A4 เพื่อพิมพ์ / แนบกระดาษทำการ</div>
+        <div class="card-sub">
+          แสดงข้อมูลปีงบประมาณ-หน่วยรับตรวจ และผลการประเมิน Going Concern ในรูปแบบกระดาษ A4
+        </div>
+      </div>
+      <div class="chip">A4 Layout • Export</div>
+    </div>
+
+    <div class="btn-row no-print">
+      <button type="button" class="btn" onclick="pushToA4()">อัปเดตแบบฟอร์ม A4</button>
+      <button type="button" class="btn btn-primary" onclick="window.print()">พิมพ์ / Export PDF (A4)</button>
+      <button type="button" class="btn" onclick="exportA4Html()">Export เป็น HTML (A4 เฉพาะหน้า)</button>
+      <button type="button" class="btn btn-danger" onclick="exportJson()">Export เป็น JSON (ข้อมูลแบบฟอร์ม)</button>
+      <button type="button" class="btn-success" onclick="sendToReviewSystem()">ส่งไประบบสอบทาน (Review)</button>
+      <button type="button" class="btn-info" onclick="sendToWorkingpaperDb()">ส่งไประบบฐานข้อมูลกระดาษทำการ (WP DB)</button>
+    </div>
+
+    <div class="a4-wrapper">
+      <div class="a4-title">ตัวอย่างแสดงผลแบบฟอร์ม อปท.3.1 – Going Concern ในหน้ากระดาษ A4</div>
+
+      <div class="a4-page" id="a4Page">
+        <div class="a4-header-center">
+          แบบฟอร์ม อปท.3.1 – การประเมินความสามารถในการดำเนินงานต่อเนื่อง (Going Concern)
+        </div>
+        <div class="a4-subheader">
+          การตรวจสอบรายงานการเงินขององค์กรปกครองส่วนท้องถิ่น
+        </div>
+
+        <div class="a4-row">
+          <div>
+            <span>ปีงบประมาณ</span>
+            <span class="value" id="a4Fy">&nbsp;</span>
+          </div>
+          <div>
+            <span>งวดวันที่</span>
+            <span class="value" id="a4Period">&nbsp;</span>
+          </div>
+        </div>
+        <div class="a4-row">
+          <div>
+            <span>หน่วยรับตรวจ</span>
+            <span class="value" id="a4Auditee">&nbsp;</span>
+          </div>
+          <div>
+            <span>อำเภอ / เขต</span>
+            <span class="value" id="a4Amphoe">&nbsp;</span>
+          </div>
+        </div>
+        <div class="a4-row">
+          <div>
+            <span>จังหวัด</span>
+            <span class="value" id="a4Province">&nbsp;</span>
+          </div>
+          <div>
+            <span>อ้างอิงแบบฟอร์ม</span>
+            <span class="value" id="a4FormRef">&nbsp;</span>
+          </div>
+        </div>
+
+        <div class="a4-block-title">1. สาระสำคัญจากแบบฟอร์มที่เกี่ยวข้องกับ Going Concern</div>
+        <div class="a4-block-content" id="a4GcContext"></div>
+
+        <div class="a4-block-title">2. สถานะและข้อมูลดิบที่ใช้ประกอบการประเมิน (สรุป)</div>
+        <div class="a4-block-content" id="a4RawData"></div>
+
+        <div class="a4-block-title">3. การประเมินปัจจัยที่เกี่ยวข้องกับ Going Concern</div>
+        <div class="a4-block-content">
+          <strong>3.1 ด้านการเงินและสภาพคล่อง</strong>
+          <div id="a4GcFinancial"></div>
+        </div>
+        <div class="a4-block-content">
+          <strong>3.2 ด้านการดำเนินงาน / การให้บริการประชาชน</strong>
+          <div id="a4GcOperations"></div>
+        </div>
+        <div class="a4-block-content">
+          <strong>3.3 ด้านกฎหมาย ข้อผูกพัน และคดีความ</strong>
+          <div id="a4GcLegal"></div>
+        </div>
+        <div class="a4-block-content">
+          <strong>3.4 ปัจจัยอื่น ๆ</strong>
+          <div id="a4GcOther"></div>
+        </div>
+        <div class="a4-block-content">
+          <strong>3.5 แผนและการตอบสนองของฝ่ายบริหาร</strong>
+          <div id="a4GcMgmtPlan"></div>
+        </div>
+
+        <div class="a4-block-title">4. ข้อสรุปของผู้ตรวจสอบเกี่ยวกับ Going Concern</div>
+        <div class="a4-block-content" id="a4GcConclusion"></div>
+
+        <div class="a4-block-title">5. ผลการวิเคราะห์ภาพรวมโดย AI / ผู้ตรวจสอบ</div>
+        <div class="a4-block-content" id="a4AiOverall"></div>
+
+        <div class="a4-footer">
+          <div>แบบฟอร์ม อปท.3.1 – Going Concern – FA LG Annual</div>
+          <div id="a4FooterMeta">พิมพ์จากระบบ FA – LG</div>
+        </div>
+      </div>
     </div>
   </section>
 
 </main>
 
 <script>
-  // ฟังก์ชันช่วยประเมินระดับความเสี่ยงอย่างง่าย ๆ จาก dropdown บางตัว
-  function quickAssess(){
-    const fields = [
-      document.getElementById('ratioLiquidityEval')?.value,
-      document.getElementById('budgetBalanceEval')?.value,
-      document.getElementById('debtLevelEval')?.value,
-      document.getElementById('grantDependEval')?.value,
-      document.getElementById('otherIndicatorEval')?.value
-    ].filter(Boolean);
+  /* ---------- Helper ---------- */
 
-    const pill = document.getElementById('gcStatusPill');
-    if(!pill){
-      return;
-    }
-
-    if(fields.length === 0){
-      pill.textContent = 'ยังไม่มีข้อมูลเพียงพอสำหรับการประเมินแบบอัตโนมัติ';
-      pill.className = 'status-pill';
-      return;
-    }
-
-    // ถ้ามี "danger" อย่างน้อย 1 จุด → เสี่ยงสูง
-    if(fields.includes('danger')){
-      pill.textContent = 'ผลช่วยประเมินเบื้องต้น: ระดับความเสี่ยง Going Concern สูง – ต้องพิจารณาอย่างใกล้ชิด';
-      pill.className = 'status-pill status-danger';
-      return;
-    }
-
-    // ถ้าไม่มี danger แต่มี warn → เสี่ยงปานกลาง / ต้องเฝ้าระวัง
-    if(fields.includes('warn')){
-      pill.textContent = 'ผลช่วยประเมินเบื้องต้น: มีความเสี่ยงบางส่วน – ควรเฝ้าระวังและออกแบบขั้นตอนตรวจสอบเพิ่มเติม';
-      pill.className = 'status-pill status-warn';
-      return;
-    }
-
-    // ทุกตัวเป็น ok
-    pill.textContent = 'ผลช่วยประเมินเบื้องต้น: ไม่มีสัญญาณความเสี่ยงเชิงตัวเลขที่เด่นชัด (ยังต้องพิจารณาปัจจัยเชิงคุณภาพประกอบ)';
-    pill.className = 'status-pill status-ok';
+  function nl2br(text){
+    if(!text) return '';
+    return text.replace(/\n/g,'<br>');
   }
 
-  function clearForm(){
-    // ล้างเฉพาะ input / select / textarea ในหน้านี้แบบง่าย ๆ
-    const inputs = document.querySelectorAll('input.input, textarea.input, select.input');
-    inputs.forEach(el => {
-      if(el.tagName === 'SELECT'){
-        el.selectedIndex = 0;
-      }else{
-        el.value = '';
-      }
+  function setStatus(msg, isError){
+    const el = document.getElementById('govDbStatus');
+    if(!el) return;
+    el.textContent = msg || '';
+    el.style.color = isError ? '#ffab91' : '#a3acc7';
+  }
+
+  /* ---------- Gov DB (fa-db-data-gov) ---------- */
+
+  let LG_DB = [];
+
+  function getProvinceField(row){
+    return row.province || row.Province || row.prov || row['จังหวัด'] || '';
+  }
+  function getAmphoeField(row){
+    return row.amphoe || row.district || row.District || row['อำเภอ'] || row['เขต'] || '';
+  }
+  function getAuditeeNameField(row){
+    return (
+      row.auditee ||
+      row.unitName ||
+      row.unit ||
+      row['หน่วยรับตรวจ'] ||
+      row['ชื่อหน่วยงาน'] ||
+      ''
+    );
+  }
+
+  function fillSelectOptions(select, items, placeholder){
+    if(!select) return;
+    select.innerHTML = '';
+    const opt0 = document.createElement('option');
+    opt0.value = '';
+    opt0.textContent = placeholder;
+    select.appendChild(opt0);
+    items.forEach(v => {
+      const o = document.createElement('option');
+      o.value = v;
+      o.textContent = v;
+      select.appendChild(o);
     });
+  }
 
-    const pill = document.getElementById('gcStatusPill');
-    if(pill){
-      pill.textContent = 'ยังไม่ประเมิน';
-      pill.className = 'status-pill';
+  function initGovDbFromLocalStorage(){
+    try{
+      const raw = localStorage.getItem('fa-db-data-gov');
+      if(!raw){
+        setStatus('⚠ ยังไม่พบข้อมูลใน localStorage["fa-db-data-gov"] – กรุณาเปิดหน้า fa-db-data-gov.html ให้โหลดข้อมูลก่อน', true);
+        return;
+      }
+      const data = JSON.parse(raw);
+      if(!Array.isArray(data)){
+        setStatus('⚠ โครงสร้างข้อมูล fa-db-data-gov ไม่ใช่ Array', true);
+        return;
+      }
+      LG_DB = data;
+
+      const provinces = [...new Set(
+        LG_DB.map(getProvinceField).filter(Boolean)
+      )].sort((a,b)=>a.localeCompare(b,'th-TH'));
+
+      const provinceSelect = document.getElementById('province');
+      fillSelectOptions(provinceSelect, provinces, '— เลือกจังหวัด —');
+
+      setStatus(`✅ โหลดข้อมูลหน่วยรับตรวจจากฐานกลางสำเร็จ: ${LG_DB.length} รายการ`, false);
+    }catch(e){
+      console.error(e);
+      setStatus('⚠ เกิดข้อผิดพลาดขณะอ่านข้อมูล fa-db-data-gov จาก localStorage', true);
+    }
+  }
+
+  function onProvinceChange(){
+    const province = document.getElementById('province').value || '';
+    const amphoeSelect = document.getElementById('amphoe');
+    const auditeeSelect = document.getElementById('auditee');
+
+    if(!province){
+      fillSelectOptions(amphoeSelect, [], '— เลือกอำเภอ / เขต —');
+      fillSelectOptions(auditeeSelect, [], '— เลือกหน่วยรับตรวจ —');
+      return;
     }
 
-    const radios = document.querySelectorAll('input[type="radio"][name="gcLevel"]');
-    radios.forEach(r => r.checked = false);
+    const amphoeList = [...new Set(
+      LG_DB
+        .filter(row => getProvinceField(row) === province)
+        .map(getAmphoeField)
+        .filter(Boolean)
+    )].sort((a,b)=>a.localeCompare(b,'th-TH'));
+
+    fillSelectOptions(amphoeSelect, amphoeList, '— เลือกอำเภอ / เขต —');
+    fillSelectOptions(auditeeSelect, [], '— เลือกหน่วยรับตรวจ —');
   }
+
+  function onAmphoeChange(){
+    const province = document.getElementById('province').value || '';
+    const amphoe = document.getElementById('amphoe').value || '';
+    const auditeeSelect = document.getElementById('auditee');
+
+    if(!province || !amphoe){
+      fillSelectOptions(auditeeSelect, [], '— เลือกหน่วยรับตรวจ —');
+      return;
+    }
+
+    const units = LG_DB.filter(row =>
+      getProvinceField(row) === province &&
+      getAmphoeField(row) === amphoe
+    );
+
+    const names = [...new Set(
+      units.map(getAuditeeNameField).filter(Boolean)
+    )].sort((a,b)=>a.localeCompare(b,'th-TH'));
+
+    fillSelectOptions(auditeeSelect, names, '— เลือกหน่วยรับตรวจ —');
+  }
+
+  /* ---------- งวดวันที่ + แบบฟอร์มอ้างอิง ---------- */
+
+  function initPeriods(){
+    const periodSelect = document.getElementById('period');
+    if(!periodSelect) return;
+    for(let y=2566; y<=2582; y++){
+      const txt = '30 กันยายน ' + y;
+      const opt = document.createElement('option');
+      opt.value = txt;
+      opt.textContent = txt;
+      periodSelect.appendChild(opt);
+    }
+  }
+
+  function initFormRefs(){
+    const select = document.getElementById('formRef');
+    if(!select) return;
+
+    const formsSet = new Set();
+
+    [
+      'อปท.3','อปท.3.1','อปท.4','อปท.5','อปท.5.1','อปท.5.2',
+      'อปท.3.5','อปท.3.6',
+      'อปท.8.2','อปท.8.2.1','อปท.8.2.2','อปท.8.2.3'
+    ].forEach(f => formsSet.add(f));
+
+    for(let i=1; i<=31; i++){
+      formsSet.add('อปท.8.' + i);
+    }
+
+    const forms = Array.from(formsSet).sort((a,b)=>a.localeCompare(b,'th-TH',{numeric:true}));
+
+    forms.forEach(f => {
+      const opt = document.createElement('option');
+      opt.value = f;
+      opt.textContent = f;
+      select.appendChild(opt);
+    });
+  }
+
+  /* ---------- File & Web data ---------- */
+
+  function handleFiles(files){
+    const listEl = document.getElementById('fileList');
+    const rawEl  = document.getElementById('rawData');
+    if(!files || files.length === 0){
+      if(listEl) listEl.textContent = 'ยังไม่เลือกไฟล์';
+      return;
+    }
+
+    const lines = [];
+    const readers = [];
+    for(let i=0; i<files.length; i++){
+      const f = files[i];
+      lines.push(`• ${f.name} (${f.type || 'unknown'}, ${f.size} bytes)`);
+      const reader = new FileReader();
+      readers.push(new Promise((resolve) => {
+        reader.onload = () => resolve({name:f.name, content:reader.result});
+        reader.onerror = () => resolve({name:f.name, content:''});
+      }));
+      reader.readAsText(f, 'utf-8');
+    }
+
+    if(listEl) listEl.innerHTML = lines.join('<br>');
+
+    Promise.all(readers).then(results => {
+      let txt = rawEl.value || '';
+      if(txt) txt += '\n\n';
+      txt += '===== ข้อมูลจากไฟล์ที่อัปโหลด =====\n';
+      results.forEach(r => {
+        txt += `\n--- ${r.name} ---\n`;
+        txt += (r.content || '').substring(0,4000); // กันยาวเกิน
+        if((r.content || '').length > 4000){
+          txt += '\n...[ตัดข้อความบางส่วนเพื่อความกระชับ]...\n';
+        }
+      });
+      rawEl.value = txt;
+    });
+  }
+
+  function fetchFromWeb(){
+    const url = document.getElementById('dataUrl').value || '';
+    const rawEl = document.getElementById('rawData');
+    if(!url){
+      alert('กรุณากรอก URL ก่อน');
+      return;
+    }
+    fetch(url, {mode:'cors'}).then(res => res.text()).then(text => {
+      let txt = rawEl.value || '';
+      if(txt) txt += '\n\n';
+      txt += '===== ข้อมูลจาก Web: ' + url + ' =====\n';
+      txt += text.substring(0,4000);
+      if(text.length > 4000){
+        txt += '\n...[ตัดข้อความบางส่วนเพื่อความกระชับ]...\n';
+      }
+      rawEl.value = txt;
+      alert('ดึงข้อมูลจาก Web สำเร็จ (ตัดตอนเพื่อความกระชับ)');
+    }).catch(err => {
+      console.error(err);
+      alert('ไม่สามารถดึงข้อมูลจาก Web ได้ (อาจติด CORS หรือเครือข่าย)');
+    });
+  }
+
+  function appendRawDataTo(fieldId){
+    const raw = document.getElementById('rawData').value || '';
+    if(!raw){
+      alert('ยังไม่มีข้อมูลดิบในช่อง "ข้อมูลดิบที่ใช้ประกอบการประเมิน"');
+      return;
+    }
+    const el = document.getElementById(fieldId);
+    if(!el) return;
+    let txt = el.value || '';
+    if(txt) txt += '\n\n';
+    txt += '[ตัดตอนจากข้อมูลดิบ]\n';
+    txt += raw.substring(0,1000);
+    if(raw.length > 1000){
+      txt += '\n...[ตัดข้อความบางส่วนเพื่อความกระชับ]...\n';
+    }
+    el.value = txt;
+  }
+
+  /* ---------- AI helpers ---------- */
+
+  function getBasicMeta(){
+    return {
+      fy      : document.getElementById('fy').value || '—',
+      period  : document.getElementById('period').value || '—',
+      auditee : document.getElementById('auditee').value || '—',
+      amphoe  : document.getElementById('amphoe').value || '—',
+      province: document.getElementById('province').value || '—',
+      formRef : document.getElementById('formRef').value || '—'
+    };
+  }
+
+  function aiSuggestForField(fieldId, label){
+    const meta = getBasicMeta();
+    const raw  = document.getElementById('rawData').value || '';
+    const el   = document.getElementById(fieldId);
+    if(!el) return;
+
+    let txt = '';
+    txt += `สรุป/ร่างข้อความสำหรับ: ${label}\n`;
+    txt += `หน่วยรับตรวจ: ${meta.auditee} อ.${meta.amphoe} จ.${meta.province}\n`;
+    txt += `ปีงบประมาณ ${meta.fy} งวด ${meta.period} (อ้างอิงแบบฟอร์ม: ${meta.formRef})\n\n`;
+    txt += '- ประเด็นหลักที่เกี่ยวข้อง (ตัวอย่างโครงร่าง):\n';
+    txt += '  • สถานะปัจจุบันและสัญญาณความเสี่ยงที่พบ\n';
+    txt += '  • ปัจจัยเชิงปริมาณ (ตัวเลขจากงบ/รายงาน)\n';
+    txt += '  • ปัจจัยเชิงคุณภาพ (ระบบงาน, บุคลากร, สิ่งแวดล้อม ฯลฯ)\n';
+    txt += '  • ข้อสรุปเบื้องต้นว่ามี/ไม่มีผลกระทบต่อ Going Concern อย่างไร\n\n';
+    if(raw){
+      txt += '[ตัดตอนข้อมูลประกอบจากแหล่งข้อมูลดิบ]\n';
+      txt += raw.substring(0,800);
+      if(raw.length > 800){
+        txt += '\n...[ตัดข้อความบางส่วนเพื่อความกระชับ]...\n';
+      }
+    }
+
+    el.value = txt;
+    alert('สร้างโครงร่างข้อความตัวอย่างสำหรับ: ' + label + ' แล้ว (แก้ไขเพิ่มเติมได้)');
+  }
+
+  function aiSuggestConclusion(){
+    const meta   = getBasicMeta();
+    const fin    = document.getElementById('gcFinancial').value || '';
+    const ops    = document.getElementById('gcOperations').value || '';
+    const legal  = document.getElementById('gcLegal').value || '';
+    const other  = document.getElementById('gcOther').value || '';
+    const plan   = document.getElementById('gcMgmtPlan').value || '';
+    const el     = document.getElementById('gcConclusion');
+
+    let txt = '';
+    txt += `ข้อสรุปเบื้องต้นเกี่ยวกับ Going Concern ของ ${meta.auditee} ปีงบประมาณ ${meta.fy}\n\n`;
+    txt += '1) ภาพรวมปัจจัยเสี่ยงที่สำคัญ\n';
+    if(fin)   txt += '- ด้านการเงินและสภาพคล่อง: มีประเด็นสำคัญตามที่บันทึกไว้ในข้อ 3.1\n';
+    if(ops)   txt += '- ด้านการดำเนินงาน/บริการสาธารณะ: มีประเด็นสำคัญตามที่บันทึกไว้ในข้อ 3.2\n';
+    if(legal) txt += '- ด้านกฎหมาย/ข้อผูกพัน/คดีความ: มีประเด็นสำคัญตามที่บันทึกไว้ในข้อ 3.3\n';
+    if(other) txt += '- ปัจจัยอื่น ๆ: ตามที่บันทึกไว้ในข้อ 3.4\n\n';
+
+    txt += '2) การประเมินของผู้ตรวจสอบ\n';
+    txt += '- ระดับความไม่แน่นอนที่มีนัยสำคัญต่อความสามารถในการดำเนินงานต่อเนื่อง: (ระบุ มี/ไม่มี พร้อมเหตุผล)\n';
+    txt += '- ผลกระทบต่อการกำหนดขอบเขต/วิธีการตรวจสอบเพิ่มเติม:\n';
+    txt += '  • รายการ/หมวดที่ต้องทดสอบเพิ่มเติม\n';
+    txt += '  • การเพิ่มกระบวนงาน Analytical / Substantive ที่เกี่ยวข้อง\n\n';
+
+    txt += '3) แผนและการตอบสนองของฝ่ายบริหาร\n';
+    if(plan){
+      txt += '- สรุปแผนตามข้อ 3.5 และประเมินความเพียงพอของแผนนั้นต่อการบรรเทาความเสี่ยง Going Concern\n\n';
+    }else{
+      txt += '- ยังไม่มีข้อมูลแผนของฝ่ายบริหารที่บันทึกในข้อ 3.5\n\n';
+    }
+
+    txt += '4) ข้อเสนอแนะเกี่ยวกับการเปิดเผยข้อมูลในงบการเงิน/หมายเหตุประกอบงบการเงิน\n\n';
+    txt += '5) ข้อเสนอแนะเกี่ยวกับรูปแบบความเห็นของผู้สอบบัญชี\n';
+    txt += '- (เช่น ความเห็นไม่มีเงื่อนไขพร้อมการเน้นย้ำเรื่อง Going Concern / ความเห็นอย่างมีเงื่อนไข / ไม่แสดงความเห็น ฯลฯ)\n';
+
+    el.value = txt;
+    alert('สร้างร่างข้อสรุป Going Concern แล้ว (โปรดทบทวน/ปรับแก้ให้เหมาะสม)');
+  }
+
+  function fakeAiAnalyzeAll(){
+    const meta = getBasicMeta();
+    const ctx  = document.getElementById('gcContext').value || '';
+    const fin  = document.getElementById('gcFinancial').value || '';
+    const ops  = document.getElementById('gcOperations').value || '';
+    const leg  = document.getElementById('gcLegal').value || '';
+    const oth  = document.getElementById('gcOther').value || '';
+    const plan = document.getElementById('gcMgmtPlan').value || '';
+    const concl= document.getElementById('gcConclusion').value || '';
+    const q    = document.getElementById('aiQuestion').value || '';
+    const raw  = document.getElementById('rawData').value || '';
+
+    let txt = '';
+    txt += `★ ภาพรวมการประเมิน Going Concern – ${meta.auditee} ปีงบประมาณ ${meta.fy}\n\n`;
+    if(ctx){
+      txt += '1) บริบทจากแบบฟอร์มที่เกี่ยวข้อง\n';
+      txt += ctx.substring(0,800) + '\n\n';
+    }
+    txt += '2) สรุปปัจจัยเสี่ยงสำคัญ\n';
+    if(fin) txt += '- ด้านการเงิน: มีข้อมูลบันทึกในข้อ 3.1\n';
+    if(ops) txt += '- ด้านการดำเนินงาน: มีข้อมูลบันทึกในข้อ 3.2\n';
+    if(leg) txt += '- ด้านกฎหมาย/ข้อผูกพัน: มีข้อมูลบันทึกในข้อ 3.3\n';
+    if(oth) txt += '- ปัจจัยอื่น ๆ: มีข้อมูลบันทึกในข้อ 3.4\n';
+    txt += '\n';
+
+    txt += '3) การตอบสนองของฝ่ายบริหาร\n';
+    if(plan){
+      txt += '- มีการบันทึกแผน/มาตรการในข้อ 3.5 ให้ตรวจสอบความเป็นไปได้และระยะเวลาให้ชัดเจน\n\n';
+    }else{
+      txt += '- ยังไม่พบการบันทึกแผนของฝ่ายบริหารในข้อ 3.5\n\n';
+    }
+
+    txt += '4) แนวคิดในการสรุป Going Concern และผลกระทบต่อรายงาน\n';
+    if(concl){
+      txt += '- มีร่างข้อสรุปในข้อ 3.6 ให้ใช้เป็นฐานในการจัดทำรายงานผู้สอบบัญชี\n';
+    }else{
+      txt += '- ยังไม่มีร่างข้อสรุปในข้อ 3.6 ควรจัดทำก่อนสรุปรายงาน\n';
+    }
+    txt += '\n';
+
+    if(q){
+      txt += '5) โจทย์ที่ผู้ตรวจต้องการให้ AI วิเคราะห์เพิ่มเติม\n';
+      txt += q + '\n\n';
+    }
+
+    if(raw){
+      txt += '6) ตัดตอนข้อมูลดิบที่ใช้วิเคราะห์\n';
+      txt += raw.substring(0,800);
+      if(raw.length > 800){
+        txt += '\n...[ตัดข้อความบางส่วนเพื่อความกระชับ]...\n';
+      }
+      txt += '\n';
+    }
+
+    txt += '\n(หมายเหตุ: ข้อความนี้เป็นโครงร่างตัวอย่าง สามารถใช้เป็นประเด็นสำหรับการประชุมสอบทาน/ทบทวนคุณภาพได้)\n';
+
+    document.getElementById('aiOverall').value = txt;
+    alert('สร้างข้อความสรุปภาพรวมตัวอย่างแล้ว (แก้ไขเพิ่มได้ตามเหมาะสม)');
+  }
+
+  /* ---------- Build data กลาง ---------- */
+
+  function buildFormData(){
+    const data = {
+      fiscalYear  : document.getElementById('fy').value || '',
+      period      : document.getElementById('period').value || '',
+      auditee     : document.getElementById('auditee').value || '',
+      amphoe      : document.getElementById('amphoe').value || '',
+      province    : document.getElementById('province').value || '',
+      formRef     : document.getElementById('formRef').value || '',
+      gcContext   : document.getElementById('gcContext').value || '',
+      rawData     : document.getElementById('rawData').value || '',
+      gcFinancial : document.getElementById('gcFinancial').value || '',
+      gcOperations: document.getElementById('gcOperations').value || '',
+      gcLegal     : document.getElementById('gcLegal').value || '',
+      gcOther     : document.getElementById('gcOther').value || '',
+      gcMgmtPlan  : document.getElementById('gcMgmtPlan').value || '',
+      gcConclusion: document.getElementById('gcConclusion').value || '',
+      aiQuestion  : document.getElementById('aiQuestion').value || '',
+      aiOverall   : document.getElementById('aiOverall').value || '',
+      meta: {
+        formCode : 'อปท.3.1',
+        module   : 'FA-LG-Annual-Planning',
+        exportedAt: new Date().toISOString()
+      }
+    };
+    return data;
+  }
+
+  /* ---------- Sync ไป A4 ---------- */
+
+  function pushToA4(){
+    const d = buildFormData();
+
+    document.getElementById('a4Fy').textContent       = d.fiscalYear || '';
+    document.getElementById('a4Period').textContent   = d.period || '';
+    document.getElementById('a4Auditee').textContent  = d.auditee || '';
+    document.getElementById('a4Amphoe').textContent   = d.amphoe || '';
+    document.getElementById('a4Province').textContent = d.province || '';
+    document.getElementById('a4FormRef').textContent  = d.formRef || '';
+
+    document.getElementById('a4GcContext').innerHTML   = nl2br(d.gcContext);
+    document.getElementById('a4RawData').innerHTML     = nl2br(d.rawData ? d.rawData.substring(0,1500) + (d.rawData.length>1500 ? '\n...[ตัดตอน]...' : '') : '');
+    document.getElementById('a4GcFinancial').innerHTML = nl2br(d.gcFinancial);
+    document.getElementById('a4GcOperations').innerHTML= nl2br(d.gcOperations);
+    document.getElementById('a4GcLegal').innerHTML     = nl2br(d.gcLegal);
+    document.getElementById('a4GcOther').innerHTML     = nl2br(d.gcOther);
+    document.getElementById('a4GcMgmtPlan').innerHTML  = nl2br(d.gcMgmtPlan);
+    document.getElementById('a4GcConclusion').innerHTML= nl2br(d.gcConclusion);
+    document.getElementById('a4AiOverall').innerHTML   = nl2br(d.aiOverall);
+
+    const now = new Date();
+    const ts  = now.toLocaleString('th-TH');
+    document.getElementById('a4FooterMeta').textContent = 'พิมพ์จากระบบ FA – LG ณ ' + ts;
+  }
+
+  /* ---------- Export ---------- */
+
+  function exportA4Html(){
+    const a4 = document.getElementById('a4Page');
+    if(!a4){
+      alert('ไม่พบเนื้อหา A4');
+      return;
+    }
+    const htmlContent =
+      '<!DOCTYPE html><html lang="th"><head><meta charset="UTF-8"><title>OP3-1-Going-Concern-A4</title>' +
+      '<style>@page{size:A4;margin:12mm;}body{font-family:"TH Sarabun New","Segoe UI",sans-serif;font-size:11pt;} .a4-page{width:100%;min-height:100%;}</style>' +
+      '</head><body>' + a4.outerHTML + '</body></html>';
+
+    const blob = new Blob([htmlContent], {type:'text/html'});
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href = url;
+    a.download = 'op3_1_going_concern_a4.html';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  function exportJson(){
+    const data = buildFormData();
+    const blob = new Blob([JSON.stringify(data,null,2)], {type:'application/json'});
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href = url;
+    a.download = 'op3_1_going_concern.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  /* ---------- Integration: Review & Working Papers ---------- */
+
+  function sendToReviewSystem(){
+    const data = buildFormData();
+
+    try{
+      localStorage.setItem('fa_op3_1_last_for_review', JSON.stringify(data));
+    }catch(e){
+      console.error('localStorage error', e);
+    }
+
+    /*
+    fetch('/api/review-system/op3-1', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(data)
+    });
+    */
+
+    alert('บันทึกแบบฟอร์ม อปท.3.1 ส่งไป “ระบบสอบทาน” (จำลอง) แล้ว \n(เก็บที่ localStorage: fa_op3_1_last_for_review)');
+  }
+
+  function sendToWorkingpaperDb(){
+    const data = buildFormData();
+
+    try{
+      localStorage.setItem('fa_op3_1_last_workingpaper', JSON.stringify(data));
+    }catch(e){
+      console.error('localStorage error', e);
+    }
+
+    /*
+    fetch('/api/workingpapers/op3-1', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(data)
+    });
+    */
+
+    alert('บันทึกแบบฟอร์ม อปท.3.1 ส่งไป “ฐานข้อมูลกระดาษทำการ” (จำลอง) แล้ว \n(เก็บที่ localStorage: fa_op3_1_last_workingpaper)');
+  }
+
+  /* ---------- Init ---------- */
+
+  document.addEventListener('DOMContentLoaded', function(){
+    initGovDbFromLocalStorage();
+    initPeriods();
+    initFormRefs();
+
+    const provinceSelect = document.getElementById('province');
+    const amphoeSelect   = document.getElementById('amphoe');
+
+    if(provinceSelect){
+      provinceSelect.addEventListener('change', onProvinceChange);
+    }
+    if(amphoeSelect){
+      amphoeSelect.addEventListener('change', onAmphoeChange);
+    }
+  });
 </script>
 
 </body>
