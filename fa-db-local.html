@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<title>FA DB | ข้อมูลองค์กรปกครองส่วนท้องถิ่นร</title>
+<title>FA DB | ข้อมูลส่วนราชการ + อปท.</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
   :root{
@@ -20,7 +20,7 @@
   }
   header h1{margin:0;font-size:22px;font-weight:800;}
   header p{margin:4px 0 0;font-size:13px;color:var(--muted);}
-  .wrap{max-width:1000px;margin:18px auto 30px;padding:0 16px;}
+  .wrap{max-width:1100px;margin:18px auto 30px;padding:0 16px;}
   .top-row{
     display:flex;justify-content:space-between;flex-wrap:wrap;
     gap:8px;font-size:13px;color:var(--muted);margin-bottom:10px;
@@ -35,13 +35,13 @@
   }
   h2{margin:0 0 10px;font-size:18px;}
   label{display:block;font-size:13px;margin-top:6px;}
-  input,textarea{
+  input,textarea,select{
     width:100%;margin-top:4px;padding:7px 8px;
     border-radius:8px;border:1px solid rgba(255,255,255,.18);
     background:#05081a;color:#fff;font-size:13px;
   }
   textarea{min-height:60px;resize:vertical;}
-  input:focus,textarea:focus{outline:none;border-color:#20c997;}
+  input:focus,textarea:focus,select:focus{outline:none;border-color:#20c997;}
   .form-grid{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
@@ -73,24 +73,16 @@
   input[type="file"]{padding:4px 0;}
 
   /* search zone */
-  .search-grid{
-    margin-top:6px;
-  }
-  .search-grid label{
-    font-size:12px;
-    margin-top:0;
-  }
-  .search-grid input{
-    font-size:12px;
-    padding:5px 8px;
-  }
+  .search-grid{margin-top:6px;}
+  .search-grid label{font-size:12px;margin-top:0;}
+  .search-grid input,.search-grid select{font-size:12px;padding:5px 8px;}
 </style>
 </head>
 <body>
 
 <header>
-  <h1>🏛️ FA DB – ข้อมูลส่วนราชการ</h1>
-  <p>Central Government Agencies Database (Linked to All FA Systems)</p>
+  <h1>🏛️ FA DB – ข้อมูลส่วนราชการ / อปท. ทั่วประเทศ</h1>
+  <p>Master Local Government Database – Shared Across All FA Systems</p>
 </header>
 
 <div class="wrap">
@@ -104,20 +96,24 @@
   </div>
 
   <div class="card">
-    <h2>บันทึก / แก้ไขข้อมูลส่วนราชการ + หน่วยรับตรวจ</h2>
+    <h2>บันทึก / แก้ไขข้อมูลหน่วยรับตรวจ</h2>
     <form id="dataForm">
       <div class="form-grid">
         <div>
-          <label>รหัสหน่วยงาน (code)</label>
+          <label>รหัสหน่วยงาน / รหัส อปท. (code)</label>
           <input type="text" id="f-code" required>
         </div>
         <div>
-          <label>ชื่อหน่วยงาน (name)</label>
+          <label>ชื่อหน่วยงาน / ชื่อ อปท. (name)</label>
           <input type="text" id="f-name" required>
         </div>
         <div>
           <label>หน่วยรับตรวจ (audit unit)</label>
-          <input type="text" id="f-unit" placeholder="เช่น สำนักงานคลังจังหวัด / โรงพยาบาล / เทศบาล ฯลฯ">
+          <input type="text" id="f-unit" placeholder="เช่น เทศบาลตำบล..., อบต....">
+        </div>
+        <div>
+          <label>ประเภทหน่วยงาน / ประเภท อปท. (type)</label>
+          <input type="text" id="f-type" placeholder="เทศบาลตำบล/อบต./เทศบาลนคร ฯลฯ">
         </div>
         <div>
           <label>สังกัดกระทรวง (ministry)</label>
@@ -129,7 +125,9 @@
         </div>
         <div>
           <label>จังหวัด (province)</label>
-          <input type="text" id="f-province">
+          <select id="f-province">
+            <option value="">-- เลือกจังหวัด --</option>
+          </select>
         </div>
         <div>
           <label>อำเภอ / เขต (district)</label>
@@ -143,6 +141,26 @@
           <label>หมู่บ้าน / ชุมชน (village)</label>
           <input type="text" id="f-village">
         </div>
+        <div>
+          <label>เลขที่ / หมู่ที่ (address / moo)</label>
+          <input type="text" id="f-address">
+        </div>
+        <div>
+          <label>รหัสไปรษณีย์ (zipcode)</label>
+          <input type="text" id="f-zipcode">
+        </div>
+        <div>
+          <label>พิกัดละติจูด (LAT)</label>
+          <input type="text" id="f-lat">
+        </div>
+        <div>
+          <label>พิกัดลองจิจูด (LONG)</label>
+          <input type="text" id="f-long">
+        </div>
+        <div>
+          <label>เว็บไซต์หน่วยงาน (website)</label>
+          <input type="text" id="f-website">
+        </div>
       </div>
       <label>หมายเหตุ (remark)</label>
       <textarea id="f-remark"></textarea>
@@ -155,11 +173,11 @@
   </div>
 
   <div class="card">
-    <h2>ตารางข้อมูลส่วนราชการ / หน่วยรับตรวจ</h2>
+    <h2>ตารางข้อมูลหน่วยรับตรวจ / อปท. – ใช้ร่วมทุกระบบ</h2>
     <div style="font-size:12px;color:var(--muted);margin-bottom:4px;">
-      * จัดเก็บใน localStorage: <strong>fa-db-data-gov</strong><br>
-      * ใช้เป็นฐานข้อมูลกลาง (Master) ให้ระบบ FA, Tracking, Review, Learning, Cash Board และระบบอื่น ๆ อ่านข้อมูลร่วมกันผ่าน key นี้<br>
-      * โครงสร้าง CSV: <code>code,name,unit,ministry,level,province,district,subdistrict,village,remark</code>
+      • จัดเก็บใน localStorage key: <code>fa-db-data-gov</code><br>
+      • ทุกหน้าระบบ FA, Tracking, Review, Learning, Cash Board สามารถดึงไปใช้ได้ด้วยคำสั่ง:<br>
+      <code>JSON.parse(localStorage.getItem("fa-db-data-gov") || "[]")</code><br>
     </div>
 
     <!-- เมนูค้นหา -->
@@ -173,7 +191,9 @@
       </div>
       <div>
         <label>จังหวัด</label>
-        <input type="text" id="s-province" class="search-input" placeholder="พิมพ์ชื่อจังหวัด">
+        <select id="s-province" class="search-input">
+          <option value="">ทุกจังหวัด</option>
+        </select>
       </div>
       <div>
         <label>อำเภอ / เขต</label>
@@ -189,6 +209,7 @@
       </div>
     </div>
     <div class="btn-row">
+      <button type="button" class="btn-primary" id="btnSearch">ค้นหาข้อมูล</button>
       <button type="button" class="btn-secondary" id="btnSearchReset">ล้างเงื่อนไขค้นหา</button>
     </div>
 
@@ -197,7 +218,7 @@
         📥 Import CSV:
         <input type="file" id="csvFile" accept=".csv">
       </label>
-      <button type="button" class="btn-secondary" id="btnExport">📤 Export CSV</button>
+      <button type="button" class="btn-secondary" id="btnExport">📤 Export CSV (โครงสร้างภายในระบบ)</button>
       <button type="button" class="btn-danger" id="btnDeleteAll">🗑 ลบทั้งหมด</button>
     </div>
 
@@ -208,12 +229,12 @@
           <th>รหัส</th>
           <th>ชื่อหน่วยงาน</th>
           <th>หน่วยรับตรวจ</th>
-          <th>กระทรวง</th>
-          <th>ระดับ</th>
+          <th>ประเภท</th>
           <th>จังหวัด</th>
           <th>อำเภอ</th>
           <th>ตำบล</th>
           <th>หมู่บ้าน</th>
+          <th>เว็บไซต์</th>
           <th>หมายเหตุ</th>
           <th>จัดการ</th>
         </tr>
@@ -228,6 +249,26 @@
 </div>
 
 <script>
+/* รายชื่อจังหวัด (ใช้เป็นตัวเลือก 76/77 จังหวัด) */
+const PROVINCES = [
+  "กรุงเทพมหานคร","กระบี่","กาญจนบุรี","กาฬสินธุ์","กำแพงเพชร",
+  "ขอนแก่น","จันทบุรี","ฉะเชิงเทรา","ชลบุรี","ชัยนาท",
+  "ชัยภูมิ","ชุมพร","เชียงใหม่","เชียงราย","ตรัง",
+  "ตราด","ตาก","นครนายก","นครปฐม","นครพนม",
+  "นครราชสีมา","นครศรีธรรมราช","นครสวรรค์","นนทบุรี","นราธิวาส",
+  "น่าน","บึงกาฬ","บุรีรัมย์","ปทุมธานี","ประจวบคีรีขันธ์",
+  "ปราจีนบุรี","ปัตตานี","พระนครศรีอยุธยา","พะเยา","พังงา",
+  "พัทลุง","พิจิตร","พิษณุโลก","เพชรบุรี","เพชรบูรณ์",
+  "แพร่","ภูเก็ต","มหาสารคาม","มุกดาหาร","แม่ฮ่องสอน",
+  "ยะลา","ยโสธร","ร้อยเอ็ด","ระนอง","ระยอง",
+  "ราชบุรี","ลพบุรี","ลำปาง","ลำพูน","เลย",
+  "ศรีสะเกษ","สกลนคร","สงขลา","สตูล","สมุทรปราการ",
+  "สมุทรสงคราม","สมุทรสาคร","สระแก้ว","สระบุรี","สิงห์บุรี",
+  "สุโขทัย","สุพรรณบุรี","สุราษฎร์ธานี","สุรินทร์","หนองคาย",
+  "หนองบัวลำภู","อ่างทอง","อำนาจเจริญ","อุดรธานี","อุตรดิตถ์",
+  "อุทัยธานี","อุบลราชธานี"
+];
+
 const MODULE_KEY   = "gov";
 const STORAGE_KEY  = "fa-db-data-" + MODULE_KEY;
 const TOTAL_KEY    = "fa-db-total-" + MODULE_KEY;
@@ -240,13 +281,47 @@ let editIndex = -1;
 const fCode        = document.getElementById("f-code");
 const fName        = document.getElementById("f-name");
 const fUnit        = document.getElementById("f-unit");
+const fType        = document.getElementById("f-type");
 const fMinistry    = document.getElementById("f-ministry");
 const fLevel       = document.getElementById("f-level");
 const fProvince    = document.getElementById("f-province");
 const fDistrict    = document.getElementById("f-district");
 const fSubdistrict = document.getElementById("f-subdistrict");
 const fVillage     = document.getElementById("f-village");
+const fAddress     = document.getElementById("f-address");
+const fZipcode     = document.getElementById("f-zipcode");
+const fLat         = document.getElementById("f-lat");
+const fLong        = document.getElementById("f-long");
+const fWebsite     = document.getElementById("f-website");
 const fRemark      = document.getElementById("f-remark");
+
+const btnSave        = document.getElementById("btnSave");
+const btnClear       = document.getElementById("btnClear");
+const btnDeleteAll   = document.getElementById("btnDeleteAll");
+const btnExport      = document.getElementById("btnExport");
+const csvFile        = document.getElementById("csvFile");
+const btnSearch      = document.getElementById("btnSearch");
+const btnSearchReset = document.getElementById("btnSearchReset");
+
+function populateProvinces(){
+  const selects = [fProvince, document.getElementById("s-province")];
+  selects.forEach(sel=>{
+    if(!sel) return;
+    // ถ้าเป็นฟอร์มใช้ข้อความหนึ่ง ถ้าเป็นค้นหาใช้ข้อความอีกแบบ
+    const isSearch = sel.id === "s-province";
+    sel.innerHTML = "";
+    const opt0 = document.createElement("option");
+    opt0.value = "";
+    opt0.textContent = isSearch ? "ทุกจังหวัด" : "-- เลือกจังหวัด --";
+    sel.appendChild(opt0);
+    PROVINCES.forEach(p=>{
+      const o = document.createElement("option");
+      o.value = p;
+      o.textContent = p;
+      sel.appendChild(o);
+    });
+  });
+}
 
 function checkSession(){
   const raw = localStorage.getItem("fas-session");
@@ -315,12 +390,12 @@ function renderTable(){
       <td>${row.code||""}</td>
       <td>${row.name||""}</td>
       <td>${row.unit||""}</td>
-      <td>${row.ministry||""}</td>
-      <td>${row.level||""}</td>
+      <td>${row.type||""}</td>
       <td>${row.province||""}</td>
       <td>${row.district||""}</td>
       <td>${row.subdistrict||""}</td>
       <td>${row.village||""}</td>
+      <td>${row.website||""}</td>
       <td>${row.remark||""}</td>
       <td class="actions">
         <button type="button" onclick="editRow(${data.indexOf(row)})">แก้ไข</button>
@@ -334,12 +409,18 @@ function clearForm(){
   fCode.value="";
   fName.value="";
   fUnit.value="";
+  fType.value="";
   fMinistry.value="";
   fLevel.value="";
   fProvince.value="";
   fDistrict.value="";
   fSubdistrict.value="";
   fVillage.value="";
+  fAddress.value="";
+  fZipcode.value="";
+  fLat.value="";
+  fLong.value="";
+  fWebsite.value="";
   fRemark.value="";
   editIndex=-1;
   btnSave.textContent="บันทึกข้อมูล";
@@ -350,13 +431,19 @@ document.getElementById("dataForm").addEventListener("submit", e=>{
   const row = {
     code:       fCode.value.trim(),
     name:       fName.value.trim(),
-    unit:       fUnit.value.trim(),
+    unit:       (fUnit.value.trim() || fName.value.trim()),
+    type:       fType.value.trim(),
     ministry:   fMinistry.value.trim(),
     level:      fLevel.value.trim(),
     province:   fProvince.value.trim(),
     district:   fDistrict.value.trim(),
     subdistrict:fSubdistrict.value.trim(),
     village:    fVillage.value.trim(),
+    address:    fAddress.value.trim(),
+    zipcode:    fZipcode.value.trim(),
+    lat:        fLat.value.trim(),
+    long:       fLong.value.trim(),
+    website:    fWebsite.value.trim(),
     remark:     fRemark.value.trim(),
     updatedAt:new Date().toISOString()
   };
@@ -372,16 +459,22 @@ btnClear.addEventListener("click", clearForm);
 
 window.editRow=function(idx){
   const r=data[idx];
-  fCode.value       = r.code||"";
-  fName.value       = r.name||"";
-  fUnit.value       = r.unit||"";
-  fMinistry.value   = r.ministry||"";
-  fLevel.value      = r.level||"";
-  fProvince.value   = r.province||"";
-  fDistrict.value   = r.district||"";
-  fSubdistrict.value= r.subdistrict||"";
-  fVillage.value    = r.village||"";
-  fRemark.value     = r.remark||"";
+  fCode.value        = r.code||"";
+  fName.value        = r.name||"";
+  fUnit.value        = r.unit||"";
+  fType.value        = r.type||"";
+  fMinistry.value    = r.ministry||"";
+  fLevel.value       = r.level||"";
+  fProvince.value    = r.province||"";
+  fDistrict.value    = r.district||"";
+  fSubdistrict.value = r.subdistrict||"";
+  fVillage.value     = r.village||"";
+  fAddress.value     = r.address||"";
+  fZipcode.value     = r.zipcode||"";
+  fLat.value         = r.lat||"";
+  fLong.value        = r.long||"";
+  fWebsite.value     = r.website||"";
+  fRemark.value      = r.remark||"";
   editIndex=idx;
   btnSave.textContent="บันทึกการแก้ไข";
 };
@@ -397,7 +490,11 @@ btnDeleteAll.addEventListener("click", ()=>{
 });
 
 function toCSV(){
-  const header=["code","name","unit","ministry","level","province","district","subdistrict","village","remark"];
+  const header=[
+    "code","name","unit","type","ministry","level",
+    "province","district","subdistrict","village",
+    "address","zipcode","lat","long","website","remark"
+  ];
   const lines=[header.join(",")];
   data.forEach(r=>{
     const row=header.map(k=>{
@@ -413,7 +510,7 @@ btnExport.addEventListener("click", ()=>{
   const blob=new Blob([csv],{type:"text/csv;charset=utf-8;"});
   const url=URL.createObjectURL(blob);
   const a=document.createElement("a");
-  a.href=url;a.download="fa-db-gov.csv";
+  a.href=url;a.download="fa-db-lg-master.csv";
   document.body.appendChild(a);a.click();document.body.removeChild(a);
   URL.revokeObjectURL(url);
 });
@@ -426,57 +523,133 @@ csvFile.addEventListener("change", e=>{
   reader.readAsText(file,"utf-8");
 });
 
+/* Import: รองรับทั้งโครงสร้างภาษาอังกฤษ (ภายในระบบ) และไฟล์ อปท. ภาษาไทย */
 function importCSV(text){
   const lines=text.split(/\r?\n/).filter(l=>l.trim()!=="");
   if(lines.length<2){alert("ไฟล์ไม่มีข้อมูล");return;}
   const header=lines[0].split(",").map(h=>h.replace(/(^"|"$)/g,"").trim());
-  const idxs={
-    code:header.indexOf("code"),
-    name:header.indexOf("name"),
-    unit:header.indexOf("unit"),
-    ministry:header.indexOf("ministry"),
-    level:header.indexOf("level"),
-    province:header.indexOf("province"),
-    district:header.indexOf("district"),
-    subdistrict:header.indexOf("subdistrict"),
-    village:header.indexOf("village"),
-    remark:header.indexOf("remark")
-  };
-  for(const k in idxs){
-    if(idxs[k]===-1){
-      alert("หัวตารางต้องมี: code,name,unit,ministry,level,province,district,subdistrict,village,remark");
-      return;
+
+  const isThaiLG =
+    header.indexOf("จังหวัด")    !== -1 &&
+    header.indexOf("อำเภอ")      !== -1 &&
+    header.indexOf("ตำบล")       !== -1 &&
+    header.indexOf("รหัส อปท.") !== -1;
+
+  const imported=[];
+
+  if(isThaiLG){
+    const idxs = {
+      province:   header.indexOf("จังหวัด"),
+      district:   header.indexOf("อำเภอ"),
+      subdistrict:header.indexOf("ตำบล"),
+      code:       header.indexOf("รหัส อปท."),
+      type:       header.indexOf("ประเภท อปท."),
+      name:       header.indexOf("อปท."),
+      addrNo:     header.indexOf("ที่ตั้งสำนักงานเลขที่"),
+      moo:        header.indexOf("หมู่ที่"),
+      zipcode:    header.indexOf("รหัสไปรษณีย์"),
+      lat:        header.indexOf("LAT"),
+      long:       header.indexOf("LONG"),
+      website:    header.indexOf("เว็ปไซต์ของอปท")
+    };
+
+    for(let i=1;i<lines.length;i++){
+      const cols=lines[i].split(",").map(c=>c.replace(/(^"|"$)/g,""));
+      if(cols.length===0) continue;
+
+      const name      = cols[idxs.name] || "";
+      const province  = cols[idxs.province] || "";
+      const district  = cols[idxs.district] || "";
+      const subd      = cols[idxs.subdistrict] || "";
+
+      imported.push({
+        code: (cols[idxs.code] || "").toString(),
+        name: name,
+        unit: name,
+        type: cols[idxs.type] || "",
+        ministry: "",
+        level: "อปท.",
+        province: province,
+        district: district,
+        subdistrict: subd,
+        village: "",
+        address: ((cols[idxs.addrNo]||"") + " ม." + (cols[idxs.moo]||"")).trim(),
+        zipcode: cols[idxs.zipcode] || "",
+        lat: cols[idxs.lat] || "",
+        long: cols[idxs.long] || "",
+        website: cols[idxs.website] || "",
+        remark: "",
+        createdAt:new Date().toISOString(),
+        updatedAt:new Date().toISOString()
+      });
+    }
+  }else{
+    const idxs={
+      code:header.indexOf("code"),
+      name:header.indexOf("name"),
+      unit:header.indexOf("unit"),
+      type:header.indexOf("type"),
+      ministry:header.indexOf("ministry"),
+      level:header.indexOf("level"),
+      province:header.indexOf("province"),
+      district:header.indexOf("district"),
+      subdistrict:header.indexOf("subdistrict"),
+      village:header.indexOf("village"),
+      address:header.indexOf("address"),
+      zipcode:header.indexOf("zipcode"),
+      lat:header.indexOf("lat"),
+      long:header.indexOf("long"),
+      website:header.indexOf("website"),
+      remark:header.indexOf("remark")
+    };
+    for(const k in idxs){
+      if(idxs[k]===-1){
+        alert("ไฟล์ไม่ตรงโครงสร้างที่ระบบรองรับ");
+        return;
+      }
+    }
+    for(let i=1;i<lines.length;i++){
+      const cols=lines[i].split(",").map(c=>c.replace(/(^"|"$)/g,""));
+      if(cols.length===0) continue;
+      imported.push({
+        code:cols[idxs.code]||"",
+        name:cols[idxs.name]||"",
+        unit:cols[idxs.unit]||"",
+        type:cols[idxs.type]||"",
+        ministry:cols[idxs.ministry]||"",
+        level:cols[idxs.level]||"",
+        province:cols[idxs.province]||"",
+        district:cols[idxs.district]||"",
+        subdistrict:cols[idxs.subdistrict]||"",
+        village:cols[idxs.village]||"",
+        address:cols[idxs.address]||"",
+        zipcode:cols[idxs.zipcode]||"",
+        lat:cols[idxs.lat]||"",
+        long:cols[idxs.long]||"",
+        website:cols[idxs.website]||"",
+        remark:cols[idxs.remark]||"",
+        createdAt:new Date().toISOString(),
+        updatedAt:new Date().toISOString()
+      });
     }
   }
-  const imported=[];
-  for(let i=1;i<lines.length;i++){
-    const cols=lines[i].split(",").map(c=>c.replace(/(^"|"$)/g,""));
-    if(cols.length===0) continue;
-    imported.push({
-      code:       cols[idxs.code]||"",
-      name:       cols[idxs.name]||"",
-      unit:       cols[idxs.unit]||"",
-      ministry:   cols[idxs.ministry]||"",
-      level:      cols[idxs.level]||"",
-      province:   cols[idxs.province]||"",
-      district:   cols[idxs.district]||"",
-      subdistrict:cols[idxs.subdistrict]||"",
-      village:    cols[idxs.village]||"",
-      remark:     cols[idxs.remark]||"",
-      createdAt:new Date().toISOString(),
-      updatedAt:new Date().toISOString()
-    });
-  }
+
   data=data.concat(imported);
   saveData(); renderTable();
   alert("นำเข้า CSV เรียบร้อย: "+imported.length+" รายการ");
 }
 
 /* search events */
+btnSearch.addEventListener("click", renderTable);
 document.querySelectorAll(".search-input").forEach(el=>{
-  el.addEventListener("input", renderTable);
+  el.addEventListener("keydown", e=>{
+    if(e.key==="Enter"){
+      e.preventDefault();
+      renderTable();
+    }
+  });
 });
-document.getElementById("btnSearchReset").addEventListener("click", ()=>{
+btnSearchReset.addEventListener("click", ()=>{
   document.getElementById("s-unit").value="";
   document.getElementById("s-province").value="";
   document.getElementById("s-district").value="";
@@ -488,6 +661,7 @@ document.getElementById("btnSearchReset").addEventListener("click", ()=>{
 /* init */
 checkSession();
 updateStatsOnLoad();
+populateProvinces();
 loadData();
 renderTable();
 </script>
