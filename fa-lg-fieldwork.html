@@ -348,7 +348,7 @@
     .acc-toggle-icon{
       font-size:14px;
       transform:rotate(0deg);
-      transition:transform .18s ease-out;
+      transition:transform .18s.ease-out;
     }
     .acc-item.open .acc-toggle-icon{
       transform:rotate(90deg);
@@ -518,7 +518,7 @@
     <div class="search-box">
       <span class="search-icon">🔎</span>
       <input id="searchInput" type="text"
-             placeholder="ค้นหาเลขฟอร์ม หรือคำสำคัญ เช่น 8.2, เงินสด, รายได้">
+             placeholder="ค้นหาเลขฟอร์ม หรือคำสำคัญ เช่น อปท.8.2, เงินสด, รายได้">
     </div>
     <div class="filter-badges">
       <div class="filter-badge active" data-filter="all">ทั้งหมด</div>
@@ -548,7 +548,7 @@
             <div class="acc-header">
               <div class="acc-left">
                 <div class="acc-label">A1 – ทดสอบทั่วไป / รายงานการเงินรวม</div>
-                <div class="acc-sub">อปท. 7, 8.1, 8.1.1 – 8.1.4</div>
+                <div class="acc-sub">อปท.7, อปท.8.1, อปท.8.1.1 – อปท.8.1.4</div>
               </div>
               <div class="acc-meta">
                 <span>กลุ่ม <strong>General</strong></span>
@@ -566,33 +566,51 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr class="form-row" data-keywords="อปท.7 ความครบถ้วน รายงานการเงิน">
-                      <td><span class="form-code">อปท. 7</span></td>
+                    <tr class="form-row"
+                        data-keywords="อปท.7 ความครบถ้วน รายงานการเงิน"
+                        style="cursor:pointer;"
+                        onclick="window.location.href='fa-lg-form-op7.html'">
+                      <td><span class="form-code">อปท.7</span></td>
                       <td class="form-desc">สอบทานความครบถ้วนของรายงานการเงิน</td>
                       <td><span class="form-tag">General FS Review</span></td>
                     </tr>
-                    <tr class="form-row" data-keywords="8.1 แนวการตรวจสอบ เรื่องทั่วไป">
-                      <td><span class="form-code">8.1</span></td>
+                    <tr class="form-row"
+                        data-keywords="อปท.8.1 แนวการตรวจสอบ เรื่องทั่วไป"
+                        style="cursor:pointer;"
+                        onclick="window.location.href='fa-lg-form-8-1.html'">
+                      <td><span class="form-code">อปท.8.1</span></td>
                       <td class="form-desc">แนวการตรวจสอบเรื่องทั่วไป</td>
                       <td><span class="form-tag">General Procedures</span></td>
                     </tr>
-                    <tr class="form-row" data-keywords="8.1.1 ตรวจสอบ งบการเงินรวม">
-                      <td><span class="form-code">8.1.1</span></td>
+                    <tr class="form-row"
+                        data-keywords="อปท.8.1.1 ตรวจสอบ งบการเงินรวม"
+                        style="cursor:pointer;"
+                        onclick="window.location.href='fa-lg-form-8-1-1.html'">
+                      <td><span class="form-code">อปท.8.1.1</span></td>
                       <td class="form-desc">ตรวจสอบงบการเงินรวม</td>
                       <td><span class="form-tag">FS Overview</span></td>
                     </tr>
-                    <tr class="form-row" data-keywords="8.1.2 ภาระผูกพัน">
-                      <td><span class="form-code">8.1.2</span></td>
+                    <tr class="form-row"
+                        data-keywords="อปท.8.1.2 ภาระผูกพัน"
+                        style="cursor:pointer;"
+                        onclick="window.location.href='fa-lg-form-8-1-2.html'">
+                      <td><span class="form-code">อปท.8.1.2</span></td>
                       <td class="form-desc">ตรวจสอบภาระผูกพัน</td>
                       <td><span class="form-tag">Commitments</span></td>
                     </tr>
-                    <tr class="form-row" data-keywords="8.1.3 หนี้สินที่อาจเกิดขึ้น contingent liabilities">
-                      <td><span class="form-code">8.1.3</span></td>
+                    <tr class="form-row"
+                        data-keywords="อปท.8.1.3 หนี้สินที่อาจเกิดขึ้น contingent liabilities"
+                        style="cursor:pointer;"
+                        onclick="window.location.href='fa-lg-form-8-1-3.html'">
+                      <td><span class="form-code">อปท.8.1.3</span></td>
                       <td class="form-desc">ตรวจสอบหนี้สินที่อาจเกิดขึ้น</td>
                       <td><span class="form-tag">Contingent Liabilities</span></td>
                     </tr>
-                    <tr class="form-row" data-keywords="8.1.4 เหตุการณ์ ภายหลัง รอบระยะเวลา รายงาน subsequent events">
-                      <td><span class="form-code">8.1.4</span></td>
+                    <tr class="form-row"
+                        data-keywords="อปท.8.1.4 เหตุการณ์ ภายหลัง รอบระยะเวลา รายงาน subsequent events"
+                        style="cursor:pointer;"
+                        onclick="window.location.href='fa-lg-form-8-1-4.html'">
+                      <td><span class="form-code">อปท.8.1.4</span></td>
                       <td class="form-desc">ตรวจสอบเหตุการณ์ภายหลังรอบระยะเวลารายงาน</td>
                       <td><span class="form-tag">Subsequent Events</span></td>
                     </tr>
@@ -607,7 +625,7 @@
             <div class="acc-header">
               <div class="acc-left">
                 <div class="acc-label">A2 – กระดาษทำการ / สอบทานงานตรวจสอบ</div>
-                <div class="acc-sub">ฟอร์ม 3.12, 3.13, 3.16, 3.17</div>
+                <div class="acc-sub">อปท.3.12, อปท.3.13, อปท.3.16, อปท.3.17</div>
               </div>
               <div class="acc-meta">
                 <span>กลุ่ม <strong>Working Papers</strong></span>
@@ -625,23 +643,35 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr class="form-row" data-keywords="3.12 ข้อเท็จจริง ขัดต่อข้อเท็จจริง misstatement finding">
-                      <td><span class="form-code">3.12</span></td>
+                    <tr class="form-row"
+                        data-keywords="อปท.3.12 ข้อเท็จจริง ขัดต่อข้อเท็จจริง misstatement finding"
+                        style="cursor:pointer;"
+                        onclick="window.location.href='fa-lg-form-3-12.html'">
+                      <td><span class="form-code">อปท.3.12</span></td>
                       <td class="form-desc">สรุปข้อมูลที่ขัดต่อข้อเท็จจริง</td>
                       <td><span class="form-tag">Findings</span></td>
                     </tr>
-                    <tr class="form-row" data-keywords="3.13 ข้อเสนอแนะ ให้หน่วยรับตรวจ แก้ไข recommendation">
-                      <td><span class="form-code">3.13</span></td>
+                    <tr class="form-row"
+                        data-keywords="อปท.3.13 ข้อเสนอแนะ ให้หน่วยรับตรวจ แก้ไข recommendation"
+                        style="cursor:pointer;"
+                        onclick="window.location.href='fa-lg-form-3-13.html'">
+                      <td><span class="form-code">อปท.3.13</span></td>
                       <td class="form-desc">รายการข้อเท็จจริงที่เสนอให้หน่วยรับตรวจแก้ไข</td>
                       <td><span class="form-tag">Recommendations</span></td>
                     </tr>
-                    <tr class="form-row" data-keywords="3.16 สอบทาน กระดาษทำการ review working paper">
-                      <td><span class="form-code">3.16</span></td>
+                    <tr class="form-row"
+                        data-keywords="อปท.3.16 สอบทาน กระดาษทำการ review working paper"
+                        style="cursor:pointer;"
+                        onclick="window.location.href='fa-lg-form-3-16.html'">
+                      <td><span class="form-code">อปท.3.16</span></td>
                       <td class="form-desc">แบบสอบทานกระดาษทำการ</td>
                       <td><span class="form-tag">WP Review</span></td>
                     </tr>
-                    <tr class="form-row" data-keywords="3.17 สอบทาน งานตรวจสอบ review engagement">
-                      <td><span class="form-code">3.17</span></td>
+                    <tr class="form-row"
+                        data-keywords="อปท.3.17 สอบทาน งานตรวจสอบ review engagement"
+                        style="cursor:pointer;"
+                        onclick="window.location.href='fa-lg-form-3-17.html'">
+                      <td><span class="form-code">อปท.3.17</span></td>
                       <td class="form-desc">แบบสอบทานงานตรวจสอบ</td>
                       <td><span class="form-tag">Engagement Review</span></td>
                     </tr>
@@ -675,7 +705,7 @@
             <div class="acc-header">
               <div class="acc-left">
                 <div class="acc-label">B1 – เงินสดและเงินฝากธนาคาร (Cash & Bank)</div>
-                <div class="acc-sub">8.2, 8.2.1, 8.2.1.1, 8.2.2, 8.2.3</div>
+                <div class="acc-sub">อปท.8.2, อปท.8.2.1, อปท.8.2.1.1, อปท.8.2.2, อปท.8.2.3</div>
               </div>
               <div class="acc-meta">
                 <span>กลุ่ม <strong>Assets – Current</strong></span>
@@ -693,28 +723,43 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr class="form-row" data-keywords="8.2 แนวการตรวจสอบ เงินสด รายการเทียบเท่าเงินสด cash equivalent">
-                      <td><span class="form-code">8.2</span></td>
+                    <tr class="form-row"
+                        data-keywords="อปท.8.2 แนวการตรวจสอบ เงินสด รายการเทียบเท่าเงินสด cash equivalent"
+                        style="cursor:pointer;"
+                        onclick="window.location.href='fa-lg-form-8-2.html'">
+                      <td><span class="form-code">อปท.8.2</span></td>
                       <td class="form-desc">แนวการตรวจสอบเงินสดและรายการเทียบเท่าเงินสด</td>
                       <td><span class="form-tag">Cash Procedures</span></td>
                     </tr>
-                    <tr class="form-row" data-keywords="8.2.1 วิเคราะห์ยอด ยกมา สิ้นงวด ก่อน หลัง ปรับปรุง">
-                      <td><span class="form-code">8.2.1</span></td>
+                    <tr class="form-row"
+                        data-keywords="อปท.8.2.1 วิเคราะห์ยอด ยกมา สิ้นงวด ก่อน หลัง ปรับปรุง"
+                        style="cursor:pointer;"
+                        onclick="window.location.href='fa-lg-form-8-2-1.html'">
+                      <td><span class="form-code">อปท.8.2.1</span></td>
                       <td class="form-desc">วิเคราะห์ยอดยกมา–ยอดสิ้นงวด (ก่อน/หลังปรับปรุง)</td>
                       <td><span class="form-tag">Analytical Review</span></td>
                     </tr>
-                    <tr class="form-row" data-keywords="8.2.1.1 ตรวจสอบยอดคงเหลือ รายหน่วยงาน">
-                      <td><span class="form-code">8.2.1.1</span></td>
+                    <tr class="form-row"
+                        data-keywords="อปท.8.2.1.1 ตรวจสอบยอดคงเหลือ รายหน่วยงาน"
+                        style="cursor:pointer;"
+                        onclick="window.location.href='fa-lg-form-8-2-1-1.html'">
+                      <td><span class="form-code">อปท.8.2.1.1</span></td>
                       <td class="form-desc">ตรวจสอบยอดคงเหลือเงินฝากรายหน่วยงาน</td>
                       <td><span class="form-tag">Detail Test</span></td>
                     </tr>
-                    <tr class="form-row" data-keywords="8.2.2 ตรวจนับเงินสด cash count">
-                      <td><span class="form-code">8.2.2</span></td>
+                    <tr class="form-row"
+                        data-keywords="อปท.8.2.2 ตรวจนับเงินสด cash count"
+                        style="cursor:pointer;"
+                        onclick="window.location.href='fa-lg-form-8-2-2.html'">
+                      <td><span class="form-code">อปท.8.2.2</span></td>
                       <td class="form-desc">ตรวจนับเงินสด</td>
                       <td><span class="form-tag">Physical Count</span></td>
                     </tr>
-                    <tr class="form-row" data-keywords="8.2.3 งบกระทบยอด เงินฝาก bank reconciliation">
-                      <td><span class="form-code">8.2.3</span></td>
+                    <tr class="form-row"
+                        data-keywords="อปท.8.2.3 งบกระทบยอด เงินฝาก bank reconciliation"
+                        style="cursor:pointer;"
+                        onclick="window.location.href='fa-lg-form-8-2-3.html'">
+                      <td><span class="form-code">อปท.8.2.3</span></td>
                       <td class="form-desc">ตรวจสอบงบกระทบยอดเงินฝาก</td>
                       <td><span class="form-tag">Reconciliation</span></td>
                     </tr>
@@ -729,7 +774,7 @@
             <div class="acc-header">
               <div class="acc-left">
                 <div class="acc-label">B2 – ลูกหนี้และเงินให้กู้ยืมระยะสั้น (Receivables)</div>
-                <div class="acc-sub">8.3, 8.4, 8.5, 8.6 + ฟอร์มย่อยมาตรฐาน 8.x.1 / 8.x.1.1 / 8.x.2</div>
+                <div class="acc-sub">อปท.8.3, อปท.8.4, อปท.8.5, อปท.8.6 + ฟอร์มย่อยมาตรฐาน อปท.8.x.1 / อปท.8.x.1.1 / อปท.8.x.2</div>
               </div>
               <div class="acc-meta">
                 <span>กลุ่ม <strong>Assets – Receivables</strong></span>
@@ -747,38 +792,59 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr class="form-row" data-keywords="8.3 ลูกหนี้การค้า trade receivable">
-                      <td><span class="form-code">8.3</span></td>
+                    <tr class="form-row"
+                        data-keywords="อปท.8.3 ลูกหนี้การค้า trade receivable"
+                        style="cursor:pointer;"
+                        onclick="window.location.href='fa-lg-form-8-3.html'">
+                      <td><span class="form-code">อปท.8.3</span></td>
                       <td class="form-desc">ลูกหนี้การค้า – ฟอร์มหลัก</td>
                       <td><span class="form-tag">Trade AR</span></td>
                     </tr>
-                    <tr class="form-row" data-keywords="8.4 ลูกหนี้ เงินโอน อุดหนุน transfer grant receivable">
-                      <td><span class="form-code">8.4</span></td>
+                    <tr class="form-row"
+                        data-keywords="อปท.8.4 ลูกหนี้ เงินโอน อุดหนุน transfer grant receivable"
+                        style="cursor:pointer;"
+                        onclick="window.location.href='fa-lg-form-8-4.html'">
+                      <td><span class="form-code">อปท.8.4</span></td>
                       <td class="form-desc">ลูกหนี้เงินโอน/อุดหนุน</td>
                       <td><span class="form-tag">Grant Receivable</span></td>
                     </tr>
-                    <tr class="form-row" data-keywords="8.5 ลูกหนี้อื่น ระยะสั้น other receivable">
-                      <td><span class="form-code">8.5</span></td>
+                    <tr class="form-row"
+                        data-keywords="อปท.8.5 ลูกหนี้อื่น ระยะสั้น other receivable"
+                        style="cursor:pointer;"
+                        onclick="window.location.href='fa-lg-form-8-5.html'">
+                      <td><span class="form-code">อปท.8.5</span></td>
                       <td class="form-desc">ลูกหนี้อื่นระยะสั้น</td>
                       <td><span class="form-tag">Other AR</span></td>
                     </tr>
-                    <tr class="form-row" data-keywords="8.6 เงินให้กู้ยืม ระยะสั้น short-term loans">
-                      <td><span class="form-code">8.6</span></td>
+                    <tr class="form-row"
+                        data-keywords="อปท.8.6 เงินให้กู้ยืม ระยะสั้น short-term loans"
+                        style="cursor:pointer;"
+                        onclick="window.location.href='fa-lg-form-8-6.html'">
+                      <td><span class="form-code">อปท.8.6</span></td>
                       <td class="form-desc">เงินให้กู้ยืมระยะสั้น</td>
                       <td><span class="form-tag">Short-term Loans</span></td>
                     </tr>
-                    <tr class="form-row" data-keywords="8.x.1 วิเคราะห์ยอด ลูกหนี้ วิเคราะห์ก่อน หลัง ปรับปรุง">
-                      <td><span class="form-code">8.x.1</span></td>
+                    <tr class="form-row"
+                        data-keywords="อปท.8.x.1 วิเคราะห์ยอด ลูกหนี้ วิเคราะห์ก่อน หลัง ปรับปรุง"
+                        style="cursor:pointer;"
+                        onclick="window.location.href='fa-lg-form-8-x-1.html'">
+                      <td><span class="form-code">อปท.8.x.1</span></td>
                       <td class="form-desc">ฟอร์มมาตรฐาน – วิเคราะห์ยอด (ก่อน–หลังปรับปรุง)</td>
                       <td><span class="form-tag">Analytical Review</span></td>
                     </tr>
-                    <tr class="form-row" data-keywords="8.x.1.1 ตรวจคงเหลือ รายหน่วย ลูกหนี้ รายลูกหนี้">
-                      <td><span class="form-code">8.x.1.1</span></td>
+                    <tr class="form-row"
+                        data-keywords="อปท.8.x.1.1 ตรวจคงเหลือ รายหน่วย ลูกหนี้ รายลูกหนี้"
+                        style="cursor:pointer;"
+                        onclick="window.location.href='fa-lg-form-8-x-1-1.html'">
+                      <td><span class="form-code">อปท.8.x.1.1</span></td>
                       <td class="form-desc">ฟอร์มมาตรฐาน – ตรวจคงเหลือรายหน่วยงาน/รายลูกหนี้</td>
                       <td><span class="form-tag">Detail Test</span></td>
                     </tr>
-                    <tr class="form-row" data-keywords="8.x.2 สรุปผล การยืนยันยอด confirmation">
-                      <td><span class="form-code">8.x.2</span></td>
+                    <tr class="form-row"
+                        data-keywords="อปท.8.x.2 สรุปผล การยืนยันยอด confirmation"
+                        style="cursor:pointer;"
+                        onclick="window.location.href='fa-lg-form-8-x-2.html'">
+                      <td><span class="form-code">อปท.8.x.2</span></td>
                       <td class="form-desc">ฟอร์มมาตรฐาน – สรุปผลการยืนยันยอด (ถ้ามี)</td>
                       <td><span class="form-tag">Confirmation</span></td>
                     </tr>
@@ -793,7 +859,7 @@
             <div class="acc-header">
               <div class="acc-left">
                 <div class="acc-label">B3 – สินค้าคงเหลือและวัสดุคงเหลือ (Inventories)</div>
-                <div class="acc-sub">8.8, 8.8.2, 8.9, 8.9.2</div>
+                <div class="acc-sub">อปท.8.8, อปท.8.8.2, อปท.8.9, อปท.8.9.2</div>
               </div>
               <div class="acc-meta">
                 <span>กลุ่ม <strong>Inventories</strong></span>
@@ -811,23 +877,35 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr class="form-row" data-keywords="8.8 สินค้า inventory">
-                      <td><span class="form-code">8.8</span></td>
+                    <tr class="form-row"
+                        data-keywords="อปท.8.8 สินค้า inventory"
+                        style="cursor:pointer;"
+                        onclick="window.location.href='fa-lg-form-8-8.html'">
+                      <td><span class="form-code">อปท.8.8</span></td>
                       <td class="form-desc">ตรวจสอบสินค้าคงเหลือ</td>
                       <td><span class="form-tag">Goods</span></td>
                     </tr>
-                    <tr class="form-row" data-keywords="8.8.2 ตรวจนับ สินค้า stock count">
-                      <td><span class="form-code">8.8.2</span></td>
+                    <tr class="form-row"
+                        data-keywords="อปท.8.8.2 ตรวจนับ สินค้า stock count"
+                        style="cursor:pointer;"
+                        onclick="window.location.href='fa-lg-form-8-8-2.html'">
+                      <td><span class="form-code">อปท.8.8.2</span></td>
                       <td class="form-desc">ตรวจนับสินค้าคงเหลือ</td>
                       <td><span class="form-tag">Physical Count</span></td>
                     </tr>
-                    <tr class="form-row" data-keywords="8.9 วัสดุ คงเหลือ materials">
-                      <td><span class="form-code">8.9</span></td>
+                    <tr class="form-row"
+                        data-keywords="อปท.8.9 วัสดุ คงเหลือ materials"
+                        style="cursor:pointer;"
+                        onclick="window.location.href='fa-lg-form-8-9.html'">
+                      <td><span class="form-code">อปท.8.9</span></td>
                       <td class="form-desc">ตรวจสอบวัสดุคงเหลือ</td>
                       <td><span class="form-tag">Materials</span></td>
                     </tr>
-                    <tr class="form-row" data-keywords="8.9.2 ตรวจนับ วัสดุ stock count">
-                      <td><span class="form-code">8.9.2</span></td>
+                    <tr class="form-row"
+                        data-keywords="อปท.8.9.2 ตรวจนับ วัสดุ stock count"
+                        style="cursor:pointer;"
+                        onclick="window.location.href='fa-lg-form-8-9-2.html'">
+                      <td><span class="form-code">อปท.8.9.2</span></td>
                       <td class="form-desc">ตรวจนับวัสดุคงเหลือ</td>
                       <td><span class="form-tag">Physical Count</span></td>
                     </tr>
@@ -842,7 +920,7 @@
             <div class="acc-header">
               <div class="acc-left">
                 <div class="acc-label">B4 – สินทรัพย์ถาวร / โครงสร้างพื้นฐาน / สินทรัพย์ไม่มีตัวตน / ที่ดินอาคาร</div>
-                <div class="acc-sub">หมวด 8.11, 8.12, 8.13, 8.14 (ชุดใหญ่สุดใน Fieldwork)</div>
+                <div class="acc-sub">หมวด อปท.8.11, อปท.8.12, อปท.8.13, อปท.8.14 (ชุดใหญ่สุดใน Fieldwork)</div>
               </div>
               <div class="acc-meta">
                 <span>กลุ่ม <strong>Non-current Assets</strong></span>
@@ -860,31 +938,43 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr class="form-row" data-keywords="8.13 ครุภัณฑ์ ที่ดิน อาคาร โครงสร้างพื้นฐาน PPE infrastructure">
-                      <td><span class="form-code">8.13</span></td>
+                    <tr class="form-row"
+                        data-keywords="อปท.8.13 ครุภัณฑ์ ที่ดิน อาคาร โครงสร้างพื้นฐาน PPE infrastructure"
+                        style="cursor:pointer;"
+                        onclick="window.location.href='fa-lg-form-8-13.html'">
+                      <td><span class="form-code">อปท.8.13</span></td>
                       <td class="form-desc">ฟอร์มหลัก – สินทรัพย์ถาวร / ที่ดิน อาคาร และโครงสร้างพื้นฐาน</td>
                       <td><span class="form-tag">PPE / Infra</span></td>
                     </tr>
-                    <tr class="form-row" data-keywords="ตรวจนับ ครุภัณฑ์ fixed assets count">
-                      <td><span class="form-code">8.13.xx</span></td>
+                    <tr class="form-row"
+                        data-keywords="อปท.8.13.xx ตรวจนับ ครุภัณฑ์ fixed assets count"
+                        style="cursor:pointer;"
+                        onclick="window.location.href='fa-lg-form-8-13-xx.html'">
+                      <td><span class="form-code">อปท.8.13.xx</span></td>
                       <td class="form-desc">ตรวจนับครุภัณฑ์ – รายบัญชี/รายหน่วยงาน (ระบุรหัสย่อยในระบบ)</td>
                       <td><span class="form-tag">Asset Count</span></td>
                     </tr>
-                    <tr class="form-row" data-keywords="ที่ดิน อาคาร ตรวจสอบ เอกสารสิทธิ์">
-                      <td><span class="form-code">8.13.yy</span></td>
+                    <tr class="form-row"
+                        data-keywords="อปท.8.13.yy ที่ดิน อาคาร ตรวจสอบ เอกสารสิทธิ์"
+                        style="cursor:pointer;"
+                        onclick="window.location.href='fa-lg-form-8-13-yy.html'">
+                      <td><span class="form-code">อปท.8.13.yy</span></td>
                       <td class="form-desc">ตรวจสอบที่ดิน/อาคาร – เอกสารสิทธิ์และการใช้ประโยชน์</td>
                       <td><span class="form-tag">Land & Building</span></td>
                     </tr>
-                    <tr class="form-row" data-keywords="8.11 8.12 8.14 เงินลงทุนระยะยาว สินทรัพย์ไม่มีตัวตน investment intangible">
-                      <td><span class="form-code">8.11 / 8.12 / 8.14</span></td>
+                    <tr class="form-row"
+                        data-keywords="อปท.8.11 อปท.8.12 อปท.8.14 เงินลงทุนระยะยาว สินทรัพย์ไม่มีตัวตน investment intangible"
+                        style="cursor:pointer;"
+                        onclick="window.location.href='fa-lg-form-8-11-12-14.html'">
+                      <td><span class="form-code">อปท.8.11 / อปท.8.12 / อปท.8.14</span></td>
                       <td class="form-desc">สินทรัพย์อื่นระยะยาว – เงินลงทุนระยะยาว / สินทรัพย์ไม่มีตัวตน / สินทรัพย์เพื่อการลงทุน</td>
                       <td><span class="form-tag">Long-term Assets</span></td>
                     </tr>
                   </tbody>
                 </table>
                 <div class="no-result" data-empty-msg style="display:none;">
-                  หมายเหตุ: ในระบบจริงสามารถแตกฟอร์ม 8.13 เป็นรายหมวด (ครุภัณฑ์, ถนน, สะพาน, ระบบประปา ฯลฯ)
-                  โดยใช้รหัสย่อยเพิ่มเติม เช่น 8.13.1, 8.13.2, ...
+                  หมายเหตุ: ในระบบจริงสามารถแตกฟอร์ม อปท.8.13 เป็นรายหมวด (ครุภัณฑ์, ถนน, สะพาน, ระบบประปา ฯลฯ)
+                  โดยใช้รหัสย่อยเพิ่มเติม เช่น อปท.8.13.1, อปท.8.13.2, ...
                 </div>
               </div>
             </div>
@@ -896,7 +986,7 @@
               <div class="acc-left">
                 <div class="acc-label">B5 – เจ้าหนี้และหนี้สิน (Liabilities)</div>
                 <div class="acc-sub">
-                  8.15 – 8.23, 8.24, 8.25, 8.26, 8.27, 8.28 – ครอบคลุมเจ้าหนี้ เงินกู้ หนี้สินระยะสั้น–ยาว และเงินรับฝาก
+                  อปท.8.15 – อปท.8.23, อปท.8.24, อปท.8.25, อปท.8.26, อปท.8.27, อปท.8.28 – ครอบคลุมเจ้าหนี้ เงินกู้ หนี้สินระยะสั้น–ยาว และเงินรับฝาก
                 </div>
               </div>
               <div class="acc-meta">
@@ -915,48 +1005,75 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr class="form-row" data-keywords="8.15 เจ้าหนี้ การค้า เจ้าหนี้อื่น ระยะสั้น">
-                      <td><span class="form-code">8.15</span></td>
+                    <tr class="form-row"
+                        data-keywords="อปท.8.15 เจ้าหนี้ การค้า เจ้าหนี้อื่น ระยะสั้น"
+                        style="cursor:pointer;"
+                        onclick="window.location.href='fa-lg-form-8-15.html'">
+                      <td><span class="form-code">อปท.8.15</span></td>
                       <td class="form-desc">เจ้าหนี้การค้าและเจ้าหนี้อื่นระยะสั้น</td>
                       <td><span class="form-tag">Trade / Other AP</span></td>
                     </tr>
-                    <tr class="form-row" data-keywords="8.16 เจ้าหนี้ เงินโอน อุดหนุน">
-                      <td><span class="form-code">8.16</span></td>
+                    <tr class="form-row"
+                        data-keywords="อปท.8.16 เจ้าหนี้ เงินโอน อุดหนุน"
+                        style="cursor:pointer;"
+                        onclick="window.location.href='fa-lg-form-8-16.html'">
+                      <td><span class="form-code">อปท.8.16</span></td>
                       <td class="form-desc">เจ้าหนี้เงินโอนและอุดหนุน</td>
                       <td><span class="form-tag">Transfer Payable</span></td>
                     </tr>
-                    <tr class="form-row" data-keywords="8.17 เงินกู้ยืม ระยะสั้น short-term loan payable">
-                      <td><span class="form-code">8.17</span></td>
+                    <tr class="form-row"
+                        data-keywords="อปท.8.17 เงินกู้ยืม ระยะสั้น short-term loan payable"
+                        style="cursor:pointer;"
+                        onclick="window.location.href='fa-lg-form-8-17.html'">
+                      <td><span class="form-code">อปท.8.17</span></td>
                       <td class="form-desc">เงินกู้ยืมระยะสั้น</td>
                       <td><span class="form-tag">Short-term Loan</span></td>
                     </tr>
-                    <tr class="form-row" data-keywords="8.18 ส่วนของเงินกู้ ถึงกำหนดชำระ ภายใน 1 ปี current portion">
-                      <td><span class="form-code">8.18</span></td>
+                    <tr class="form-row"
+                        data-keywords="อปท.8.18 ส่วนของเงินกู้ ถึงกำหนดชำระ ภายใน 1 ปี current portion"
+                        style="cursor:pointer;"
+                        onclick="window.location.href='fa-lg-form-8-18.html'">
+                      <td><span class="form-code">อปท.8.18</span></td>
                       <td class="form-desc">ส่วนของเงินกู้ถึงกำหนดชำระภายใน 1 ปี</td>
                       <td><span class="form-tag">Current Portion</span></td>
                     </tr>
-                    <tr class="form-row" data-keywords="8.19 เจ้าหนี้ ตามสัญญาเช่า การเงิน lease liability">
-                      <td><span class="form-code">8.19</span></td>
+                    <tr class="form-row"
+                        data-keywords="อปท.8.19 เจ้าหนี้ ตามสัญญาเช่า การเงิน lease liability"
+                        style="cursor:pointer;"
+                        onclick="window.location.href='fa-lg-form-8-19.html'">
+                      <td><span class="form-code">อปท.8.19</span></td>
                       <td class="form-desc">เจ้าหนี้ตามสัญญาเช่าการเงิน</td>
                       <td><span class="form-tag">Lease Liabilities</span></td>
                     </tr>
-                    <tr class="form-row" data-keywords="8.20 เงินรับฝาก deposit">
-                      <td><span class="form-code">8.20</span></td>
+                    <tr class="form-row"
+                        data-keywords="อปท.8.20 เงินรับฝาก deposit"
+                        style="cursor:pointer;"
+                        onclick="window.location.href='fa-lg-form-8-20.html'">
+                      <td><span class="form-code">อปท.8.20</span></td>
                       <td class="form-desc">เงินรับฝาก</td>
                       <td><span class="form-tag">Deposits</span></td>
                     </tr>
-                    <tr class="form-row" data-keywords="8.21 ประมาณการ หนี้สิน provision">
-                      <td><span class="form-code">8.21</span></td>
+                    <tr class="form-row"
+                        data-keywords="อปท.8.21 ประมาณการ หนี้สิน provision"
+                        style="cursor:pointer;"
+                        onclick="window.location.href='fa-lg-form-8-21.html'">
+                      <td><span class="form-code">อปท.8.21</span></td>
                       <td class="form-desc">ประมาณการหนี้สิน</td>
                       <td><span class="form-tag">Provisions</span></td>
                     </tr>
-                    <tr class="form-row" data-keywords="8.22 หนี้สินหมุนเวียนอื่น other current liabilities">
-                      <td><span class="form-code">8.22</span></td>
+                    <tr class="form-row"
+                        data-keywords="อปท.8.22 หนี้สินหมุนเวียนอื่น other current liabilities"
+                        style="cursor:pointer;"
+                        onclick="window.location.href='fa-lg-form-8-22.html'">
+                      <td><span class="form-code">อปท.8.22</span></td>
                       <td class="form-desc">หนี้สินหมุนเวียนอื่น</td>
                       <td><span class="form-tag">Other Current Liab.</span></td>
                     </tr>
-                    <tr class="form-row" data-keywords="8.23 8.24 8.25 8.26 8.27 8.28 หนี้สิน ระยะยาว long-term liabilities">
-                      <td><span class="form-code">8.23 – 8.28</span></td>
+                    <tr class="form-row"
+                        data-keywords="อปท.8.23 อปท.8.24 อปท.8.25 อปท.8.26 อปท.8.27 อปท.8.28 หนี้สิน ระยะยาว long-term liabilities"
+                        style="cursor:pointer;"
+                        onclick="window.location.href='fa-lg-form-8-23-28.html'">
+                      <td><span class="form-code">อปท.8.23 – อปท.8.28</span></td>
                       <td class="form-desc">หนี้สินระยะยาว – เงินกู้ระยะยาว พันธบัตร หรือภาระผูกพันระยะยาวอื่น ๆ</td>
                       <td><span class="form-tag">Long-term Liabilities</span></td>
                     </tr>
@@ -971,7 +1088,7 @@
             <div class="acc-header">
               <div class="acc-left">
                 <div class="acc-label">B6 – รายได้และค่าใช้จ่าย (Income & Expenses)</div>
-                <div class="acc-sub">8.30 (รายได้) และ 8.31 (ค่าใช้จ่าย)</div>
+                <div class="acc-sub">อปท.8.30 (รายได้) และ อปท.8.31 (ค่าใช้จ่าย)</div>
               </div>
               <div class="acc-meta">
                 <span>กลุ่ม <strong>P&L</strong></span>
@@ -989,13 +1106,19 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr class="form-row" data-keywords="8.30 รายได้ ตรวจใบเสร็จ รับเงิน วิเคราะห์รายได้">
-                      <td><span class="form-code">8.30</span></td>
+                    <tr class="form-row"
+                        data-keywords="อปท.8.30 รายได้ ตรวจใบเสร็จ รับเงิน วิเคราะห์รายได้"
+                        style="cursor:pointer;"
+                        onclick="window.location.href='fa-lg-form-8-30.html'">
+                      <td><span class="form-code">อปท.8.30</span></td>
                       <td class="form-desc">ตรวจรายได้ – ตรวจใบเสร็จ การรับเงิน และวิเคราะห์รายได้ตามประเภทงบ</td>
                       <td><span class="form-tag">Revenue</span></td>
                     </tr>
-                    <tr class="form-row" data-keywords="8.31 ค่าใช้จ่าย ตรวจการเบิกจ่าย วิเคราะห์ค่าใช้จ่าย เอกสารประกอบ">
-                      <td><span class="form-code">8.31</span></td>
+                    <tr class="form-row"
+                        data-keywords="อปท.8.31 ค่าใช้จ่าย ตรวจการเบิกจ่าย วิเคราะห์ค่าใช้จ่าย เอกสารประกอบ"
+                        style="cursor:pointer;"
+                        onclick="window.location.href='fa-lg-form-8-31.html'">
+                      <td><span class="form-code">อปท.8.31</span></td>
                       <td class="form-desc">ตรวจค่าใช้จ่าย – ตรวจการเบิกจ่าย เอกสารประกอบ และการใช้จ่ายงบประมาณ</td>
                       <td><span class="form-tag">Expenses</span></td>
                     </tr>
@@ -1014,7 +1137,7 @@
       <div class="section-header">
         <div class="section-title">
           <h2>C) กลุ่มฟอร์มสรุปผลระหว่างการตรวจ (Working Summary)</h2>
-          <span>เชื่อม Fieldwork ไปสู่ขั้นสรุปผลและรายงาน – 3.12, 3.13, 3.14, 3.16, 3.17</span>
+          <span>เชื่อม Fieldwork ไปสู่ขั้นสรุปผลและรายงาน – อปท.3.12, อปท.3.13, อปท.3.14, อปท.3.16, อปท.3.17</span>
         </div>
         <div class="section-tag">Bridge to Reporting</div>
       </div>
@@ -1025,7 +1148,7 @@
             <div class="acc-header">
               <div class="acc-left">
                 <div class="acc-label">C1 – สรุปข้อเท็จจริง ข้อเสนอแนะ และผลการตรวจสอบ</div>
-                <div class="acc-sub">3.12, 3.13, 3.14</div>
+                <div class="acc-sub">อปท.3.12, อปท.3.13, อปท.3.14</div>
               </div>
               <div class="acc-meta">
                 <span>กลุ่ม <strong>Findings & Summary</strong></span>
@@ -1043,18 +1166,27 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr class="form-row" data-keywords="3.12 ข้อเท็จจริง ขัดต่อข้อเท็จจริง finding misstatement">
-                      <td><span class="form-code">3.12</span></td>
+                    <tr class="form-row"
+                        data-keywords="อปท.3.12 ข้อเท็จจริง ขัดต่อข้อเท็จจริง finding misstatement"
+                        style="cursor:pointer;"
+                        onclick="window.location.href='fa-lg-form-3-12.html'">
+                      <td><span class="form-code">อปท.3.12</span></td>
                       <td class="form-desc">สรุปข้อเท็จจริงที่ขัดต่อข้อเท็จจริง (ฐานข้อมูล Findings)</td>
                       <td><span class="form-tag">Findings</span></td>
                     </tr>
-                    <tr class="form-row" data-keywords="3.13 ข้อเสนอแนะ ให้หน่วยรับตรวจ แก้ไข action plan">
-                      <td><span class="form-code">3.13</span></td>
+                    <tr class="form-row"
+                        data-keywords="อปท.3.13 ข้อเสนอแนะ ให้หน่วยรับตรวจ แก้ไข action plan"
+                        style="cursor:pointer;"
+                        onclick="window.location.href='fa-lg-form-3-13.html'">
+                      <td><span class="form-code">อปท.3.13</span></td>
                       <td class="form-desc">รายการข้อเท็จจริงที่เสนอให้หน่วยรับตรวจแก้ไข (ข้อเสนอแนะ/Action Plan)</td>
                       <td><span class="form-tag">Recommendations</span></td>
                     </tr>
-                    <tr class="form-row" data-keywords="3.14 สรุปผล การตรวจสอบ summary sheet">
-                      <td><span class="form-code">3.14</span></td>
+                    <tr class="form-row"
+                        data-keywords="อปท.3.14 สรุปผล การตรวจสอบ summary sheet"
+                        style="cursor:pointer;"
+                        onclick="window.location.href='fa-lg-form-3-14.html'">
+                      <td><span class="form-code">อปท.3.14</span></td>
                       <td class="form-desc">สรุปผลการตรวจสอบ (Summary Sheet)</td>
                       <td><span class="form-tag">Audit Summary</span></td>
                     </tr>
@@ -1068,7 +1200,7 @@
             <div class="acc-header">
               <div class="acc-left">
                 <div class="acc-label">C2 – สอบทานกระดาษทำการและงานตรวจสอบ</div>
-                <div class="acc-sub">3.16, 3.17</div>
+                <div class="acc-sub">อปท.3.16, อปท.3.17</div>
               </div>
               <div class="acc-meta">
                 <span>กลุ่ม <strong>Review & QA</strong></span>
@@ -1086,13 +1218,19 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr class="form-row" data-keywords="3.16 สอบทาน กระดาษทำการ working paper review">
-                      <td><span class="form-code">3.16</span></td>
+                    <tr class="form-row"
+                        data-keywords="อปท.3.16 สอบทาน กระดาษทำการ working paper review"
+                        style="cursor:pointer;"
+                        onclick="window.location.href='fa-lg-form-3-16.html'">
+                      <td><span class="form-code">อปท.3.16</span></td>
                       <td class="form-desc">แบบสอบทานกระดาษทำการ (WP Review Checklist)</td>
                       <td><span class="form-tag">WP Review</span></td>
                     </tr>
-                    <tr class="form-row" data-keywords="3.17 สอบทาน งานตรวจสอบ quality control review">
-                      <td><span class="form-code">3.17</span></td>
+                    <tr class="form-row"
+                        data-keywords="อปท.3.17 สอบทาน งานตรวจสอบ quality control review"
+                        style="cursor:pointer;"
+                        onclick="window.location.href='fa-lg-form-3-17.html'">
+                      <td><span class="form-code">อปท.3.17</span></td>
                       <td class="form-desc">แบบสอบทานงานตรวจสอบ (Quality Review)</td>
                       <td><span class="form-tag">Engagement Review</span></td>
                     </tr>
