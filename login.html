@@ -1,511 +1,1093 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8">
-  <title>ระบบ Login - Financial Audit</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <title>Login | Financial Audit System</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
+    :root{
+      --primary:#0d47a1;
+      --primary-2:#42a5f5;
+      --accent:#ffd54f;
+      --bg:#060818;
+      --bg-soft:#0b1024;
+      --card:#11152b;
+      --text:#f5f7ff;
+      --muted:#a3acc7;
+      --maroon:#7b1e3c;
+      --pink:#f48fb1;
+      --border:#262b46;
+    }
     *{box-sizing:border-box;}
     body{
       margin:0;
-      font-family:"Segoe UI",Tahoma,Arial,sans-serif;
-      background:#0b1020;
-      color:#f5f7ff;
+      font-family:"Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(123,30,60,0.36) 0, transparent 55%),
+        radial-gradient(circle at 90% 100%, rgba(66,165,245,0.32) 0, transparent 55%),
+        radial-gradient(circle at 0% 100%, rgba(244,143,177,0.25) 0, transparent 55%),
+        var(--bg);
+      color:var(--text);
     }
-    h1,h2,h3{margin:0;}
-    a{color:#ffb3d1;text-decoration:none;}
+    a{color:var(--pink); text-decoration:none;}
     a:hover{text-decoration:underline;}
 
+    /* time bar */
+    #timeBar{
+      width:100%;
+      padding:8px 10px;
+      text-align:center;
+      background:#11152b;
+      color:#f5f7ff;
+      font-size:13px;
+      border-bottom:1px solid rgba(255,255,255,0.15);
+    }
+
     header{
-      padding:12px 16px;
-      background:linear-gradient(120deg,#0d47a1,#7b1e3c);
-      color:#fff;
-      box-shadow:0 4px 12px rgba(0,0,0,0.45);
+      position:sticky; top:0; z-index:20;
+      background:linear-gradient(120deg,var(--maroon),var(--primary),var(--pink));
+      box-shadow:0 10px 28px rgba(0,0,0,.55);
+      border-bottom:1px solid rgba(255,255,255,0.06);
+      backdrop-filter:blur(16px);
     }
-    header h1{font-size:20px;}
-    header p{margin:4px 0 0;font-size:12px;opacity:.85;}
+    .container{max-width:980px; margin:0 auto; padding:0 20px;}
+    .header-inner{
+      display:flex; justify-content:space-between; align-items:center;
+      padding:10px 0; gap:16px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      font-weight:700; font-size:17px;
+    }
+    .brand img{
+      height:40px; border-radius:50%; background:#fff; padding:4px;
+      box-shadow:0 4px 10px rgba(0,0,0,0.4);
+    }
+    nav ul{
+      list-style:none; display:flex; gap:8px; margin:0; padding:0; flex-wrap:wrap;
+    }
+    nav a{
+      color:#fff; font-size:12px;
+      padding:5px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.18);
+      background:rgba(0,0,0,0.12);
+    }
+    nav a:hover{
+      background:rgba(255,255,255,0.2);
+    }
 
-    main{
-      max-width:1100px;
-      margin:0 auto;
-      padding:20px 12px 32px;
+    main{padding:24px 0 40px;}
+    h1{
+      margin:4px 0 2px;
+      font-size:24px;
+    }
+    p.muted-heading{
+      margin:0; font-size:12px; color:var(--muted);
     }
 
-    .grid{
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:16px;
-      margin-top:16px;
-    }
-    @media(max-width:1024px){
-      .grid{grid-template-columns:repeat(2,1fr);}
-    }
-    @media(max-width:700px){
-      .grid{grid-template-columns:1fr;}
-    }
-
+    .grid-2{display:grid; grid-template-columns:1.3fr 0.7fr; gap:20px; margin-top:20px;}
+    .grid-3{display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:18px;}
     .card{
-      background:linear-gradient(145deg,#101632,#171d3d);
+      background:linear-gradient(145deg,rgba(17,21,43,0.96),rgba(25,31,60,0.98));
       border-radius:14px;
-      padding:14px 14px 16px;
       border:1px solid rgba(255,255,255,0.08);
-      box-shadow:0 10px 26px rgba(0,0,0,0.75);
+      padding:18px 18px 16px;
+      box-shadow:0 14px 34px rgba(0,0,0,.8);
     }
-    .card h2,.card h3{font-size:16px;margin-bottom:6px;}
-    .muted{font-size:12px;color:#a3acc7;}
+    h2{font-size:18px; margin:0 0 6px;}
+    h3{font-size:15px; margin:0 0 6px;}
+    .muted{font-size:12px; color:var(--muted);}
+
     label{
-      display:block;
-      font-size:12px;
-      margin-top:8px;
-      margin-bottom:2px;
-      font-weight:600;
+      display:block; margin-top:8px; margin-bottom:4px;
+      font-size:12px; font-weight:600;
     }
+    input[type="text"],
     input[type="email"],
     input[type="password"],
-    input[type="text"]{
+    input[type="tel"]{
       width:100%;
-      padding:7px 9px;
-      border-radius:8px;
-      border:1px solid rgba(255,255,255,0.18);
-      background:#050819;
+      padding:8px 9px;
+      border-radius:9px;
+      border:1px solid rgba(255,255,255,0.12);
+      background:rgba(5,8,26,0.9);
       color:#fff;
       font-size:13px;
       outline:none;
     }
     input:focus{
-      border-color:#f48fb1;
-      box-shadow:0 0 0 1px rgba(244,143,177,0.55);
+      border-color:var(--pink);
+      box-shadow:0 0 0 1px rgba(244,143,177,0.4);
     }
+    .inline-row{
+      display:flex; gap:8px; flex-wrap:wrap;
+    }
+    .inline-row > div{flex:1 1 0;}
     button{
-      margin-top:10px;
-      padding:8px 12px;
+      padding:9px 14px;
       border-radius:999px;
       border:none;
       cursor:pointer;
       font-size:13px;
-      font-weight:600;
+      font-weight:700;
       color:#fff;
-      background:linear-gradient(135deg,#42a5f5,#7b1e3c);
-      box-shadow:0 6px 16px rgba(0,0,0,0.7);
+      background:linear-gradient(135deg,var(--primary-2),var(--maroon));
+      box-shadow:0 6px 16px rgba(13,71,161,0.7);
     }
     button:hover{
-      filter:brightness(1.05);
-      box-shadow:0 0 14px rgba(66,165,245,0.9);
+      filter:brightness(1.04);
+      box-shadow:0 0 16px rgba(66,165,245,0.85);
     }
     .btn-ghost{
-      background:rgba(0,0,0,0.3);
-      border:1px solid rgba(255,255,255,0.25);
+      background:rgba(0,0,0,0.35);
       box-shadow:none;
-      margin-left:6px;
+      border:1px solid rgba(255,255,255,0.14);
     }
+    .checkbox-row{
+      display:flex; align-items:center; gap:6px;
+      font-size:11px; margin-top:6px;
+    }
+    .status-badge{
+      display:inline-block;
+      padding:4px 9px;
+      border-radius:999px;
+      font-size:11px;
+      border:1px solid rgba(255,255,255,0.2);
+      margin-top:4px;
+    }
+    .status-pending{color:#ffca28; border-color:#ffca28;}
+    .status-approved{color:#69f0ae; border-color:#69f0ae;}
     .msg{
       font-size:11px;
       margin-top:6px;
       min-height:14px;
     }
-    .msg-ok{color:#9be7ff;}
-    .msg-err{color:#ff8a80;}
-    .hint-list{
-      padding-left:18px;
-      margin:2px 0 0;
+    .msg-error{color:#ff8a80;}
+    .msg-success{color:#69f0ae;}
+
+    .stats-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:6px;
       font-size:12px;
     }
-
-    .section-title{
-      font-size:14px;
-      font-weight:bold;
-      margin-top:12px;
+    .stats-pill{
+      padding:4px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.18);
+      background:rgba(0,0,0,0.25);
     }
 
-    .tag{
-      display:inline-block;
-      padding:3px 8px;
-      border-radius:999px;
-      font-size:11px;
-      border:1px solid rgba(255,255,255,0.25);
+    .captcha-box{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
       margin-top:4px;
     }
+    .captcha-text{
+      padding:6px 10px;
+      border-radius:8px;
+      background:#050814;
+      border:1px dashed rgba(255,255,255,0.3);
+      font-weight:700;
+      letter-spacing:2px;
+      font-size:13px;
+      user-select:none;
+    }
+    .captcha-refresh{
+      font-size:11px;
+      cursor:pointer;
+      text-decoration:underline;
+      color:var(--accent);
+    }
 
+    footer{
+      border-top:1px solid rgba(255,255,255,0.1);
+      padding:12px 0 16px;
+      background:#050714;
+      font-size:11px;
+      color:var(--muted);
+    }
+    footer .container{
+      display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;
+    }
+
+    @media(max-width:900px){
+      .grid-2{grid-template-columns:1fr;}
+    }
+    @media(max-width:720px){
+      .grid-3{grid-template-columns:1fr;}
+    }
   </style>
 </head>
 <body>
+  <!-- แถบเวลา -->
+  <div id="timeBar"></div>
+
   <header>
-    <h1>Financial Audit System – Login Center</h1>
-    <p>ระบบเข้าสู่ระบบ • ลงทะเบียน • ลืมรหัส • ขอเปลี่ยนรหัส (Demo ในเบราว์เซอร์เดียวกัน)</p>
+    <div class="container header-inner">
+      <div class="brand">
+        <img src="images/oag-logo.png" alt="OAG">
+        <div>
+          Financial Audit System
+          <div style="font-size:11px; opacity:.85;">Login &amp; Identity Management</div>
+        </div>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="index.html">🏠 หน้าแรก (Home)</a></li>
+          <li><a href="fa-login.html">🔐 Login</a></li>
+          <li><a href="admin.html" target="_blank">🧑‍💼 Admin Console</a></li>
+        </ul>
+      </nav>
+    </div>
   </header>
 
   <main>
-    <!-- แถวบน: แนวทางการใช้ระบบทั้งหมด -->
-    <div class="card">
-      <h2>📘 แนวทางการใช้งานระบบ Login</h2>
-      <div class="section-title">ขั้นตอนหลัก</div>
-      <ol class="hint-list">
-        <li>ถ้ามีรหัสแล้ว → ใช้กล่อง <strong>เข้าสู่ระบบ</strong> ด้านล่างซ้าย</li>
-        <li>ถ้ายังไม่เคยมีรหัส → ไปที่กล่อง <strong>ลงทะเบียนใช้งาน</strong> เพื่อสร้างบัญชี</li>
-        <li>ถ้าจำรหัสไม่ได้ → ไปที่กล่อง <strong>ลืมรหัสผ่าน</strong> แล้วตั้งรหัสใหม่</li>
-        <li>ถ้าจำรหัสเดิมได้ แต่อยากเปลี่ยน → ไปกล่อง <strong>ขอเปลี่ยนรหัสผ่าน</strong></li>
-      </ol>
-      <div class="section-title">การเชื่อมโยงข้อมูล</div>
-      <ul class="hint-list">
-        <li>ผู้ใช้ทั้งหมดเก็บในชุดข้อมูลกลางชื่อ <code>fa-demo-users</code> (localStorage)</li>
-        <li>ลงทะเบียนสำเร็จ → บัญชีใหม่ถูกเพิ่มเข้า <code>fa-demo-users</code> และสร้าง “คำขอผู้ใช้ใหม่” ใน <code>fa-user-requests</code> เพื่อให้ Admin อนุมัติ</li>
-        <li>ลืมรหัส → ระบบจะอัปเดตรหัสใหม่ให้บัญชีใน <code>fa-demo-users</code></li>
-        <li>ขอเปลี่ยนรหัส → ต้องกรอกรหัสเดิมถูกต้องก่อน จึงจะเปลี่ยนใน <code>fa-demo-users</code> ได้</li>
-      </ul>
-      <p class="muted" style="margin-top:6px;">
-        * ตัวอย่างนี้เป็น Demo เก็บข้อมูลใน <strong>localStorage</strong> ภายในเบราว์เซอร์เครื่องนี้เท่านั้น  
-        * คำขอลงทะเบียนผู้ใช้ถูกเก็บในคีย์ <strong>fa-user-requests</strong> เพื่อให้ระบบ admin console ในอนาคตนำไปอนุมัติได้
+    <div class="container">
+      <h1>ระบบ Login และจัดการบัญชีผู้ใช้ (Login &amp; User Account Management)</h1>
+      <p class="muted-heading">
+        ใช้ร่วมกับทุกโมดูล ยกเว้นหน้า Admin (เฉพาะผู้มีสิทธิ์เท่านั้น) •
+        รองรับลงทะเบียนใหม่ (Registration), ลืมรหัส (Forgot Password), เปลี่ยนรหัส (Change Password)
+        และจำการเข้าสู่ระบบสูงสุด 6 เดือน (Remember me up to 6 months)
       </p>
-    </div>
 
-    <!-- แถวหลักแบบคอลัมน์ 4 ระบบ -->
-    <div class="grid" style="margin-top:18px;">
+      <!-- แถวบน: Login + Info -->
+      <div class="grid-2">
+        <div class="card">
+          <h2>🔐 เข้าสู่ระบบ (Login)</h2>
+          <p class="muted">
+            กรอกอีเมลและรหัสผ่านที่ผ่านการอนุมัติแล้ว (Approved Email &amp; Password)
+            หากเลือก “จำการเข้าสู่ระบบ (Remember me)” ระบบจะจำไม่เกิน 6 เดือน
+          </p>
+          <form id="loginForm">
+            <label for="loginEmail">อีเมล (Email)</label>
+            <input type="email" id="loginEmail" required>
 
-      <!-- 1) เข้าสู่ระบบ -->
-      <div class="card" id="login-column">
-        <h2>🔐 เข้าสู่ระบบ</h2>
-        <p class="muted">
-          สำหรับผู้ที่มีบัญชีแล้ว หากระบบไม่พบบัญชี จะพาไปที่ฟอร์มลงทะเบียนอัตโนมัติ
-        </p>
-        <form id="loginForm">
-          <label for="loginEmail">อีเมล</label>
-          <input type="email" id="loginEmail" required>
+            <label for="loginPassword">รหัสผ่าน (Password)</label>
+            <input type="password" id="loginPassword" required>
 
-          <label for="loginPassword">รหัสผ่าน</label>
-          <input type="password" id="loginPassword" required>
+            <div class="checkbox-row">
+              <input type="checkbox" id="rememberMe">
+              <label for="rememberMe" style="margin:0;">จำการเข้าสู่ระบบ (Remember me, max 6 months)</label>
+            </div>
 
-          <button type="submit">เข้าสู่ระบบ</button>
-          <button type="button" class="btn-ghost" onclick="scrollToSection('register-section')">
-            ยังไม่มีรหัส? ลงทะเบียน
-          </button>
-          <button type="button" class="btn-ghost" onclick="scrollToSection('forgot-section')">
-            ลืมรหัสผ่าน
-          </button>
+            <div class="checkbox-row">
+              <input type="checkbox" id="loginHuman" required>
+              <label for="loginHuman" style="margin:0;">
+                ยืนยันว่าไม่ใช่หุ่นยนต์ (Confirm you are human) และยอมรับการใช้งานข้อมูลตามระเบียบของ สตง.
+              </label>
+            </div>
 
-          <p id="loginMessage" class="msg"></p>
-        </form>
-        <span class="tag">ใช้ฐานข้อมูล users เดียวกับฟอร์มอื่นทั้งหมด</span>
+            <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
+              <button type="submit">เข้าสู่ระบบ (Login)</button>
+              <button type="button" class="btn-ghost" onclick="window.location.href='index.html'">
+                กลับหน้าแรก (Back to Home)
+              </button>
+            </div>
+            <div id="loginMsg" class="msg"></div>
+            <div id="loginStatus" class="status-badge" style="display:none;"></div>
+
+            <!-- สถิติการเข้าสู่ระบบ -->
+            <div style="margin-top:12px; border-top:1px solid rgba(255,255,255,0.12); padding-top:8px;">
+              <strong style="font-size:12px;">📊 สถิติการเข้าสู่ระบบ (Login Statistics – this browser)</strong>
+              <div class="stats-row">
+                <div class="stats-pill">
+                  ผ่าน (Successful): <span id="loginSuccessCount">0</span> ครั้ง (times)
+                </div>
+                <div class="stats-pill">
+                  ไม่ผ่าน (Failed): <span id="loginFailCount">0</span> ครั้ง (times)
+                </div>
+                <div class="stats-pill">
+                  รวมทั้งหมด (Total): <span id="loginTotalCount">0</span> ครั้ง (times)
+                </div>
+              </div>
+              <div class="muted" style="margin-top:4px;">
+                อัปเดตล่าสุด (Last update): <span id="loginLastUpdate">-</span>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="card">
+          <h3>🛡 นโยบายและบทบาท (Policy &amp; Roles)</h3>
+          <ul class="muted">
+            <li>ผู้ใช้ทั่วไป (General User) ที่ผ่านการอนุมัติจะเข้าใช้งานได้ทุกระบบ ยกเว้น Admin Console</li>
+            <li>เฉพาะ <strong>super_admin / admin / admin1</strong> เท่านั้นที่เข้าหน้า Admin Console ได้ (Admin-only)</li>
+            <li>ข้อมูลลงทะเบียนใหม่ (Registration), ลืมรหัส (Forgot), ขอเปลี่ยนรหัส (Change) จะถูกส่งไปยัง Admin เพื่ออนุมัติ</li>
+            <li>ทุกการส่งข้อมูล ระบบจะถามยืนยันก่อนเสมอ (“คุณต้องการยืนยัน กดโอเค? / Please confirm”)</li>
+            <li>รหัสผ่านควรมีอย่างน้อย 8 ตัวอักษร ผสมตัวเลขและตัวอักษร (Password ≥ 8 chars, mix letters &amp; numbers)</li>
+          </ul>
+        </div>
       </div>
 
-      <!-- 2) ลงทะเบียนใช้งาน -->
-      <div class="card" id="register-section">
-        <h2>📝 ลงทะเบียนใช้งาน</h2>
-        <p class="muted">
-          สร้างบัญชีใหม่ หากอีเมลเคยใช้แล้ว ระบบจะแจ้งเตือนให้กลับไป Login หรือใช้เมนูลืมรหัสแทน
-        </p>
-        <form id="registerForm">
-          <label for="regEmail">อีเมล</label>
-          <input type="email" id="regEmail" required>
+      <!-- แถวคำอธิบายการใช้ + สรุปสถิติ -->
+      <div class="grid-2" style="margin-top:20px;">
+        <div class="card">
+          <h3>📘 คำอธิบายการใช้ระบบ Login (How to use Login)</h3>
+          <ol class="muted" style="padding-left:16px; margin-top:6px;">
+            <li>ถ้ามีรหัสอยู่แล้ว → ใช้กล่อง <strong>🔐 เข้าสู่ระบบ (Login)</strong> ด้านบนซ้าย</li>
+            <li>ถ้ายังไม่มีรหัส → เลื่อนไปด้านล่าง ไปที่กล่อง <strong>📝 ลงทะเบียนใช้งานใหม่ (User Registration)</strong></li>
+            <li>เมื่อลงทะเบียนเสร็จ ระบบจะส่งคำขอไปให้ Admin อนุมัติ (Send request to Admin for approval)</li>
+            <li>หลังได้รับการอนุมัติ ให้กลับมาที่หน้าจอ Login นี้ เพื่อกรอกอีเมลและรหัสผ่านที่ได้รับอนุมัติ</li>
+            <li>ถ้าลืมรหัสผ่าน → ใช้กล่อง <strong>❓ ลืมรหัสผ่าน (Forgot Password)</strong> ระบบจะสร้างคำขอรีเซ็ต</li>
+            <li>ถ้ายังจำรหัสเดิมได้ → ใช้กล่อง <strong>🔁 ขอเปลี่ยนรหัสผ่าน (Change Password)</strong> เปลี่ยนได้ทันที</li>
+          </ol>
+          <p class="muted" style="margin-top:8px;">
+            * ระบบนี้เป็นเดโม ทำงานบนเบราว์เซอร์ของผู้ใช้ โดยเก็บข้อมูลใน <strong>localStorage</strong> ได้แก่
+            fas-users, fas-requests, fas-session, fas-login-stats
+          </p>
+        </div>
 
-          <label for="regPassword">รหัสผ่าน</label>
-          <input type="password" id="regPassword" required>
-
-          <label for="regPassword2">ยืนยันรหัสผ่าน</label>
-          <input type="password" id="regPassword2" required>
-
-          <button type="submit">ลงทะเบียน</button>
-          <button type="button" class="btn-ghost" onclick="scrollToSection('login-column')">
-            กลับไปหน้าเข้าสู่ระบบ
-          </button>
-
-          <p id="registerMessage" class="msg"></p>
-        </form>
-        <span class="tag">
-          สร้าง user ใหม่ + ส่งคำขอไปยังระบบ Admin (fa-user-requests) เพื่อรออนุมัติ
-        </span>
+        <div class="card">
+          <h3>📈 สรุปสถิติการเข้าใช้งาน (Usage Summary – this browser)</h3>
+          <p class="muted">
+            ใช้เพื่อดูแนวโน้มการเข้าสู่ระบบในเครื่องนี้ เช่น พยายามเข้าแล้วไม่ผ่านหลายครั้ง
+            อาจสะท้อนปัญหารหัสผ่านหรือสิทธิ์การเข้าระบบ
+          </p>
+          <ul class="muted" style="padding-left:16px; margin-top:6px;">
+            <li><strong>ผ่าน (Successful)</strong> — ล็อกอินสำเร็จจริง (Email &amp; Password ถูกต้อง และ Approved)</li>
+            <li><strong>ไม่ผ่าน (Failed)</strong> — เช่น ไม่พบผู้ใช้, บัญชียังไม่อนุมัติ, รหัสผ่านไม่ถูกต้อง, ไม่ติ๊ก Human</li>
+            <li><strong>รวมทั้งหมด (Total)</strong> — รวมทุกครั้งที่พยายามเข้าสู่ระบบ</li>
+          </ul>
+          <p class="muted" style="margin-top:6px;">
+            * สามารถล้างค่าสถิติได้โดยลบ localStorage หรือ Clear Site Data ในเบราว์เซอร์
+          </p>
+        </div>
       </div>
 
-      <!-- 3) ลืมรหัสผ่าน -->
-      <div class="card" id="forgot-section">
-        <h2>❓ ลืมรหัสผ่าน</h2>
-        <p class="muted">
-          ใช้ในกรณีจำรหัสเดิมไม่ได้ ระบบจะเปลี่ยนรหัสใหม่ให้บัญชีที่มีอยู่แล้ว
-        </p>
-        <form id="forgotForm">
-          <label for="forgotEmail">อีเมลที่ลงทะเบียนไว้</label>
-          <input type="email" id="forgotEmail" required>
+      <!-- แถวล่าง: Register / Forgot / Change -->
+      <div id="register-section" class="grid-3">
+        <!-- Register -->
+        <div class="card">
+          <h3>📝 ลงทะเบียนใช้งานใหม่ (User Registration)</h3>
+          <p class="muted">
+            สำหรับผู้ยังไม่มีรหัส ระบบจะส่งคำขอไปยัง Admin เพื่ออนุมัติ (Send request to Admin for approval)
+            เมื่ออนุมัติแล้วจึงสามารถ Login ได้
+          </p>
+          <form id="registerForm">
+            <div class="inline-row">
+              <div>
+                <label for="regFirstName">ชื่อ (First Name)</label>
+                <input type="text" id="regFirstName" required>
+              </div>
+              <div>
+                <label for="regLastName">นามสกุล (Last Name)</label>
+                <input type="text" id="regLastName" required>
+              </div>
+            </div>
 
-          <label for="forgotNewPassword">รหัสผ่านใหม่</label>
-          <input type="password" id="forgotNewPassword" required>
+            <label for="regCitizenId">เลขบัตรประชาชน (Citizen ID)</label>
+            <input type="text" id="regCitizenId" maxlength="13" required>
 
-          <label for="forgotNewPassword2">ยืนยันรหัสผ่านใหม่</label>
-          <input type="password" id="forgotNewPassword2" required>
+            <label for="regGovId">เลขบัตรข้าราชการ (Government ID)</label>
+            <input type="text" id="regGovId" required>
 
-          <button type="submit">ตั้งรหัสใหม่</button>
-          <button type="button" class="btn-ghost" onclick="scrollToSection('login-column')">
-            กลับไปหน้าเข้าสู่ระบบ
-          </button>
+            <label for="regPosition">ตำแหน่ง (Position)</label>
+            <input type="text" id="regPosition" required>
 
-          <p id="forgotMessage" class="msg"></p>
-        </form>
-        <span class="tag">แก้ไข password ของ user ที่มีอยู่</span>
+            <label for="regEmail">อีเมล (Email)</label>
+            <input type="email" id="regEmail" required>
+
+            <label for="regPhone">เบอร์ติดต่อ (Phone)</label>
+            <input type="tel" id="regPhone" required>
+
+            <div class="inline-row">
+              <div>
+                <label for="regPassword">รหัสผ่าน (Password, ≥ 8 chars)</label>
+                <input type="password" id="regPassword" minlength="8" required>
+              </div>
+              <div>
+                <label for="regPassword2">ยืนยันรหัสผ่าน (Confirm Password)</label>
+                <input type="password" id="regPassword2" minlength="8" required>
+              </div>
+            </div>
+
+            <label>ยืนยันว่าเป็นมนุษย์ (Human Verification – Captcha)</label>
+            <div class="captcha-box">
+              <span id="regCaptcha" class="captcha-text"></span>
+              <input type="text" id="regCaptchaInput" placeholder="กรอก Captcha (Enter Captcha)" required>
+              <span class="captcha-refresh" onclick="refreshAllCaptchas()">รีเฟรช (Refresh)</span>
+            </div>
+
+            <div style="margin-top:10px;">
+              <button type="submit">ส่งคำขอลงทะเบียน (Submit Registration Request)</button>
+            </div>
+            <div id="regMsg" class="msg"></div>
+            <div class="status-badge status-pending" id="regStatusBadge" style="display:none;">
+              สถานะ: รออนุมัติจาก Admin (Pending Approval)
+            </div>
+          </form>
+        </div>
+
+        <!-- Forgot password -->
+        <div class="card">
+          <h3>❓ ลืมรหัสผ่าน (Forgot Password)</h3>
+          <p class="muted">
+            สำหรับผู้ที่ลืมรหัสผ่าน ระบบจะส่งคำขอรีเซ็ตรหัสผ่านให้ Admin พิจารณา ก่อนจึงจะใช้รหัสใหม่ได้
+            (Reset request will be reviewed by Admin)
+          </p>
+          <form id="forgotForm">
+            <label for="forgotEmail">อีเมลที่ใช้ลงทะเบียน (Registered Email)</label>
+            <input type="email" id="forgotEmail" required>
+
+            <label for="forgotCitizenId">เลขบัตรประชาชน (Citizen ID)</label>
+            <input type="text" id="forgotCitizenId" maxlength="13" required>
+
+            <label for="forgotGovId">เลขบัตรข้าราชการ (Government ID)</label>
+            <input type="text" id="forgotGovId" required>
+
+            <div class="inline-row">
+              <div>
+                <label for="forgotNewPassword">รหัสผ่านใหม่ (New Password, ≥ 8 chars)</label>
+                <input type="password" id="forgotNewPassword" minlength="8" required>
+              </div>
+              <div>
+                <label for="forgotNewPassword2">ยืนยันรหัสใหม่ (Confirm New Password)</label>
+                <input type="password" id="forgotNewPassword2" minlength="8" required>
+              </div>
+            </div>
+
+            <label>ยืนยันว่าเป็นมนุษย์ (Human Verification – Captcha)</label>
+            <div class="captcha-box">
+              <span id="forgotCaptcha" class="captcha-text"></span>
+              <input type="text" id="forgotCaptchaInput" placeholder="กรอก Captcha (Enter Captcha)" required>
+              <span class="captcha-refresh" onclick="refreshAllCaptchas()">รีเฟรช (Refresh)</span>
+            </div>
+
+            <div style="margin-top:10px;">
+              <button type="submit">ส่งคำขอลืมรหัสผ่าน (Submit Forgot Password Request)</button>
+            </div>
+            <div id="forgotMsg" class="msg"></div>
+          </form>
+        </div>
+
+        <!-- Change password -->
+        <div class="card">
+          <h3>🔁 ขอเปลี่ยนรหัสผ่าน (Change Password)</h3>
+          <p class="muted">
+            สำหรับผู้ที่ยังจำรหัสเดิมได้ สามารถเปลี่ยนรหัสใหม่ได้ทันที โดยไม่ต้องรออนุมัติ
+            (Change password immediately if you know the old one)
+          </p>
+          <form id="changeForm">
+            <label for="changeEmail">อีเมลที่ใช้ลงทะเบียน (Registered Email)</label>
+            <input type="email" id="changeEmail" required>
+
+            <label for="changeOldPassword">รหัสผ่านเดิม (Old Password)</label>
+            <input type="password" id="changeOldPassword" required>
+
+            <div class="inline-row">
+              <div>
+                <label for="changeNewPassword">รหัสผ่านใหม่ (New Password, ≥ 8 chars)</label>
+                <input type="password" id="changeNewPassword" minlength="8" required>
+              </div>
+              <div>
+                <label for="changeNewPassword2">ยืนยันรหัสใหม่ (Confirm New Password)</label>
+                <input type="password" id="changeNewPassword2" minlength="8" required>
+              </div>
+            </div>
+
+            <label>ยืนยันว่าเป็นมนุษย์ (Human Verification – Captcha)</label>
+            <div class="captcha-box">
+              <span id="changeCaptcha" class="captcha-text"></span>
+              <input type="text" id="changeCaptchaInput" placeholder="กรอก Captcha (Enter Captcha)" required>
+              <span class="captcha-refresh" onclick="refreshAllCaptchas()">รีเฟรช (Refresh)</span>
+            </div>
+
+            <div style="margin-top:10px;">
+              <button type="submit">บันทึกการเปลี่ยนรหัสผ่าน (Save New Password)</button>
+            </div>
+            <div id="changeMsg" class="msg"></div>
+          </form>
+        </div>
       </div>
-
-      <!-- 4) ขอเปลี่ยนรหัสผ่าน -->
-      <div class="card" id="change-section">
-        <h2>🔁 ขอเปลี่ยนรหัสผ่าน</h2>
-        <p class="muted">
-          ใช้เมื่อยังจำรหัสเดิมได้ ต้องกรอกรหัสเดิมให้ถูกต้องก่อน จึงจะเปลี่ยนรหัสใหม่
-        </p>
-        <form id="changeForm">
-          <label for="changeEmail">อีเมลที่ลงทะเบียนไว้</label>
-          <input type="email" id="changeEmail" required>
-
-          <label for="changeOldPassword">รหัสผ่านเดิม</label>
-          <input type="password" id="changeOldPassword" required>
-
-          <label for="changeNewPassword">รหัสผ่านใหม่</label>
-          <input type="password" id="changeNewPassword" required>
-
-          <label for="changeNewPassword2">ยืนยันรหัสผ่านใหม่</label>
-          <input type="password" id="changeNewPassword2" required>
-
-          <button type="submit">เปลี่ยนรหัสผ่าน</button>
-          <button type="button" class="btn-ghost" onclick="scrollToSection('login-column')">
-            กลับไปหน้าเข้าสู่ระบบ
-          </button>
-
-          <p id="changeMessage" class="msg"></p>
-        </form>
-        <span class="tag">ตรวจสอบรหัสเดิมก่อนทุกครั้ง</span>
-      </div>
-
     </div>
   </main>
 
+  <footer>
+    <div class="container">
+      <div>© 2025 Financial Audit • สำนักงานการตรวจเงินแผ่นดิน (Office of the Auditor General of Thailand)</div>
+      <div>Login system demo • LocalStorage only • ใช้ร่วมกับ index.html / admin.html</div>
+    </div>
+  </footer>
+
   <script>
-    // --------- Helper เลื่อนหน้าจอไปยัง section ----------
-    function scrollToSection(id){
-      const el = document.getElementById(id);
-      if(el){
-        el.scrollIntoView({behavior:'smooth',block:'start'});
+    // ---------- เวลาไทย + อังกฤษ ----------
+    function updateTimeBar(){
+      const t = new Date();
+
+      const thMonths = ["ม.ค.","ก.พ.","มี.ค.","เม.ย.","พ.ค.","มิ.ย.","ก.ค.","ส.ค.","ก.ย.","ต.ค.","พ.ย.","ธ.ค."];
+      const enMonths = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+      const enDays   = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+      const thDays   = ["อาทิตย์","จันทร์","อังคาร","พุธ","พฤหัส","ศุกร์","เสาร์"];
+
+      const thai = `${thDays[t.getDay()]}ที่ ${t.getDate()} ${thMonths[t.getMonth()]} ${t.getFullYear()+543}`;
+      const eng  = `${enDays[t.getDay()]} ${t.getDate()} ${enMonths[t.getMonth()]} ${t.getFullYear()}`;
+      const time = t.toLocaleTimeString();
+
+      const bar = document.getElementById("timeBar");
+      if(bar){
+        bar.textContent = `${thai} • ${eng} — ${time}`;
       }
     }
+    setInterval(updateTimeBar, 1000);
+    updateTimeBar();
 
-    // --------- จัดการ users ด้วย localStorage ----------
-    const STORAGE_KEY = "fa-demo-users";
-    const USER_REQUESTS_KEY = "fa-user-requests"; // เก็บคำขอให้ admin อนุมัติ
+    // ---------- Captcha ----------
+    function generateCaptchaString(){
+      const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*?";
+      let out = "";
+      for(let i=0;i<6;i++){
+        out += chars.charAt(Math.floor(Math.random()*chars.length));
+      }
+      return out;
+    }
+    let regCaptchaCode   = "";
+    let forgotCaptchaCode= "";
+    let changeCaptchaCode= "";
 
-    function loadUsers(){
+    function refreshAllCaptchas(){
+      regCaptchaCode   = generateCaptchaString();
+      forgotCaptchaCode= generateCaptchaString();
+      changeCaptchaCode= generateCaptchaString();
+
+      const r = document.getElementById("regCaptcha");
+      const f = document.getElementById("forgotCaptcha");
+      const c = document.getElementById("changeCaptcha");
+      if(r) r.textContent = regCaptchaCode;
+      if(f) f.textContent = forgotCaptchaCode;
+      if(c) c.textContent = changeCaptchaCode;
+    }
+
+    // ---------- Shared user storage ----------
+    function loadUsersFromStorage(){
       try{
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if(!raw){
-          // ถ้ายังไม่มี ให้ seed ข้อมูลตัวอย่าง
-          const seed = [
-            { email:"somchai@example.com", password:"123456", status:"approved" },
-            { email:"suda@example.com",   password:"abcdef", status:"pending"  }
-          ];
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(seed));
-          return seed;
-        }
+        const raw = localStorage.getItem("fas-users");
+        if(!raw) return null;
         return JSON.parse(raw);
       }catch(e){
-        console.warn("โหลด users ไม่สำเร็จ", e);
-        return [];
+        console.warn("โหลด fas-users ไม่สำเร็จ", e);
+        return null;
       }
     }
-
-    function saveUsers(users){
+    function saveUsersToStorage(users){
       try{
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(users));
+        localStorage.setItem("fas-users", JSON.stringify(users));
       }catch(e){
-        console.warn("บันทึก users ไม่สำเร็จ", e);
+        console.warn("บันทึก fas-users ไม่สำเร็จ", e);
       }
     }
 
-    function loadUserRequests(){
+    function seedDefaultUsersIfNeeded(){
+      const existing = loadUsersFromStorage();
+      if(existing && Array.isArray(existing) && existing.length > 0){
+        return existing;
+      }
+      const seed = [
+        {
+          id:"super-admin-1",
+          firstName:"Apiphuthanadet",
+          lastName:"SuperAdmin",
+          fullname:"Apiphuthanadet SuperAdmin",
+          citizenId:"",
+          govId:"",
+          position:"ผู้ดูแลระบบสูงสุด (Super Admin)",
+          email:"apipoooo@gmail.com",
+          phone:"",
+          password:"Apiphu17122558",
+          status:"approved",
+          role:"super_admin",
+          createdAt:new Date().toISOString()
+        },
+        {
+          id:"admin-1",
+          firstName:"สมชาย",
+          lastName:"ใจดี",
+          fullname:"สมชาย ใจดี",
+          citizenId:"",
+          govId:"",
+          position:"Admin กลุ่มตรวจสอบ",
+          email:"somchai@example.com",
+          phone:"",
+          password:"12345678",
+          status:"approved",
+          role:"admin",
+          createdAt:new Date().toISOString()
+        },
+        {
+          id:"admin-2",
+          firstName:"Admin",
+          lastName:"One",
+          fullname:"Admin1 กลุ่มตรวจสอบ",
+          citizenId:"",
+          govId:"",
+          position:"Admin1",
+          email:"admin1@example.com",
+          phone:"",
+          password:"admin001",
+          status:"approved",
+          role:"admin1",
+          createdAt:new Date().toISOString()
+        }
+      ];
+      saveUsersToStorage(seed);
+      return seed;
+    }
+
+    function loadRequests(){
       try{
-        const raw = localStorage.getItem(USER_REQUESTS_KEY);
+        const raw = localStorage.getItem("fas-requests");
         if(!raw) return [];
         return JSON.parse(raw);
       }catch(e){
-        console.warn("โหลด fa-user-requests ไม่สำเร็จ", e);
+        console.warn("โหลด fas-requests ไม่สำเร็จ", e);
         return [];
       }
     }
-
-    function saveUserRequests(requests){
+    function saveRequests(requests){
       try{
-        localStorage.setItem(USER_REQUESTS_KEY, JSON.stringify(requests));
+        localStorage.setItem("fas-requests", JSON.stringify(requests));
       }catch(e){
-        console.warn("บันทึก fa-user-requests ไม่สำเร็จ", e);
+        console.warn("บันทึก fas-requests ไม่สำเร็จ", e);
       }
     }
 
-    let users = loadUsers();
-    let userRequests = loadUserRequests();
-
-    // --------- เข้าสู่ระบบ ----------
-    document.getElementById("loginForm").addEventListener("submit", function(event){
-      event.preventDefault();
-      const email = document.getElementById("loginEmail").value.trim();
-      const password = document.getElementById("loginPassword").value;
-      const msg = document.getElementById("loginMessage");
-      msg.className = "msg";
-
-      const user = users.find(u => u.email === email);
-
-      if(!user){
-        msg.textContent = "❌ ไม่พบบัญชีผู้ใช้งานในระบบ โปรดลงทะเบียนก่อน";
-        msg.classList.add("msg-err");
-        // ชี้ทางไปลงทะเบียน
-        scrollToSection("register-section");
-        return;
+    // ---------- Login statistics ----------
+    function loadLoginStats(){
+      try{
+        const raw = localStorage.getItem("fas-login-stats");
+        if(!raw) return { successTotal:0, failTotal:0, lastUpdated:null };
+        const obj = JSON.parse(raw);
+        return {
+          successTotal: obj.successTotal || 0,
+          failTotal: obj.failTotal || 0,
+          lastUpdated: obj.lastUpdated || null
+        };
+      }catch(e){
+        console.warn("โหลด fas-login-stats ไม่สำเร็จ", e);
+        return { successTotal:0, failTotal:0, lastUpdated:null };
       }
-
-      if(user.status && user.status !== "approved"){
-        msg.textContent = "⚠️ บัญชีนี้ยังไม่ได้รับการอนุมัติจาก Admin (status: " + user.status + ")";
-        msg.classList.add("msg-err");
-        return;
+    }
+    function saveLoginStats(stats){
+      try{
+        localStorage.setItem("fas-login-stats", JSON.stringify(stats));
+      }catch(e){
+        console.warn("บันทึก fas-login-stats ไม่สำเร็จ", e);
       }
-
-      if(user.password === password){
-        msg.textContent = "✅ เข้าสู่ระบบสำเร็จ!";
-        msg.classList.add("msg-ok");
-      } else {
-        msg.textContent = "❌ รหัสผ่านไม่ถูกต้อง หากจำไม่ได้ให้ใช้เมนู 'ลืมรหัสผ่าน'";
-        msg.classList.add("msg-err");
+    }
+    function formatDateTime(dtStr){
+      if(!dtStr) return "-";
+      try{
+        const d = new Date(dtStr);
+        if(isNaN(d.getTime())) return "-";
+        const pad = n => (n<10 ? "0"+n : n);
+        const yyyy = d.getFullYear();
+        const mm = pad(d.getMonth()+1);
+        const dd = pad(d.getDate());
+        const hh = pad(d.getHours());
+        const mi = pad(d.getMinutes());
+        return `${dd}/${mm}/${yyyy} ${hh}:${mi} น.`;
+      }catch(e){
+        return "-";
       }
-    });
+    }
+    function renderLoginStats(){
+      const stats = loadLoginStats();
+      const succEl = document.getElementById("loginSuccessCount");
+      const failEl = document.getElementById("loginFailCount");
+      const totalEl = document.getElementById("loginTotalCount");
+      const lastEl = document.getElementById("loginLastUpdate");
+      const total = (stats.successTotal || 0) + (stats.failTotal || 0);
 
-    // --------- ลงทะเบียนใช้งาน ----------
-    document.getElementById("registerForm").addEventListener("submit", function(event){
-      event.preventDefault();
-      const email = document.getElementById("regEmail").value.trim();
-      const pw1 = document.getElementById("regPassword").value;
-      const pw2 = document.getElementById("regPassword2").value;
-      const msg = document.getElementById("registerMessage");
-      msg.className = "msg";
-
-      if(!email || !pw1 || !pw2){
-        msg.textContent = "กรุณากรอกข้อมูลให้ครบ";
-        msg.classList.add("msg-err");
-        return;
+      if(succEl) succEl.textContent = stats.successTotal || 0;
+      if(failEl) failEl.textContent = stats.failTotal || 0;
+      if(totalEl) totalEl.textContent = total;
+      if(lastEl) lastEl.textContent = formatDateTime(stats.lastUpdated);
+    }
+    function recordLoginResult(isSuccess){
+      const stats = loadLoginStats();
+      if(isSuccess){
+        stats.successTotal = (stats.successTotal || 0) + 1;
+      }else{
+        stats.failTotal = (stats.failTotal || 0) + 1;
       }
-      if(pw1 !== pw2){
-        msg.textContent = "รหัสผ่านและยืนยันรหัสผ่านไม่ตรงกัน";
-        msg.classList.add("msg-err");
-        return;
-      }
+      stats.lastUpdated = new Date().toISOString();
+      saveLoginStats(stats);
+      renderLoginStats();
+    }
 
-      const exists = users.find(u => u.email === email);
-      if(exists){
-        msg.textContent = "อีเมลนี้มีบัญชีอยู่แล้ว กรุณาใช้เมนู 'เข้าสู่ระบบ' หรือ 'ลืมรหัสผ่าน'";
-        msg.classList.add("msg-err");
-        return;
-      }
-
-      // สร้าง user ใหม่ (สถานะ pending)
-      const newUser = { email, password:pw1, status:"pending" };
-      users.push(newUser);
-      saveUsers(users);
-
-      // 👉 สร้างคำขอไปยังระบบ admin (เก็บไว้ใน fa-user-requests)
-      const newReq = {
-        id: Date.now(),
-        type: "NEW_USER",
-        email: email,
-        status: "pending",
-        createdAt: new Date().toISOString(),
-        note: "คำขอลงทะเบียนผู้ใช้ระบบ Financial Audit (User ปกติ)"
+    // session: fas-session = { email, loginAt, expiresAt, remember }
+    function saveSession(email, remember){
+      const now = Date.now();
+      const SIX_MONTHS_MS = 1000 * 60 * 60 * 24 * 180;
+      const session = {
+        email,
+        loginAt: now,
+        remember: !!remember,
+        expiresAt: remember ? now + SIX_MONTHS_MS : now + 1000 * 60 * 60 * 4 // 4 ชม. ถ้าไม่ remember
       };
-      userRequests.push(newReq);
-      saveUserRequests(userRequests);
-
-      msg.textContent =
-        "✅ ลงทะเบียนสำเร็จ ระบบได้ส่งคำขอไปให้ Admin พิจารณาอนุมัติแล้ว " +
-        "เมื่ออนุมัติแล้ว ให้กลับมาเข้าสู่ระบบด้วยอีเมลและรหัสผ่านนี้อีกครั้ง";
-      msg.classList.add("msg-ok");
-
-      // เติมอีเมลในช่อง Login ให้เลย
-      const loginEmailInput = document.getElementById("loginEmail");
-      if(loginEmailInput){
-        loginEmailInput.value = email;
+      try{
+        localStorage.setItem("fas-session", JSON.stringify(session));
+      }catch(e){
+        console.warn("บันทึก fas-session ไม่สำเร็จ", e);
       }
+    }
 
-      // เลื่อนกลับไปคอลัมน์ Login อัตโนมัติ
-      setTimeout(() => {
-        scrollToSection("login-column");
-      }, 900);
-    });
-
-    // --------- ลืมรหัสผ่าน ----------
-    document.getElementById("forgotForm").addEventListener("submit", function(event){
-      event.preventDefault();
-      const email = document.getElementById("forgotEmail").value.trim();
-      const pw1 = document.getElementById("forgotNewPassword").value;
-      const pw2 = document.getElementById("forgotNewPassword2").value;
-      const msg = document.getElementById("forgotMessage");
-      msg.className = "msg";
-
-      if(!email || !pw1 || !pw2){
-        msg.textContent = "กรุณากรอกข้อมูลให้ครบ";
-        msg.classList.add("msg-err");
-        return;
+    function loadSession(){
+      try{
+        const raw = localStorage.getItem("fas-session");
+        if(!raw) return null;
+        const sess = JSON.parse(raw);
+        if(sess.expiresAt && Date.now() > sess.expiresAt){
+          localStorage.removeItem("fas-session");
+          return null;
+        }
+        return sess;
+      }catch(e){
+        console.warn("โหลด fas-session ไม่สำเร็จ", e);
+        return null;
       }
-      if(pw1 !== pw2){
-        msg.textContent = "รหัสผ่านใหม่และยืนยันไม่ตรงกัน";
-        msg.classList.add("msg-err");
-        return;
+    }
+
+    const store = {
+      users: seedDefaultUsersIfNeeded(),
+      requests: loadRequests(),
+      currentUser: null
+    };
+
+    const existingSession = loadSession();
+    if(existingSession){
+      const u = store.users.find(x => x.email === existingSession.email);
+      if(u){
+        store.currentUser = u;
+        const loginStatus = document.getElementById("loginStatus");
+        if(loginStatus){
+          loginStatus.style.display = "inline-block";
+          loginStatus.classList.add("status-approved");
+          loginStatus.textContent = `ล็อกอินแล้วในระบบ (Already logged in): ${u.fullname || u.email}`;
+        }
       }
+    }
 
-      const user = users.find(u => u.email === email);
-      if(!user){
-        msg.textContent = "❌ ไม่พบบัญชีในระบบ กรุณาลงทะเบียนใหม่ก่อน";
-        msg.classList.add("msg-err");
-        scrollToSection("register-section");
-        return;
-      }
+    // initial render stats & captchas
+    renderLoginStats();
+    refreshAllCaptchas();
 
-      user.password = pw1;
-      saveUsers(users);
+    // ---------- Login ----------
+    const loginForm = document.getElementById("loginForm");
+    if(loginForm){
+      loginForm.addEventListener("submit", function(e){
+        e.preventDefault();
+        if(!confirm("คุณต้องการยืนยันการเข้าสู่ระบบใช่หรือไม่? (Confirm Login)")) return;
 
-      msg.textContent = "✅ ตั้งรหัสผ่านใหม่เรียบร้อยแล้ว โปรดกลับไปเข้าสู่ระบบ";
-      msg.classList.add("msg-ok");
-      setTimeout(() => scrollToSection("login-column"), 700);
-    });
+        const email = document.getElementById("loginEmail").value.trim();
+        const password = document.getElementById("loginPassword").value.trim();
+        const remember = document.getElementById("rememberMe").checked;
+        const isHuman = document.getElementById("loginHuman").checked;
+        const msg = document.getElementById("loginMsg");
+        const statusEl = document.getElementById("loginStatus");
 
-    // --------- ขอเปลี่ยนรหัสผ่าน (จำรหัสเดิมได้) ----------
-    document.getElementById("changeForm").addEventListener("submit", function(event){
-      event.preventDefault();
-      const email = document.getElementById("changeEmail").value.trim();
-      const oldPw = document.getElementById("changeOldPassword").value;
-      const pw1 = document.getElementById("changeNewPassword").value;
-      const pw2 = document.getElementById("changeNewPassword2").value;
-      const msg = document.getElementById("changeMessage");
-      msg.className = "msg";
+        msg.textContent = "";
+        msg.classList.remove("msg-error","msg-success");
+        if(statusEl){
+          statusEl.style.display = "none";
+          statusEl.className = "status-badge";
+        }
 
-      if(!email || !oldPw || !pw1 || !pw2){
-        msg.textContent = "กรุณากรอกข้อมูลให้ครบ";
-        msg.classList.add("msg-err");
-        return;
-      }
-      if(pw1 !== pw2){
-        msg.textContent = "รหัสผ่านใหม่และยืนยันไม่ตรงกัน";
-        msg.classList.add("msg-err");
-        return;
-      }
+        if(!isHuman){
+          msg.textContent = "กรุณายืนยันว่าไม่ใช่หุ่นยนต์ (Please confirm you are human)";
+          msg.classList.add("msg-error");
+          recordLoginResult(false);
+          return;
+        }
 
-      const user = users.find(u => u.email === email);
-      if(!user){
-        msg.textContent = "❌ ไม่พบบัญชีในระบบ กรุณาตรวจสอบอีเมล หรือใช้เมนูลงทะเบียน";
-        msg.classList.add("msg-err");
-        return;
-      }
-      if(user.password !== oldPw){
-        msg.textContent = "❌ รหัสผ่านเดิมไม่ถูกต้อง";
-        msg.classList.add("msg-err");
-        return;
-      }
+        const user = store.users.find(u => u.email === email);
+        if(!user){
+          msg.textContent = "❌ ไม่พบผู้ใช้ในระบบ (User not found)";
+          msg.classList.add("msg-error");
+          recordLoginResult(false);
+          return;
+        }
 
-      user.password = pw1;
-      saveUsers(users);
+        if(user.status !== "approved"){
+          msg.textContent = "⚠️ บัญชียังไม่ผ่านการอนุมัติจาก Admin (Account not yet approved)";
+          msg.classList.add("msg-error");
+          if(statusEl){
+            statusEl.style.display = "inline-block";
+            statusEl.classList.add("status-pending");
+            statusEl.textContent = "สถานะบัญชี: pending (รออนุมัติ / Pending approval)";
+          }
+          recordLoginResult(false);
+          return;
+        }
 
-      msg.textContent = "✅ เปลี่ยนรหัสผ่านสำเร็จ สามารถใช้รหัสใหม่ในการเข้าสู่ระบบ";
-      msg.classList.add("msg-ok");
-      setTimeout(() => scrollToSection("login-column"), 700);
-    });
+        if(user.password !== password){
+          msg.textContent = "❌ รหัสผ่านไม่ถูกต้อง (Incorrect password)";
+          msg.classList.add("msg-error");
+          recordLoginResult(false);
+          return;
+        }
 
+        // ผ่านทั้งหมด
+        saveSession(user.email, remember);
+        store.currentUser = user;
+        msg.textContent = "✅ เข้าสู่ระบบสำเร็จ กำลังเปลี่ยนไปหน้าแรก... (Login success, redirecting to Home)";
+        msg.classList.add("msg-success");
+        if(statusEl){
+          statusEl.style.display = "inline-block";
+          statusEl.classList.add("status-approved");
+          statusEl.textContent =
+            `เข้าสู่ระบบแล้ว: ${user.fullname || user.email} • role: ${user.role}`;
+        }
+
+        recordLoginResult(true);
+
+        setTimeout(() => {
+          window.location.href = "index.html";
+        }, 900);
+      });
+    }
+
+    // ---------- Register ----------
+    const registerForm = document.getElementById("registerForm");
+    if(registerForm){
+      registerForm.addEventListener("submit", function(e){
+        e.preventDefault();
+        if(!confirm("ยืนยันการส่งคำขอลงทะเบียนใช่หรือไม่? (Confirm registration request)")) return;
+
+        const firstName = document.getElementById("regFirstName").value.trim();
+        const lastName = document.getElementById("regLastName").value.trim();
+        const citizenId = document.getElementById("regCitizenId").value.trim();
+        const govId = document.getElementById("regGovId").value.trim();
+        const position = document.getElementById("regPosition").value.trim();
+        const email = document.getElementById("regEmail").value.trim();
+        const phone = document.getElementById("regPhone").value.trim();
+        const password = document.getElementById("regPassword").value;
+        const password2 = document.getElementById("regPassword2").value;
+        const humanInput = document.getElementById("regCaptchaInput").value.trim();
+
+        const msg = document.getElementById("regMsg");
+        const badge = document.getElementById("regStatusBadge");
+
+        msg.textContent = "";
+        msg.classList.remove("msg-error","msg-success");
+        badge.style.display = "none";
+
+        if(!firstName || !lastName || !citizenId || !govId || !position || !email || !phone){
+          msg.textContent = "กรุณากรอกข้อมูลให้ครบทุกช่อง (Please fill in all fields)";
+          msg.classList.add("msg-error");
+          return;
+        }
+        if(password.length < 8){
+          msg.textContent = "รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร (Password must be at least 8 characters)";
+          msg.classList.add("msg-error");
+          return;
+        }
+        if(password !== password2){
+          msg.textContent = "รหัสผ่านและการยืนยันไม่ตรงกัน (Password and confirmation do not match)";
+          msg.classList.add("msg-error");
+          return;
+        }
+        if(humanInput !== regCaptchaCode){
+          msg.textContent = "Captcha ไม่ถูกต้อง (Captcha incorrect)";
+          msg.classList.add("msg-error");
+          refreshAllCaptchas();
+          return;
+        }
+        if(store.users.some(u => u.email === email)){
+          msg.textContent = "อีเมลนี้ถูกใช้ลงทะเบียนแล้ว (Email already registered)";
+          msg.classList.add("msg-error");
+          return;
+        }
+
+        const newUser = {
+          id:"user-" + Date.now(),
+          firstName,
+          lastName,
+          fullname: firstName + " " + lastName,
+          citizenId,
+          govId,
+          position,
+          email,
+          phone,
+          password,
+          status:"pending",
+          role:"user",
+          createdAt:new Date().toISOString()
+        };
+        store.users.push(newUser);
+        saveUsersToStorage(store.users);
+
+        const req = {
+          id:"req-" + Date.now(),
+          type:"register",
+          email,
+          createdAt:new Date().toISOString(),
+          status:"pending",
+          payload:{
+            firstName,lastName,citizenId,govId,position,phone
+          }
+        };
+        store.requests.push(req);
+        saveRequests(store.requests);
+
+        msg.textContent =
+          "✅ ส่งคำขอลงทะเบียนแล้ว (Registration request sent) • " +
+          "โปรดรอ Admin อนุมัติ แล้วกลับมาหน้า Login เพื่อใช้งาน (Wait for Admin approval, then come back to Login)";
+        msg.classList.add("msg-success");
+        badge.style.display = "inline-block";
+
+        registerForm.reset();
+        refreshAllCaptchas();
+      });
+    }
+
+    // ---------- Forgot password ----------
+    const forgotForm = document.getElementById("forgotForm");
+    if(forgotForm){
+      forgotForm.addEventListener("submit", function(e){
+        e.preventDefault();
+        if(!confirm("ยืนยันการส่งคำขอลืมรหัสผ่านใช่หรือไม่? (Confirm forgot password request)")) return;
+
+        const email = document.getElementById("forgotEmail").value.trim();
+        const citizenId = document.getElementById("forgotCitizenId").value.trim();
+        const govId = document.getElementById("forgotGovId").value.trim();
+        const newPw = document.getElementById("forgotNewPassword").value;
+        const newPw2 = document.getElementById("forgotNewPassword2").value;
+        const humanInput = document.getElementById("forgotCaptchaInput").value.trim();
+        const msg = document.getElementById("forgotMsg");
+
+        msg.textContent = "";
+        msg.classList.remove("msg-error","msg-success");
+
+        if(!email || !citizenId || !govId){
+          msg.textContent = "กรุณากรอกข้อมูลให้ครบถ้วน (Please fill in all required fields)";
+          msg.classList.add("msg-error");
+          return;
+        }
+        if(newPw.length < 8){
+          msg.textContent = "รหัสผ่านใหม่ต้องมีอย่างน้อย 8 ตัวอักษร (New password must be at least 8 characters)";
+          msg.classList.add("msg-error");
+          return;
+        }
+        if(newPw !== newPw2){
+          msg.textContent = "รหัสผ่านใหม่และการยืนยันไม่ตรงกัน (New password and confirmation do not match)";
+          msg.classList.add("msg-error");
+          return;
+        }
+        if(humanInput !== forgotCaptchaCode){
+          msg.textContent = "Captcha ไม่ถูกต้อง (Captcha incorrect)";
+          msg.classList.add("msg-error");
+          refreshAllCaptchas();
+          return;
+        }
+
+        const user = store.users.find(u => u.email === email);
+        if(!user){
+          msg.textContent = "❌ ไม่พบผู้ใช้งานตามอีเมลที่ระบุ (User not found for this email)";
+          msg.classList.add("msg-error");
+          return;
+        }
+
+        if(user.citizenId && user.citizenId !== citizenId){
+          msg.textContent = "เลขบัตรประชาชนไม่ตรงกับข้อมูลในระบบ (Citizen ID mismatch)";
+          msg.classList.add("msg-error");
+          return;
+        }
+        if(user.govId && user.govId !== govId){
+          msg.textContent = "เลขบัตรข้าราชการไม่ตรงกับข้อมูลในระบบ (Government ID mismatch)";
+          msg.classList.add("msg-error");
+          return;
+        }
+
+        const req = {
+          id:"req-reset-" + Date.now(),
+          type:"reset-password",
+          email,
+          createdAt:new Date().toISOString(),
+          status:"pending",
+          requestedPassword:newPw
+        };
+        store.requests.push(req);
+        saveRequests(store.requests);
+
+        msg.textContent =
+          "✅ ส่งคำขอลืมรหัสผ่านแล้ว (Forgot password request sent) • " +
+          "รอ Admin อนุมัติและตั้งรหัสใหม่ในระบบ (Wait for Admin to approve & set new password)";
+        msg.classList.add("msg-success");
+        forgotForm.reset();
+        refreshAllCaptchas();
+      });
+    }
+
+    // ---------- Change password ----------
+    const changeForm = document.getElementById("changeForm");
+    if(changeForm){
+      changeForm.addEventListener("submit", function(e){
+        e.preventDefault();
+        if(!confirm("ยืนยันการเปลี่ยนรหัสผ่านใช่หรือไม่? (Confirm change password)")) return;
+
+        const email = document.getElementById("changeEmail").value.trim();
+        const oldPw = document.getElementById("changeOldPassword").value;
+        const newPw = document.getElementById("changeNewPassword").value;
+        const newPw2 = document.getElementById("changeNewPassword2").value;
+        const humanInput = document.getElementById("changeCaptchaInput").value.trim();
+        const msg = document.getElementById("changeMsg");
+
+        msg.textContent = "";
+        msg.classList.remove("msg-error","msg-success");
+
+        if(!email || !oldPw || !newPw || !newPw2){
+          msg.textContent = "กรุณากรอกข้อมูลให้ครบถ้วน (Please fill in all fields)";
+          msg.classList.add("msg-error");
+          return;
+        }
+        if(newPw.length < 8){
+          msg.textContent = "รหัสผ่านใหม่ต้องมีอย่างน้อย 8 ตัวอักษร (New password must be at least 8 characters)";
+          msg.classList.add("msg-error");
+          return;
+        }
+        if(newPw !== newPw2){
+          msg.textContent = "รหัสผ่านใหม่และการยืนยันไม่ตรงกัน (New password and confirmation do not match)";
+          msg.classList.add("msg-error");
+          return;
+        }
+        if(humanInput !== changeCaptchaCode){
+          msg.textContent = "Captcha ไม่ถูกต้อง (Captcha incorrect)";
+          msg.classList.add("msg-error");
+          refreshAllCaptchas();
+          return;
+        }
+
+        const user = store.users.find(u => u.email === email);
+        if(!user){
+          msg.textContent = "❌ ไม่พบผู้ใช้ในระบบ (User not found)";
+          msg.classList.add("msg-error");
+          return;
+        }
+        if(user.password !== oldPw){
+          msg.textContent = "❌ รหัสผ่านเดิมไม่ถูกต้อง (Old password incorrect)";
+          msg.classList.add("msg-error");
+          return;
+        }
+
+        user.password = newPw;
+        saveUsersToStorage(store.users);
+
+        const sess = loadSession();
+        if(sess && sess.email === email){
+          saveSession(email, sess.remember);
+        }
+
+        msg.textContent = "✅ เปลี่ยนรหัสผ่านเรียบร้อยแล้ว (Password changed successfully)";
+        msg.classList.add("msg-success");
+        changeForm.reset();
+        refreshAllCaptchas();
+      });
+    }
   </script>
 </body>
 </html>
