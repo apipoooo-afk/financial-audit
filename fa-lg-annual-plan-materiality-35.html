@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8">
-  <title>FA – LG Annual | ฟอร์ม 3.5 – Materiality (OM / PM / TE)</title>
+  <title>FA – LG Annual | อปท.3.5 – การกำหนดความมีสาระสำคัญ (Materiality)</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <style>
@@ -124,7 +124,7 @@
       font-size:12px;
     }
     textarea{
-      min-height:80px;
+      min-height:70px;
       resize:vertical;
     }
     .input:focus, select:focus, textarea:focus{
@@ -167,11 +167,26 @@
       border-color:#f44336;
       background:linear-gradient(120deg,#b71c1c,#f44336);
     }
+    .btn-success{
+      border-color:#4caf50;
+      background:linear-gradient(120deg,#1b5e20,#4caf50);
+    }
+    .btn-info{
+      border-color:#26c6da;
+      background:linear-gradient(120deg,#006064,#26c6da);
+    }
+    .btn-ai{
+      border-color:#f48fb1;
+      background:linear-gradient(120deg,#7b1e3c,#f48fb1);
+    }
     .btn:hover{
       background:rgba(0,0,0,0.7);
     }
     .btn-primary:hover,
-    .btn-danger:hover{
+    .btn-danger:hover,
+    .btn-success:hover,
+    .btn-info:hover,
+    .btn-ai:hover{
       filter:brightness(1.1);
     }
 
@@ -249,22 +264,6 @@
       font-weight:600;
     }
 
-    .a4-sign-row{
-      margin-top:40px;
-      display:flex;
-      justify-content:space-between;
-      font-size:10pt;
-    }
-    .a4-sign-block{
-      width:45%;
-      text-align:center;
-    }
-    .a4-sign-line{
-      border-bottom:1px solid #000;
-      margin:18px 0 2px;
-      height:0;
-    }
-
     .a4-footer{
       position:absolute;
       bottom:8mm;
@@ -324,9 +323,9 @@
 <body>
 
 <header>
-  <h2>🧮 ฟอร์ม 3.5 – การกำหนดความมีนัยสำคัญ (OM / PM / TE)</h2>
+  <h2>📏 อปท.3.5 – การกำหนดความมีสาระสำคัญ (Materiality)</h2>
   <div class="sub">
-    Form 3.5 – Overall / Performance Materiality & Tolerable Error | FA – Local Government (Annual)
+    Overall Materiality (OM) • Performance Materiality (PM) • Threshold for Errors (TE) – FA การตรวจสอบรายงานการเงิน อปท.
   </div>
 </header>
 
@@ -334,10 +333,10 @@
 
   <div class="nav-top">
     <a href="fa-lg-annual-plan.html" class="btn-nav">
-      <span>↩</span> กลับเมนูแบบฟอร์มการวางแผน
+      <span>🧭</span> เมนูแบบฟอร์มการวางแผน
     </a>
     <a href="fa-lg-annual.html" class="btn-nav">
-      <span>📅</span> กลับหน้าเลือกปี / หน่วยรับตรวจ
+      <span>📅</span> เลือกปี / หน่วยรับตรวจ
     </a>
     <a href="fa-menu.html" class="btn-nav">
       <span>📂</span> FA Main Menu
@@ -347,112 +346,218 @@
     </a>
   </div>
 
-  <!-- CARD 1: ฟอร์มกรอกดิจิทัล -->
+  <!-- CARD 1: Basic info + Form reference -->
   <section class="card">
     <div class="card-header">
       <div>
-        <div class="card-title">ส่วนที่ 1 – ข้อมูลพื้นฐาน และฐานที่ใช้คำนวณ Materiality</div>
+        <div class="card-title">ส่วนที่ 1 – ข้อมูลพื้นฐาน และอ้างอิงแบบฟอร์ม</div>
         <div class="card-sub">
-          กำหนดปีงบประมาณ หน่วยรับตรวจ ฐานคำนวณ (Base) และร้อยละสำหรับ OM / PM / TE
+          ผูกปีงบประมาณ-งวดวันที่-หน่วยรับตรวจกับแบบฟอร์มอ้างอิง (อปท.3 – อปท.8.31) เพื่อใช้เป็นฐานคำนวณ Materiality
         </div>
       </div>
-      <div class="chip">Digital Form • Input</div>
+      <div class="chip">อปท.3.5 • Materiality</div>
     </div>
+
+    <div class="hint">
+      ⚙️ ข้อมูลหน่วยรับตรวจจะดึงจาก <code>localStorage["fa-db-data-gov"]</code>  
+      หากยังไม่มีข้อมูล กรุณาเปิดหน้า <code>fa-db-data-gov.html</code> อย่างน้อย 1 ครั้งเพื่อโหลดฐานกลาง
+    </div>
+    <div id="govDbStatus" class="hint"></div>
 
     <div class="form-grid">
       <div>
         <label for="fy">ปีงบประมาณ</label>
         <select id="fy" class="input">
           <option value="">— เลือกปีงบประมาณ —</option>
-          <option>2567</option>
-          <option>2568</option>
-          <option>2569</option>
+          <option>2562</option><option>2563</option><option>2564</option>
+          <option>2565</option><option>2566</option><option>2567</option>
+          <option>2568</option><option>2569</option><option>2570</option>
+          <option>2571</option><option>2572</option><option>2573</option>
+          <option>2574</option><option>2575</option><option>2576</option>
+          <option>2577</option><option>2578</option><option>2579</option>
+          <option>2580</option><option>2581</option><option>2582</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="period">งวดวันที่ (30 กันยายน 2566 – 2582)</label>
+        <select id="period" class="input">
+          <option value="">— เลือกงวดวันที่ —</option>
+          <!-- เติมด้วย JS -->
+        </select>
+      </div>
+
+      <div>
+        <label for="province">จังหวัด (จากฐานข้อมูลกลาง)</label>
+        <select id="province" class="input">
+          <option value="">— เลือกจังหวัด —</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="amphoe">อำเภอ / เขต (จากฐานข้อมูลกลาง)</label>
+        <select id="amphoe" class="input">
+          <option value="">— เลือกอำเภอ / เขต —</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="auditee">ชื่อหน่วยรับตรวจ / อปท. (จากฐานข้อมูลกลาง)</label>
+        <select id="auditee" class="input">
+          <option value="">— เลือกหน่วยรับตรวจ —</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="formRef">อ้างอิงแบบฟอร์ม (อปท.3 – อปท.8.31)</label>
+        <select id="formRef" class="input">
+          <option value="">— เลือกแบบฟอร์ม —</option>
+          <!-- เติมด้วย JS -->
+        </select>
+      </div>
+    </div>
+
+    <div class="section-title">1.2 สรุปข้อมูลจากแบบฟอร์มที่อ้างอิง (ฐานในการกำหนด OM / PM / TE)</div>
+    <textarea id="formSummary" class="input" placeholder="สรุปสาระสำคัญจากแบบฟอร์ม/งบที่ใช้เป็นฐานกำหนดความมีสาระสำคัญ เช่น ยอดค่าใช้จ่ายรวม, สินทรัพย์รวม, สินทรัพย์สุทธิ ฯลฯ"></textarea>
+  </section>
+
+  <!-- CARD 2: Materiality Calculation -->
+  <section class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">ส่วนที่ 2 – การคำนวณความมีสาระสำคัญ (OM / PM / TE)</div>
+        <div class="card-sub">
+          กำหนดฐาน (Base) ร้อยละ และคำนวณตัวเลข Materiality ตามแนวทาง อปท.3.5 – สามารถให้ AI ช่วยวิเคราะห์ระดับความเหมาะสมได้
+        </div>
+      </div>
+      <div class="chip">OM • PM • TE</div>
+    </div>
+
+    <div class="form-grid">
+      <div>
+        <label for="baseType">ฐานที่ใช้คำนวณ (Base)</label>
+        <select id="baseType" class="input">
+          <option value="">— เลือกฐาน —</option>
+          <option value="ค่าใช้จ่ายรวม">ค่าใช้จ่ายรวม</option>
+          <option value="รายได้รวม">รายได้รวม</option>
+          <option value="สินทรัพย์รวม">สินทรัพย์รวม</option>
+          <option value="สินทรัพย์สุทธิ">สินทรัพย์สุทธิ</option>
+          <option value="อื่น ๆ">อื่น ๆ (ระบุเองด้านล่าง)</option>
         </select>
       </div>
       <div>
-        <label for="auditee">ชื่อหน่วยรับตรวจ (อปท.)</label>
-        <input id="auditee" class="input" type="text" placeholder="เช่น เทศบาลเมืองตัวอย่าง">
+        <label for="baseAmount">ยอดฐาน (Base Amount)</label>
+        <input id="baseAmount" class="input" type="number" step="0.01" placeholder="เช่น 120000000.00">
       </div>
       <div>
-        <label for="amphoe">อำเภอ</label>
-        <input id="amphoe" class="input" type="text" placeholder="อำเภอ">
-      </div>
-      <div>
-        <label for="province">จังหวัด</label>
-        <input id="province" class="input" type="text" placeholder="จังหวัด">
-      </div>
-      <div>
-        <label for="preparedBy">ผู้จัดทำ</label>
-        <input id="preparedBy" class="input" type="text" placeholder="ชื่อผู้จัดทำแบบฟอร์ม">
-      </div>
-      <div>
-        <label for="reviewedBy">ผู้สอบทาน</label>
-        <input id="reviewedBy" class="input" type="text" placeholder="ชื่อผู้สอบทาน / ผตจ.">
+        <label for="baseRemark">รายละเอียดฐาน / หมายเหตุ</label>
+        <input id="baseRemark" class="input" type="text" placeholder="เช่น ค่าใช้จ่ายรวมตามงบแสดงฐานะการเงิน ฯลฯ">
       </div>
     </div>
 
-    <div class="section-title">1.2 ฐานคำนวณและร้อยละที่ใช้</div>
-    <div class="hint">
-      ตัวอย่างเช่น ใช้ “ค่าใช้จ่ายรวม” หรือ “รายได้รวม” เป็นฐานคำนวณ แล้วกำหนด % สำหรับ OM / PM / TE
-    </div>
-
+    <div class="section-title">2.1 Overall Materiality (OM)</div>
     <div class="form-grid">
       <div>
-        <label for="baseDesc">ฐานที่ใช้คำนวณ (Base)</label>
-        <input id="baseDesc" class="input" type="text" placeholder="เช่น ค่าใช้จ่ายรวมทั้งปี / รายได้รวม / สินทรัพย์สุทธิ ฯลฯ">
+        <label for="omPercent">ร้อยละที่ใช้กำหนด OM (%)</label>
+        <input id="omPercent" class="input" type="number" step="0.01" placeholder="เช่น 2.0">
       </div>
       <div>
-        <label for="baseAmount">จำนวนเงินฐาน (บาท)</label>
-        <input id="baseAmount" class="input" type="number" min="0" step="0.01" placeholder="เช่น 100000000">
-      </div>
-
-      <div>
-        <label for="omPct">% สำหรับ Overall Materiality (OM)</label>
-        <input id="omPct" class="input" type="number" min="0" step="0.01" placeholder="เช่น 1.0">
+        <label for="omAmount">Overall Materiality (OM) – จำนวนเงิน</label>
+        <input id="omAmount" class="input" type="number" step="0.01" placeholder="คำนวณจาก Base × %">
       </div>
       <div>
-        <label for="pmPct">% สำหรับ Performance Materiality (PM)</label>
-        <input id="pmPct" class="input" type="number" min="0" step="0.01" placeholder="เช่น 75 ของ OM → อาจใช้ 0.75*OM">
-      </div>
-      <div>
-        <label for="tePct">% สำหรับ Tolerable Error (TE) / ผิดพลาดที่ยอมรับได้</label>
-        <input id="tePct" class="input" type="number" min="0" step="0.01" placeholder="เช่น 5–10% ของ OM หรือค่าที่กำหนดเอง">
+        <label for="omComment">เหตุผล/เกณฑ์ที่ใช้กำหนด OM</label>
+        <input id="omComment" class="input" type="text" placeholder="เช่น อิงตามสัดส่วนความเสี่ยงของ อปท. ขนาดของงบประมาณ ฯลฯ">
       </div>
     </div>
 
-    <div class="section-title">1.3 ผลลัพธ์ OM / PM / TE (บาท)</div>
+    <div class="section-title">2.2 Performance Materiality (PM)</div>
     <div class="form-grid">
       <div>
-        <label for="omValue">Overall Materiality (OM)</label>
-        <input id="omValue" class="input" type="text" readonly placeholder="ระบบจะคำนวณให้">
+        <label for="pmPercent">สัดส่วนของ PM เทียบกับ OM (%)</label>
+        <input id="pmPercent" class="input" type="number" step="0.01" placeholder="เช่น 75">
       </div>
       <div>
-        <label for="pmValue">Performance Materiality (PM)</label>
-        <input id="pmValue" class="input" type="text" readonly placeholder="ระบบจะคำนวณให้">
+        <label for="pmAmount">Performance Materiality (PM) – จำนวนเงิน</label>
+        <input id="pmAmount" class="input" type="number" step="0.01" placeholder="คำนวณจาก OM × %">
       </div>
       <div>
-        <label for="teValue">Tolerable Error (TE)</label>
-        <input id="teValue" class="input" type="text" readonly placeholder="ระบบจะคำนวณให้">
+        <label for="pmComment">เหตุผล/เกณฑ์ที่ใช้กำหนด PM</label>
+        <input id="pmComment" class="input" type="text" placeholder="เช่น ระดับความเสี่ยง RMM โดยรวม, การมีหลายองค์ประกอบ ฯลฯ">
       </div>
     </div>
+
+    <div class="section-title">2.3 Threshold for Errors (TE)</div>
+    <div class="form-grid">
+      <div>
+        <label for="tePercent">สัดส่วน TE เทียบกับ OM หรือ PM (%)</label>
+        <input id="tePercent" class="input" type="number" step="0.01" placeholder="เช่น 5">
+      </div>
+      <div>
+        <label for="teAmount">Threshold for Errors (TE) – จำนวนเงิน</label>
+        <input id="teAmount" class="input" type="number" step="0.01" placeholder="คำนวณจาก OM หรือ PM × %">
+      </div>
+      <div>
+        <label for="teComment">แนวทางใช้ TE ในการประเมินข้อผิดพลาด</label>
+        <input id="teComment" class="input" type="text" placeholder="เช่น ใช้เป็นเกณฑ์ไม่สรุปข้อผิดพลาดไม่เป็นสาระสำคัญ ฯลฯ">
+      </div>
+    </div>
+
+    <div class="section-title">2.4 หมายเหตุเพิ่มเติมเกี่ยวกับการกำหนดความมีสาระสำคัญ</div>
+    <textarea id="matRemark" class="input" placeholder="บันทึกข้อพิจารณาอื่น ๆ เช่น ปัจจัยเชิงคุณภาพ ความเสี่ยงทุจริต ข้อจำกัดของข้อมูล ฯลฯ"></textarea>
 
     <div class="btn-row no-print">
-      <button type="button" class="btn btn-primary" onclick="calcMateriality()">คำนวณ OM / PM / TE</button>
+      <button type="button" class="btn" onclick="autoCalculateMateriality()">คำนวณ OM / PM / TE อัตโนมัติ</button>
       <button type="button" class="btn" onclick="pushToA4()">อัปเดตข้อมูลไปยังแบบฟอร์ม A4</button>
-    </div>
-
-    <div class="footer-note">
-      * ในระบบจริง คุณสามารถเชื่อมค่า Base และ % จากฐานข้อมูลกลาง / Template มาตรฐานของสำนักงาน เพื่อลดการกรอกมือ
     </div>
   </section>
 
-  <!-- CARD 2: Export / A4 -->
+  <!-- CARD 3: AI Analysis -->
+  <section class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">ส่วนที่ 3 – ให้ AI ช่วยวิเคราะห์ความเหมาะสมของ Materiality</div>
+        <div class="card-sub">
+          ออกแบบเป็น Prototype เพื่อให้ผู้ตรวจสอบบันทึกโจทย์ วิเคราะห์ความเหมาะสมของ OM/PM/TE และใช้เป็น Input ให้ AI ภายนอกในอนาคต
+        </div>
+      </div>
+      <div class="chip">AI Assistant • Materiality</div>
+    </div>
+
+    <div class="form-grid">
+      <div>
+        <label for="aiQuestion">สิ่งที่ต้องการให้ AI วิเคราะห์</label>
+        <textarea id="aiQuestion" class="input" placeholder="เช่น ระดับ OM/PM/TE นี้เหมาะสมกับระดับความเสี่ยงของ อปท. หรือไม่, ควรปรับเพิ่มหรือลด ฯลฯ"></textarea>
+      </div>
+      <div>
+        <label for="aiSourceData">ข้อมูลตัวอย่างที่ใช้วิเคราะห์ (ตัวเลข/ข้อความสำคัญ)</label>
+        <textarea id="aiSourceData" class="input" placeholder="คัดลอกข้อมูลสรุป RMM, งบประมาณ, ข้อค้นพบที่คาดว่าจะมีผลต่อการกำหนด Materiality ฯลฯ"></textarea>
+      </div>
+    </div>
+
+    <div class="section-title">ผลการวิเคราะห์โดย AI / ผู้ตรวจสอบ</div>
+    <textarea id="aiResult" class="input" placeholder="ผลการวิเคราะห์จะถูกสรุปแสดงที่นี่ (ขณะนี้เป็น Prototype ใน Browser)"></textarea>
+
+    <div class="btn-row no-print">
+      <button type="button" class="btn-ai" onclick="fakeAiAnalyze()">🤖 ให้ AI ช่วยวิเคราะห์ (Prototype)</button>
+      <button type="button" class="btn" onclick="pushToA4()">อัปเดตข้อมูลไปยังแบบฟอร์ม A4</button>
+      <button type="button" class="btn-success" onclick="sendToReviewSystem()">ส่งไประบบสอบทาน (Review)</button>
+      <button type="button" class="btn-info" onclick="sendToWorkingpaperDb()">ส่งไประบบฐานข้อมูลกระดาษทำการ (WP DB)</button>
+    </div>
+
+    <div class="footer-note">
+      * สามารถเปลี่ยนฟังก์ชัน <code>fakeAiAnalyze()</code> ให้เรียก API AI จริง (OpenAI / Gemini ฯลฯ) ได้ภายหลัง  
+      * ข้อมูลทั้งหมดจะถูกส่งออกใน JSON และพร้อมใช้ในระบบสอบทาน/ฐานข้อมูลกระดาษทำการ
+    </div>
+  </section>
+
+  <!-- CARD 4: A4 + Export -->
   <section class="card card-a4">
     <div class="card-header">
       <div>
-        <div class="card-title">ส่วนที่ 2 – แบบฟอร์ม 3.5 รูปแบบกระดาษ A4 (สำหรับพิมพ์ / Export)</div>
+        <div class="card-title">ส่วนที่ 4 – แบบฟอร์ม อปท.3.5 รูปแบบ A4 เพื่อพิมพ์ / แนบกระดาษทำการ</div>
         <div class="card-sub">
-          แบบฟอร์ม A4 จะดึงข้อมูลจากแบบดิจิทัลด้านบน — สามารถพิมพ์เป็น PDF (A4) หรือ Export เป็นไฟล์ HTML / JSON ได้
+          แสดงข้อมูลปีงบประมาณ-งวดวันที่-หน่วยรับตรวจ-ฐานที่ใช้ และตัวเลข OM / PM / TE พร้อมสรุปผลวิเคราะห์ในรูปแบบกระดาษ A4
         </div>
       </div>
       <div class="chip">A4 Layout • Export</div>
@@ -463,130 +568,115 @@
       <button type="button" class="btn btn-primary" onclick="window.print()">พิมพ์ / Export PDF (A4)</button>
       <button type="button" class="btn" onclick="exportA4Html()">Export เป็น HTML (A4 เฉพาะหน้า)</button>
       <button type="button" class="btn btn-danger" onclick="exportJson()">Export เป็น JSON (ข้อมูลแบบฟอร์ม)</button>
+      <button type="button" class="btn-success" onclick="sendToReviewSystem()">ส่งไประบบสอบทาน (Review)</button>
+      <button type="button" class="btn-info" onclick="sendToWorkingpaperDb()">ส่งไประบบฐานข้อมูลกระดาษทำการ (WP DB)</button>
     </div>
 
     <div class="a4-wrapper">
-      <div class="a4-title">ตัวอย่างแสดงผลแบบฟอร์มในหน้ากระดาษ A4</div>
+      <div class="a4-title">ตัวอย่างแสดงผลแบบฟอร์ม อปท.3.5 ในหน้ากระดาษ A4</div>
 
-      <!-- A4 PAGE -->
       <div class="a4-page" id="a4Page">
         <div class="a4-header-center">
-          แบบฟอร์ม 3.5 – การกำหนดความมีนัยสำคัญของงบการเงิน (Materiality)
+          แบบฟอร์ม อปท.3.5 – การกำหนดความมีสาระสำคัญ (Materiality)
         </div>
         <div class="a4-subheader">
-          สำนักงานการตรวจเงินแผ่นดิน – การตรวจสอบรายงานการเงินขององค์กรปกครองส่วนท้องถิ่น
+          การตรวจสอบรายงานการเงินขององค์กรปกครองส่วนท้องถิ่น – Overall / Performance Materiality & Threshold for Errors
         </div>
 
         <div class="a4-row">
           <div>
-            <span>ปีงบประมาณ</span> 
+            <span>ปีงบประมาณ</span>
             <span class="value" id="a4Fy">&nbsp;</span>
           </div>
           <div>
-            <span>หน่วยรับตรวจ</span> 
-            <span class="value" id="a4Auditee">&nbsp;</span>
+            <span>งวดวันที่</span>
+            <span class="value" id="a4Period">&nbsp;</span>
           </div>
         </div>
         <div class="a4-row">
           <div>
-            <span>อำเภอ</span>
+            <span>หน่วยรับตรวจ</span>
+            <span class="value" id="a4Auditee">&nbsp;</span>
+          </div>
+          <div>
+            <span>อำเภอ / เขต</span>
             <span class="value" id="a4Amphoe">&nbsp;</span>
           </div>
+        </div>
+        <div class="a4-row">
           <div>
             <span>จังหวัด</span>
             <span class="value" id="a4Province">&nbsp;</span>
           </div>
-        </div>
-        <div class="a4-row">
           <div>
-            <span>ผู้จัดทำ</span>
-            <span class="value" id="a4PreparedBy">&nbsp;</span>
-          </div>
-          <div>
-            <span>ผู้สอบทาน</span>
-            <span class="value" id="a4ReviewedBy">&nbsp;</span>
+            <span>อ้างอิงแบบฟอร์ม</span>
+            <span class="value" id="a4FormRef">&nbsp;</span>
           </div>
         </div>
 
         <div style="margin-top:10px; font-size:10pt;">
-          <strong>1. ฐานที่ใช้ในการคำนวณความมีนัยสำคัญ</strong>
+          <strong>1. สรุปข้อมูลจากแบบฟอร์มที่อ้างอิง</strong>
         </div>
-        <div class="a4-row">
-          <div style="flex:1;">
-            <span>ฐาน (Base)</span>
-            <span class="value" id="a4BaseDesc">&nbsp;</span>
-          </div>
-        </div>
-        <div class="a4-row">
-          <div>
-            <span>จำนวนเงินฐาน (บาท)</span>
-            <span class="value" id="a4BaseAmount">&nbsp;</span>
-          </div>
-        </div>
+        <div style="font-size:10pt; margin-top:4px;" id="a4FormSummary"></div>
 
-        <table class="a4-table" style="margin-top:10px;">
-          <thead>
+        <div style="margin-top:10px; font-size:10pt;">
+          <strong>2. ฐานที่ใช้ในการกำหนดความมีสาระสำคัญ</strong>
+        </div>
+        <table class="a4-table">
           <tr>
-            <th style="width:28%;">ประเภทความมีนัยสำคัญ</th>
-            <th style="width:18%;">ร้อยละที่ใช้</th>
-            <th style="width:27%;">จำนวนเงิน (บาท)</th>
-            <th>คำอธิบาย / เหตุผลที่เลือก</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr>
-            <td>1) Overall Materiality (OM)</td>
-            <td id="a4OmPct" style="text-align:center;">&nbsp;</td>
-            <td id="a4OmValue" style="text-align:right;">&nbsp;</td>
-            <td id="a4OmExplain">
-              ใช้เกณฑ์ OM ในระดับที่เหมาะสมกับขนาดและลักษณะของงบการเงินของหน่วยรับตรวจ
-            </td>
+            <th style="width:35%;">ฐาน (Base)</th>
+            <th style="width:25%;">ยอดฐาน (จำนวนเงิน)</th>
+            <th>รายละเอียด / หมายเหตุ</th>
           </tr>
           <tr>
-            <td>2) Performance Materiality (PM)</td>
-            <td id="a4PmPct" style="text-align:center;">&nbsp;</td>
-            <td id="a4PmValue" style="text-align:right;">&nbsp;</td>
-            <td id="a4PmExplain">
-              ใช้ PM เพื่อจำกัดความเสี่ยงที่ผลรวมของการผิดพลาดที่ตรวจพบและตรวจไม่พบ จะเกิน OM
-            </td>
+            <td id="a4BaseType"></td>
+            <td id="a4BaseAmount"></td>
+            <td id="a4BaseRemark"></td>
           </tr>
-          <tr>
-            <td>3) Tolerable Error (TE)</td>
-            <td id="a4TePct" style="text-align:center;">&nbsp;</td>
-            <td id="a4TeValue" style="text-align:right;">&nbsp;</td>
-            <td id="a4TeExplain">
-              กำหนด TE เป็นเกณฑ์คัดกรองจำนวนผิดพลาดรายรายการ/กลุ่มรายการที่ยอมรับได้โดยไม่ต้องขยายการทดสอบเพิ่มเติม
-            </td>
-          </tr>
-          </tbody>
         </table>
 
-        <div style="margin-top:12px; font-size:10pt;">
-          <strong>2. การเชื่อมโยงกับการวางแผนตรวจสอบ</strong>
+        <div style="margin-top:10px; font-size:10pt;">
+          <strong>3. การกำหนด Overall Materiality (OM), Performance Materiality (PM) และ Threshold for Errors (TE)</strong>
         </div>
-        <div style="font-size:10pt; margin-top:4px;">
-          - OM จะใช้เป็นกรอบพิจารณาความมีนัยสำคัญของการผิดพลาดรวมทั้งงบการเงิน  
-          - PM จะใช้เป็นเกณฑ์กำหนดขอบเขตและขนาดของการทดสอบเนื้อหา (Substantive Tests)  
-          - TE จะใช้เป็นเกณฑ์คัดกรองการผิดพลาดรายรายการในกระดาษทำการของผู้ตรวจสอบ
-        </div>
+        <table class="a4-table">
+          <tr>
+            <th style="width:20%;">ประเภท</th>
+            <th style="width:15%;">ร้อยละ (%)</th>
+            <th style="width:25%;">จำนวนเงิน</th>
+            <th>คำอธิบาย / เหตุผล</th>
+          </tr>
+          <tr>
+            <td>OM</td>
+            <td id="a4OmPercent"></td>
+            <td id="a4OmAmount"></td>
+            <td id="a4OmComment"></td>
+          </tr>
+          <tr>
+            <td>PM</td>
+            <td id="a4PmPercent"></td>
+            <td id="a4PmAmount"></td>
+            <td id="a4PmComment"></td>
+          </tr>
+          <tr>
+            <td>TE</td>
+            <td id="a4TePercent"></td>
+            <td id="a4TeAmount"></td>
+            <td id="a4TeComment"></td>
+          </tr>
+        </table>
 
-        <div class="a4-sign-row">
-          <div class="a4-sign-block">
-            ลงชื่อ
-            <div class="a4-sign-line"></div>
-            (.......................................................)<br>
-            ผู้จัดทำ
-          </div>
-          <div class="a4-sign-block">
-            ลงชื่อ
-            <div class="a4-sign-line"></div>
-            (.......................................................)<br>
-            ผู้สอบทาน / ผตจ.
-          </div>
+        <div style="margin-top:10px; font-size:10pt;">
+          <strong>4. หมายเหตุเพิ่มเติมเกี่ยวกับการกำหนด Materiality</strong>
         </div>
+        <div style="font-size:10pt; margin-top:4px;" id="a4MatRemark"></div>
+
+        <div style="margin-top:10px; font-size:10pt;">
+          <strong>5. สรุปผลการวิเคราะห์โดย AI / ผู้ตรวจสอบ</strong>
+        </div>
+        <div style="font-size:10pt; margin-top:4px;" id="a4AiResult"></div>
 
         <div class="a4-footer">
-          <div>ฟอร์ม 3.5 – Materiality</div>
+          <div>แบบฟอร์ม อปท.3.5 – Materiality – FA LG Annual</div>
           <div id="a4FooterMeta">พิมพ์จากระบบ FA – LG</div>
         </div>
       </div>
@@ -596,63 +686,285 @@
 </main>
 
 <script>
-  function formatNumber(num){
-    if(num === null || num === undefined || isNaN(num)) return '';
-    return num.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
+  /* ---------- Helper ---------- */
+
+  function nl2br(text){
+    if(!text) return '';
+    return text.replace(/\n/g,'<br>');
   }
 
-  function calcMateriality(){
-    const base = parseFloat(document.getElementById('baseAmount').value || '0');
-    const omPct = parseFloat(document.getElementById('omPct').value || '0');
-    const pmPct = parseFloat(document.getElementById('pmPct').value || '0');
-    const tePct = parseFloat(document.getElementById('tePct').value || '0');
+  /* ---------- Gov DB (fa-db-data-gov) ---------- */
 
-    if(base <= 0 || omPct <= 0){
-      alert('กรุณากรอก Base และ % OM อย่างน้อยก่อน');
+  let LG_DB = [];
+
+  function getProvinceField(row){
+    return row.province || row.Province || row.prov || row['จังหวัด'] || '';
+  }
+  function getAmphoeField(row){
+    return row.amphoe || row.district || row.District || row['อำเภอ'] || row['เขต'] || '';
+  }
+  function getAuditeeNameField(row){
+    return (
+      row.auditee ||
+      row.unitName ||
+      row.unit ||
+      row['หน่วยรับตรวจ'] ||
+      row['ชื่อหน่วยงาน'] ||
+      ''
+    );
+  }
+
+  function setStatus(msg, isError){
+    const el = document.getElementById('govDbStatus');
+    if(!el) return;
+    el.textContent = msg || '';
+    el.style.color = isError ? '#ffab91' : '#a3acc7';
+  }
+
+  function fillSelectOptions(select, items, placeholder){
+    if(!select) return;
+    select.innerHTML = '';
+    const opt0 = document.createElement('option');
+    opt0.value = '';
+    opt0.textContent = placeholder;
+    select.appendChild(opt0);
+    items.forEach(v => {
+      const o = document.createElement('option');
+      o.value = v;
+      o.textContent = v;
+      select.appendChild(o);
+    });
+  }
+
+  function initGovDbFromLocalStorage(){
+    try{
+      const raw = localStorage.getItem('fa-db-data-gov');
+      if(!raw){
+        setStatus('⚠ ยังไม่พบข้อมูลใน localStorage["fa-db-data-gov"] – กรุณาเปิดหน้า fa-db-data-gov.html ให้โหลดข้อมูลก่อน', true);
+        return;
+      }
+      const data = JSON.parse(raw);
+      if(!Array.isArray(data)){
+        setStatus('⚠ โครงสร้างข้อมูล fa-db-data-gov ไม่ใช่ Array', true);
+        return;
+      }
+      LG_DB = data;
+
+      const provinces = [...new Set(
+        LG_DB.map(getProvinceField).filter(Boolean)
+      )].sort((a,b)=>a.localeCompare(b,'th-TH'));
+
+      const provinceSelect = document.getElementById('province');
+      fillSelectOptions(provinceSelect, provinces, '— เลือกจังหวัด —');
+
+      setStatus(`✅ โหลดข้อมูลหน่วยรับตรวจจากฐานกลางสำเร็จ: ${LG_DB.length} รายการ`, false);
+    }catch(e){
+      console.error(e);
+      setStatus('⚠ เกิดข้อผิดพลาดขณะอ่านข้อมูล fa-db-data-gov จาก localStorage', true);
+    }
+  }
+
+  function onProvinceChange(){
+    const province = document.getElementById('province').value || '';
+    const amphoeSelect = document.getElementById('amphoe');
+    const auditeeSelect = document.getElementById('auditee');
+
+    if(!province){
+      fillSelectOptions(amphoeSelect, [], '— เลือกอำเภอ / เขต —');
+      fillSelectOptions(auditeeSelect, [], '— เลือกหน่วยรับตรวจ —');
       return;
     }
 
-    const om = base * (omPct/100);
-    const pm = pmPct > 0 ? base * (pmPct/100) : om * 0.75;
-    const te = tePct > 0 ? base * (tePct/100) : om * 0.05;
+    const amphoeList = [...new Set(
+      LG_DB
+        .filter(row => getProvinceField(row) === province)
+        .map(getAmphoeField)
+        .filter(Boolean)
+    )].sort((a,b)=>a.localeCompare(b,'th-TH'));
 
-    document.getElementById('omValue').value = formatNumber(om);
-    document.getElementById('pmValue').value = formatNumber(pm);
-    document.getElementById('teValue').value = formatNumber(te);
+    fillSelectOptions(amphoeSelect, amphoeList, '— เลือกอำเภอ / เขต —');
+    fillSelectOptions(auditeeSelect, [], '— เลือกหน่วยรับตรวจ —');
   }
 
+  function onAmphoeChange(){
+    const province = document.getElementById('province').value || '';
+    const amphoe = document.getElementById('amphoe').value || '';
+    const auditeeSelect = document.getElementById('auditee');
+
+    if(!province || !amphoe){
+      fillSelectOptions(auditeeSelect, [], '— เลือกหน่วยรับตรวจ —');
+      return;
+    }
+
+    const units = LG_DB.filter(row =>
+      getProvinceField(row) === province &&
+      getAmphoeField(row) === amphoe
+    );
+
+    const names = [...new Set(
+      units.map(getAuditeeNameField).filter(Boolean)
+    )].sort((a,b)=>a.localeCompare(b,'th-TH'));
+
+    fillSelectOptions(auditeeSelect, names, '— เลือกหน่วยรับตรวจ —');
+  }
+
+  /* ---------- งวดวันที่ + แบบฟอร์มอ้างอิง ---------- */
+
+  function initPeriods(){
+    const periodSelect = document.getElementById('period');
+    if(!periodSelect) return;
+    for(let y=2566; y<=2582; y++){
+      const txt = '30 กันยายน ' + y;
+      const opt = document.createElement('option');
+      opt.value = txt;
+      opt.textContent = txt;
+      periodSelect.appendChild(opt);
+    }
+  }
+
+  function initFormRefs(){
+    const select = document.getElementById('formRef');
+    if(!select) return;
+
+    const formsSet = new Set();
+
+    // ฟอร์มหลักที่เกี่ยวข้อง
+    [
+      'อปท.3','อปท.3.1','อปท.4','อปท.5','อปท.5.1','อปท.5.2',
+      'อปท.3.5','อปท.3.6',
+      'อปท.8.2','อปท.8.2.1','อปท.8.2.2','อปท.8.2.3'
+    ].forEach(f => formsSet.add(f));
+
+    // 8.1–8.31
+    for(let i=1; i<=31; i++){
+      formsSet.add('อปท.8.' + i);
+    }
+
+    const forms = Array.from(formsSet).sort((a,b)=>a.localeCompare(b,'th-TH',{numeric:true}));
+
+    forms.forEach(f => {
+      const opt = document.createElement('option');
+      opt.value = f;
+      opt.textContent = f;
+      select.appendChild(opt);
+    });
+  }
+
+  /* ---------- Materiality Calculation ---------- */
+
+  function toNumber(val){
+    const n = Number(val);
+    return isNaN(n) ? 0 : n;
+  }
+
+  function formatNumber(n){
+    if(n === null || n === undefined || isNaN(Number(n))) return '';
+    return Number(n).toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
+  }
+
+  function autoCalculateMateriality(){
+    const baseAmount = toNumber(document.getElementById('baseAmount').value);
+    const omPercent  = toNumber(document.getElementById('omPercent').value);
+    const pmPercent  = toNumber(document.getElementById('pmPercent').value);
+    const tePercent  = toNumber(document.getElementById('tePercent').value);
+
+    if(baseAmount > 0 && omPercent > 0){
+      const om = baseAmount * omPercent / 100;
+      document.getElementById('omAmount').value = om.toFixed(2);
+    }
+
+    const omAmount = toNumber(document.getElementById('omAmount').value);
+
+    if(omAmount > 0 && pmPercent > 0){
+      const pm = omAmount * pmPercent / 100;
+      document.getElementById('pmAmount').value = pm.toFixed(2);
+    }
+
+    const pmAmount = toNumber(document.getElementById('pmAmount').value);
+
+    // เลือกใช้ OM เป็นฐาน TE ถ้าไม่มี PM
+    const baseForTE = pmAmount > 0 ? pmAmount : omAmount;
+    if(baseForTE > 0 && tePercent > 0){
+      const te = baseForTE * tePercent / 100;
+      document.getElementById('teAmount').value = te.toFixed(2);
+    }
+
+    alert('คำนวณ OM / PM / TE จากข้อมูลที่ระบุแล้ว');
+  }
+
+  /* ---------- Sync ไป A4 ---------- */
+
   function pushToA4(){
-    // ข้อมูลทั่วไป
-    document.getElementById('a4Fy').textContent        = document.getElementById('fy').value || '';
-    document.getElementById('a4Auditee').textContent   = document.getElementById('auditee').value || '';
-    document.getElementById('a4Amphoe').textContent    = document.getElementById('amphoe').value || '';
-    document.getElementById('a4Province').textContent  = document.getElementById('province').value || '';
-    document.getElementById('a4PreparedBy').textContent= document.getElementById('preparedBy').value || '';
-    document.getElementById('a4ReviewedBy').textContent= document.getElementById('reviewedBy').value || '';
+    document.getElementById('a4Fy').textContent       = document.getElementById('fy').value || '';
+    document.getElementById('a4Period').textContent   = document.getElementById('period').value || '';
+    document.getElementById('a4Auditee').textContent  = document.getElementById('auditee').value || '';
+    document.getElementById('a4Amphoe').textContent   = document.getElementById('amphoe').value || '';
+    document.getElementById('a4Province').textContent = document.getElementById('province').value || '';
+    document.getElementById('a4FormRef').textContent  = document.getElementById('formRef').value || '';
 
-    // Base
-    document.getElementById('a4BaseDesc').textContent  = document.getElementById('baseDesc').value || '';
-    const baseVal = parseFloat(document.getElementById('baseAmount').value || '0');
-    document.getElementById('a4BaseAmount').textContent= baseVal ? formatNumber(baseVal) : '';
+    document.getElementById('a4FormSummary').innerHTML = nl2br(document.getElementById('formSummary').value || '');
 
-    // % และจำนวน OM/PM/TE
-    const omPct = document.getElementById('omPct').value || '';
-    const pmPct = document.getElementById('pmPct').value || '';
-    const tePct = document.getElementById('tePct').value || '';
+    document.getElementById('a4BaseType').textContent   = document.getElementById('baseType').value || '';
+    document.getElementById('a4BaseAmount').textContent = formatNumber(document.getElementById('baseAmount').value || '');
+    document.getElementById('a4BaseRemark').textContent = document.getElementById('baseRemark').value || '';
 
-    document.getElementById('a4OmPct').textContent = omPct ? omPct + ' %' : '';
-    document.getElementById('a4PmPct').textContent = pmPct ? pmPct + ' %' : '';
-    document.getElementById('a4TePct').textContent = tePct ? tePct + ' %' : '';
+    document.getElementById('a4OmPercent').textContent  = (document.getElementById('omPercent').value || '') + (document.getElementById('omPercent').value ? ' %' : '');
+    document.getElementById('a4OmAmount').textContent   = formatNumber(document.getElementById('omAmount').value || '');
+    document.getElementById('a4OmComment').textContent  = document.getElementById('omComment').value || '';
 
-    document.getElementById('a4OmValue').textContent = document.getElementById('omValue').value || '';
-    document.getElementById('a4PmValue').textContent = document.getElementById('pmValue').value || '';
-    document.getElementById('a4TeValue').textContent = document.getElementById('teValue').value || '';
+    document.getElementById('a4PmPercent').textContent  = (document.getElementById('pmPercent').value || '') + (document.getElementById('pmPercent').value ? ' %' : '');
+    document.getElementById('a4PmAmount').textContent   = formatNumber(document.getElementById('pmAmount').value || '');
+    document.getElementById('a4PmComment').textContent  = document.getElementById('pmComment').value || '';
 
-    // Footer meta – เวลา
+    document.getElementById('a4TePercent').textContent  = (document.getElementById('tePercent').value || '') + (document.getElementById('tePercent').value ? ' %' : '');
+    document.getElementById('a4TeAmount').textContent   = formatNumber(document.getElementById('teAmount').value || '');
+    document.getElementById('a4TeComment').textContent  = document.getElementById('teComment').value || '';
+
+    document.getElementById('a4MatRemark').innerHTML    = nl2br(document.getElementById('matRemark').value || '');
+    document.getElementById('a4AiResult').innerHTML     = nl2br(document.getElementById('aiResult').value || '');
+
     const now = new Date();
     const ts = now.toLocaleString('th-TH');
     document.getElementById('a4FooterMeta').textContent = 'พิมพ์จากระบบ FA – LG ณ ' + ts;
   }
+
+  /* ---------- Build data กลาง ---------- */
+
+  function buildFormData(){
+    const data = {
+      fiscalYear   : document.getElementById('fy').value || '',
+      period       : document.getElementById('period').value || '',
+      auditee      : document.getElementById('auditee').value || '',
+      amphoe       : document.getElementById('amphoe').value || '',
+      province     : document.getElementById('province').value || '',
+      formRef      : document.getElementById('formRef').value || '',
+      formSummary  : document.getElementById('formSummary').value || '',
+      baseType     : document.getElementById('baseType').value || '',
+      baseAmount   : document.getElementById('baseAmount').value || '',
+      baseRemark   : document.getElementById('baseRemark').value || '',
+      omPercent    : document.getElementById('omPercent').value || '',
+      omAmount     : document.getElementById('omAmount').value || '',
+      omComment    : document.getElementById('omComment').value || '',
+      pmPercent    : document.getElementById('pmPercent').value || '',
+      pmAmount     : document.getElementById('pmAmount').value || '',
+      pmComment    : document.getElementById('pmComment').value || '',
+      tePercent    : document.getElementById('tePercent').value || '',
+      teAmount     : document.getElementById('teAmount').value || '',
+      teComment    : document.getElementById('teComment').value || '',
+      matRemark    : document.getElementById('matRemark').value || '',
+      aiQuestion   : document.getElementById('aiQuestion').value || '',
+      aiSourceData : document.getElementById('aiSourceData').value || '',
+      aiResult     : document.getElementById('aiResult').value || '',
+      meta: {
+        formCode : 'อปท.3.5',
+        module   : 'FA-LG-Annual-Planning',
+        exportedAt: new Date().toISOString()
+      }
+    };
+    return data;
+  }
+
+  /* ---------- Export ---------- */
 
   function exportA4Html(){
     const a4 = document.getElementById('a4Page');
@@ -661,15 +973,15 @@
       return;
     }
     const htmlContent =
-      '<!DOCTYPE html><html lang="th"><head><meta charset="UTF-8"><title>Form3.5-A4</title>' +
-      '<style>@page{size:A4;margin:12mm;}body{font-family:\"TH Sarabun New\",\"Segoe UI\",sans-serif;font-size:11pt;} .a4-page{width:100%;min-height:100%;}</style>' +
+      '<!DOCTYPE html><html lang="th"><head><meta charset="UTF-8"><title>OP3-5-Materiality-A4</title>' +
+      '<style>@page{size:A4;margin:12mm;}body{font-family:"TH Sarabun New","Segoe UI",sans-serif;font-size:11pt;} .a4-page{width:100%;min-height:100%;}</style>' +
       '</head><body>' + a4.outerHTML + '</body></html>';
 
     const blob = new Blob([htmlContent], {type:'text/html'});
     const url  = URL.createObjectURL(blob);
     const a    = document.createElement('a');
     a.href = url;
-    a.download = 'form3_5_materiality_a4.html';
+    a.download = 'op3_5_materiality_a4.html';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -677,33 +989,135 @@
   }
 
   function exportJson(){
-    const data = {
-      fiscalYear    : document.getElementById('fy').value || '',
-      auditee       : document.getElementById('auditee').value || '',
-      amphoe        : document.getElementById('amphoe').value || '',
-      province      : document.getElementById('province').value || '',
-      preparedBy    : document.getElementById('preparedBy').value || '',
-      reviewedBy    : document.getElementById('reviewedBy').value || '',
-      baseDesc      : document.getElementById('baseDesc').value || '',
-      baseAmount    : document.getElementById('baseAmount').value || '',
-      omPct         : document.getElementById('omPct').value || '',
-      pmPct         : document.getElementById('pmPct').value || '',
-      tePct         : document.getElementById('tePct').value || '',
-      omValue       : document.getElementById('omValue').value || '',
-      pmValue       : document.getElementById('pmValue').value || '',
-      teValue       : document.getElementById('teValue').value || ''
-    };
-
+    const data = buildFormData();
     const blob = new Blob([JSON.stringify(data,null,2)], {type:'application/json'});
     const url  = URL.createObjectURL(blob);
     const a    = document.createElement('a');
     a.href = url;
-    a.download = 'form3_5_materiality.json';
+    a.download = 'op3_5_materiality.json';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
   }
+
+  /* ---------- Integration: Review & Working Papers ---------- */
+
+  function sendToReviewSystem(){
+    const data = buildFormData();
+
+    try{
+      localStorage.setItem('fa_op3_5_last_for_review', JSON.stringify(data));
+    }catch(e){
+      console.error('localStorage error', e);
+    }
+
+    /*
+    fetch('/api/review-system/op3-5', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(data)
+    });
+    */
+
+    alert('บันทึกแบบฟอร์ม อปท.3.5 ส่งไป “ระบบสอบทาน” (จำลอง) แล้ว \n(เก็บที่ localStorage: fa_op3_5_last_for_review)');
+  }
+
+  function sendToWorkingpaperDb(){
+    const data = buildFormData();
+
+    try{
+      localStorage.setItem('fa_op3_5_last_workingpaper', JSON.stringify(data));
+    }catch(e){
+      console.error('localStorage error', e);
+    }
+
+    /*
+    fetch('/api/workingpapers/op3-5', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(data)
+    });
+    */
+
+    alert('บันทึกแบบฟอร์ม อปท.3.5 ส่งไป “ฐานข้อมูลกระดาษทำการ” (จำลอง) แล้ว \n(เก็บที่ localStorage: fa_op3_5_last_workingpaper)');
+  }
+
+  /* ---------- AI Prototype ---------- */
+
+  function fakeAiAnalyze(){
+    const fy       = document.getElementById('fy').value || '—';
+    const period   = document.getElementById('period').value || '—';
+    const auditee  = document.getElementById('auditee').value || '—';
+    const formRef  = document.getElementById('formRef').value || '—';
+    const baseType = document.getElementById('baseType').value || '—';
+    const baseAmt  = document.getElementById('baseAmount').value || '';
+    const omPct    = document.getElementById('omPercent').value || '';
+    const pmPct    = document.getElementById('pmPercent').value || '';
+    const tePct    = document.getElementById('tePercent').value || '';
+    const omAmt    = document.getElementById('omAmount').value || '';
+    const pmAmt    = document.getElementById('pmAmount').value || '';
+    const teAmt    = document.getElementById('teAmount').value || '';
+    const question = document.getElementById('aiQuestion').value || '';
+    const src      = document.getElementById('aiSourceData').value || '';
+    const summary  = document.getElementById('formSummary').value || '';
+
+    let result = '';
+    result += '★ กรอบข้อมูลสำหรับการพิจารณา Materiality\n';
+    result += '- ปีงบประมาณ: ' + fy + '\n';
+    result += '- งวดวันที่: ' + period + '\n';
+    result += '- หน่วยรับตรวจ: ' + auditee + '\n';
+    result += '- อ้างอิงแบบฟอร์ม: ' + formRef + '\n';
+    result += '- ฐานที่ใช้: ' + baseType + ' (' + (baseAmt || 'ไม่ระบุ') + ')\n';
+    result += '- OM: ' + (omPct || '—') + '% ≈ ' + (omAmt || '—') + '\n';
+    result += '- PM: ' + (pmPct || '—') + '% ของ OM ≈ ' + (pmAmt || '—') + '\n';
+    result += '- TE: ' + (tePct || '—') + '% ของ OM/PM ≈ ' + (teAmt || '—') + '\n\n';
+
+    if(summary){
+      result += '★ สาระสำคัญจากแบบฟอร์มที่ใช้เป็นฐาน\n';
+      result += summary + '\n\n';
+    }
+    if(question){
+      result += '★ โจทย์ที่ต้องการให้ AI/ผู้ตรวจวิเคราะห์\n';
+      result += question + '\n\n';
+    }
+    if(src){
+      result += '★ ข้อมูลตัวอย่างที่ใช้ประกอบการวิเคราะห์ (ตัดตอน)\n';
+      result += src.substring(0,800);
+      if(src.length > 800){
+        result += '\n...[ตัดข้อความบางส่วนเพื่อความกระชับ]...\n';
+      }
+      result += '\n\n';
+    }
+
+    result += '★ แนวคิดการประเมินความเหมาะสมของ OM / PM / TE (ตัวอย่าง)\n';
+    result += '- เปรียบเทียบ OM ต่อฐาน (Base) ว่าอยู่ในช่วงที่เป็นที่ยอมรับตามแนวปฏิบัติ (เช่น 1–3% ของค่าใช้จ่ายรวมสำหรับ อปท. ทั่วไป)\n';
+    result += '- พิจารณาความเสี่ยง RMM: ถ้าความเสี่ยงสูง อาจต้องลด OM/PM หรือเพิ่มความเข้มข้นในการทดสอบ\n';
+    result += '- ดูจำนวนองค์ประกอบรายการ: ถ้ามีหลายหน่วยงาน/หลายรายการสำคัญ PM มักกำหนดต่ำกว่า OM เพื่อเผื่อความเสี่ยงสะสมของข้อผิดพลาด\n';
+    result += '- TE ควรอยู่ในระดับที่ไม่ทำให้ข้อผิดพลาดเล็ก ๆ สะสมจนเกิน OM โดยไม่ได้รับการพิจารณา\n';
+    result += '\n(หมายเหตุ: ส่วนนี้เป็น Prototype – เมื่อต่อ API AI จริง สามารถใช้ข้อมูลด้านบนเป็น Prompt ให้โมเดลวิเคราะห์และเสนอค่า OM/PM/TE ที่เหมาะสมขึ้นได้)\n';
+
+    document.getElementById('aiResult').value = result;
+    alert('สร้างข้อความผลวิเคราะห์ตัวอย่างแล้ว\n(สามารถแก้ไข/ปรับปรุงก่อนส่งต่อได้)');
+  }
+
+  /* ---------- Init ---------- */
+
+  document.addEventListener('DOMContentLoaded', function(){
+    initGovDbFromLocalStorage();
+    initPeriods();
+    initFormRefs();
+
+    const provinceSelect = document.getElementById('province');
+    const amphoeSelect   = document.getElementById('amphoe');
+
+    if(provinceSelect){
+      provinceSelect.addEventListener('change', onProvinceChange);
+    }
+    if(amphoeSelect){
+      amphoeSelect.addEventListener('change', onAmphoeChange);
+    }
+  });
 </script>
 
 </body>
