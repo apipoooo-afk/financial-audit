@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8" />
+<title>อปท. 8.13 | ระบบตรวจสอบการเงิน</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<style>
+:root{
+  --bg:#060818;
+  --card:#11152b;
+  --border:#262b46;
+  --primary:#0d47a1;
+  --accent:#42a5f5;
+  --pink:#f48fb1;
+  --text:#f5f7ff;
+  --muted:#a3acc7;
+}
+
+*{box-sizing:border-box;}
+
+body{
+  margin:0;
+  font-family:"Segoe UI", Tahoma, sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+
+header{
+  padding:18px 10px;
+  text-align:center;
+  background:linear-gradient(120deg,#7b1e3c,#0d47a1,#42a5f5);
+  box-shadow:0 4px 12px rgba(0,0,0,0.45);
+}
+header h1{
+  margin:0;
+  font-size:26px;
+}
+section{
+  padding:20px;
+}
+.card{
+  background:var(--card);
+  border:1px solid var(--border);
+  padding:16px;
+  border-radius:14px;
+  margin-bottom:20px;
+}
+label{
+  font-size:14px;
+  opacity:0.8;
+}
+input, select{
+  width:100%;
+  padding:10px;
+  margin:6px 0 14px;
+  border-radius:8px;
+  border:1px solid var(--border);
+  background:#0b1024;
+  color:var(--text);
+}
+button{
+  width:100%;
+  padding:12px;
+  border-radius:10px;
+  background:var(--primary);
+  border:none;
+  color:#fff;
+  font-size:16px;
+  margin-top:10px;
+  cursor:pointer;
+}
+button:hover{
+  background:var(--accent);
+}
+.menu-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:16px;
+}
+.menu-btn{
+  padding:22px;
+  border-radius:14px;
+  background:#111a39;
+  border:1px solid #2c3558;
+  text-align:center;
+  cursor:pointer;
+}
+.menu-btn:hover{
+  background:#1b255a;
+}
+.stats-box{
+  margin-top:10px;
+  font-size:14px;
+  opacity:0.85;
+}
+</style>
+
+</head>
+<body>
+
+<header>
+  <h1>แบบ อปท. 8.13 – เมนูหลัก</h1>
+</header>
+
+<section>
+
+<!-- MENU 1 -->
+<div class="card">
+  <h2>เมนู 1 – ข้อมูลการตรวจสอบ</h2>
+
+  <label>ชื่อหน่วยรับตรวจ</label>
+  <select id="unitName">
+    <option>เทศบาลเมืองศรีสะเกษ</option>
+    <option>เทศบาลตำบลน้ำคำ</option>
+    <option>อบต.โพธิ์</option>
+  </select>
+
+  <label>ประเภท</label>
+  <select id="type">
+    <option>เทศบาล</option>
+    <option>อบต.</option>
+    <option>อบจ.</option>
+  </select>
+
+  <label>อำเภอ</label>
+  <select id="district">
+    <option>เมืองศรีสะเกษ</option>
+    <option>ห้วยทับทัน</option>
+  </select>
+
+  <label>จังหวัด</label>
+  <select id="province">
+    <option>ศรีสะเกษ</option>
+  </select>
+
+  <label>ปีงบประมาณปัจจุบัน</label>
+  <select id="yearNow">
+    <script>
+      let y = new Date().getFullYear()+543;
+      for(let i=0;i<10;i++){
+        document.write(`<option>${y-i}</option>`);
+      }
+    </script>
+  </select>
+
+  <label>ปีงบประมาณปีก่อน</label>
+  <select id="yearPrev">
+    <script>
+      let yp = new Date().getFullYear()+542;
+      for(let i=0;i<10;i++){
+        document.write(`<option>${yp-i}</option>`);
+      }
+    </script>
+  </select>
+
+  <h3>ผู้ตรวจสอบ (ใส่ได้ 6 คน)</h3>
+  <div id="auditors"></div>
+
+  <script>
+    for(let i=1;i<=6;i++){
+      document.write(`
+        <label>ผู้ตรวจสอบคนที่ ${i}</label>
+        <input placeholder="ชื่อ – นามสกุล" id="auditor${i}">
+        <input placeholder="ตำแหน่ง" id="pos${i}">
+      `);
+    }
+  </script>
+
+  <label>วันที่ตรวจสอบ</label>
+  <input type="date" id="auditDate" />
+
+  <button onclick="saveData()">บันทึกข้อมูล</button>
+
+  <div class="stats-box">
+    👁 ผู้ใช้งานปัจจุบัน: <span id="currentUser">0</span><br>
+    🔄 ผู้ใช้สะสม: <span id="totalUser">0</span>
+  </div>
+
+</div>
+
+
+<!-- MENU 2 -->
+<div class="card">
+  <h2>เมนู 2 – เลือกแบบ อปท. 8.13</h2>
+
+  <div class="menu-grid">
+    <div class="menu-btn" onclick="openForm('fa-lg-form-8-13.html')">แบบ 8.13</div>
+    <div class="menu-btn" onclick="openForm('fa-lg-form-8-13-1.html')">แบบ 8.13.1</div>
+    <div class="menu-btn" onclick="openForm('fa-lg-form-8-13-2.html')">แบบ 8.13.2</div>
+    <div class="menu-btn" onclick="openForm('fa-lg-form-8-13-3.html')">แบบ 8.13.3</div>
+    <div class="menu-btn" onclick="openForm('fa-lg-form-8-13-4.html')">แบบ 8.13.4</div>
+    <div class="menu-btn" onclick="openForm('fa-lg-form-8-13-custom.html')">+ เพิ่มแบบ อปท. 13…</div>
+  </div>
+
+  <button onclick="goBack()">กลับไปเมนู 1</button>
+  <button onclick="window.location.href='index.html'">กลับไปหน้าแรก</button>
+  <button onclick="window.location.href='fa-lg-fieldwork.html'">กลับไปขั้นตอนปฏิบัติงานตรวจสอบ</button>
+
+</div>
+
+</section>
+
+<script>
+function saveData(){
+  const data = {
+    unit: unitName.value,
+    type: type.value,
+    district: district.value,
+    province: province.value,
+    yearNow: yearNow.value,
+    yearPrev: yearPrev.value,
+    auditors: [],
+    auditDate: auditDate.value
+  };
+
+  for(let i=1;i<=6;i++){
+    data.auditors.push({
+      name: document.getElementById("auditor"+i).value,
+      pos: document.getElementById("pos"+i).value
+    });
+  }
+
+  localStorage.setItem("audit813", JSON.stringify(data));
+
+  let total = localStorage.getItem("813_total") || 0;
+  total++;
+  localStorage.setItem("813_total", total);
+
+  alert("บันทึกข้อมูลเรียบร้อย");
+  updateStats();
+}
+
+function updateStats(){
+  document.getElementById("currentUser").innerText = 1;
+  document.getElementById("totalUser").innerText = localStorage.getItem("813_total") || 0;
+}
+
+function openForm(url){
+  window.open(url, "_blank");
+}
+
+function goBack(){
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+updateStats();
+</script>
+
+</body>
+</html>
