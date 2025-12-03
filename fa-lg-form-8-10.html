@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>อปท. 8.10 – รายงานผลการตรวจสอบสินทรัพย์หมุนเวียนอื่น</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    :root{
+      --bg:#060818;
+      --card:#11152b;
+      --border:#262b46;
+      --accent:#42a5f5;
+      --accent2:#26c6da;
+      --muted:#a3acc7;
+      --text:#f5f7ff;
+      --pink:#f48fb1;
+    }
+    *{box-sizing:border-box;}
+    body{
+      margin:0;
+      font-family:"Segoe UI", Tahoma, sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      padding-bottom:60px;
+    }
+    header{
+      padding:18px 20px 12px;
+      background:linear-gradient(120deg,#0d47a1,#42a5f5,#7b1e3c);
+      box-shadow:0 6px 20px rgba(0,0,0,0.45);
+    }
+    header h1{
+      margin:0;
+      font-size:26px;
+      font-weight:700;
+    }
+    header p{
+      margin:3px 0 0;
+      font-size:13px;
+      opacity:0.8;
+    }
+
+    .header-actions{
+      margin-top:10px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+
+    .container{
+      margin:20px auto;
+      max-width:1100px;
+      background:var(--card);
+      padding:20px;
+      border:1px solid var(--border);
+      border-radius:12px;
+      box-shadow:0 10px 30px rgba(0,0,0,0.4);
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:15px;
+    }
+    th,td{
+      border:1px solid var(--border);
+      padding:8px;
+      text-align:center;
+    }
+    th{
+      background:rgba(66,165,245,0.15);
+      font-weight:700;
+    }
+
+    input[type="text"],input[type="number"]{
+      width:100%;
+      padding:6px;
+      border-radius:6px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,0.08);
+      color:var(--text);
+    }
+
+    .btn{
+      padding:8px 14px;
+      background:var(--accent);
+      border:none;
+      border-radius:6px;
+      cursor:pointer;
+      margin:4px 4px 0 0;
+      font-weight:600;
+      font-size:13px;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      text-decoration:none;
+      color:#fff;
+    }
+    .btn:hover{
+      filter:brightness(1.05);
+    }
+    .btn-red{
+      background:#ef5350;
+    }
+    .btn-green{
+      background:#66bb6a;
+    }
+    .btn-ghost{
+      background:transparent;
+      border:1px solid rgba(255,255,255,0.25);
+    }
+
+    .attachments{
+      margin-top:12px;
+      padding:10px;
+      background:rgba(255,255,255,0.05);
+      border-radius:8px;
+      font-size:13px;
+    }
+
+    .section-title{
+      margin:0 0 8px;
+      font-size:18px;
+      font-weight:600;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>อปท. 8.10 – รายงานผลการตรวจสอบสินทรัพย์หมุนเวียนอื่น</h1>
+  <p>ระบบจัดทำกระดาษทำการตรวจสอบ – Digital LG Audit</p>
+
+  <!-- ปุ่มเชื่อมกลับหน้า Fieldwork -->
+  <div class="header-actions">
+    <a href="fa-lg-fieldwork.html" class="btn btn-ghost">
+      ← กลับหน้า Fieldwork (อปท. 8.x)
+    </a>
+  </div>
+</header>
+
+<div class="container">
+
+  <h2 class="section-title">ตารางรายการสินทรัพย์หมุนเวียนอื่น</h2>
+
+  <button class="btn" onclick="addRow()">+ เพิ่มแถว</button>
+
+  <table id="assetTable">
+    <thead>
+      <tr>
+        <th>ลำดับ</th>
+        <th>รายละเอียด</th>
+        <th>ยอดตามงบ</th>
+        <th>ยอดตรวจสอบ</th>
+        <th>หมายเหตุ</th>
+        <th>ลบ</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- JS generate rows -->
+    </tbody>
+  </table>
+
+  <br>
+  <button class="btn btn-green" onclick="saveToDB()">💾 บันทึกลงฐานข้อมูล</button>
+  <button class="btn" onclick="exportPDF()">📄 Export PDF</button>
+  <button class="btn" onclick="loadFromDB()">🔄 โหลดข้อมูล</button>
+
+  <div class="attachments">
+    <strong>แนบไฟล์ประกอบการตรวจสอบ:</strong><br>
+    <input type="file" multiple>
+    <div style="margin-top:4px;opacity:0.8;">
+      เช่น สำเนาบัญชีแยกประเภท รายงานกระทบยอด เอกสารชี้แจงจากหน่วยรับตรวจ ฯลฯ
+    </div>
+  </div>
+
+</div>
+
+<script>
+function addRow(data={}){
+  const table = document.querySelector("#assetTable tbody");
+  const row = document.createElement("tr");
+
+  row.innerHTML = `
+    <td></td>
+    <td><input type="text" value="${data.desc || ""}"></td>
+    <td><input type="number" value="${data.book || ""}" oninput="calcTotal()"></td>
+    <td><input type="number" value="${data.audit || ""}" oninput="calcTotal()"></td>
+    <td><input type="text" value="${data.note || ""}"></td>
+    <td><button class="btn btn-red" onclick="removeRow(this)">ลบ</button></td>
+  `;
+  table.appendChild(row);
+  reorder();
+}
+
+function removeRow(btn){
+  btn.parentElement.parentElement.remove();
+  reorder();
+}
+
+function reorder(){
+  document.querySelectorAll("#assetTable tbody tr").forEach((tr,i)=>{
+    tr.children[0].innerText = i+1;
+  });
+}
+
+function calcTotal(){
+  // เว้นไว้เชื่อมฟังก์ชันสรุปยอด / cross-check ภายหลัง
+}
+
+function saveToDB(){
+  // ตรงนี้ไว้เชื่อม API จริง เช่น fetch('/api/lg/8-10', { ... })
+  alert("บันทึกข้อมูลลงฐานข้อมูล (Mock) – พร้อมเชื่อม API จริง");
+}
+
+function loadFromDB(){
+  // ตัวอย่าง mock data จากฐาน – ภายหลังเชื่อม API จริงแทน
+  const tbody = document.querySelector("#assetTable tbody");
+  tbody.innerHTML = "";
+  addRow({desc:"ลูกหนี้อื่น",book:12000,audit:11800,note:"ผ่านการตรวจสอบ"});
+  addRow({desc:"เงินจ่ายล่วงหน้า",book:8500,audit:8400,note:"มีเอกสารสนับสนุนครบถ้วน"});
+}
+
+function exportPDF(){
+  // เตรียมเชื่อม jsPDF หรือ html2pdf.js
+  alert("ระบบ Export PDF จะเชื่อม jsPDF / html2pdf ในขั้นตอนถัดไป");
+}
+
+// สร้างแถวเริ่มต้น 3 แถว
+for(let i=0;i<3;i++){
+  addRow();
+}
+</script>
+
+</body>
+</html>
