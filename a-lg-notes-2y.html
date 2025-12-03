@@ -472,7 +472,7 @@ const NOTE_CONFIG = /* mapping จากผู้ใช้ */
       { "item_code": "N06_004", "excel_row": 42, "label": "รวมลูกหนี้เงินโอนและรายการอุดหนุนระยะสั้น" }
     ]
   },
-  /* … (คง JSON ที่คุณให้ต่อทั้งหมดจนถึง note_no 65 แบบเดิม) … */
+  /* … (คง JSON เดิมของคุณต่อทั้งหมดจนถึง note_no 65 แบบเดิม) … */
   {
     "note_no": 65,
     "note_code": "N65",
@@ -738,6 +738,69 @@ const NOTE_CONFIG = /* mapping จากผู้ใช้ */
 
   document.getElementById('currentYear').addEventListener('input', updateYearHeaders);
   document.getElementById('priorYear').addEventListener('input', updateYearHeaders);
+
+  // --------- เชื่อมข้อมูลจาก อปท.8.3 (Trade AR) ผ่าน localStorage ---------
+  function applyLg8_3Payload(payload){
+    if(!payload || typeof payload !== 'object') return;
+
+    // 1) หน่วยรับตรวจ + ปีงบประมาณ
+    const entityInput = document.getElementById('entityName');
+    if(payload.unitName && entityInput && !entityInput.value){
+      entityInput.value = payload.unitName;
+    }
+
+    const curYearInput = document.getElementById('currentYear');
+    const priorYearInput = document.getElementById('priorYear');
+    if(payload.fiscalYear && curYearInput && !curYearInput.value){
+      curYearInput.value = payload.fiscalYear;
+      const yearNum = parseInt(payload.fiscalYear,10);
+      if(!isNaN(yearNum) && priorYearInput && !priorYearInput.value){
+        priorYearInput.value = String(yearNum - 1);
+      }
+      updateYearHeaders();
+    }
+
+    // 2) แม็ปไปยัง "หมายเหตุ 5 ลูกหนี้การค้า"
+    const note5Card = document.querySelector('.note-card[data-note-no="5"]');
+    if(note5Card){
+      const descTextarea = note5Card.querySelector('textarea');
+      if(descTextarea && !descTextarea.value.trim()){
+        const sections = payload.sections || {};
+        const parts = [];
+
+        if(sections.overview){
+          parts.push('จากแบบ อปท.8.3 – ภาพรวมลูกหนี้การค้า:\n' + sections.overview.trim());
+        }
+        if(sections.ageing){
+          parts.push('การวิเคราะห์อายุลูกหนี้:\n' + sections.ageing.trim());
+        }
+        if(sections.collection){
+          parts.push('การติดตามทวงถาม / การยืนยันยอด:\n' + sections.collection.trim());
+        }
+        if(sections.allowanceConclusion){
+          parts.push('ค่าเผื่อหนี้สงสัยจะสูญ และข้อสรุปของผู้ตรวจสอบ:\n' + sections.allowanceConclusion.trim());
+        }
+
+        if(parts.length){
+          descTextarea.value =
+            '[ข้อมูลดึงจากกระดาษทำการ อปท.8.3 – ลูกหนี้การค้า]\n\n' +
+            parts.join('\n\n');
+        }
+      }
+    }
+  }
+
+  // โหลด payload จาก localStorage (ถ้ามี) แล้วแม็ปเข้า Notes 2Y
+  try{
+    const raw = localStorage.getItem('fa_lg_8_3_payload');
+    if(raw){
+      const payload = JSON.parse(raw);
+      applyLg8_3Payload(payload);
+      // ไม่ลบ localStorage ทันที เผื่อผู้ใช้กลับไปแก้ 8.3 แล้วกลับมาใหม่
+    }
+  }catch(e){
+    console.warn('อ่าน fa_lg_8_3_payload จาก localStorage ไม่สำเร็จ', e);
+  }
 
 })();
 </script>
