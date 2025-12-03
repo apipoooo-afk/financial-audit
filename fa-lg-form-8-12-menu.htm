@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <title>อปท. 8.12 – ระบบเลือกหน่วยรับตรวจและแบบฟอร์ม | FA – Fieldwork</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    :root{
+      --bg:#060818;
+      --bg-soft:#0b1024;
+      --card:#11152b;
+      --border:#262b46;
+      --primary:#0d47a1;
+      --primary-2:#42a5f5;
+      --accent:#ffd54f;
+      --text:#f5f7ff;
+      --muted:#a3acc7;
+      --danger:#ef5350;
+      --shadow-soft:0 12px 30px rgba(0,0,0,0.55);
+      --radius-lg:18px;
+    }
+
+    *{box-sizing:border-box;}
+
+    body{
+      margin:0;
+      font-family:"Segoe UI", Tahoma, sans-serif;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(123,30,60,0.36) 0, transparent 55%),
+        radial-gradient(circle at 90% 100%, rgba(66,165,245,0.32) 0, transparent 55%),
+        var(--bg);
+      color:var(--text);
+    }
+
+    header{
+      padding:18px 20px 14px;
+      background:linear-gradient(120deg,#7b1e3c,#0d47a1,#42a5f5);
+      box-shadow:0 6px 20px rgba(0,0,0,0.55);
+      border-bottom:1px solid rgba(255,255,255,0.18);
+      position:sticky;
+      top:0;
+      z-index:20;
+    }
+    header h1{
+      margin:0;
+      font-size:24px;
+      font-weight:800;
+    }
+    header p{
+      margin:4px 0 0;
+      font-size:13px;
+      opacity:0.92;
+    }
+
+    main{
+      max-width:1120px;
+      margin:20px auto 40px;
+      padding:0 14px 30px;
+    }
+
+    .layout{
+      display:grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1.1fr);
+      gap:20px;
+    }
+    @media (max-width:900px){
+      .layout{
+        grid-template-columns:1fr;
+      }
+    }
+
+    .card{
+      background:radial-gradient(circle at 0 0,rgba(66,165,245,0.12) 0,transparent 55%),
+                radial-gradient(circle at 100% 100%,rgba(244,143,177,0.12) 0,transparent 55%),
+                var(--card);
+      border-radius:var(--radius-lg);
+      border:1px solid var(--border);
+      box-shadow:var(--shadow-soft);
+      padding:18px 18px 16px;
+      position:relative;
+    }
+
+    .card h2{
+      margin:0 0 6px;
+      font-size:18px;
+    }
+    .card .subtitle{
+      font-size:12px;
+      color:var(--muted);
+      margin-bottom:14px;
+    }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      font-size:11px;
+      border-radius:999px;
+      padding:3px 8px;
+      border:1px solid rgba(255,255,255,0.16);
+      background:rgba(6,8,24,0.65);
+      position:absolute;
+      top:14px;
+      right:14px;
+      color:var(--muted);
+    }
+
+    .field-group{
+      margin-bottom:10px;
+    }
+    label{
+      display:flex;
+      justify-content:space-between;
+      font-size:12px;
+      margin-bottom:3px;
+    }
+    .en-label{
+      color:var(--muted);
+      font-size:11px;
+      opacity:0.85;
+    }
+    select{
+      width:100%;
+      padding:7px 9px;
+      border-radius:10px;
+      border:1px solid var(--border);
+      background:#050712;
+      color:var(--text);
+      font-size:13px;
+    }
+    select:focus{
+      outline:none;
+      border-color:var(--primary-2);
+      box-shadow:0 0 0 1px rgba(66,165,245,0.5);
+    }
+
+    .btn-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:12px;
+    }
+
+    button, .btn-link{
+      border:none;
+      cursor:pointer;
+      font-family:inherit;
+      font-size:13px;
+      border-radius:999px;
+      padding:7px 14px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:6px;
+      text-decoration:none;
+      transition:transform .08s ease, box-shadow .08s ease, background .12s ease, color .12s ease;
+    }
+
+    .btn-primary{
+      background:linear-gradient(135deg,var(--primary),var(--primary-2));
+      color:#fff;
+      box-shadow:0 6px 18px rgba(13,71,161,0.75);
+    }
+    .btn-primary:hover{
+      transform:translateY(-1px);
+      box-shadow:0 9px 24px rgba(13,71,161,0.9);
+    }
+
+    .btn-secondary{
+      background:rgba(255,255,255,0.04);
+      color:var(--text);
+      border:1px solid rgba(255,255,255,0.16);
+    }
+    .btn-secondary:hover{
+      background:rgba(255,255,255,0.08);
+    }
+
+    .btn-ghost{
+      background:transparent;
+      color:var(--muted);
+      border:1px dashed rgba(255,255,255,0.25);
+    }
+    .btn-ghost:hover{
+      background:rgba(255,255,255,0.05);
+      color:var(--text);
+    }
+
+    .btn-danger{
+      background:rgba(239,83,80,0.1);
+      color:#ff9592;
+      border:1px solid rgba(239,83,80,0.55);
+    }
+    .btn-danger:hover{
+      background:rgba(239,83,80,0.18);
+    }
+
+    .helper{
+      font-size:11px;
+      color:var(--muted);
+      margin-top:4px;
+    }
+
+    /* เมนู 2 */
+    .menu2-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:10px;
+      margin-bottom:10px;
+    }
+    .selected-summary{
+      font-size:11px;
+      color:var(--muted);
+      line-height:1.5;
+    }
+
+    .form-grid{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:8px;
+      margin-top:4px;
+    }
+    @media (min-width:720px){
+      .form-grid{
+        grid-template-columns:1fr;
+      }
+    }
+
+    .form-btn{
+      width:100%;
+      justify-content:flex-start;
+      background:rgba(6,8,24,0.96);
+      border-radius:12px;
+      padding:10px 12px;
+      border:1px solid rgba(255,255,255,0.12);
+      font-size:13px;
+    }
+    .form-btn-main{
+      border-color:var(--primary-2);
+      background:linear-gradient(135deg,rgba(13,71,161,0.35),rgba(6,8,24,0.95));
+    }
+    .form-btn span.code{
+      font-weight:700;
+      font-size:13px;
+      min-width:70px;
+    }
+    .form-btn span.label{
+      flex:1;
+      text-align:left;
+    }
+    .form-btn span.en{
+      font-size:11px;
+      color:var(--muted);
+      display:block;
+    }
+
+    .section-title{
+      font-size:12px;
+      margin:6px 0 4px;
+      color:var(--muted);
+      text-transform:uppercase;
+      letter-spacing:.06em;
+    }
+
+    .menu2-footer{
+      margin-top:12px;
+      border-top:1px dashed rgba(255,255,255,0.16);
+      padding-top:10px;
+    }
+
+    .status-pill{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      font-size:11px;
+      padding:3px 9px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.16);
+      background:rgba(5,7,18,0.8);
+      margin-top:4px;
+    }
+
+    .hidden{
+      display:none;
+    }
+
+    .error-text{
+      margin-top:6px;
+      color:#ff9a9a;
+      font-size:11px;
+    }
+
+  </style>
+</head>
+<body>
+  <header>
+    <h1>อปท. 8.12 – ระบบเลือกหน่วยรับตรวจและแบบฟอร์ม</h1>
+    <p>
+      Digital LG Financial Audit | แบบฟอร์ม 8.12 – พร้อมเมนูเลือกหน่วยรับตรวจ และทางลัดไปยังแบบ 8.12.x ทุกแบบ
+    </p>
+  </header>
+
+  <main>
+    <div class="layout">
+      <!-- เมนู 1: เลือกหน่วยรับตรวจ -->
+      <section class="card" id="menu1-card">
+        <div class="badge">เมนู 1 · เลือกหน่วยรับตรวจ / Select Entity</div>
+        <h2>เลือกหน่วยรับตรวจและปีงบประมาณ</h2>
+        <div class="subtitle">
+          กำหนด “บริบทการตรวจสอบ” ก่อนเข้าสู่แบบฟอร์ม อปท. 8.12 | Set audit context before opening forms
+        </div>
+
+        <div class="field-group">
+          <label>
+            <span>ชื่อหน่วยรับตรวจ</span>
+            <span class="en-label">Audited Entity Name</span>
+          </label>
+          <select id="entityName">
+            <option value="">— เลือกหน่วยรับตรวจ —</option>
+            <option>เทศบาลเมืองศรีสะเกษ</option>
+            <option>เทศบาลตำบลโพธิ์</option>
+            <option>องค์การบริหารส่วนจังหวัดศรีสะเกษ</option>
+            <option>องค์การบริหารส่วนตำบลหนองครก</option>
+          </select>
+        </div>
+
+        <div class="field-group">
+          <label>
+            <span>ประเภทหน่วยรับตรวจ</span>
+            <span class="en-label">Entity Type</span>
+          </label>
+          <select id="entityType">
+            <option value="">— เลือกประเภท —</option>
+            <option>เทศบาลนคร</option>
+            <option>เทศบาลเมือง</option>
+            <option>เทศบาลตำบล</option>
+            <option>องค์การบริหารส่วนจังหวัด</option>
+            <option>องค์การบริหารส่วนตำบล</option>
+          </select>
+        </div>
+
+        <div class="field-group">
+          <label>
+            <span>จังหวัด</span>
+            <span class="en-label">Province</span>
+          </label>
+          <select id="province">
+            <option value="">— เลือกจังหวัด —</option>
+            <option>ศรีสะเกษ</option>
+            <option>อุบลราชธานี</option>
+            <option>ยโสธร</option>
+            <option>อำนาจเจริญ</option>
+          </select>
+        </div>
+
+        <div class="field-group">
+          <label>
+            <span>อำเภอ</span>
+            <span class="en-label">District</span>
+          </label>
+          <select id="district">
+            <option value="">— เลือกอำเภอ —</option>
+            <option>เมืองศรีสะเกษ</option>
+            <option>กันทรลักษ์</option>
+            <option>ขุขันธ์</option>
+            <option>น้ำเกลี้ยง</option>
+          </select>
+        </div>
+
+        <div class="field-group">
+          <label>
+            <span>ปีงบประมาณปัจจุบัน</span>
+            <span class="en-label">Current Fiscal Year (B.E.)</span>
+          </label>
+          <select id="fiscalYearCurrent"></select>
+          <div class="helper">ระบบจะกำหนดปีอ้างอิงอัตโนมัติจากวันที่เครื่อง | Auto-set from system date</div>
+        </div>
+
+        <div class="field-group">
+          <label>
+            <span>ปีงบประมาณปีก่อน</span>
+            <span class="en-label">Previous Fiscal Year (B.E.)</span>
+          </label>
+          <select id="fiscalYearPrev"></select>
+        </div>
+
+        <div id="errorBox" class="error-text hidden">
+          กรุณาเลือกข้อมูลให้ครบทุกช่องหลัก ก่อนกด “ตกลง” เพื่อไปยังเมนู 2
+        </div>
+
+        <div class="btn-row">
+          <button class="btn-primary" onclick="goToMenu2()">
+            ✅ ตกลง / Confirm
+          </button>
+          <button class="btn-secondary" onclick="resetForm()">
+            ✨ ยกเลิก / Reset
+          </button>
+        </div>
+
+        <div class="btn-row" style="margin-top:10px;">
+          <a href="index.html" class="btn-ghost btn-link">
+            ⬅ กลับไปหน้าแรก / Back to Home
+          </a>
+          <a href="fa-lg-fieldwork.html" class="btn-ghost btn-link">
+            📋 กลับไปหน้า ขั้นตอนปฏิบัติงานตรวจสอบ / Fieldwork Steps
+          </a>
+        </div>
+
+      </section>
+
+      <!-- เมนู 2: เลือกแบบ อปท. 8.12.x -->
+      <section class="card hidden" id="menu2-card">
+        <div class="badge">เมนู 2 · เลือกแบบฟอร์ม / Select 8.12 Forms</div>
+
+        <div class="menu2-header">
+          <div>
+            <h2>เลือกแบบฟอร์ม อปท. 8.12</h2>
+            <div class="subtitle">
+              เปิดแบบฟอร์ม 8.12, 8.12.1, 8.12.1.1, 8.12.1.2, 8.12.2 ในแท็บใหม่ | Each form opens in new file
+            </div>
+          </div>
+        </div>
+
+        <div class="selected-summary" id="selectedSummary">
+          <!-- จะถูกเติมด้วย JS หลังจากกด “ตกลง” -->
+        </div>
+
+        <div class="section-title">กลุ่มแบบฟอร์มหลัก 8.12 | Core 8.12 Forms</div>
+        <div class="form-grid">
+          <!-- 8.12 -->
+          <a href="fa-lg-form-8-12.html" target="_blank" class="btn-link form-btn form-btn-main">
+            <span class="code">8.12</span>
+            <span class="label">
+              แบบ อปท. 8.12
+              <span class="en">Main Form – LG 8.12</span>
+            </span>
+            <span>🡕</span>
+          </a>
+
+          <!-- 8.12.1 -->
+          <a href="fa-lg-form-8-12-1.html" target="_blank" class="btn-link form-btn">
+            <span class="code">8.12.1</span>
+            <span class="label">
+              แบบ อปท. 8.12.1
+              <span class="en">Sub-Form 8.12.1</span>
+            </span>
+            <span>🡕</span>
+          </a>
+
+          <!-- 8.12.1.1 -->
+          <a href="fa-lg-form-8-12-1-1.html" target="_blank" class="btn-link form-btn">
+            <span class="code">8.12.1.1</span>
+            <span class="label">
+              แบบ อปท. 8.12.1.1
+              <span class="en">Detail Form 8.12.1.1</span>
+            </span>
+            <span>🡕</span>
+          </a>
+
+          <!-- 8.12.1.2 -->
+          <a href="fa-lg-form-8-12-1-2.html" target="_blank" class="btn-link form-btn">
+            <span class="code">8.12.1.2</span>
+            <span class="label">
+              แบบ อปท. 8.12.1.2
+              <span class="en">Detail Form 8.12.1.2</span>
+            </span>
+            <span>🡕</span>
+          </a>
+
+          <!-- 8.12.2 -->
+          <a href="fa-lg-form-8-12-2.html" target="_blank" class="btn-link form-btn">
+            <span class="code">8.12.2</span>
+            <span class="label">
+              แบบ อปท. 8.12.2
+              <span class="en">Sub-Form 8.12.2</span>
+            </span>
+            <span>🡕</span>
+          </a>
+        </div>
+
+        <div class="section-title">เพิ่มแบบ อปท. (Excel) | Add Custom Excel Template</div>
+        <div class="form-grid">
+          <!-- ปุ่มเปิด Excel (ให้คุณแก้ href เป็นไฟล์จริงภายหลัง) -->
+          <a href="fa-lg-form-8-12-template.xlsx" class="btn-link form-btn btn-secondary" download>
+            <span class="code">+ Excel</span>
+            <span class="label">
+              เพิ่มแบบ อปท. (ไฟล์ Excel)
+              <span class="en">Open / Create Excel-based 8.12 Template</span>
+            </span>
+            <span>📊</span>
+          </a>
+        </div>
+
+        <div class="menu2-footer">
+          <div class="status-pill">
+            🔗
+            <span>เมื่อออกแบบไฟล์ html ของแต่ละแบบ (8.12, 8.12.1, 8.12.1.1, 8.12.1.2, 8.12.2) แล้ว ให้ใช้ชื่อไฟล์ตามลิงก์ด้านบน เพื่อให้เมนูนี้เชื่อมต่อได้ทันที</span>
+          </div>
+
+          <div class="btn-row" style="margin-top:10px;">
+            <button class="btn-secondary" onclick="backToMenu1()">
+              ⬅ กลับไปเมนู 1 / Back to Menu 1
+            </button>
+            <a href="index.html" class="btn-ghost btn-link">
+              ⬅ กลับไปหน้าแรก / Back to Home
+            </a>
+            <a href="fa-lg-fieldwork.html" class="btn-ghost btn-link">
+              📋 กลับไปหน้า ขั้นตอนปฏิบัติงานตรวจสอบ / Fieldwork Steps
+            </a>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    // ตั้งค่าปีงบประมาณปัจจุบัน / ปีก่อน
+    (function initFiscalYears(){
+      const now = new Date();
+      const yearAD = now.getFullYear();
+      const yearBE = yearAD + 543;
+
+      const fyCurrent = document.getElementById('fiscalYearCurrent');
+      const fyPrev = document.getElementById('fiscalYearPrev');
+
+      // ใส่ 5 ปี ย้อนหลัง – เผื่อใช้เลือกย้อนหลัง
+      for(let i = 0; i < 5; i++){
+        const y = yearBE - i;
+        const opt1 = document.createElement('option');
+        opt1.value = y;
+        opt1.textContent = y;
+        fyCurrent.appendChild(opt1.cloneNode(true));
+
+        const opt2 = document.createElement('option');
+        opt2.value = y;
+        opt2.textContent = y;
+        fyPrev.appendChild(opt2);
+      }
+
+      // default: ปีปัจจุบัน และปีก่อนหน้า
+      fyCurrent.value = yearBE;
+      fyPrev.value = yearBE - 1;
+    })();
+
+    function goToMenu2(){
+      const entityName = document.getElementById('entityName').value.trim();
+      const entityType = document.getElementById('entityType').value.trim();
+      const province = document.getElementById('province').value.trim();
+      const district = document.getElementById('district').value.trim();
+      const fyCurrent = document.getElementById('fiscalYearCurrent').value.trim();
+      const fyPrev = document.getElementById('fiscalYearPrev').value.trim();
+      const errorBox = document.getElementById('errorBox');
+
+      if(!entityName || !entityType || !province || !district || !fyCurrent || !fyPrev){
+        errorBox.classList.remove('hidden');
+        return;
+      }
+      errorBox.classList.add('hidden');
+
+      // แสดงสรุปตัวกรองด้านบนเมนู 2
+      const summary = document.getElementById('selectedSummary');
+      summary.innerHTML =
+        'หน่วยรับตรวจ: <strong>' + entityName + '</strong> (' + entityType + ')' +
+        '<br>พื้นที่: <strong>อำเภอ ' + district + ' จังหวัด ' + province + '</strong>' +
+        '<br>ปีงบประมาณ: <strong>' + fyPrev + '</strong> – <strong>' + fyCurrent + '</strong>';
+
+      document.getElementById('menu1-card').classList.add('hidden');
+      document.getElementById('menu2-card').classList.remove('hidden');
+
+      // เลื่อนขึ้นบนสุด เพื่อไม่ให้ผู้ใช้ต้องเลื่อนหาเมนู 2
+      window.scrollTo({top:0, behavior:'smooth'});
+    }
+
+    function resetForm(){
+      document.getElementById('entityName').value = '';
+      document.getElementById('entityType').value = '';
+      document.getElementById('province').value = '';
+      document.getElementById('district').value = '';
+
+      const fyCurrent = document.getElementById('fiscalYearCurrent');
+      const fyPrev = document.getElementById('fiscalYearPrev');
+      if(fyCurrent.options.length > 0){
+        fyCurrent.selectedIndex = 0;
+      }
+      if(fyPrev.options.length > 0){
+        fyPrev.selectedIndex = 1 >= 0 ? 1 : 0;
+      }
+
+      document.getElementById('errorBox').classList.add('hidden');
+    }
+
+    function backToMenu1(){
+      document.getElementById('menu2-card').classList.add('hidden');
+      document.getElementById('menu1-card').classList.remove('hidden');
+      window.scrollTo({top:0, behavior:'smooth'});
+    }
+  </script>
+</body>
+</html>
