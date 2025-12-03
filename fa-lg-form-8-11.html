@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>เมนูแบบ อปท.8.11 – เงินให้กู้ยืม | FA – LG</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    :root{
+      --bg:#060818;
+      --bg-soft:#0b1024;
+      --card:#11152b;
+      --border:#262b46;
+      --primary:#0d47a1;
+      --primary-2:#42a5f5;
+      --accent:#ffd54f;
+      --text:#f5f7ff;
+      --muted:#a3acc7;
+      --shadow-soft:0 10px 28px rgba(0,0,0,0.6);
+      --radius-lg:18px;
+    }
+
+    *{box-sizing:border-box;}
+
+    body{
+      margin:0;
+      font-family:"Segoe UI", Tahoma, sans-serif;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(123,30,60,0.32) 0, transparent 55%),
+        radial-gradient(circle at 90% 100%, rgba(66,165,245,0.28) 0, transparent 55%),
+        var(--bg);
+      color:var(--text);
+    }
+
+    header{
+      padding:14px 14px 10px;
+      background:linear-gradient(120deg,#7b1e3c,#0d47a1,#42a5f5);
+      border-bottom:1px solid rgba(255,255,255,0.18);
+      box-shadow:0 8px 26px rgba(0,0,0,0.55);
+      position:sticky;
+      top:0;
+      z-index:20;
+    }
+
+    header h1{
+      margin:0;
+      font-size:20px;
+      font-weight:800;
+      letter-spacing:0.04em;
+    }
+    header p{
+      margin:4px 0 0;
+      font-size:12px;
+      opacity:0.9;
+    }
+
+    .header-actions{
+      margin-top:8px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+    }
+
+    main{
+      max-width:1100px;
+      margin:18px auto 28px;
+      padding:0 10px 20px;
+    }
+
+    .card{
+      background:linear-gradient(145deg,rgba(17,21,43,0.97),rgba(6,8,24,0.98));
+      border-radius:var(--radius-lg);
+      border:1px solid var(--border);
+      box-shadow:var(--shadow-soft);
+      padding:16px 14px 18px;
+      margin-bottom:16px;
+    }
+
+    .card-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:8px;
+      margin-bottom:10px;
+    }
+
+    .card-title{
+      font-size:15px;
+      font-weight:700;
+    }
+    .card-sub{
+      font-size:11px;
+      color:var(--muted);
+      margin-top:2px;
+    }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:2px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.2);
+      background:rgba(13,71,161,0.55);
+      font-size:11px;
+    }
+
+    .btn{
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.18);
+      padding:6px 10px;
+      font-size:11px;
+      background:rgba(13,71,161,0.9);
+      color:#fff;
+      display:inline-flex;
+      align-items:center;
+      gap:5px;
+      cursor:pointer;
+      white-space:nowrap;
+      transition:background 0.15s,transform 0.08s,box-shadow 0.15s;
+    }
+    .btn:hover{
+      background:rgba(66,165,245,0.96);
+      box-shadow:0 0 0 1px rgba(66,165,245,0.65);
+      transform:translateY(-1px);
+    }
+    .btn:active{
+      transform:translateY(0);
+      box-shadow:none;
+    }
+    .btn-ghost{
+      background:transparent;
+      border-style:dashed;
+      border-color:rgba(255,255,255,0.45);
+    }
+    .btn-danger{
+      background:rgba(239,83,80,0.9);
+      border-color:rgba(239,83,80,0.95);
+    }
+    .btn[disabled]{
+      opacity:.4;
+      cursor:not-allowed;
+      transform:none;
+      box-shadow:none;
+    }
+
+    .btn span.icon{font-size:13px;}
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+      gap:10px 12px;
+      margin-top:8px;
+    }
+
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap:3px;
+      font-size:12px;
+    }
+    .field label{
+      font-size:11px;
+      color:var(--muted);
+    }
+
+    select,
+    input[type="text"]{
+      background:#050716;
+      border:1px solid var(--border);
+      border-radius:10px;
+      padding:5px 8px;
+      color:var(--text);
+      font-size:12px;
+      outline:none;
+    }
+    select:focus,
+    input:focus{
+      border-color:var(--primary-2);
+      box-shadow:0 0 0 1px rgba(66,165,245,0.4);
+    }
+
+    .card-footer{
+      margin-top:10px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:8px;
+      font-size:11px;
+      color:var(--muted);
+      flex-wrap:wrap;
+    }
+
+    .status-pill{
+      padding:3px 8px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.2);
+      font-size:11px;
+    }
+
+    .menu-buttons{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+      gap:10px;
+      margin-top:8px;
+    }
+
+    .menu-btn{
+      display:flex;
+      flex-direction:column;
+      align-items:flex-start;
+      gap:4px;
+      padding:10px 10px 9px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,0.16);
+      background:linear-gradient(145deg,rgba(11,16,41,0.98),rgba(7,10,30,0.98));
+      cursor:pointer;
+      font-size:12px;
+      transition:transform 0.08s,box-shadow 0.15s,border-color 0.15s;
+    }
+    .menu-btn:hover{
+      transform:translateY(-1px);
+      box-shadow:0 0 0 1px rgba(66,165,245,0.6);
+      border-color:rgba(66,165,245,0.9);
+    }
+    .menu-btn-title{
+      font-weight:600;
+    }
+    .menu-btn-sub{
+      font-size:11px;
+      color:var(--muted);
+    }
+    .menu-tag{
+      margin-top:4px;
+      font-size:10px;
+      padding:2px 6px;
+      border-radius:999px;
+      background:rgba(66,165,245,0.16);
+      border:1px solid rgba(66,165,245,0.5);
+    }
+
+    .toast{
+      position:fixed;
+      right:12px;
+      bottom:12px;
+      padding:8px 10px;
+      border-radius:10px;
+      font-size:11px;
+      background:#11152b;
+      border:1px solid var(--border);
+      color:var(--text);
+      box-shadow:0 8px 24px rgba(0,0,0,0.6);
+      opacity:0;
+      transform:translateY(10px);
+      pointer-events:none;
+      transition:opacity .2s,transform .2s;
+      z-index:100;
+    }
+    .toast.show{
+      opacity:1;
+      transform:translateY(0);
+      pointer-events:auto;
+    }
+
+    @media(max-width:768px){
+      header h1{font-size:18px;}
+      .card{padding:13px 10px 14px;}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>เมนูแบบ อปท.8.11 – เงินให้กู้ยืม</h1>
+    <p>เลือกหน่วยรับตรวจ / ปีงบประมาณ แล้วจึงเลือกแบบ อปท. 8.11 – 8.11.2</p>
+    <div class="header-actions">
+      <button class="btn btn-ghost" onclick="goHome()"><span class="icon">🏠</span> กลับหน้าแรกระบบ FA</button>
+      <button class="btn btn-ghost" onclick="goFieldwork()"><span class="icon">🧭</span> กลับหน้า ขั้นตอนปฏิบัติการตรวจสอบ</button>
+      <button class="btn btn-ghost" onclick="history.back()"><span class="icon">↩</span> ย้อนกลับ</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- เมนู 1 : เลือกหน่วยรับตรวจ / ปี -->
+    <section class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">เมนูที่ 1 – เลือกหน่วยรับตรวจและปีงบประมาณ</div>
+          <div class="card-sub">ข้อมูลที่เลือกจะถูกส่งต่อไปทุกแบบ อปท.8.11 – 8.11.2</div>
+        </div>
+        <div class="badge" id="statusBadge">สถานะ: ยังไม่ได้เลือก</div>
+      </div>
+
+      <div class="grid">
+        <div class="field">
+          <label>1.1 หน่วยรับตรวจ / Entity</label>
+          <input type="text" id="entityName" placeholder="เช่น เทศบาลเมืองศรีสะเกษ">
+        </div>
+        <div class="field">
+          <label>1.2 ประเภท / Type</label>
+          <select id="auditType">
+            <option value="">เลือก...</option>
+            <option>เทศบาล</option>
+            <option>อบต.</option>
+            <option>องค์การบริหารส่วนจังหวัด</option>
+            <option>หน่วยงานอื่น</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>1.3 อำเภอ / District</label>
+          <input type="text" id="district" placeholder="เช่น เมืองศรีสะเกษ">
+        </div>
+        <div class="field">
+          <label>1.4 จังหวัด / Province</label>
+          <input type="text" id="province" placeholder="เช่น ศรีสะเกษ">
+        </div>
+        <div class="field">
+          <label>1.5 ปีงบประมาณปัจจุบัน / Current FY</label>
+          <select id="yearCurrent"></select>
+        </div>
+        <div class="field">
+          <label>1.6 ปีงบประมาณปีก่อน / Prior FY</label>
+          <select id="yearPrior"></select>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <button class="btn" onclick="confirmSelection()"><span class="icon">✅</span> ตกลง</button>
+          <button class="btn btn-ghost" onclick="clearSelection()"><span class="icon">✖</span> ยกเลิก / ล้างข้อมูล</button>
+        </div>
+        <div class="status-pill" id="summaryText">
+          ยังไม่ได้บันทึกการเลือก
+        </div>
+      </div>
+    </section>
+
+    <!-- เมนู 2 : เลือกแบบ อปท. -->
+    <section class="card" id="menu2">
+      <div class="card-header">
+        <div>
+          <div class="card-title">เมนูที่ 2 – เลือกแบบ อปท. 8.11 – 8.11.2</div>
+          <div class="card-sub">
+            ต้องกด “ตกลง” จากเมนูที่ 1 ก่อน ระบบจึงจะส่งค่าหน่วยรับตรวจ/ปีงบไปให้แบบต่าง ๆ
+          </div>
+        </div>
+        <div>
+          <button class="btn btn-ghost" onclick="goMenu1()"><span class="icon">⬅</span> กลับไปเมนู 1</button>
+        </div>
+      </div>
+
+      <div class="menu-buttons">
+        <button class="menu-btn" onclick="openForm('fa-lg-form-8-11.html')">
+          <div class="menu-btn-title">แบบ อปท.8.11</div>
+          <div class="menu-btn-sub">กระดาษทำการวิเคราะห์ยอดเงินให้กู้ยืมรวม</div>
+          <div class="menu-tag">เปิดไฟล์ใหม่</div>
+        </button>
+
+        <button class="menu-btn" onclick="openForm('fa-lg-form-8-11-1.html')">
+          <div class="menu-btn-title">แบบ อปท.8.11.1</div>
+          <div class="menu-btn-sub">รายละเอียดเงินให้กู้ยืมตามบัญชีลูกหนี้</div>
+          <div class="menu-tag">เปิดไฟล์ใหม่</div>
+        </button>
+
+        <button class="menu-btn" onclick="openForm('fa-lg-form-8-11-1-1.html')">
+          <div class="menu-btn-title">แบบ อปท.8.11.1.1</div>
+          <div class="menu-btn-sub">รายละเอียดเงินให้กู้ยืมระดับหน่วยงาน/โครงการ</div>
+          <div class="menu-tag">เปิดไฟล์ใหม่</div>
+        </button>
+
+        <button class="menu-btn" onclick="openForm('fa-lg-form-8-11-1-2.html')">
+          <div class="menu-btn-title">แบบ อปท.8.11.1.2</div>
+          <div class="menu-btn-sub">รายละเอียดเงินให้กู้ยืมย่อยเพิ่มเติม</div>
+          <div class="menu-tag">เปิดไฟล์ใหม่</div>
+        </button>
+
+        <button class="menu-btn" onclick="openForm('fa-lg-form-8-11-2.html')">
+          <div class="menu-btn-title">แบบ อปท.8.11.2</div>
+          <div class="menu-btn-sub">สรุปยอดเงินให้กู้ยืมที่ยืนยันแล้ว</div>
+          <div class="menu-tag">เปิดไฟล์ใหม่</div>
+        </button>
+      </div>
+
+      <div class="card-footer">
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <button class="btn" onclick="openExcelTemplate()">
+            <span class="icon">📊</span> 2.2 เพิ่มแบบ อปท. (Excel)
+          </button>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <button class="btn btn-ghost" onclick="goMenu1()"><span class="icon">⬅</span> กลับเมนู 1</button>
+          <button class="btn btn-ghost" onclick="goHome()"><span class="icon">🏠</span> กลับหน้าแรก</button>
+          <button class="btn btn-ghost" onclick="goFieldwork()"><span class="icon">🧭</span> ไปหน้า ขั้นตอนปฏิบัติการตรวจสอบ</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const STORAGE_KEY = "fa-lg-8-11-context";
+
+    function initYears(){
+      const curSel = document.getElementById("yearCurrent");
+      const priSel = document.getElementById("yearPrior");
+      for(let y=2565; y<=2582; y++){
+        const o1 = document.createElement("option");
+        o1.value = y; o1.textContent = y;
+        const o2 = o1.cloneNode(true);
+        curSel.appendChild(o1);
+        priSel.appendChild(o2);
+      }
+    }
+
+    function showToast(msg){
+      const t = document.getElementById("toast");
+      t.textContent = msg;
+      t.classList.add("show");
+      setTimeout(()=>t.classList.remove("show"),2000);
+    }
+
+    function confirmSelection(){
+      const entity   = document.getElementById("entityName").value.trim();
+      const type     = document.getElementById("auditType").value;
+      const district = document.getElementById("district").value.trim();
+      const province = document.getElementById("province").value.trim();
+      const yearCur  = document.getElementById("yearCurrent").value;
+      const yearPri  = document.getElementById("yearPrior").value;
+
+      if(!entity || !yearCur || !yearPri){
+        showToast("กรุณาใส่ หน่วยรับตรวจ + ปีงบประมาณปัจจุบัน/ปีก่อน ให้ครบ");
+        return;
+      }
+
+      const ctx = {entity,type,district,province,yearCur,yearPri};
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(ctx));
+
+      const summary = `${entity} (${type || "ไม่ระบุประเภท"}) – ปีงบ ${yearCur} เทียบ ${yearPri} | อำเภอ ${district || "-"} จังหวัด ${province || "-"}`;
+      document.getElementById("summaryText").textContent = summary;
+      document.getElementById("statusBadge").textContent = "สถานะ: เลือกหน่วยรับตรวจแล้ว";
+      showToast("บันทึกการเลือกหน่วยรับตรวจเรียบร้อย – ค่านี้จะถูกใช้ในทุกแบบ 8.11");
+
+    }
+
+    function clearSelection(){
+      ["entityName","district","province"].forEach(id=>document.getElementById(id).value="");
+      document.getElementById("auditType").value="";
+      document.getElementById("yearCurrent").value="";
+      document.getElementById("yearPrior").value="";
+      document.getElementById("summaryText").textContent="ยังไม่ได้บันทึกการเลือก";
+      document.getElementById("statusBadge").textContent="สถานะ: ยังไม่ได้เลือก";
+      localStorage.removeItem(STORAGE_KEY);
+      showToast("ล้างข้อมูลเมนู 1 แล้ว");
+    }
+
+    function loadContextFromStorage(){
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw) return;
+      try{
+        const c = JSON.parse(raw);
+        document.getElementById("entityName").value = c.entity || "";
+        document.getElementById("auditType").value  = c.type || "";
+        document.getElementById("district").value   = c.district || "";
+        document.getElementById("province").value   = c.province || "";
+        if(c.yearCur) document.getElementById("yearCurrent").value = c.yearCur;
+        if(c.yearPri) document.getElementById("yearPrior").value   = c.yearPri;
+        const summary = `${c.entity || "-"} (${c.type || "ไม่ระบุ"}) – ปีงบ ${c.yearCur || "-"} เทียบ ${c.yearPri || "-"}`;
+        document.getElementById("summaryText").textContent = summary;
+        document.getElementById("statusBadge").textContent = "สถานะ: เลือกหน่วยรับตรวจแล้ว";
+      }catch(e){
+        console.error(e);
+      }
+    }
+
+    function openForm(path){
+      // เปิดไฟล์ใหม่ พร้อมให้แบบฟอร์มดึง context จาก localStorage เดียวกันนี้
+      window.open(path,"_blank");
+    }
+
+    function openExcelTemplate(){
+      // แก้ path เป็นไฟล์ .xlsx ที่คุณเตรียมไว้ใน GitHub
+      window.location.href = "fa-lg-form-8-11-template.xlsx";
+    }
+
+    function goMenu1(){
+      window.scrollTo({top:0,behavior:"smooth"});
+    }
+
+    function goHome(){
+      // ปรับ path ตามระบบจริง
+      window.location.href = "index.html";
+    }
+
+    function goFieldwork(){
+      // ปรับ path ตามไฟล์ ขั้นตอนปฏิบัติการตรวจสอบ ของคุณ
+      window.location.href = "fa-lg-fieldwork.html";
+    }
+
+    document.addEventListener("DOMContentLoaded", ()=>{
+      initYears();
+      loadContextFromStorage();
+    });
+  </script>
+</body>
+</html>
