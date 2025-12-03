@@ -187,6 +187,8 @@
     text-decoration:none;
     border:1px solid rgba(148,163,184,.55);
     background:rgba(15,23,42,.95);
+    margin-right:6px;
+    margin-top:4px;
   }
 
   table{
@@ -265,6 +267,12 @@
       </span>
       <span class="chip">
         🔎 ผลการค้นหา: <strong id="filteredRecords">0</strong> รายการ
+      </span>
+      <span class="chip">
+        💾 ปริมาณข้อมูล: <strong id="storageSize">0 KB</strong>
+      </span>
+      <span class="chip">
+        🛡 สถานะสำรอง: <strong id="backupStatus">ไม่มีสำรอง</strong>
       </span>
     </div>
   </div>
@@ -347,12 +355,37 @@
     </div>
   </div>
 
+  <!-- ระบบสำรองและป้องกันข้อมูล -->
+  <div class="card">
+    <div class="card-inner">
+      <h2>ระบบสำรองและป้องกันข้อมูล
+        <span class="en">Backup & Data Protection</span>
+      </h2>
+      <p class="desc">
+        สร้างสำเนาข้อมูลชุดเดียวกันเก็บไว้ใน <code>localStorage["fa-db-data-gov-backup"]</code> และบันทึกเวลา/จำนวนรายการใน <code>fa-db-data-gov-meta</code><br>
+        การสำรองและกู้คืนสามารถทำได้เฉพาะผู้ดูแลระบบ (admin) เท่านั้น ข้อมูลในฐานหลักจะไม่ถูกลบ จนกว่าจะมีการแก้ไขหรือนำเข้าใหม่โดย admin.
+      </p>
+
+      <div id="backupAdminBox" style="display:none;">
+        <div class="btn-row">
+          <button type="button" class="btn-secondary" id="btnBackup">💾 สำรองข้อมูล (Admin)</button>
+          <button type="button" class="btn-danger" id="btnRestore">♻ กู้คืนจากข้อมูลสำรอง</button>
+        </div>
+        <div class="stat-text" id="backupInfo">กำลังโหลดสถานะสำรอง...</div>
+      </div>
+
+      <div id="backupNonAdminBox" class="stat-text" style="display:none;">
+        การสำรองและกู้คืนข้อมูลสามารถทำได้โดยผู้ดูแลระบบเท่านั้น หากต้องการปรับปรุงฐานข้อมูล โปรดติดต่อผู้ดูแลระบบ.
+      </div>
+    </div>
+  </div>
+
   <!-- ปุ่มกลับ -->
   <div style="margin-top:10px;">
     <a href="fa-db-local.html" class="nav">
       <span>⬅</span> กลับเมนูฐานข้อมูล อปท.
     </a>
-    <a href="fa-database-menu.html" class="nav" style="margin-left:6px;">
+    <a href="fa-database-menu.html" class="nav">
       <span>🏠</span> กลับเมนูฐานข้อมูลหลัก
     </a>
   </div>
@@ -361,9 +394,13 @@
 
 <script>
 const STORAGE_KEY = "fa-db-data-gov";
+const BACKUP_KEY  = "fa-db-data-gov-backup";
+const META_KEY    = "fa-db-data-gov-meta";
+const SUPER_ADMINS = ["apipoooo@gmail.com"]; // admin ที่อนุญาตให้สำรอง/กู้คืน
 
 let db = [];
 let currentFiltered = [];
+let isAdmin = false;
 
 /* ===== CLOCK ===== */
 function updateClock(){
@@ -381,21 +418,44 @@ function updateClock(){
   el.textContent = now.toLocaleString("th-TH", opts);
 }
 
-/* ===== SESSION DISPLAY ===== */
+/* ===== SESSION & ADMIN ===== */
+function updateAdminUI(){
+  const boxAdmin = document.getElementById("backupAdminBox");
+  const boxNon   = document.getElementById("backupNonAdminBox");
+  if(isAdmin){
+    boxAdmin.style.display = "block";
+    boxNon.style.display   = "none";
+  }else{
+    boxAdmin.style.display = "none";
+    boxNon.style.display   = "block";
+  }
+}
+
 function displaySession(){
   const el = document.getElementById("userEmail");
   try{
     const raw = localStorage.getItem("fas-session");
-    if(!raw){ el.textContent = "-"; return; }
-    const s = JSON.parse(raw);
-    if(s.expiresAt && Date.now() > s.expiresAt){
-      el.textContent = "-";
+    if(!raw){
+      el.textContent="-";
+      isAdmin=false;
+      updateAdminUI();
       return;
     }
-    el.textContent = s.email || "-";
+    const s = JSON.parse(raw);
+    if(s.expiresAt && Date.now() > s.expiresAt){
+      el.textContent="-";
+      isAdmin=false;
+      updateAdminUI();
+      return;
+    }
+    const email = (s.email || "").toString();
+    el.textContent = email || "-";
+    isAdmin = !!email && SUPER_ADMINS.includes(email.toLowerCase());
   }catch{
-    el.textContent = "-";
+    el.textContent="-";
+    isAdmin=false;
   }
+  updateAdminUI();
 }
 
 /* ===== PROVINCES (76 จังหวัด) ===== */
@@ -427,18 +487,100 @@ function populateProvinceSelect(){
   });
 }
 
+/* ===== STORAGE STATS ===== */
+function updateStorageStats(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY) || "[]";
+    const bytes = new Blob([raw]).size;
+    let text;
+    if(bytes < 1024){
+      text = bytes + " B";
+    }else if(bytes < 1024*1024){
+      text = (bytes/1024).toFixed(1) + " KB";
+    }else{
+      text = (bytes/(1024*1024)).toFixed(2) + " MB";
+    }
+    document.getElementById("storageSize").textContent = text;
+  }catch{
+    document.getElementById("storageSize").textContent = "ไม่ทราบขนาด";
+  }
+}
+
+/* ===== BACKUP META ===== */
+function loadMetaObj(){
+  let meta = {};
+  try{
+    meta = JSON.parse(localStorage.getItem(META_KEY) || "{}");
+    if(typeof meta !== "object" || meta === null) meta = {};
+  }catch{
+    meta = {};
+  }
+  return meta;
+}
+
+function updateBackupInfo(meta){
+  const infoEl = document.getElementById("backupInfo");
+  const statusEl = document.getElementById("backupStatus");
+  if(!meta || !meta.backupAt){
+    if(infoEl) infoEl.textContent = "ยังไม่เคยสำรองข้อมูล";
+    if(statusEl) statusEl.textContent = "ไม่มีสำรอง";
+    return;
+  }
+  const d = new Date(meta.backupAt);
+  const txt = `สำรองล่าสุดเมื่อ: ${d.toLocaleString("th-TH")} (จำนวน ${meta.count || 0} รายการ)`;
+  if(infoEl) infoEl.textContent = txt;
+  if(statusEl) statusEl.textContent = "มีสำรองล่าสุด";
+}
+
+/* ===== BACKUP / RESTORE (ADMIN ONLY) ===== */
+function backupNow(){
+  if(!isAdmin){
+    alert("อนุญาตเฉพาะผู้ดูแลระบบ (admin) ในการสำรองข้อมูล");
+    return;
+  }
+  const raw = localStorage.getItem(STORAGE_KEY) || "[]";
+  localStorage.setItem(BACKUP_KEY, raw);
+  const meta = {
+    backupAt: new Date().toISOString(),
+    count: db.length || 0
+  };
+  localStorage.setItem(META_KEY, JSON.stringify(meta));
+  updateBackupInfo(meta);
+  alert("สำรองข้อมูลฐานกลางเรียบร้อยแล้ว");
+}
+
+function restoreBackup(){
+  if(!isAdmin){
+    alert("อนุญาตเฉพาะผู้ดูแลระบบ (admin) ในการกู้คืนข้อมูล");
+    return;
+  }
+  const raw = localStorage.getItem(BACKUP_KEY);
+  if(!raw){
+    alert("ยังไม่มีข้อมูลสำรองให้กู้คืน");
+    return;
+  }
+  if(!confirm("ต้องการกู้คืนข้อมูลจากสำรอง ทับข้อมูลในฐานกลางปัจจุบันหรือไม่?")) return;
+
+  localStorage.setItem(STORAGE_KEY, raw);
+  loadDB();
+  const meta = loadMetaObj();
+  updateBackupInfo(meta);
+  alert("กู้คืนข้อมูลจากสำรองเรียบร้อยแล้ว");
+}
+
 /* ===== DB LOAD ===== */
 function loadDB(){
   try{
     db = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+    if(!Array.isArray(db)) db = [];
   }catch(e){
     db = [];
   }
   document.getElementById("totalRecords").textContent = db.length;
-  // default: show nothing until search → or show first N? เลือกแบบรอคำสั่ง
   currentFiltered = [];
   renderTable();
   document.getElementById("filteredRecords").textContent = 0;
+  updateStorageStats();
 }
 
 /* ===== RENDER TABLE ===== */
@@ -453,7 +595,7 @@ function renderTable(){
     return;
   }
 
-  const maxRows = 500; // กันหน้าแน่นเกิน
+  const maxRows = 500;
   const toShow = currentFiltered.slice(0, maxRows);
 
   toShow.forEach((r,idx)=>{
@@ -592,10 +734,14 @@ document.getElementById("btnSearch").addEventListener("click", ()=>doSearch(fals
 document.getElementById("btnShowAll").addEventListener("click", ()=>doSearch(true));
 document.getElementById("btnClear").addEventListener("click", clearSearch);
 document.getElementById("btnExportCSV").addEventListener("click", exportCSV);
+document.getElementById("btnBackup").addEventListener("click", backupNow);
+document.getElementById("btnRestore").addEventListener("click", restoreBackup);
 
 displaySession();
 populateProvinceSelect();
 loadDB();
+const metaInit = loadMetaObj();
+updateBackupInfo(metaInit);
 updateClock();
 setInterval(updateClock,1000);
 </script>
