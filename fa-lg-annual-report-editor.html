@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>FA – Annual Report Editor | รายงานการตรวจสอบการเงิน อปท.</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    :root{
+      --bg:#060818;
+      --bg-soft:#0b1024;
+      --card:#11152b;
+      --border:#262b46;
+      --accent:#42a5f5;
+      --accent2:#26c6da;
+      --danger:#ef5350;
+      --success:#66bb6a;
+      --warning:#ffb300;
+      --text:#f5f7ff;
+      --muted:#a3acc7;
+      --chip-bg:rgba(66,165,245,0.12);
+      --chip-border:rgba(66,165,245,0.55);
+      --radius-lg:16px;
+      --shadow-soft:0 12px 30px rgba(0,0,0,0.55);
+    }
+
+    *{box-sizing:border-box;}
+
+    body{
+      margin:0;
+      font-family:"Segoe UI","Tahoma",sans-serif;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(123,30,60,0.32) 0, transparent 55%),
+        radial-gradient(circle at 90% 100%, rgba(66,165,245,0.32) 0, transparent 55%),
+        var(--bg);
+      color:var(--text);
+    }
+
+    a{color:var(--accent);text-decoration:none;}
+    a:hover{text-decoration:underline;}
+
+    header{
+      padding:18px 20px 12px;
+      background:linear-gradient(120deg,#7b1e3c,#0d47a1,#42a5f5);
+      box-shadow:0 8px 25px rgba(0,0,0,0.55);
+      position:sticky;
+      top:0;
+      z-index:20;
+    }
+    header h1{
+      margin:0;
+      font-size:24px;
+      font-weight:800;
+    }
+    header .subtitle{
+      margin-top:4px;
+      font-size:13px;
+      opacity:0.88;
+    }
+    header .meta{
+      margin-top:8px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      font-size:12px;
+    }
+    .meta span{
+      padding:4px 10px;
+      border-radius:999px;
+      background:rgba(0,0,0,0.22);
+      border:1px solid rgba(255,255,255,0.14);
+    }
+    .top-actions{
+      margin-top:10px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+    .btn-top{
+      padding:6px 12px;
+      border-radius:999px;
+      border:none;
+      font-size:13px;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      background:rgba(0,0,0,0.35);
+      color:#fff;
+      backdrop-filter:blur(10px);
+    }
+    .btn-top:hover{
+      background:rgba(0,0,0,0.6);
+    }
+
+    .layout{
+      display:grid;
+      grid-template-columns:280px minmax(0,1fr);
+      gap:16px;
+      padding:16px;
+    }
+
+    @media(max-width:960px){
+      .layout{
+        grid-template-columns:1fr;
+      }
+    }
+
+    /* Sidebar */
+    .side-card{
+      background:rgba(8,12,32,0.92);
+      border:1px solid var(--border);
+      border-radius:var(--radius-lg);
+      box-shadow:var(--shadow-soft);
+      padding:14px 14px 16px;
+      position:sticky;
+      top:120px;
+      max-height:calc(100vh - 140px);
+      overflow:auto;
+    }
+    .side-title{
+      font-size:14px;
+      font-weight:700;
+      margin-bottom:8px;
+    }
+    .nav-list{
+      list-style:none;
+      padding:0;
+      margin:0 0 12px;
+      font-size:13px;
+    }
+    .nav-list li{
+      margin-bottom:4px;
+    }
+    .nav-btn{
+      width:100%;
+      text-align:left;
+      padding:6px 10px;
+      border-radius:10px;
+      border:1px solid transparent;
+      background:transparent;
+      color:var(--muted);
+      font-size:13px;
+      cursor:pointer;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:6px;
+    }
+    .nav-btn span.badge{
+      font-size:11px;
+      padding:2px 6px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.16);
+      opacity:0.7;
+    }
+    .nav-btn.active{
+      background:rgba(66,165,245,0.18);
+      border-color:var(--accent);
+      color:var(--text);
+    }
+
+    .checklist{
+      margin-top:8px;
+      padding-top:8px;
+      border-top:1px dashed var(--border);
+      font-size:12px;
+    }
+    .check-row{
+      display:flex;
+      align-items:center;
+      gap:6px;
+      margin-bottom:4px;
+    }
+    .check-row input{
+      accent-color:var(--accent);
+    }
+    .check-status{
+      margin-top:8px;
+      font-size:12px;
+      padding:6px 8px;
+      border-radius:8px;
+      background:rgba(0,0,0,0.35);
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+    .check-status span.dot{
+      width:9px;
+      height:9px;
+      border-radius:50%;
+      background:var(--warning);
+    }
+    .check-status.complete span.dot{
+      background:var(--success);
+    }
+
+    .side-footer{
+      margin-top:10px;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+    .btn-small{
+      border:none;
+      border-radius:999px;
+      padding:6px 10px;
+      font-size:12px;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:5px;
+      background:var(--accent);
+      color:#fff;
+    }
+    .btn-small.secondary{
+      background:transparent;
+      border:1px dashed var(--border);
+      color:var(--muted);
+    }
+
+    /* Main */
+    .main{
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+    }
+
+    .section-card{
+      background:rgba(6,10,28,0.96);
+      border-radius:var(--radius-lg);
+      border:1px solid var(--border);
+      box-shadow:var(--shadow-soft);
+      padding:14px 16px 12px;
+      scroll-margin-top:110px;
+    }
+    .section-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:8px;
+      margin-bottom:8px;
+    }
+    .section-title{
+      font-size:15px;
+      font-weight:700;
+    }
+    .section-sub{
+      font-size:11px;
+      color:var(--muted);
+    }
+    .section-tools{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      justify-content:flex-end;
+    }
+    .btn-tool{
+      border:none;
+      border-radius:999px;
+      padding:4px 9px;
+      font-size:11px;
+      cursor:pointer;
+      background:rgba(8,15,48,0.85);
+      border:1px solid rgba(255,255,255,0.12);
+      color:var(--muted);
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+    }
+    .btn-tool:hover{
+      background:rgba(15,25,70,0.9);
+      color:var(--text);
+    }
+
+    .editor-wrapper{
+      margin-top:6px;
+      display:grid;
+      grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);
+      gap:10px;
+    }
+    @media(max-width:900px){
+      .editor-wrapper{
+        grid-template-columns:1fr;
+      }
+    }
+
+    .editor-box{
+      background:rgba(10,16,40,0.95);
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,0.08);
+      padding:8px;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+    .editor-label{
+      font-size:11px;
+      color:var(--muted);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+    .editor-input{
+      width:100%;
+      min-height:110px;
+      max-height:260px;
+      resize:vertical;
+      padding:8px;
+      font-family:inherit;
+      font-size:13px;
+      border-radius:8px;
+      border:1px solid rgba(255,255,255,0.12);
+      background:rgba(3,5,18,0.9);
+      color:var(--text);
+    }
+    .editor-input:focus{
+      outline:none;
+      border-color:var(--accent);
+      box-shadow:0 0 0 1px rgba(66,165,245,0.6);
+    }
+
+    .ai-note{
+      font-size:10px;
+      color:var(--muted);
+      opacity:0.85;
+    }
+
+    .attach-list{
+      list-style:none;
+      padding:0;
+      margin:4px 0 0;
+      font-size:11px;
+      max-height:120px;
+      overflow:auto;
+    }
+    .attach-list li{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:6px;
+      padding:3px 5px;
+      border-radius:7px;
+      background:rgba(255,255,255,0.02);
+      border:1px dashed rgba(255,255,255,0.08);
+    }
+    .attach-list button{
+      border:none;
+      background:transparent;
+      color:var(--muted);
+      cursor:pointer;
+      font-size:11px;
+    }
+
+    .file-input{
+      font-size:11px;
+      margin-top:4px;
+    }
+
+    .spell-status{
+      font-size:11px;
+      margin-top:4px;
+      padding:5px 7px;
+      border-radius:8px;
+      background:rgba(0,0,0,0.4);
+    }
+    .spell-status.ok{
+      border-left:3px solid var(--success);
+    }
+    .spell-status.warn{
+      border-left:3px solid var(--warning);
+    }
+
+    .section-footer{
+      margin-top:6px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      flex-wrap:wrap;
+      gap:6px;
+      font-size:10px;
+      color:var(--muted);
+    }
+
+    /* Global footer actions */
+    .global-actions{
+      background:rgba(5,9,26,0.98);
+      border-radius:var(--radius-lg);
+      border:1px solid var(--border);
+      box-shadow:var(--shadow-soft);
+      padding:10px 12px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:10px;
+    }
+    .global-actions-left{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      align-items:center;
+    }
+    .global-actions-right{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      align-items:center;
+    }
+    .btn-main{
+      border:none;
+      border-radius:999px;
+      padding:7px 14px;
+      font-size:13px;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      background:var(--accent);
+      color:#fff;
+    }
+    .btn-main.secondary{
+      background:transparent;
+      border:1px solid var(--border);
+      color:var(--muted);
+    }
+    .btn-main.danger{
+      background:var(--danger);
+    }
+    .btn-main:disabled{
+      opacity:0.45;
+      cursor:not-allowed;
+    }
+
+    /* Modal */
+    .modal-backdrop{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0.65);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:40;
+    }
+    .modal{
+      background:var(--card);
+      border-radius:18px;
+      border:1px solid var(--border);
+      padding:14px 16px;
+      max-width:480px;
+      width:100%;
+      box-shadow:var(--shadow-soft);
+    }
+    .modal-title{
+      font-size:15px;
+      font-weight:700;
+      margin-bottom:4px;
+    }
+    .modal-body{
+      font-size:12px;
+      color:var(--muted);
+      margin-bottom:10px;
+    }
+    .modal-body ul{
+      margin:6px 0 0 18px;
+      padding:0;
+    }
+    .modal-footer{
+      display:flex;
+      justify-content:flex-end;
+      gap:6px;
+    }
+
+    /* Checklist mini chip */
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+      padding:2px 7px;
+      font-size:10px;
+      border-radius:999px;
+      background:var(--chip-bg);
+      border:1px solid var(--chip-border);
+      color:var(--muted);
+    }
+
+    /* Print */
+    @media print{
+      header,.layout .side-card,.global-actions,.btn-main,.btn-tool,.btn-top,.section-tools,.section-footer{
+        display:none !important;
+      }
+      body{
+        background:#ffffff;
+        color:#000000;
+      }
+      .layout{
+        padding:0;
+        grid-template-columns:1fr;
+      }
+      .section-card{
+        box-shadow:none;
+        border:1px solid #ccc;
+        border-radius:0;
+        page-break-inside:avoid;
+      }
+      .editor-input{
+        border:none;
+        resize:none;
+        min-height:auto;
+        max-height:none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>FA – Annual Report Editor</h1>
+  <div class="subtitle">ระบบจัดทำรายงานการตรวจสอบการเงิน อปท. แบบดิจิทัล – แก้ไขได้ แนบไฟล์ได้ ต่อ AI ได้</div>
+  <div class="meta">
+    <span>หน่วยรับตรวจ: <strong id="entityName">[เลือกจากฐานข้อมูล]</strong></span>
+    <span>ปีงบประมาณ: <strong id="fiscalYear">25xx</strong></span>
+    <span>จังหวัด/อำเภอ: <strong id="entityLocation">[กำหนดภายหลัง]</strong></span>
+  </div>
+  <div class="top-actions">
+    <button class="btn-top" onclick="goBackToReportHome()">◀ กลับหน้า รายงาน FA (อปท.)</button>
+    <button class="btn-top" onclick="loadFromMasterData()">📂 ดึงข้อมูลหน่วยรับตรวจจากฐานข้อมูล</button>
+    <button class="btn-top" onclick="openExpertModal()">🧑‍💼 ขอคำปรึกษาผู้เชี่ยวชาญ</button>
+  </div>
+</header>
+
+<div class="layout">
+  <!-- Sidebar -->
+  <aside class="side-card">
+    <div class="side-title">โครงสร้างรายงาน</div>
+    <ul class="nav-list" id="navList">
+      <!-- filled by JS -->
+    </ul>
+
+    <div class="checklist" id="checklistContainer">
+      <!-- filled by JS -->
+    </div>
+
+    <div class="check-status" id="checkStatus">
+      <span class="dot"></span>
+      <span id="checkStatusText">ยังตรวจเช็คไม่ครบทุกหัวข้อ</span>
+    </div>
+
+    <div class="side-footer">
+      <button class="btn-small secondary" onclick="runGlobalSpellCheck()">🔍 สอบทานความถูกต้องทั้งฉบับ</button>
+      <button class="btn-small" onclick="openRoutingInfo()">🔗 การส่งรายงาน & Cashboard</button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="main" id="mainContent">
+
+    <!-- Sections -->
+    <!-- 1 Opinion -->
+    <section class="section-card" id="sec-opinion">
+      <div class="section-header">
+        <div>
+          <div class="section-title">1. ความเห็นของผู้สอบบัญชี (Auditor’s Opinion)</div>
+          <div class="section-sub">
+            สรุปประเภทความเห็น (ไม่มีเงื่อนไข / มีเงื่อนไข / ไม่แสดงความเห็น / ไม่พอใจอย่างร้ายแรง) 
+            และรายการที่ได้รับผลกระทบ
+          </div>
+        </div>
+        <div class="section-tools">
+          <button class="btn-tool" onclick="pullFromDB('opinion')">⬇ ดึงจากฐานข้อมูล</button>
+          <button class="btn-tool" onclick="runAISummarize('opinion')">🤖 AI ช่วยสรุป</button>
+          <button class="btn-tool" onclick="spellCheck('opinion')">🔍 สอบทานย่อหน้า</button>
+        </div>
+      </div>
+
+      <div class="editor-wrapper">
+        <div class="editor-box">
+          <div class="editor-label">
+            <span>ข้อความร่างรายงาน</span>
+            <span class="chip">Editable</span>
+          </div>
+          <textarea id="text-opinion" class="editor-input"
+            placeholder="พิมพ์หรือแก้ไขความเห็นของผู้สอบบัญชีที่นี่..."></textarea>
+          <div id="spell-opinion" class="spell-status" style="display:none;"></div>
+          <div class="ai-note">แหล่งข้อมูลที่ใช้: งบการเงิน 2 ปี / หมายเหตุประกอบงบ / สรุปประเด็นสาระสำคัญ</div>
+        </div>
+
+        <div class="editor-box">
+          <div class="editor-label">
+            <span>เอกสารประกอบความเห็น</span>
+          </div>
+          <input type="file" class="file-input" multiple
+                 onchange="handleFileAttach(event,'opinion')">
+          <ul class="attach-list" id="attach-opinion"></ul>
+          <div class="ai-note">ตัวอย่าง: ตารางสรุปผลกระทบเชิงตัวเงิน / Memo วิเคราะห์ประเด็นสำคัญ</div>
+        </div>
+      </div>
+
+      <div class="section-footer">
+        <span>ระบบจดจำการแก้ไขล่าสุดเฉพาะในเบราว์เซอร์ – ควรบันทึกลงระบบฐานข้อมูลทุกครั้งหลังแก้ไขสำคัญ</span>
+        <span>สถานะ: <span id="status-opinion">ยังไม่ยืนยันความถูกต้อง</span></span>
+      </div>
+    </section>
+
+    <!-- 2 Basis -->
+    <section class="section-card" id="sec-basis">
+      <div class="section-header">
+        <div>
+          <div class="section-title">2. ฐานสำหรับแสดงความเห็น (Basis for Opinion)</div>
+          <div class="section-sub">
+            อธิบายมาตรฐานสอบบัญชีที่ใช้ ขอบเขตงาน หลักฐานการสอบบัญชี และเหตุผลประกอบความเห็น
+          </div>
+        </div>
+        <div class="section-tools">
+          <button class="btn-tool" onclick="pullFromDB('basis')">⬇ ดึงจากฐานข้อมูล</button>
+          <button class="btn-tool" onclick="runAISummarize('basis')">🤖 AI ช่วยสรุป</button>
+          <button class="btn-tool" onclick="spellCheck('basis')">🔍 สอบทานย่อหน้า</button>
+        </div>
+      </div>
+
+      <div class="editor-wrapper">
+        <div class="editor-box">
+          <div class="editor-label">
+            <span>ข้อความร่างรายงาน</span>
+          </div>
+          <textarea id="text-basis" class="editor-input"
+            placeholder="อธิบายฐานสำหรับแสดงความเห็น เช่น มาตรฐานที่ใช้ ขอบเขตการสอบบัญชี หลักฐานที่เพียงพอ..."></textarea>
+          <div id="spell-basis" class="spell-status" style="display:none;"></div>
+        </div>
+
+        <div class="editor-box">
+          <div class="editor-label">
+            <span>เอกสารประกอบ</span>
+          </div>
+          <input type="file" class="file-input" multiple
+                 onchange="handleFileAttach(event,'basis')">
+          <ul class="attach-list" id="attach-basis"></ul>
+          <div class="ai-note">ตัวอย่าง: แผนการตรวจสอบ / ตารางสรุปขอบเขต / รายการตัวอย่างที่เลือกตรวจ</div>
+        </div>
+      </div>
+
+      <div class="section-footer">
+        <span>ควรเชื่อมโยงกับแบบฟอร์มการวางแผนและกระดาษทำการหลัก (Lead) ให้ชัดเจน</span>
+        <span>สถานะ: <span id="status-basis">ยังไม่ยืนยันความถูกต้อง</span></span>
+      </div>
+    </section>
+
+    <!-- 3 Emphasis & Other -->
+    <section class="section-card" id="sec-emphasis">
+      <div class="section-header">
+        <div>
+          <div class="section-title">3. สาระเน้นและเรื่องอื่น ๆ (Emphasis of Matter & Other Matters)</div>
+          <div class="section-sub">
+            เน้นเรื่องสำคัญที่ไม่ใช่ข้อบกพร่อง และเรื่องอื่นที่ผู้ใช้งบควรทราบเพิ่มเติม
+          </div>
+        </div>
+        <div class="section-tools">
+          <button class="btn-tool" onclick="pullFromDB('emphasis')">⬇ ดึงจากฐานข้อมูล</button>
+          <button class="btn-tool" onclick="runAISummarize('emphasis')">🤖 AI ช่วยสรุป</button>
+          <button class="btn-tool" onclick="spellCheck('emphasis')">🔍 สอบทานย่อหน้า</button>
+        </div>
+      </div>
+
+      <div class="editor-wrapper">
+        <div class="editor-box">
+          <div class="editor-label">
+            <span>ข้อความร่างรายงาน</span>
+          </div>
+          <textarea id="text-emphasis" class="editor-input"
+            placeholder="ระบุสาระเน้น (เช่น ระบบ e-LAAS ขัดข้อง, เปลี่ยนนโยบายบัญชี) และเรื่องอื่น ๆ ที่ต้องการเน้น..."></textarea>
+          <div id="spell-emphasis" class="spell-status" style="display:none;"></div>
+        </div>
+
+        <div class="editor-box">
+          <div class="editor-label">
+            <span>เอกสารประกอบ</span>
+          </div>
+          <input type="file" class="file-input" multiple
+                 onchange="handleFileAttach(event,'emphasis')">
+          <ul class="attach-list" id="attach-emphasis"></ul>
+          <div class="ai-note">ตัวอย่าง: บันทึกข้อตกลง / หนังสือราชการ / หลักฐานเหตุการณ์ภายหลังงบ</div>
+        </div>
+      </div>
+
+      <div class="section-footer">
+        <span>ควรเชื่อมโยงกับหมายเหตุ 37–38, 63 หรือเหตุการณ์ภายหลังวันที่ในรายงาน</span>
+        <span>สถานะ: <span id="status-emphasis">ยังไม่ยืนยันความถูกต้อง</span></span>
+      </div>
+    </section>
+
+    <!-- 4 Management responsibility -->
+    <section class="section-card" id="sec-mgmt">
+      <div class="section-header">
+        <div>
+          <div class="section-title">4. ความรับผิดชอบของฝ่ายบริหาร</div>
+          <div class="section-sub">
+            บทบาทของฝ่ายบริหารในการจัดทำงบการเงิน ระบบควบคุมภายใน และการประเมินความสามารถในการดำเนินงานต่อเนื่อง
+          </div>
+        </div>
+        <div class="section-tools">
+          <button class="btn-tool" onclick="pullFromDB('mgmt')">⬇ ดึงจากฐานข้อมูล</button>
+          <button class="btn-tool" onclick="runAISummarize('mgmt')">🤖 AI ช่วยสรุป</button>
+          <button class="btn-tool" onclick="spellCheck('mgmt')">🔍 สอบทานย่อหน้า</button>
+        </div>
+      </div>
+
+      <div class="editor-wrapper">
+        <div class="editor-box">
+          <div class="editor-label">
+            <span>ข้อความร่างรายงาน</span>
+          </div>
+          <textarea id="text-mgmt" class="editor-input"
+            placeholder="ข้อความมาตรฐานเกี่ยวกับความรับผิดชอบของฝ่ายบริหารในการจัดทำงบการเงิน และระบบควบคุมภายใน..."></textarea>
+          <div id="spell-mgmt" class="spell-status" style="display:none;"></div>
+        </div>
+
+        <div class="editor-box">
+          <div class="editor-label">
+            <span>เอกสารประกอบ</span>
+          </div>
+          <input type="file" class="file-input" multiple
+                 onchange="handleFileAttach(event,'mgmt')">
+          <ul class="attach-list" id="attach-mgmt"></ul>
+          <div class="ai-note">ตัวอย่าง: ระเบียบ/คำสั่งแต่งตั้งผู้รับผิดชอบ / แผนควบคุมภายใน</div>
+        </div>
+      </div>
+
+      <div class="section-footer">
+        <span>อ้างอิงตามแนวทางรายงาน สตง. และมาตรฐานการรายงานทางการเงินภาครัฐ</span>
+        <span>สถานะ: <span id="status-mgmt">ยังไม่ยืนยันความถูกต้อง</span></span>
+      </div>
+    </section>
+
+    <!-- 5 Auditor responsibility -->
+    <section class="section-card" id="sec-audresp">
+      <div class="section-header">
+        <div>
+          <div class="section-title">5. ความรับผิดชอบของผู้สอบบัญชี</div>
+          <div class="section-sub">
+            อธิบายวิธีการสอบบัญชี การประเมินความเสี่ยง การพิจารณาควบคุมภายใน และการประเมินประมาณการสำคัญ
+          </div>
+        </div>
+        <div class="section-tools">
+          <button class="btn-tool" onclick="pullFromDB('audresp')">⬇ ดึงจากฐานข้อมูล</button>
+          <button class="btn-tool" onclick="runAISummarize('audresp')">🤖 AI ช่วยสรุป</button>
+          <button class="btn-tool" onclick="spellCheck('audresp')">🔍 สอบทานย่อหน้า</button>
+        </div>
+      </div>
+
+      <div class="editor-wrapper">
+        <div class="editor-box">
+          <div class="editor-label">
+            <span>ข้อความร่างรายงาน</span>
+          </div>
+          <textarea id="text-audresp" class="editor-input"
+            placeholder="สรุปขอบเขต ความเสี่ยง และขั้นตอนการสอบบัญชีตามมาตรฐานสอบบัญชีที่ใช้..."></textarea>
+          <div id="spell-audresp" class="spell-status" style="display:none;"></div>
+        </div>
+
+        <div class="editor-box">
+          <div class="editor-label">
+            <span>เอกสารประกอบ</span>
+          </div>
+          <input type="file" class="file-input" multiple
+                 onchange="handleFileAttach(event,'audresp')">
+          <ul class="attach-list" id="attach-audresp"></ul>
+          <div class="ai-note">ตัวอย่าง: โปรแกรมตรวจสอบ / Risk Assessment / สรุปความเสี่ยงสาระสำคัญ</div>
+        </div>
+      </div>
+
+      <div class="section-footer">
+        <span>ควรสอดคล้องกับกระดาษทำการหลัก และแบบฟอร์มการวางแผน (CA/PA)</span>
+        <span>สถานะ: <span id="status-audresp">ยังไม่ยืนยันความถูกต้อง</span></span>
+      </div>
+    </section>
+
+    <!-- 6 Legal / Framework -->
+    <section class="section-card" id="sec-framework">
+      <div class="section-header">
+        <div>
+          <div class="section-title">6. กรอบกฎหมาย มาตรฐาน และข้อสังเกตตามระเบียบ</div>
+          <div class="section-sub">
+            ระบุกรอบกฎหมาย/มาตรฐานที่ใช้อ้างอิง และข้อสังเกตเชิงกฎระเบียบที่เชื่อมโยงกับข้อค้นพบ
+          </div>
+        </div>
+        <div class="section-tools">
+          <button class="btn-tool" onclick="pullFromDB('framework')">⬇ ดึงจากฐานข้อมูล</button>
+          <button class="btn-tool" onclick="runAISummarize('framework')">🤖 AI ช่วยสรุป</button>
+          <button class="btn-tool" onclick="spellCheck('framework')">🔍 สอบทานย่อหน้า</button>
+        </div>
+      </div>
+
+      <div class="editor-wrapper">
+        <div class="editor-box">
+          <div class="editor-label">
+            <span>ข้อความร่างรายงาน</span>
+          </div>
+          <textarea id="text-framework" class="editor-input"
+            placeholder="ระบุ พ.ร.บ., กฎกระทรวง, มาตรฐานการบัญชีภาครัฐ, แนวทาง สตง. ที่ใช้เป็นกรอบอ้างอิง..."></textarea>
+          <div id="spell-framework" class="spell-status" style="display:none;"></div>
+        </div>
+
+        <div class="editor-box">
+          <div class="editor-label">
+            <span>เอกสารประกอบ</span>
+          </div>
+          <input type="file" class="file-input" multiple
+                 onchange="handleFileAttach(event,'framework')">
+          <ul class="attach-list" id="attach-framework"></ul>
+          <div class="ai-note">ตัวอย่าง: ข้อกฎหมายที่อ้างอิง / หนังสือเวียน / แนวทางหรือคู่มือจาก สตง.</div>
+        </div>
+      </div>
+
+      <div class="section-footer">
+        <span>รองรับการเชื่อมโยงไปยังหมายเหตุ/ประเด็นเฉพาะทาง เช่น น้ำบาดาล ภาษี ฯลฯ</span>
+        <span>สถานะ: <span id="status-framework">ยังไม่ยืนยันความถูกต้อง</span></span>
+      </div>
+    </section>
+
+    <!-- 7 Sign-off -->
+    <section class="section-card" id="sec-signoff">
+      <div class="section-header">
+        <div>
+          <div class="section-title">7. การลงนามและข้อมูลผู้สอบบัญชี</div>
+          <div class="section-sub">
+            ชื่อ–สกุล ตำแหน่ง หน่วยงาน วันที่ลงนาม และข้อมูลติดต่อ (สำหรับขอข้อมูลเพิ่มเติม)
+          </div>
+        </div>
+        <div class="section-tools">
+          <button class="btn-tool" onclick="pullFromDB('signoff')">⬇ ดึงจากฐานข้อมูล</button>
+          <button class="btn-tool" onclick="runAISummarize('signoff')">🤖 เติมข้อมูลมาตรฐาน</button>
+          <button class="btn-tool" onclick="spellCheck('signoff')">🔍 สอบทานย่อหน้า</button>
+        </div>
+      </div>
+
+      <div class="editor-wrapper">
+        <div class="editor-box">
+          <div class="editor-label">
+            <span>ข้อความร่างรายงาน (ส่วนท้ายก่อนลงนาม)</span>
+          </div>
+          <textarea id="text-signoff" class="editor-input"
+            placeholder="ระบุเมือง วันเดือนปีลงนาม และข้อความก่อนลงชื่อ..."></textarea>
+          <div id="spell-signoff" class="spell-status" style="display:none;"></div>
+        </div>
+
+        <div class="editor-box">
+          <div class="editor-label">
+            <span>ข้อมูลผู้สอบบัญชี / ผู้ตรวจสอบ</span>
+          </div>
+          <textarea id="text-signer" class="editor-input"
+            placeholder="ชื่อ–สกุล ผู้สอบบัญชี&#10;ตำแหน่ง&#10;สำนักงานการตรวจเงินแผ่นดินจังหวัด..."></textarea>
+          <ul class="attach-list" id="attach-signoff"></ul>
+          <div class="ai-note">สามารถแนบสำเนาบัตรประจำตัวผู้สอบบัญชี / หนังสือมอบหมาย / คำสั่งแต่งตั้ง ไว้ในระบบ</div>
+        </div>
+      </div>
+
+      <div class="section-footer">
+        <span>ข้อมูลนี้จะถูกใช้เป็นหัวข้อหลักในการ export เป็นรายงาน A4 / PDF</span>
+        <span>สถานะ: <span id="status-signoff">ยังไม่ยืนยันความถูกต้อง</span></span>
+      </div>
+    </section>
+
+    <!-- global actions -->
+    <section class="global-actions">
+      <div class="global-actions-left">
+        <span style="font-size:12px;color:var(--muted);">
+          ✅ เมื่อยืนยัน checklist ครบทุกหัวข้อแล้ว สามารถสั่งพิมพ์ A4 / ส่งรายงาน / ส่งต่อไป ระบบสอบทาน–ฐานข้อมูล–Cashboard ได้
+        </span>
+      </div>
+      <div class="global-actions-right">
+        <button class="btn-main secondary" onclick="openExpertModal()">🧑‍💼 ขอคำปรึกษาผู้เชี่ยวชาญ</button>
+        <button class="btn-main secondary" onclick="routeReport('review')">📤 ส่งไประบบสอบทาน</button>
+        <button class="btn-main secondary" onclick="routeReport('db')">💾 ส่งเก็บฐานข้อมูลกลาง</button>
+        <button class="btn-main secondary" onclick="routeReport('dashboard')">📊 ส่งอัปเดต Cashboard</button>
+        <button id="btnPrint" class="btn-main" onclick="handlePrint()" disabled>🖨 พิมพ์รายงาน (A4)</button>
+        <button id="btnSend" class="btn-main danger" onclick="handleSend()" disabled>📨 ส่งรายงานอย่างเป็นทางการ</button>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- Modal: warning / flow error -->
+<div class="modal-backdrop" id="modalWarn">
+  <div class="modal">
+    <div class="modal-title">ระบบเตือนขั้นตอน / รูปแบบยังไม่ครบถ้วน</div>
+    <div class="modal-body" id="modalWarnBody">
+      ยังมีหัวข้อในรายงานที่ไม่ได้ยืนยันความถูกต้อง หรือยังไม่ทำ checklist ครบทุกส่วน
+      <ul>
+        <li>ตรวจดูเครื่องหมาย ✓ ในแผง “โครงสร้างรายงาน” ด้านซ้าย</li>
+        <li>ใช้ปุ่ม “สอบทานความถูกต้อง” เพื่อตรวจคำและโครงสร้างเบื้องต้น</li>
+        <li>หากต้องการคำแนะนำเพิ่มเติม ให้กด “ขอคำแนะนำ”</li>
+      </ul>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-main secondary" onclick="closeModal('modalWarn')">รับทราบ</button>
+      <button class="btn-main secondary" onclick="openExpertModal()">ขอคำแนะนำ</button>
+      <button class="btn-main" onclick="closeModal('modalWarn')">กลับไปแก้ไข</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: expert -->
+<div class="modal-backdrop" id="modalExpert">
+  <div class="modal">
+    <div class="modal-title">ขอคำปรึกษาจากผู้เชี่ยวชาญการตรวจสอบการเงิน</div>
+    <div class="modal-body">
+      พิมพ์ประเด็นที่ต้องการปรึกษา เช่น ประเภทความเห็นที่เหมาะสม การตีความข้อกฎหมาย การจำแนกบัญชี ฯลฯ
+      <textarea id="expertQuestion" class="editor-input" style="min-height:80px;margin-top:6px;"
+        placeholder="ตัวอย่าง: ข้อสงสัยเกี่ยวกับการตีความรายได้ค่าธรรมเนียมบาดาล และผลกระทบต่อหมายเหตุ 42, 45..."></textarea>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-main secondary" onclick="closeModal('modalExpert')">ยกเลิก</button>
+      <button class="btn-main" onclick="submitExpertQuestion()">ส่งคำถาม</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: routing info -->
+<div class="modal-backdrop" id="modalRouteInfo">
+  <div class="modal">
+    <div class="modal-title">การส่งรายงานไปยัง ระบบสอบทาน / ฐานข้อมูล / Cashboard</div>
+    <div class="modal-body">
+      เมื่อบันทึกสำเร็จ ระบบควรส่ง payload รายงาน (JSON) ไปยัง:
+      <ul>
+        <li><strong>ระบบสอบทาน (FA Review)</strong> – ใช้ในการตรวจสอบชั้นที่ 2</li>
+        <li><strong>ระบบฐานข้อมูลกลาง</strong> – เก็บฉบับลงนามและประวัติการแก้ไข</li>
+        <li><strong>ระบบ Cashboard</strong> – แสดงสถานะความคืบหน้าการจัดทำรายงาน</li>
+      </ul>
+      โค้ดตัวอย่างสามารถต่อในฟังก์ชัน <code>routeReport(target)</code> ในไฟล์นี้
+    </div>
+    <div class="modal-footer">
+      <button class="btn-main" onclick="closeModal('modalRouteInfo')">ปิด</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // === CONFIG SECTIONS ===
+  const sections = [
+    {id:'opinion',   label:'1. ความเห็นของผู้สอบบัญชี',         required:true},
+    {id:'basis',     label:'2. ฐานสำหรับแสดงความเห็น',          required:true},
+    {id:'emphasis',  label:'3. สาระเน้นและเรื่องอื่น ๆ',         required:false},
+    {id:'mgmt',      label:'4. ความรับผิดชอบของฝ่ายบริหาร',       required:true},
+    {id:'audresp',   label:'5. ความรับผิดชอบของผู้สอบบัญชี',      required:true},
+    {id:'framework', label:'6. กรอบกฎหมายและมาตรฐานที่อ้างอิง', required:false},
+    {id:'signoff',   label:'7. การลงนามและข้อมูลผู้สอบบัญชี',     required:true},
+  ];
+
+  const sectionStatus = {};   // {id: boolean}
+
+  // === INIT ===
+  document.addEventListener('DOMContentLoaded', () => {
+    buildNav();
+    buildChecklist();
+    // mark all incomplete initially
+    sections.forEach(s => sectionStatus[s.id] = false);
+    updateOverallStatus();
+  });
+
+  function buildNav(){
+    const navList = document.getElementById('navList');
+    navList.innerHTML = '';
+    sections.forEach((s, idx) => {
+      const li = document.createElement('li');
+      const btn = document.createElement('button');
+      btn.className = 'nav-btn' + (idx === 0 ? ' active' : '');
+      btn.dataset.target = s.id;
+      btn.onclick = () => scrollToSection(s.id, btn);
+      btn.innerHTML = `
+        <span>${s.label}</span>
+        <span class="badge">${s.required ? 'ต้องทำ' : 'ทางเลือก'}</span>
+      `;
+      li.appendChild(btn);
+      navList.appendChild(li);
+    });
+  }
+
+  function scrollToSection(id, btn){
+    const el = document.getElementById('sec-'+id);
+    if(el){
+      el.scrollIntoView({behavior:'smooth', block:'start'});
+      document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+      if(btn) btn.classList.add('active');
+    }
+  }
+
+  function buildChecklist(){
+    const container = document.getElementById('checklistContainer');
+    container.innerHTML = '<div style="font-size:12px;margin-bottom:4px;">Checklist ความครบถ้วนของรายงาน</div>';
+    sections.forEach(s=>{
+      const row = document.createElement('div');
+      row.className = 'check-row';
+      row.innerHTML = `
+        <input type="checkbox" id="chk-${s.id}" onchange="toggleChecklist('${s.id}')">
+        <label for="chk-${s.id}">${s.label}</label>
+      `;
+      container.appendChild(row);
+    });
+  }
+
+  function toggleChecklist(id){
+    const checked = document.getElementById('chk-'+id).checked;
+    sectionStatus[id] = checked;
+    const statusSpan = document.getElementById('status-'+id);
+    if(statusSpan){
+      statusSpan.textContent = checked ? 'ผู้จัดทำยืนยันความถูกต้องแล้ว' : 'ยังไม่ยืนยันความถูกต้อง';
+    }
+    updateOverallStatus();
+  }
+
+  function updateOverallStatus(){
+    const checkStatus = document.getElementById('checkStatus');
+    const text = document.getElementById('checkStatusText');
+    const btnPrint = document.getElementById('btnPrint');
+    const btnSend = document.getElementById('btnSend');
+
+    const allRequiredOk = sections
+      .filter(s=>s.required)
+      .every(s=>sectionStatus[s.id]);
+
+    if(allRequiredOk){
+      checkStatus.classList.add('complete');
+      text.textContent = 'ครบถ้วนในหัวข้อที่จำเป็น – สามารถพิมพ์และส่งรายงานได้';
+      btnPrint.disabled = false;
+      btnSend.disabled = false;
+    }else{
+      checkStatus.classList.remove('complete');
+      text.textContent = 'ยังตรวจเช็คไม่ครบทุกหัวข้อที่จำเป็น';
+      btnPrint.disabled = true;
+      btnSend.disabled = true;
+    }
+  }
+
+  // === FILE ATTACH ===
+  function handleFileAttach(event, sectionId){
+    const files = Array.from(event.target.files || []);
+    const list = document.getElementById('attach-'+sectionId);
+    files.forEach(file=>{
+      const li = document.createElement('li');
+      li.innerHTML = `<span>📎 ${file.name}</span>
+                      <button onclick="this.parentElement.remove()">ลบ</button>`;
+      list.appendChild(li);
+    });
+  }
+
+  // === DB & AI HOOKS (Stub) ===
+  function pullFromDB(sectionId){
+    // stub: replace with real API integration
+    const textarea = document.getElementById('text-'+sectionId);
+    if(!textarea) return;
+    textarea.value = `[ตัวอย่างข้อมูลจากฐานข้อมูล] ร่างข้อความส่วน ${sectionId} ถูกดึงมาจากฐานข้อมูลกลางเพื่อให้ผู้จัดทำตรวจสอบและปรับแก้ต่อได้...`;
+    alert('ดึงข้อมูลจากฐานข้อมูล (ตัวอย่างจำลอง) สำหรับหัวข้อนี้แล้ว');
+  }
+
+  function runAISummarize(sectionId){
+    // stub: replace with AI API
+    const textarea = document.getElementById('text-'+sectionId);
+    if(!textarea) return;
+    const base = textarea.value.trim();
+    const extra = `\n\n[AI Draft] ระบบได้ร่างข้อความอัตโนมัติ โดยอ้างอิงจากงบการเงิน 2 ปี และหมายเหตุที่เกี่ยวข้อง ผู้จัดทำควรตรวจสอบ ปรับถ้อยคำให้เหมาะสมก่อนใช้งานจริง.`;
+    textarea.value = base ? (base + extra) : extra;
+    alert('AI ช่วยร่าง/เติมข้อความ (ตัวอย่างจำลอง) แล้ว – กรุณาตรวจสอบและปรับให้เหมาะสม');
+  }
+
+  // === SPELL CHECK (簡易) ===
+  function spellCheck(sectionId){
+    const textarea = document.getElementById('text-'+sectionId);
+    const box = document.getElementById('spell-'+sectionId);
+    if(!textarea || !box) return;
+
+    const text = textarea.value.trim();
+    if(text.length === 0){
+      box.className = 'spell-status warn';
+      box.style.display = 'block';
+      box.textContent = 'ยังไม่ได้พิมพ์ข้อความในหัวข้อนี้ – ไม่สามารถสอบทานได้';
+      return;
+    }
+
+    const issues = [];
+    if(text.length < 80){
+      issues.push('ข้อความสั้นกว่าที่เหมาะสมสำหรับรายงานอย่างเป็นทางการ');
+    }
+    if(!/[.!?๐-๙]$/.test(text.slice(-1))){
+      issues.push('ข้อความอาจยังไม่จบประโยค หรือไม่มีเครื่องหมายวรรคตอนท้าย');
+    }
+    if(!/อปท|งบการเงิน|ความเห็น|ผู้สอบบัญชี/.test(text)){
+      issues.push('ควรพิจารณาเพิ่มคำสำคัญ เช่น “งบการเงิน”, “ผู้สอบบัญชี”, “อปท.” ให้เหมาะกับบริบท');
+    }
+
+    if(issues.length === 0){
+      box.className = 'spell-status ok';
+      box.style.display = 'block';
+      box.textContent = 'ไม่พบข้อสังเกตเบื้องต้นในเชิงโครงสร้างข้อความ โปรดให้ผู้สอบทานตรวจละเอียดอีกครั้ง';
+    }else{
+      box.className = 'spell-status warn';
+      box.style.display = 'block';
+      box.innerHTML = 'พบข้อสังเกตเบื้องต้น:<ul>' +
+        issues.map(i=>`<li>${i}</li>`).join('') + '</ul>';
+    }
+  }
+
+  function runGlobalSpellCheck(){
+    sections.forEach(s => spellCheck(s.id));
+    alert('ระบบได้ประมวลผลสอบทานข้อความแบบเบื้องต้นในทุกหัวข้อแล้ว (ตัวอย่างจำลอง)\nโปรดตรวจดูผลในแต่ละหัวข้อ');
+  }
+
+  // === FLOW CONTROL ===
+  function handlePrint(){
+    const allRequiredOk = sections.filter(s=>s.required).every(s=>sectionStatus[s.id]);
+    if(!allRequiredOk){
+      openModal('modalWarn');
+      return;
+    }
+    window.print();
+  }
+
+  function handleSend(){
+    const allRequiredOk = sections.filter(s=>s.required).every(s=>sectionStatus[s.id]);
+    if(!allRequiredOk){
+      openModal('modalWarn');
+      return;
+    }
+    // stub: replace with real submit
+    alert('ส่งรายงานอย่างเป็นทางการ (จำลอง) – โปรดต่อ API ส่งออก PDF / WORD ตามรูปแบบที่กำหนด');
+  }
+
+  function routeReport(target){
+    // stub routing
+    let msg = '';
+    if(target === 'review') msg = 'ส่งต่อไป ระบบสอบทาน (FA Review)';
+    else if(target === 'db') msg = 'ส่งต่อไป ระบบฐานข้อมูลกลาง';
+    else if(target === 'dashboard') msg = 'ส่งต่อไป ระบบ Cashboard ติดตามผล';
+    alert(msg + ' – โปรดเชื่อม API ในฟังก์ชัน routeReport(target)');
+  }
+
+  // === MODAL ===
+  function openModal(id){
+    document.getElementById(id).style.display = 'flex';
+  }
+  function closeModal(id){
+    document.getElementById(id).style.display = 'none';
+  }
+  function openExpertModal(){
+    openModal('modalExpert');
+  }
+  function openRoutingInfo(){
+    openModal('modalRouteInfo');
+  }
+  function submitExpertQuestion(){
+    const q = document.getElementById('expertQuestion').value.trim();
+    if(!q){
+      alert('กรุณาพิมพ์คำถามที่ต้องการปรึกษาก่อน');
+      return;
+    }
+    // stub: send to expert system / ticket
+    alert('ระบบได้บันทึกคำถามเพื่อส่งต่อผู้เชี่ยวชาญแล้ว (ตัวอย่างจำลอง)\n\n'+q);
+    document.getElementById('expertQuestion').value = '';
+    closeModal('modalExpert');
+  }
+
+  // === HEADER ACTIONS ===
+  function goBackToReportHome(){
+    window.location.href = 'fa-lg-annual-report.html';
+  }
+
+  function loadFromMasterData(){
+    // stub – ในระบบจริงควรดึงจากฐานข้อมูลหน่วยรับตรวจ
+    document.getElementById('entityName').textContent = 'เทศบาลเมืองศรีสะเกษ (ตัวอย่าง)';
+    document.getElementById('fiscalYear').textContent = '2568';
+    document.getElementById('entityLocation').textContent = 'อำเภอเมือง จังหวัดศรีสะเกษ';
+    alert('ดึงข้อมูลหน่วยรับตรวจตัวอย่างเรียบร้อยแล้ว – โปรดเชื่อม API จริงในระบบผลิต');
+  }
+</script>
+
+</body>
+</html>
