@@ -5,7 +5,7 @@
 <title>อปท.8.5 – ลูกหนี้อื่นระยะสั้น | FA – Fieldwork</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<!-- TinyMCE: Rich Text Editor (ใช้เป็นตัวอย่าง) -->
+<!-- TinyMCE: Rich Text Editor -->
 <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js"
         referrerpolicy="origin"></script>
 
@@ -230,6 +230,36 @@
   @media (max-width:900px){
     main{grid-template-columns:1fr;}
   }
+
+  /* ========================
+     Print style เพื่อแบ่งหน้า
+     ======================== */
+  @media print{
+    body{
+      background: #fff;
+      color:#000;
+    }
+    .section-card{
+      box-shadow:none;
+      border:none;
+      background:#fff;
+      color:#000;
+    }
+    header{
+      position:static;
+      background:#fff;
+      color:#000;
+      box-shadow:none;
+      padding:6px 12px;
+      margin-bottom:6px;
+    }
+    .nav-buttons, aside{display:none;}
+    /* หลังแต่ละ section ให้ออกหน้าใหม่ */
+    #section-8-5-printbreak,
+    #section-851-printbreak{
+      page-break-before:always;
+    }
+  }
 </style>
 </head>
 
@@ -238,7 +268,7 @@
 <header>
   <div class="title-block">
     <h1>อปท.8.5 – ลูกหนี้อื่นระยะสั้น</h1>
-    <p>FA – Fieldwork | เชื่อมโยง fa-lg-fieldwork, a-lg-notes-2y, fa-db-wp</p>
+    <p>FA – Fieldwork | เชื่อม fa-lg-fieldwork, a-lg-notes-2y, fa-db-wp</p>
   </div>
   <div class="nav-buttons">
     <!-- 18. ปุ่มกลับ / ถัดไป / หน้าหลัก -->
@@ -280,6 +310,12 @@
         <span class="badge badge-warning" id="status-label">สถานะ: ยังไม่โหลดข้อมูล</span>
       </div>
     </div>
+
+    <!-- ==============================
+         Section อปท. 8.5
+         ============================== -->
+    <!-- เพื่อใช้ page-break ใน print: ใส่ id ที่ใช้ CSS เลย -->
+    <div class="section-card" id="section-8-5-printbreak"></div>
 
     <!-- 1–2–3: วัตถุประสงค์ + แนบเอกสาร -->
     <div class="section-card" id="section-objective">
@@ -439,6 +475,85 @@
       </div>
     </div>
 
+    <!-- ==============================
+         Section อปท. 8.5.1
+         ============================== -->
+    <!-- page break before this section in print -->
+    <div class="section-card" id="section-851-printbreak"></div>
+
+    <!-- 8.5.1 – ตารางวิเคราะห์ลูกหนี้อื่นระยะสั้น -->
+    <div class="section-card" id="section-851">
+      <h2>อปท. 8.5.1 – วิเคราะห์ลูกหนี้อื่นระยะสั้น</h2>
+      <button class="btn btn-secondary btn-sm" onclick="addTableRow851()">+ เพิ่มแถว 8.5.1</button>
+      <table id="data-table-851">
+        <thead>
+          <tr>
+            <th>หมวด/ประเภทลูกหนี้</th>
+            <th>ยอดปีปัจจุบัน</th>
+            <th>ยอดปีก่อน</th>
+            <th>ส่วนต่าง</th>
+            <th>% เปลี่ยนแปลง</th>
+            <th>คำอธิบาย/วิเคราะห์</th>
+            <th>ลบ</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+
+      <div class="attachments" data-section="table_851">
+        <h3>เอกสารประกอบ 8.5.1</h3>
+        <ul id="att-table_851"></ul>
+        <button class="btn btn-secondary btn-sm"
+                onclick="addAttachment('table_851')">
+          📎 เพิ่มไฟล์/ลิงก์
+        </button>
+        <button class="btn btn-ghost btn-sm"
+                onclick="autoAttachFromWP('table_851')">
+          🔗 แนบจากกระดาษทำการอัตโนมัติ
+        </button>
+      </div>
+    </div>
+
+    <!-- ==============================
+         Section อปท. 8.5.1.1
+         ============================== -->
+    <!-- page break before this section in print -->
+    <div class="section-card" id="section-8511-printbreak"></div>
+
+    <!-- 8.5.1.1 – รายละเอียดลูกหนี้อื่นระยะสั้น -->
+    <div class="section-card" id="section-8511">
+      <h2>อปท. 8.5.1.1 – รายละเอียดลูกหนี้อื่นระยะสั้น</h2>
+      <button class="btn btn-secondary btn-sm" onclick="addTableRow8511()">+ เพิ่มแถว 8.5.1.1</button>
+      <table id="data-table-8511">
+        <thead>
+          <tr>
+            <th>ชื่อผู้ลูกหนี้ / หน่วยงาน</th>
+            <th>ประเภทลูกหนี้</th>
+            <th>ยอดคงเหลือ</th>
+            <th>อายุหนี้ (วัน)</th>
+            <th>กลุ่มอายุหนี้</th>
+            <th>อ้างอิง WP / เอกสาร</th>
+            <th>ข้อสังเกต</th>
+            <th>ลบ</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+
+      <div class="attachments" data-section="table_8511">
+        <h3>เอกสารประกอบ 8.5.1.1</h3>
+        <ul id="att-table_8511"></ul>
+        <button class="btn btn-secondary btn-sm"
+                onclick="addAttachment('table_8511')">
+          📎 เพิ่มไฟล์/ลิงก์
+        </button>
+        <button class="btn btn-ghost btn-sm"
+                onclick="autoAttachFromWP('table_8511')">
+          🔗 แนบจากกระดาษทำการอัตโนมัติ
+        </button>
+      </div>
+    </div>
+
   </section>
 
   <!-- ====== ฝั่งขวา: Checklist + QA + Route ====== -->
@@ -487,9 +602,9 @@
           <button class="btn btn-secondary btn-sm"
                   onclick="goWorkpaper()">📑 กระดาษทำการ (fa-db-wp.html)</button>
           <button class="btn btn-secondary btn-sm"
-                  onclick="goCashboard()">📊 Cash Board (fa-db-data-gov / ที่คุณเชื่อมไว้)</button>
+                  onclick="goCashboard()">📊 Cash Board</button>
           <button class="btn btn-secondary btn-sm"
-                  onclick="goReview()">🔎 ระบบสอบทาน (fa-review-*.html)</button>
+                  onclick="goReview()">🔎 ระบบสอบทาน</button>
         </div>
       </div>
     </div>
@@ -536,12 +651,19 @@ const DATA_TEMPLATE = {
   period_end: '',
   objective: '',
   procedures: '',
+  // ตารางหลักของ 8.5 (สรุปภาพรวม)
   table_rows: [],
+  // ตาราง 8.5.1
+  table_851: [],
+  // ตาราง 8.5.1.1
+  table_8511: [],
   notes: '',
   attachments: {
     objective: [],
     procedures: [],
     table: [],
+    table_851: [],
+    table_8511: [],
     notes: []
   },
   checklist: {},
@@ -561,13 +683,12 @@ tinymce.init({
   selector: '#objective-editor,#procedures-editor,#notes-editor',
   height: 220,
   menubar: false,
-  skin:'oxide-dark',
+  skin:'oxide-dark',      // แนะนำใช้ dark ตามเอกสาร TinyMCE
   content_css:'dark',
   plugins: [
     'advlist autolink lists link charmap preview anchor',
     'searchreplace visualblocks code fullscreen',
     'insertdatetime table code help wordcount'
-    // ต่อไปสามารถเพิ่ม spellchecker / export / ai ตามที่คุณใช้จริง
   ],
   toolbar:
     'undo redo | formatselect | bold italic underline | ' +
@@ -615,7 +736,7 @@ document.getElementById('btn-load').addEventListener('click', async ()=>{
   if(!unit || !year){ alert('กรุณาเลือกหน่วยรับตรวจและปีงบประมาณ'); return; }
 
   // TODO: เชื่อมต่อ backend จริง
-  // ตัวอย่าง: const res = await fetch(`/api/fa/lg/8_5?unit=${unit}&year=${year}`);
+  // const res = await fetch(`/api/fa/lg/8_5?unit=${unit}&year=${year}`);
   // currentData = res.ok ? await res.json() : structuredClone(DATA_TEMPLATE);
 
   currentData = structuredClone(DATA_TEMPLATE);
@@ -623,7 +744,8 @@ document.getElementById('btn-load').addEventListener('click', async ()=>{
   currentData.fiscal_year = year;
   currentData.period_end = `30 กันยายน ${year}`;
 
-  document.getElementById('status-label').textContent = `สถานะ: โหลดข้อมูลสำหรับ ${unit} ปี ${year} (โหมดตัวอย่าง – ยังไม่เชื่อมฐานจริง)`;
+  document.getElementById('status-label').textContent =
+    `สถานะ: โหลดข้อมูลสำหรับ ${unit} ปี ${year} (โหมดตัวอย่าง – ยังไม่เชื่อมฐานจริง)`;
 
   renderAll();
 });
@@ -643,13 +765,19 @@ function renderAll(){
   tinymce.get('procedures-editor')?.setContent(currentData.procedures || '');
   tinymce.get('notes-editor')?.setContent(currentData.notes || '');
 
-  // table
+  // ตาราง 8.5
   renderTable();
+  // ตาราง 8.5.1
+  renderTable851();
+  // ตาราง 8.5.1.1
+  renderTable8511();
 
   // attachments
   renderAttachments('objective');
   renderAttachments('procedures');
   renderAttachments('table');
+  renderAttachments('table_851');
+  renderAttachments('table_8511');
   renderAttachments('notes');
 
   // sign
@@ -668,7 +796,7 @@ function renderAll(){
 }
 
 /* ==============================
-   ตารางลูกหนี้ (ข้อ 3 + 17)
+   ตารางลูกหนี้ 8.5
    ============================== */
 function renderTable(){
   const tbody = document.querySelector('#data-table tbody');
@@ -676,10 +804,14 @@ function renderTable(){
   currentData.table_rows.forEach((row,idx)=>{
     const tr = document.createElement('tr');
     tr.innerHTML = `
-      <td><input type="text" value="${row.code||''}" onchange="updateRow(${idx},'code',this.value)" /></td>
-      <td><input type="text" value="${row.item||''}" onchange="updateRow(${idx},'item',this.value)" /></td>
-      <td><input type="number" value="${row.current||''}" onchange="updateRow(${idx},'current',this.value)" /></td>
-      <td><input type="number" value="${row.prior||''}" onchange="updateRow(${idx},'prior',this.value)" /></td>
+      <td><input type="text" value="${row.code||''}"
+                 onchange="updateRow(${idx},'code',this.value)" /></td>
+      <td><input type="text" value="${row.item||''}"
+                 onchange="updateRow(${idx},'item',this.value)" /></td>
+      <td><input type="number" value="${row.current||''}"
+                 onchange="updateRow(${idx},'current',this.value)" /></td>
+      <td><input type="number" value="${row.prior||''}"
+                 onchange="updateRow(${idx},'prior',this.value)" /></td>
       <td>${calcDiff(row)}</td>
       <td>${calcPct(row)}</td>
       <td>
@@ -687,8 +819,10 @@ function renderTable(){
                value="${row.wp_ref||''}"
                onchange="updateRow(${idx},'wp_ref',this.value)" />
       </td>
-      <td><input type="text" value="${row.note||''}" onchange="updateRow(${idx},'note',this.value)" /></td>
-      <td><button class="btn btn-danger btn-sm" onclick="deleteRow(${idx})">ลบ</button></td>
+      <td><input type="text" value="${row.note||''}"
+                 onchange="updateRow(${idx},'note',this.value)" /></td>
+      <td><button class="btn btn-danger btn-sm"
+                  onclick="deleteRow(${idx})">ลบ</button></td>
     `;
     tbody.appendChild(tr);
   });
@@ -714,6 +848,91 @@ function calcPct(row){
   const p = Number(row.prior)||0;
   if(!p) return '';
   return ((diff/p)*100).toFixed(2)+'%';
+}
+
+/* ==============================
+   ตาราง 8.5.1
+   ============================== */
+function renderTable851(){
+  const tbody = document.querySelector('#data-table-851 tbody');
+  tbody.innerHTML = '';
+  currentData.table_851.forEach((row,idx)=>{
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><input type="text" value="${row.group||''}"
+                 onchange="updateRow851(${idx},'group',this.value)" /></td>
+      <td><input type="number" value="${row.current||''}"
+                 onchange="updateRow851(${idx},'current',this.value)" /></td>
+      <td><input type="number" value="${row.prior||''}"
+                 onchange="updateRow851(${idx},'prior',this.value)" /></td>
+      <td>${calcDiff(row)}</td>
+      <td>${calcPct(row)}</td>
+      <td><input type="text" value="${row.comment||''}"
+                 onchange="updateRow851(${idx},'comment',this.value)" /></td>
+      <td><button class="btn btn-danger btn-sm"
+                  onclick="deleteRow851(${idx})">ลบ</button></td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+function addTableRow851(){
+  currentData.table_851.push({
+    group:'', current:'', prior:'', comment:''
+  });
+  renderTable851();
+}
+function updateRow851(idx,field,value){
+  currentData.table_851[idx][field] = value;
+  renderTable851();
+}
+function deleteRow851(idx){
+  currentData.table_851.splice(idx,1);
+  renderTable851();
+}
+
+/* ==============================
+   ตาราง 8.5.1.1
+   ============================== */
+function renderTable8511(){
+  const tbody = document.querySelector('#data-table-8511 tbody');
+  tbody.innerHTML = '';
+  currentData.table_8511.forEach((row,idx)=>{
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><input type="text" value="${row.name||''}"
+                 onchange="updateRow8511(${idx},'name',this.value)" /></td>
+      <td><input type="text" value="${row.type||''}"
+                 onchange="updateRow8511(${idx},'type',this.value)" /></td>
+      <td><input type="number" value="${row.balance||''}"
+                 onchange="updateRow8511(${idx},'balance',this.value)" /></td>
+      <td><input type="number" value="${row.days||''}"
+                 onchange="updateRow8511(${idx},'days',this.value)" /></td>
+      <td><input type="text" value="${row.age_group||''}"
+                 onchange="updateRow8511(${idx},'age_group',this.value)" /></td>
+      <td><input type="text" value="${row.wp_ref||''}"
+                 onchange="updateRow8511(${idx},'wp_ref',this.value)" /></td>
+      <td><input type="text" value="${row.comment||''}"
+                 onchange="updateRow8511(${idx},'comment',this.value)" /></td>
+      <td><button class="btn btn-danger btn-sm"
+                  onclick="deleteRow8511(${idx})">ลบ</button></td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+function addTableRow8511(){
+  currentData.table_8511.push({
+    name:'', type:'', balance:'', days:'', age_group:'',
+    wp_ref:'', comment:''
+  });
+  renderTable8511();
+}
+function updateRow8511(idx,field,value){
+  currentData.table_8511[idx][field] = value;
+  renderTable8511();
+}
+function deleteRow8511(idx){
+  currentData.table_8511.splice(idx,1);
+  renderTable8511();
 }
 
 /* ==============================
@@ -746,9 +965,8 @@ function removeAttachment(section,idx){
   renderAttachments(section);
 }
 
-/* แนบจากกระดาษทำการอัตโนมัติ (ข้อ 3 + 17) */
+/* แนบจากกระดาษทำการอัตโนมัติ */
 function autoAttachFromWP(section){
-  // ตัวอย่าง: สร้าง URL ไป fa-db-wp พร้อม unit/year
   const unit = currentData.unit_id || document.getElementById('unit-select').value;
   const year = currentData.fiscal_year || document.getElementById('year-select').value;
   if(!unit || !year){
@@ -771,10 +989,10 @@ document.getElementById('btn-save').addEventListener('click', async ()=>{
   collectFormToData();
 
   // TODO: ส่ง currentData ไป backend จริง
-  // await fetch('/api/fa/lg/8_5', { method:'POST', body:JSON.stringify(currentData) ... });
+  // await fetch('/api/fa/lg/8_5', {...});
 
   console.log('บันทึก currentData:', currentData);
-  alert('บันทึกข้อมูล (ในตัวอย่าง log ที่ console) – เมื่อเชื่อม backend จะบันทึกถาวรในฐานข้อมูล');
+  alert('บันทึกข้อมูล (ในตัวอย่าง log ที่ console)');
 });
 
 /* ดึงค่าจากฟอร์มกลับเข้า currentData */
@@ -808,7 +1026,6 @@ document.getElementById('btn-spellcheck').addEventListener('click', async ()=>{
   collectFormToData();
 
   // TODO: เรียก AI/Service ตรวจคำผิดจริง
-  // ตัวอย่างผลลัพธ์จำลอง
   const result = {
     spelling:[
       '“ลูหนี้” → ควรเป็น “ลูกหนี้”',
@@ -833,7 +1050,7 @@ document.getElementById('btn-spellcheck').addEventListener('click', async ()=>{
     <ul>${result.guideline.map(x=>`<li>${x}</li>`).join('')}</ul>
   `;
 
-  document.getElementById('chk7').checked = true; // ผ่านการสอบทานแล้ว (คนยังต้องตัดสินใจเอง)
+  document.getElementById('chk7').checked = true;
 });
 
 /* ==============================
@@ -843,7 +1060,6 @@ document.getElementById('btn-ai-summary').addEventListener('click', async ()=>{
   collectFormToData();
 
   // TODO: ส่ง currentData ไป AI backend จริง
-  // ตัวอย่างสรุปที่ระบบสร้างจำลอง
   const autoSummary =
     `<p><strong>สรุปผลการตรวจสอบลูกหนี้อื่นระยะสั้น</strong></p>
      <p>จากการตรวจสอบลูกหนี้อื่นระยะสั้น ณ วันที่ ${currentData.period_end||'30 กันยายน'} 
@@ -866,10 +1082,8 @@ document.getElementById('btn-confirm-export').addEventListener('click', ()=>{
   const problems = validateBeforeExport();
 
   if(problems.length){
-    // มีปัญหา → ข้อ 7 แสดงเตือน
     showWarningModal(problems);
   }else{
-    // Checklist ผ่าน → export / ส่งต่อ
     doExportAndRoute();
   }
 });
@@ -906,12 +1120,11 @@ function closeWarningModal(){
   document.getElementById('modal-warning').style.display='none';
 }
 function askForGuidance(){
-  alert('ต่อไปสามารถเชื่อม API/AI เพื่อแนะนำวิธีแก้ไขทีละข้อได้ (เช่น แนะนำข้อความ/ขั้นตอนตามมาตรฐาน)');
+  alert('ต่อไปสามารถเชื่อม API/AI เพื่อแนะนำวิธีแก้ไขทีละข้อได้');
 }
 function overrideAndContinue(){
   errorOverrideCount++;
   closeWarningModal();
-  // ถ้ามากกว่า 3 ครั้ง → ถามตามข้อ 10
   if(errorOverrideCount>=3){
     document.getElementById('modal-consult').style.display='flex';
   }else{
@@ -930,7 +1143,7 @@ function closeConsultModal(){
 }
 function confirmConsult(){
   closeConsultModal();
-  alert('ต่อไปสามารถเชื่อมระบบส่งคำถามไปยังผู้เชี่ยวชาญ (เช่น Email, Line OA, ระบบภายใน OAG) ได้');
+  alert('ต่อไปสามารถเชื่อมระบบส่งคำถามไปยังผู้เชี่ยวชาญได้');
 }
 
 /* ==============================
@@ -953,15 +1166,61 @@ function doExportAndRoute(){
       break;
   }
 
-  // ตัวอย่าง "ส่งต่อ" ระบบอื่น (ข้อ 9)
   console.log('ส่งต่อข้อมูลไประบบสอบทาน / cashboard / ฐานข้อมูล:', currentData);
 }
 
 function downloadJSON(){
-  const blob = new Blob([JSON.stringify(currentData,null,2)],{type:'application/json'});
+  const unit = currentData.unit_id || 'unit';
+  const year = currentData.fiscal_year || 'year';
+
+  // 8.5
+  const d85 = {
+    unit_id: currentData.unit_id,
+    fiscal_year: currentData.fiscal_year,
+    period_end: currentData.period_end,
+    objective: currentData.objective,
+    procedures: currentData.procedures,
+    table: currentData.table_rows,
+    notes: currentData.notes,
+    attachments: {
+      objective: currentData.attachments.objective,
+      procedures: currentData.attachments.procedures,
+      table: currentData.attachments.table,
+      notes: currentData.attachments.notes
+    },
+    sign: currentData.sign
+  };
+  // 8.5.1
+  const d851 = {
+    unit_id: currentData.unit_id,
+    fiscal_year: currentData.fiscal_year,
+    period_end: currentData.period_end,
+    table_851: currentData.table_851,
+    attachments: {
+      table_851: currentData.attachments.table_851
+    }
+  };
+  // 8.5.1.1
+  const d8511 = {
+    unit_id: currentData.unit_id,
+    fiscal_year: currentData.fiscal_year,
+    period_end: currentData.period_end,
+    table_8511: currentData.table_8511,
+    attachments: {
+      table_8511: currentData.attachments.table_8511
+    }
+  };
+
+  downloadBlobJSON(d85,  `fa-lg-8-5-${unit}-${year}.json`);
+  downloadBlobJSON(d851, `fa-lg-8-5-1-${unit}-${year}.json`);
+  downloadBlobJSON(d8511,`fa-lg-8-5-1-1-${unit}-${year}.json`);
+}
+
+function downloadBlobJSON(obj, filename){
+  const blob = new Blob([JSON.stringify(obj,null,2)], {type:'application/json'});
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = `fa-lg-8-5-${currentData.unit_id||'unit'}-${currentData.fiscal_year||'year'}.json`;
+  a.download = filename;
   a.click();
 }
 
@@ -978,7 +1237,6 @@ function buildQuery(){
   return params.toString();
 }
 function goHome(){
-  // 15. กลับไปหน้า fieldwork หลัก
   const q = buildQuery();
   window.location.href = q ? `fa-lg-fieldwork.html?${q}` : 'fa-lg-fieldwork.html';
 }
@@ -994,7 +1252,6 @@ function goWorkpaper(){
   window.location.href = q ? `fa-db-wp.html?${q}` : 'fa-db-wp.html';
 }
 function goCashboard(){
-  // สมมติชื่อไฟล์ cashboard ของคุณ
   const q = buildQuery();
   window.location.href = q ? `fa-db-data-gov.html?${q}` : 'fa-db-data-gov.html';
 }
@@ -1003,7 +1260,6 @@ function goReview(){
   window.location.href = q ? `fa-review-menu.html?${q}` : 'fa-review-menu.html';
 }
 function goNextForm(){
-  // ถ้าคุณมีฟอร์ม 8.6 หรือหน้าอื่น ให้ใส่ไฟล์จริง
   const q = buildQuery();
   window.location.href = q ? `fa-lg-form-8-6.html?${q}` : 'fa-lg-form-8-6.html';
 }
