@@ -2,454 +2,129 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8" />
-  <title>FA – LG Fieldwork | อปท. 8.6 – กระดาษทำการ</title>
+  <title>FA – LG Fieldwork | อปท. 8.6 – กระดาษทำการ (Lead)</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     :root{
-      --primary:#0d47a1;
-      --primary-2:#42a5f5;
-      --accent:#ffd54f;
-      --bg:#060818;
-      --bg-soft:#0b1024;
-      --card:#11152b;
-      --text:#f5f7ff;
-      --muted:#a3acc7;
-      --border:#262b46;
-      --maroon:#7b1e3c;
-      --pink:#f48fb1;
-      --success:#66bb6a;
-      --danger:#ef5350;
+      --primary:#0d47a1; --primary-2:#42a5f5; --accent:#ffd54f;
+      --bg:#060818; --card:#11152b; --border:#262b46;
+      --text:#f5f7ff; --muted:#a3acc7; --danger:#ef5350;
       --shadow-soft:0 10px 30px rgba(0,0,0,0.55);
     }
     *{box-sizing:border-box;}
-
     body{
-      margin:0;
-      font-family:"Segoe UI", Tahoma, sans-serif;
+      margin:0;font-family:"Segoe UI",Tahoma,sans-serif;
       background:
         radial-gradient(circle at 10% 0%, rgba(123,30,60,0.35) 0, transparent 55%),
         radial-gradient(circle at 90% 100%, rgba(66,165,245,0.35) 0, transparent 55%),
-        var(--bg);
-      color:var(--text);
+        var(--bg);color:var(--text);
     }
-
     header{
       padding:14px 18px;
       border-bottom:1px solid rgba(255,255,255,0.1);
       background:linear-gradient(120deg,#7b1e3c,#0d47a1,#42a5f5);
       box-shadow:var(--shadow-soft);
-      position:sticky;
-      top:0;
-      z-index:20;
+      position:sticky;top:0;z-index:20;
     }
-    .header-top{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:12px;
-      flex-wrap:wrap;
-    }
-    .header-title{
-      display:flex;
-      flex-direction:column;
-      gap:2px;
-    }
-    .header-title h1{
-      margin:0;
-      font-size:20px;
-      font-weight:700;
-    }
-    .header-title span{
-      font-size:12px;
-      opacity:0.9;
-    }
-
-    .header-actions{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-    }
+    .header-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;}
+    .header-title h1{margin:0;font-size:20px;font-weight:700;}
+    .header-title span{font-size:12px;opacity:0.9;}
+    .header-actions{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;}
     .btn{
-      border:none;
-      border-radius:999px;
-      padding:6px 14px;
-      font-size:12px;
-      font-weight:600;
-      cursor:pointer;
-      display:inline-flex;
-      align-items:center;
-      gap:6px;
-      letter-spacing:0.02em;
-      white-space:nowrap;
+      border:none;border-radius:999px;padding:6px 14px;font-size:12px;
+      font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;
     }
-    .btn-primary{
-      background:linear-gradient(120deg,var(--primary),var(--primary-2));
-      color:#fff;
-    }
-    .btn-ghost{
-      background:rgba(0,0,0,0.25);
-      color:#fff;
-      border:1px solid rgba(255,255,255,0.12);
-    }
-    .btn-danger{
-      background:var(--danger);
-      color:#fff;
-    }
-    .btn-sm{
-      padding:4px 10px;
-      font-size:11px;
-    }
-    .btn-icon{
-      width:28px;
-      height:28px;
-      border-radius:999px;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      background:rgba(0,0,0,0.25);
-      border:1px solid rgba(255,255,255,0.16);
-      cursor:pointer;
-    }
-
-    .header-bottom{
-      margin-top:10px;
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      align-items:center;
-      font-size:12px;
-    }
+    .btn-primary{background:linear-gradient(120deg,var(--primary),var(--primary-2));color:#fff;}
+    .btn-ghost{background:rgba(0,0,0,0.25);color:#fff;border:1px solid rgba(255,255,255,0.12);}
+    .btn-danger{background:var(--danger);color:#fff;}
+    .btn-sm{padding:4px 10px;font-size:11px;}
+    .header-bottom{margin-top:10px;display:flex;flex-wrap:wrap;gap:6px;font-size:11px;}
     .badge{
-      display:inline-flex;
-      align-items:center;
-      gap:6px;
-      padding:4px 10px;
-      border-radius:999px;
-      background:rgba(0,0,0,0.25);
-      border:1px solid rgba(255,255,255,0.16);
-      font-size:11px;
-      color:#f5f7ff;
+      display:inline-flex;align-items:center;gap:6px;padding:4px 10px;
+      border-radius:999px;background:rgba(0,0,0,0.25);border:1px solid rgba(255,255,255,0.16);
     }
-    .badge span{
-      opacity:0.85;
-    }
-
-    main{
-      padding:16px;
-      max-width:1300px;
-      margin:0 auto;
-    }
-
-    .layout{
-      display:grid;
-      grid-template-columns: minmax(0,2.1fr) minmax(280px,0.9fr);
-      gap:16px;
-      align-items:flex-start;
-    }
-    @media(max-width:960px){
-      .layout{
-        grid-template-columns:1fr;
-      }
-    }
-
+    main{padding:16px;max-width:1300px;margin:0 auto;}
+    .layout{display:grid;grid-template-columns:minmax(0,2.15fr) minmax(300px,0.85fr);gap:16px;align-items:flex-start;}
+    @media(max-width:960px){.layout{grid-template-columns:1fr;}}
     .card{
-      background:rgba(7,11,32,0.94);
-      border-radius:18px;
-      border:1px solid var(--border);
-      padding:14px 14px 12px;
-      box-shadow:0 14px 40px rgba(0,0,0,0.65);
-      backdrop-filter:blur(14px);
+      background:rgba(7,11,32,0.94);border-radius:18px;border:1px solid var(--border);
+      padding:14px;box-shadow:0 14px 40px rgba(0,0,0,0.65);backdrop-filter:blur(14px);
     }
-    .card-header{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:8px;
-      margin-bottom:10px;
+    .card-header{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px;}
+    .card-title{font-size:14px;font-weight:700;display:flex;align-items:center;gap:6px;}
+    .card-sub{font-size:11px;color:var(--muted);margin-top:2px;}
+    label{font-size:11px;color:var(--muted);display:block;margin-bottom:4px;}
+    input,select,textarea{
+      width:100%;border-radius:10px;border:1px solid var(--border);
+      background:rgba(9,13,36,0.96);color:var(--text);font-size:12px;padding:6px 9px;font-family:inherit;
     }
-    .card-title{
-      font-size:14px;
-      font-weight:700;
-      display:flex;
-      align-items:center;
-      gap:6px;
-    }
-    .card-sub{
-      font-size:11px;
-      color:var(--muted);
-      margin-top:2px;
-    }
-
-    label{
-      font-size:11px;
-      color:var(--muted);
-      display:block;
-      margin-bottom:4px;
-    }
-    select,input[type="text"],input[type="date"],textarea{
-      width:100%;
-      border-radius:10px;
-      border:1px solid var(--border);
-      background:rgba(9,13,36,0.96);
-      color:var(--text);
-      font-size:12px;
-      padding:6px 9px;
-      font-family:inherit;
-    }
-    textarea{
-      min-height:90px;
-      resize:vertical;
-    }
-    input::placeholder,textarea::placeholder{
-      color:rgba(163,172,199,0.8);
-    }
-
-    .form-row{
-      display:grid;
-      grid-template-columns:repeat(4,minmax(0,1fr));
-      gap:10px;
-      margin-bottom:8px;
-    }
-    @media(max-width:720px){
-      .form-row{
-        grid-template-columns:1fr 1fr;
-      }
-    }
-
+    textarea{min-height:90px;resize:vertical;}
+    input::placeholder,textarea::placeholder{color:rgba(163,172,199,0.8);}
+    .form-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:8px;}
+    @media(max-width:720px){.form-row{grid-template-columns:1fr 1fr;}}
     .pill{
-      border-radius:999px;
-      padding:2px 8px;
-      font-size:10px;
-      border:1px solid rgba(255,255,255,0.18);
-      background:rgba(255,255,255,0.03);
-      color:var(--muted);
+      border-radius:999px;padding:2px 8px;font-size:10px;
+      border:1px solid rgba(255,255,255,0.18);background:rgba(255,255,255,0.03);color:var(--muted);
     }
-
-    table{
-      width:100%;
-      border-collapse:collapse;
-      font-size:11px;
-    }
-    th,td{
-      border-bottom:1px solid rgba(255,255,255,0.08);
-      padding:4px 6px;
-      text-align:left;
-    }
-    th{
-      background:rgba(255,255,255,0.04);
-      font-weight:600;
-      position:sticky;
-      top:0;
-      z-index:1;
-    }
-    tbody tr:nth-child(even){
-      background:rgba(255,255,255,0.01);
-    }
-    tbody tr:hover{
-      background:rgba(66,165,245,0.08);
-    }
-    .text-right{text-align:right;}
-    .text-center{text-align:center;}
-
-    .attachments{
-      margin-top:4px;
-      font-size:11px;
-    }
-    .attach-list{
-      margin-top:2px;
-      font-size:10px;
-      color:var(--muted);
-    }
-
+    table{width:100%;border-collapse:collapse;font-size:11px;}
+    th,td{border-bottom:1px solid rgba(255,255,255,0.08);padding:4px 6px;text-align:left;}
+    th{background:rgba(255,255,255,0.04);font-weight:600;position:sticky;top:0;z-index:1;}
+    tbody tr:nth-child(even){background:rgba(255,255,255,0.01);}
+    tbody tr:hover{background:rgba(66,165,245,0.08);}
+    .text-right{text-align:right;} .text-center{text-align:center;}
+    .attachments{margin-top:4px;font-size:11px;}
+    .attach-list{margin-top:2px;font-size:10px;color:var(--muted);}
     .tag{
-      display:inline-flex;
-      align-items:center;
-      gap:4px;
-      padding:2px 7px;
-      border-radius:999px;
-      border:1px solid rgba(244,143,177,0.7);
-      background:rgba(244,143,177,0.12);
-      font-size:10px;
-      color:#f48fb1;
+      display:inline-flex;align-items:center;gap:4px;padding:2px 7px;border-radius:999px;
+      border:1px solid rgba(244,143,177,0.7);background:rgba(244,143,177,0.12);font-size:10px;color:#f48fb1;
     }
-
-    .side-section{
-      margin-bottom:12px;
-    }
-    .side-section h3{
-      margin:0 0 6px 0;
-      font-size:13px;
-      font-weight:600;
-      display:flex;
-      align-items:center;
-      gap:6px;
-    }
-    .side-section small{
-      font-size:11px;
-      color:var(--muted);
-    }
-
+    .side-section{margin-bottom:12px;}
+    .side-section h3{margin:0 0 6px 0;font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px;}
+    .side-section small{font-size:11px;color:var(--muted);}
     .preview-box{
-      background:rgba(5,9,28,0.96);
-      border-radius:12px;
-      border:1px solid var(--border);
-      padding:8px;
-      max-height:180px;
-      overflow:auto;
-      font-family:"Cascadia Code","Consolas",monospace;
-      font-size:10px;
-      white-space:pre-wrap;
+      background:rgba(5,9,28,0.96);border-radius:12px;border:1px solid var(--border);
+      padding:8px;max-height:180px;overflow:auto;font-family:"Cascadia Code","Consolas",monospace;font-size:10px;white-space:pre-wrap;
     }
-
-    .qa-list{
-      list-style:none;
-      margin:4px 0 0;
-      padding:0;
-      font-size:11px;
-    }
-    .qa-item{
-      display:flex;
-      align-items:flex-start;
-      gap:6px;
-      padding:3px 0;
-    }
-    .qa-item span.icon{
-      font-size:12px;
-      margin-top:1px;
-    }
-
-    .checklist{
-      list-style:none;
-      padding:0;
-      margin:6px 0 0;
-      font-size:11px;
-    }
-    .checklist li{
-      display:flex;
-      align-items:flex-start;
-      gap:6px;
-      padding:3px 0;
-    }
-    .checklist input[type="checkbox"]{
-      margin-top:2px;
-      cursor:pointer;
-    }
-
-    .route-grid{
-      display:grid;
-      grid-template-columns:1fr;
-      gap:4px;
-      font-size:11px;
-    }
+    .qa-list{list-style:none;margin:4px 0 0;padding:0;font-size:11px;}
+    .qa-item{display:flex;align-items:flex-start;gap:6px;padding:3px 0;}
+    .qa-item .icon{font-size:12px;margin-top:1px;}
+    .checklist{list-style:none;padding:0;margin:6px 0 0;font-size:11px;}
+    .checklist li{display:flex;align-items:flex-start;gap:6px;padding:3px 0;}
+    .checklist input{margin-top:2px;cursor:pointer;}
+    .route-grid{display:grid;grid-template-columns:1fr;gap:4px;font-size:11px;}
     .route-item{
-      display:flex;
-      align-items:center;
-      gap:6px;
-      padding:4px 6px;
-      border-radius:8px;
-      background:rgba(5,9,28,0.96);
-      border:1px solid var(--border);
-    }
-    .route-item input[type="checkbox"]{
-      cursor:pointer;
+      display:flex;align-items:center;gap:6px;padding:4px 6px;border-radius:8px;
+      background:rgba(5,9,28,0.96);border:1px solid var(--border);
     }
     .route-console{
-      margin-top:6px;
-      font-size:10px;
-      background:rgba(0,0,0,0.7);
-      border-radius:8px;
-      padding:6px;
-      border:1px dashed rgba(255,255,255,0.15);
-      max-height:80px;
-      overflow:auto;
-      font-family:"Cascadia Code","Consolas",monospace;
-      white-space:pre-wrap;
+      margin-top:6px;font-size:10px;background:rgba(0,0,0,0.7);border-radius:8px;
+      padding:6px;border:1px dashed rgba(255,255,255,0.15);max-height:80px;overflow:auto;
+      font-family:"Cascadia Code","Consolas",monospace;white-space:pre-wrap;
     }
-
-    .footer-meta{
-      display:grid;
-      grid-template-columns:repeat(3,minmax(0,1fr));
-      gap:10px;
-      margin-top:10px;
-    }
-    @media(max-width:720px){
-      .footer-meta{
-        grid-template-columns:1fr;
-      }
-    }
+    .footer-meta{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:10px;}
+    @media(max-width:720px){.footer-meta{grid-template-columns:1fr;}}
     .signature-box{
-      margin-top:10px;
-      padding-top:22px;
-      border-top:1px dashed rgba(255,255,255,0.35);
-      text-align:center;
-      font-size:11px;
-      color:var(--muted);
+      margin-top:10px;padding-top:22px;border-top:1px dashed rgba(255,255,255,0.35);
+      text-align:center;font-size:11px;color:var(--muted);
     }
-
-    .export-row{
-      margin-top:8px;
-      display:flex;
-      gap:8px;
-      align-items:center;
-      flex-wrap:wrap;
-    }
-
-    /* Modal */
+    .export-row{margin-top:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
     .modal-backdrop{
-      position:fixed;
-      inset:0;
-      background:rgba(0,0,0,0.75);
-      display:none;
-      justify-content:center;
-      align-items:center;
-      z-index:50;
+      position:fixed;inset:0;background:rgba(0,0,0,0.75);
+      display:none;justify-content:center;align-items:center;z-index:50;
     }
     .modal{
-      background:#0b1024;
-      border-radius:18px;
-      padding:16px 16px 14px;
-      max-width:420px;
-      width:100%;
-      border:1px solid var(--border);
-      box-shadow:var(--shadow-soft);
+      background:#0b1024;border-radius:18px;padding:16px;max-width:420px;width:100%;
+      border:1px solid var(--border);box-shadow:var(--shadow-soft);
     }
-    .modal h2{
-      margin:0 0 6px 0;
-      font-size:15px;
-    }
-    .modal p{
-      margin:0 0 10px 0;
-      font-size:12px;
-      color:var(--muted);
-    }
-    .modal-actions{
-      margin-top:10px;
-      display:flex;
-      justify-content:flex-end;
-      gap:6px;
-      flex-wrap:wrap;
-    }
-
-    /* Print tweaks */
+    .modal h2{margin:0 0 6px 0;font-size:15px;}
+    .modal p{margin:0 0 10px 0;font-size:12px;color:var(--muted);}
+    .modal-actions{margin-top:10px;display:flex;justify-content:flex-end;gap:6px;flex-wrap:wrap;}
     @media print{
-      header, .btn, .btn-icon, .route-console{
-        display:none !important;
-      }
-      body{
-        background:#fff;
-        color:#000;
-      }
-      .card{
-        box-shadow:none;
-        border-color:#ccc;
-      }
-      main{
-        padding:8px;
-      }
-      .signature-box{
-        margin-top:30px;
-        border-color:#000;
-      }
+      header,.btn,.route-console,#routeSearch{display:none!important;}
+      body{background:#fff;color:#000;}
+      .card{box-shadow:none;border-color:#ccc;}
+      main{padding:8px;}
+      .signature-box{margin-top:30px;border-color:#000;}
     }
   </style>
 </head>
@@ -457,358 +132,252 @@
 <header>
   <div class="header-top">
     <div class="header-title">
-      <h1>อปท. 8.6 – กระดาษทำการ (Fieldwork)</h1>
-      <span>ระบบตรวจสอบรายงานการเงิน อปท. | Financial Audit – Local Government</span>
+      <h1>อปท. 8.6 – กระดาษทำการ (Lead)</h1>
+      <span>ระบบตรวจสอบรายงานการเงิน อปท. | Lead Sheet สำหรับงบการเงิน</span>
     </div>
     <div class="header-actions">
-      <button class="btn btn-ghost" onclick="window.location.href='fa-lg-fieldwork.html'">
-        ← กลับ Fieldwork
-      </button>
-      <button class="btn btn-ghost" id="btnSaveDraft">💾 บันทึกร่าง</button>
-      <button class="btn btn-danger" id="btnResetForm">🧹 รีเซ็ตฟอร์ม</button>
+      <button class="btn btn-ghost btn-sm" onclick="window.location.href='fa-lg-form-8-6-1.html'">◀ 8.6.1</button>
+      <button class="btn btn-ghost btn-sm" onclick="window.location.href='fa-lg-form-8-6-2.html'">8.6.2 ▶</button>
+      <button class="btn btn-ghost btn-sm" onclick="window.location.href='index.html'">🏠 หน้าหลัก FA</button>
+      <button class="btn btn-ghost btn-sm" onclick="window.location.href='fa-lg-fieldwork.html'">← Fieldwork</button>
+      <button class="btn btn-ghost btn-sm" id="btnSaveDraft">💾 บันทึกร่าง</button>
+      <button class="btn btn-danger btn-sm" id="btnResetForm">🧹 รีเซ็ต</button>
     </div>
   </div>
   <div class="header-bottom">
-    <span class="badge">
-      🔗 <span>เชื่อมต่อ: fa-db-wp / a-lg-notes-2y / ระบบสอบทาน / Cash Board</span>
-    </span>
-    <span class="badge">
-      🧠 <span>มี AI ช่วยสรุป + QA ตรวจสอบข้อความ</span>
-    </span>
-    <span class="badge">
-      ✅ <span>Checklist 7 ข้อ + Export หลายรูปแบบ</span>
-    </span>
+    <span class="badge">🔗 <span>เชื่อม fa-db-wp / a-lg-notes-2y / ระบบสอบทาน / Cash Board</span></span>
+    <span class="badge">🧠 <span>AI ช่วยสรุป + QA ตรวจคำผิด</span></span>
+    <span class="badge">✅ <span>Checklist ครบก่อน Export</span></span>
+    <span class="badge">📄 <span>FormCode: LG_8_6</span></span>
   </div>
 </header>
 
 <main>
   <div class="layout">
-    <!-- MAIN FORM -->
     <section>
-      <!-- เลือกหน่วย / ปี / งวด + โหลดข้อมูล -->
+      <!-- META -->
       <div class="card">
         <div class="card-header">
           <div>
             <div class="card-title">ข้อมูลหน่วยรับตรวจ</div>
-            <div class="card-sub">เลือกหน่วย / ปีงบประมาณ / งวด เพื่อดึง–บันทึกข้อมูลอปท. 8.6</div>
+            <div class="card-sub">เลือกหน่วย / ปี / งวด เพื่อดึงข้อมูลเก่าหรือบันทึกใหม่ (อปท. 8.6)</div>
           </div>
-          <button class="btn btn-primary btn-sm" id="btnLoadFromDB">
-            ⬇ โหลดข้อมูล / ดึงจากฐานข้อมูล
-          </button>
+          <button class="btn btn-primary btn-sm" id="btnLoadFromDB">⬇ ดึงจากฐานข้อมูล</button>
         </div>
-
         <div class="form-row">
           <div>
-            <label>หน่วยรับตรวจ (เชื่อมฐานข้อมูลกลาง)</label>
-            <input type="text" id="unitName" placeholder="เช่น เทศบาลเมืองศรีสะเกษ / อบต. ฯลฯ" />
+            <label>หน่วยรับตรวจ</label>
+            <input id="unitName" placeholder="เช่น เทศบาลเมืองศรีสะเกษ" />
           </div>
           <div>
-            <label>จังหวัด / อำเภอ (auto-fill ภายหลัง)</label>
-            <input type="text" id="unitLocation" placeholder="ระบบจะดึงจากฐานข้อมูล" />
+            <label>จังหวัด / อำเภอ</label>
+            <input id="unitLocation" placeholder="ดึงอัตโนมัติจากฐานข้อมูลกลาง" />
           </div>
           <div>
             <label>ปีงบประมาณ (พ.ศ.)</label>
-            <select id="fiscalYear">
-              <option value="">-- เลือกปี --</option>
-              <script>
-                // จะเติม option ผ่าน JS ด้านล่าง
-              </script>
-            </select>
+            <select id="fiscalYear"></select>
           </div>
           <div>
-            <label>งวด (ปิดงบ)</label>
+            <label>งวดปิดงบ</label>
             <select id="period">
               <option value="30-09">30 กันยายน</option>
-              <option value="31-12">31 ธันวาคม (กรณีพิเศษ)</option>
+              <option value="31-12">31 ธันวาคม (พิเศษ)</option>
             </select>
           </div>
         </div>
-
-        <div style="font-size:11px;color:var(--muted);margin-top:2px;">
-          Tip: ปุ่ม “โหลดข้อมูล / ดึงจากฐานข้อมูล” จะเรียก API (เช่น <span class="pill">GET /api/fa/lg/8_6?unit=...&year=...</span>)
+        <div style="font-size:11px;color:var(--muted);">
+          API ตัวอย่าง: <span class="pill">GET /api/fa/lg/8_6?unit=...&amp;year=...</span>
         </div>
       </div>
 
-      <!-- SECTION A: ตารางรายการ -->
+      <!-- SECTION 1 -->
       <div class="card" style="margin-top:12px;">
         <div class="card-header">
           <div>
             <div class="card-title">
-              ส่วนที่ 1 – รายการตรวจสอบหลัก
+              ส่วนที่ 1 – รายการตรวจสอบหลัก (Lead Items)
               <span class="pill">Editor + Input + Attachments</span>
             </div>
-            <div class="card-sub">โครงสร้างรายการสามารถปรับให้ตรงกับแบบฟอร์ม อปท. 8.6 ใน Excel ได้</div>
+            <div class="card-sub">รายการยอดสำคัญที่เชื่อมไปยังกระดาษทำการย่อย และหมายเหตุประกอบงบการเงิน</div>
           </div>
           <div style="display:flex;gap:6px;flex-wrap:wrap;">
             <button class="btn btn-ghost btn-sm" id="btnAddRow">➕ เพิ่มรายการ</button>
             <button class="btn btn-ghost btn-sm" id="btnAutoAttachWP">📎 ดึงเอกสารจาก fa-db-wp</button>
           </div>
         </div>
-
         <div style="max-height:260px;overflow:auto;border-radius:12px;border:1px solid rgba(255,255,255,0.08);">
           <table id="itemsTable">
             <thead>
               <tr>
                 <th style="width:40px;">ลำดับ</th>
                 <th>รายการ / รายละเอียด</th>
-                <th style="width:120px;" class="text-right">จำนวนเงิน (บาท)</th>
-                <th style="width:150px;">หมายเหตุ</th>
+                <th style="width:140px;" class="text-right">จำนวนเงิน (บาท)</th>
+                <th style="width:180px;">เชื่อมโยงถึงแบบ (8.6.x)</th>
+                <th style="width:120px;">หมายเหตุ</th>
                 <th style="width:110px;" class="text-center">เอกสารแนบ</th>
                 <th style="width:60px;"></th>
               </tr>
             </thead>
-            <tbody>
-              <!-- แถวจะถูกเพิ่มด้วย JS -->
-            </tbody>
+            <tbody></tbody>
           </table>
         </div>
-
         <div class="attachments">
-          <button class="btn btn-ghost btn-sm" data-section-attach="main">
-            📎 เพิ่มเอกสารประกอบสำหรับส่วนที่ 1
-          </button>
-          <input type="file" multiple style="display:none;" id="fileMainSection" />
-          <div class="attach-list" id="fileMainSectionList">
-            ยังไม่มีเอกสารแนบ (ส่วนที่ 1)
-          </div>
+          <button class="btn btn-ghost btn-sm" data-section-attach="main">📎 เพิ่มเอกสารประกอบส่วนที่ 1</button>
+          <input type="file" multiple id="fileMainSection" style="display:none;">
+          <div class="attach-list" id="fileMainSectionList">ยังไม่มีเอกสารแนบ (ส่วนที่ 1)</div>
         </div>
       </div>
 
-      <!-- SECTION B: สรุปผล / ประเด็น -->
+      <!-- SECTION 2 -->
       <div class="card" style="margin-top:12px;">
         <div class="card-header">
           <div>
             <div class="card-title">
               ส่วนที่ 2 – สรุปผลการตรวจสอบ / ประเด็นสำคัญ
-              <span class="tag">AI ช่วยสรุป</span>
+              <span class="tag">AI Summary</span>
             </div>
-            <div class="card-sub">ข้อความนี้จะใช้เชื่อมไปยัง หมายเหตุประกอบงบการเงิน (2 ปี) และรายงาน FA</div>
+            <div class="card-sub">สรุปภาพรวมจากกระดาษทำการ 8.6.1 / 8.6.1.1 / 8.6.2 และแบบอื่น ๆ</div>
           </div>
-          <button class="btn btn-primary btn-sm" id="btnAISummarize">
-            🤖 AI ช่วยสรุป
-          </button>
+          <button class="btn btn-primary btn-sm" id="btnAISummarize">🤖 AI ช่วยสรุป</button>
         </div>
-
-        <label>ข้อความสรุป / Narrative (ผู้ตรวจบันทึกเองได้)</label>
-        <textarea id="summaryText" placeholder="บันทึกผลการตรวจสอบ ประเด็นที่พบ ความเสี่ยงที่สำคัญ และการประเมินผลโดยรวม..."></textarea>
-
+        <label>ข้อความสรุป / Narrative</label>
+        <textarea id="summaryText" placeholder="บันทึกผลการตรวจสอบภาพรวมของงบการเงินและรายการสำคัญ..."></textarea>
         <div class="attachments">
-          <button class="btn btn-ghost btn-sm" data-section-attach="summary">
-            📎 เพิ่มเอกสารประกอบ (ส่วนที่ 2)
-          </button>
-          <input type="file" multiple style="display:none;" id="fileSummarySection" />
-          <div class="attach-list" id="fileSummarySectionList">
-            ยังไม่มีเอกสารแนบ (ส่วนที่ 2)
-          </div>
+          <button class="btn btn-ghost btn-sm" data-section-attach="summary">📎 เพิ่มเอกสารประกอบ (ส่วนที่ 2)</button>
+          <input type="file" multiple id="fileSummarySection" style="display:none;">
+          <div class="attach-list" id="fileSummarySectionList">ยังไม่มีเอกสารแนบ (ส่วนที่ 2)</div>
         </div>
       </div>
 
-      <!-- SECTION C: ข้อเสนอแนะ -->
+      <!-- SECTION 3 -->
       <div class="card" style="margin-top:12px;">
         <div class="card-header">
           <div>
-            <div class="card-title">
-              ส่วนที่ 3 – ข้อเสนอแนะ / มาตรการแก้ไข
-            </div>
-            <div class="card-sub">ระบุข้อเสนอแนะต่อหน่วยรับตรวจ และมาตรการติดตามผลในอนาคต</div>
+            <div class="card-title">ส่วนที่ 3 – ข้อเสนอแนะ / มาตรการแก้ไข</div>
+            <div class="card-sub">ข้อเสนอแนะระดับภาพรวมเกี่ยวกับงบการเงิน การควบคุมภายใน และการบริหารความเสี่ยง</div>
           </div>
         </div>
-
         <label>ข้อเสนอแนะ / มาตรการ</label>
-        <textarea id="recommendText" placeholder="ระบุข้อเสนอแนะที่เป็นรูปธรรม กำหนดผู้รับผิดชอบ ระยะเวลา และตัวชี้วัด..."></textarea>
-
+        <textarea id="recommendText" placeholder="ระบุข้อเสนอแนะที่เป็นรูปธรรม ผู้รับผิดชอบ ระยะเวลา และตัวชี้วัด..."></textarea>
         <div class="attachments">
-          <button class="btn btn-ghost btn-sm" data-section-attach="recommend">
-            📎 เพิ่มเอกสารประกอบ (ส่วนที่ 3)
-          </button>
-          <input type="file" multiple style="display:none;" id="fileRecommendSection" />
-          <div class="attach-list" id="fileRecommendSectionList">
-            ยังไม่มีเอกสารแนบ (ส่วนที่ 3)
-          </div>
+          <button class="btn btn-ghost btn-sm" data-section-attach="recommend">📎 เพิ่มเอกสารประกอบ (ส่วนที่ 3)</button>
+          <input type="file" multiple id="fileRecommendSection" style="display:none;">
+          <div class="attach-list" id="fileRecommendSectionList">ยังไม่มีเอกสารแนบ (ส่วนที่ 3)</div>
         </div>
-
-        <!-- Meta / ลายเซ็น -->
         <div class="footer-meta">
-          <div>
-            <label>ผู้จัดทำ / ผู้ตรวจสอบ</label>
-            <input type="text" id="auditorName" placeholder="ชื่อ–สกุล" />
-          </div>
-          <div>
-            <label>ตำแหน่ง</label>
-            <input type="text" id="auditorPosition" placeholder="เช่น นักวิชาการตรวจเงินแผ่นดิน" />
-          </div>
-          <div>
-            <label>วันที่จัดทำ</label>
-            <input type="date" id="auditDate" />
-          </div>
+          <div><label>ผู้จัดทำ / ผู้ตรวจสอบ</label><input id="auditorName" placeholder="ชื่อ–สกุล"></div>
+          <div><label>ตำแหน่ง</label><input id="auditorPosition" placeholder="เช่น นักวิชาการตรวจเงินแผ่นดิน"></div>
+          <div><label>วันที่จัดทำ</label><input type="date" id="auditDate"></div>
         </div>
-
-        <div class="signature-box">
-          พื้นที่ลายเซ็นผู้ตรวจสอบ / ผู้สอบทาน (จะแสดงในรูปแบบชัดเจนเมื่อสั่งพิมพ์ / Export PDF)
-        </div>
+        <div class="signature-box">ช่องลายเซ็นผู้ตรวจสอบ / ผู้สอบทาน (จะแสดงชัดเจนเมื่อพิมพ์ / PDF)</div>
       </div>
     </section>
 
-    <!-- SIDE PANEL -->
+    <!-- SIDE -->
     <aside>
-      <!-- currentData + comment จุดเชื่อม API -->
       <div class="card side-section">
-        <h3>📡 currentData &amp; API Link</h3>
-        <small>แสดงตัวอย่างข้อมูลที่จะส่งไปยัง backend / API (JSON) พร้อมช่อง comment สำหรับ dev</small>
-        <div class="preview-box" id="currentDataPreview">
-{ }
-        </div>
-        <label style="margin-top:6px;">หมายเหตุสำหรับนักพัฒนา / จุดเชื่อม API</label>
-        <textarea id="apiComment" placeholder="เช่น POST /api/fa/lg/8_6/save, ใช้ token จากระบบ login, ผูก audit_id จาก fa-lg-fieldwork.html เป็นต้น"></textarea>
+        <h3>📡 currentData &amp; API</h3>
+        <small>ข้อมูล JSON ที่จะส่งไป backend (FA Data Lake / API)</small>
+        <div class="preview-box" id="currentDataPreview">{ }</div>
+        <label style="margin-top:6px;">หมายเหตุสำหรับ dev / จุดเชื่อม API</label>
+        <textarea id="apiComment" placeholder="เช่น POST /api/fa/lg/8_6/save, bind audit_id จาก fa-lg-fieldwork.html"></textarea>
       </div>
 
-      <!-- QA Panel -->
       <div class="card side-section">
         <div class="card-header" style="margin-bottom:4px;">
           <div>
-            <div class="card-title">🔍 สอบทานความถูกต้อง (QA)</div>
+            <div class="card-title">🔍 ต้องการสอบทานความถูกต้อง</div>
             <div class="card-sub">ตรวจคำผิด ข้อมูลไม่ครบ และข้อเสนอแนะเบื้องต้น</div>
           </div>
-          <button class="btn btn-primary btn-sm" id="btnRunQA">
-            ✅ สอบทาน
-          </button>
+          <button class="btn btn-primary btn-sm" id="btnRunQA">✅ ต้องการสอบทานความถูกต้อง</button>
         </div>
-
         <ul class="qa-list" id="qaList">
-          <li class="qa-item">
-            <span class="icon">ℹ️</span>
-            <span>ยังไม่ได้รัน QA – กดปุ่ม “สอบทาน” เพื่อประมวลผล</span>
-          </li>
+          <li class="qa-item"><span class="icon">ℹ️</span><span>ยังไม่ได้รัน QA – กดปุ่มเพื่อเริ่มสอบทาน</span></li>
         </ul>
       </div>
 
-      <!-- Checklist -->
       <div class="card side-section">
         <div class="card-header" style="margin-bottom:4px;">
           <div>
-            <div class="card-title">✅ Checklist – อปท. 8.6 (7 ข้อ)</div>
-            <div class="card-sub">ต้องครบก่อน Export &amp; ส่งต่อ (เว้นแต่ override)</div>
+            <div class="card-title">✅ Checklist – ความครบถ้วน (7 ข้อ)</div>
+            <div class="card-sub">ต้องครบก่อน Export &amp; ส่งต่อ (ยกเว้น override)</div>
           </div>
         </div>
-
         <ul class="checklist" id="checklist">
-          <li>
-            <input type="checkbox" data-check="step1" />
-            <span>1) เลือกหน่วยรับตรวจ + ปี + งวดถูกต้อง</span>
-          </li>
-          <li>
-            <input type="checkbox" data-check="step2" />
-            <span>2) บันทึกรายการในตาราง (ส่วนที่ 1) ครบถ้วน</span>
-          </li>
-          <li>
-            <input type="checkbox" data-check="step3" />
-            <span>3) กรอกข้อความสรุปผล (ส่วนที่ 2)</span>
-          </li>
-          <li>
-            <input type="checkbox" data-check="step4" />
-            <span>4) ระบุข้อเสนอแนะ / มาตรการ (ส่วนที่ 3)</span>
-          </li>
-          <li>
-            <input type="checkbox" data-check="step5" />
-            <span>5) แนบเอกสารหลักฐานสำคัญครบแล้ว</span>
-          </li>
-          <li>
-            <input type="checkbox" data-check="step6" />
-            <span>6) รัน “สอบทานความถูกต้อง (QA)” แล้ว</span>
-          </li>
-          <li>
-            <input type="checkbox" data-check="step7" />
-            <span>7) ตรวจทานชื่อ–ตำแหน่ง–วันที่จัดทำถูกต้อง</span>
-          </li>
+          <li><input type="checkbox" data-check="step1"> <span>1) เลือกหน่วยรับตรวจ + ปี + งวดถูกต้อง</span></li>
+          <li><input type="checkbox" data-check="step2"> <span>2) กรอกตาราง Lead (ส่วนที่ 1) ครบถ้วน</span></li>
+          <li><input type="checkbox" data-check="step3"> <span>3) บันทึกข้อความสรุป (ส่วนที่ 2)</span></li>
+          <li><input type="checkbox" data-check="step4"> <span>4) ระบุข้อเสนอแนะ (ส่วนที่ 3)</span></li>
+          <li><input type="checkbox" data-check="step5"> <span>5) แนบเอกสารสำคัญครบแล้ว</span></li>
+          <li><input type="checkbox" data-check="step6"> <span>6) รัน QA แล้ว</span></li>
+          <li><input type="checkbox" data-check="step7"> <span>7) ตรวจชื่อ–ตำแหน่ง–วันที่เรียบร้อย</span></li>
         </ul>
-
         <div class="export-row">
           <div style="flex:1;">
             <label>ชนิดการ Export</label>
             <select id="exportType">
               <option value="print">Print / PDF</option>
-              <option value="json">JSON (สำหรับ backend / data lake)</option>
-              <option value="docx">DOCX (เชื่อม backend)</option>
-              <option value="xlsx">XLSX (เชื่อม backend)</option>
+              <option value="json">JSON</option>
+              <option value="docx">DOCX</option>
+              <option value="xlsx">XLSX</option>
             </select>
           </div>
-          <button class="btn btn-primary" id="btnExport">
-            📤 ยืนยัน Export &amp; ส่งต่อ
-          </button>
+          <button class="btn btn-primary" id="btnExport">📤 ยืนยัน Export &amp; ส่งต่อ</button>
         </div>
       </div>
 
-      <!-- Route Panel -->
       <div class="card side-section">
         <div class="card-header" style="margin-bottom:4px;">
           <div>
-            <div class="card-title">🛣 Route &amp; Integration Panel</div>
-            <div class="card-sub">กำหนดปลายทางการส่งต่อข้อมูลอปท. 8.6</div>
+            <div class="card-title">🛣 Route &amp; Integration</div>
+            <div class="card-sub">กำหนดปลายทางข้อมูล: สอบทาน / ฐานข้อมูล / Dashboard / Notes</div>
           </div>
         </div>
-
-        <div class="route-grid">
-          <label class="route-item">
-            <input type="checkbox" id="routeReview" checked />
-            <span>ส่งต่อ → ระบบสอบทาน FA (fa-review-*.html)</span>
+        <div style="margin-bottom:6px;">
+          <label>ค้นหาระบบปลายทาง</label>
+          <input id="routeSearch" placeholder="เช่น สอบทาน, ฐานข้อมูล, dashboard, หมายเหตุ...">
+        </div>
+        <div class="route-grid" id="routeGrid">
+          <label class="route-item" data-route-label="สอบทาน fa review ระบบสอบทาน">
+            <input type="checkbox" id="routeReview" checked> <span>ส่งต่อ → ระบบสอบทาน FA</span>
           </label>
-          <label class="route-item">
-            <input type="checkbox" id="routeDB" checked />
-            <span>ส่งต่อ → ฐานข้อมูลกลาง / Data Lake (fa-db-wp / fa-db-data-gov)</span>
+          <label class="route-item" data-route-label="ฐานข้อมูล data lake fa-db-wp fa-db-data-gov">
+            <input type="checkbox" id="routeDB" checked> <span>ส่งต่อ → ฐานข้อมูลกลาง / Data Lake</span>
           </label>
-          <label class="route-item">
-            <input type="checkbox" id="routeDashboard" checked />
-            <span>ส่งต่อ → Cash Board / Dashboard ติดตามผล</span>
+          <label class="route-item" data-route-label="cash board dashboard ติดตามผล">
+            <input type="checkbox" id="routeDashboard" checked> <span>ส่งต่อ → Cash Board / Dashboard</span>
           </label>
-          <label class="route-item">
-            <input type="checkbox" id="routeNotes" />
-            <span>เชื่อมเนื้อหา → หมายเหตุประกอบงบการเงิน (2 ปี)</span>
+          <label class="route-item" data-route-label="หมายเหตุ notes a-lg-notes-2y">
+            <input type="checkbox" id="routeNotes"> <span>เชื่อมเนื้อหา → หมายเหตุประกอบงบ (2 ปี)</span>
           </label>
         </div>
-
         <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;">
-          <button class="btn btn-ghost btn-sm" onclick="window.open('a-lg-notes-2y.html','_blank')">
-            📄 เปิด a-lg-notes-2y.html
-          </button>
-          <button class="btn btn-ghost btn-sm" onclick="logRouteConsole('ทดสอบเชื่อมต่อ backend routing...');">
-            🧪 ทดสอบ Route Console
-          </button>
+          <button class="btn btn-ghost btn-sm" onclick="window.open('a-lg-notes-2y.html','_blank')">📄 เปิด a-lg-notes-2y.html</button>
+          <button class="btn btn-ghost btn-sm" onclick="logRouteConsole('ทดสอบ routing...');">🧪 ทดสอบ Route</button>
         </div>
-
-        <div class="route-console" id="routeConsole">
-Ready: รอรับข้อมูล routing จากปุ่ม Export...
-        </div>
+        <div class="route-console" id="routeConsole">Ready: รอ Export เพื่อส่งต่อข้อมูล...</div>
       </div>
     </aside>
   </div>
 </main>
 
-<!-- Modal: เตือนผิดขั้นตอน -->
+<!-- MODALS -->
 <div class="modal-backdrop" id="stepWarningModal">
   <div class="modal">
-    <h2>⚠️ ขั้นตอนยังไม่ครบ</h2>
-    <p id="stepWarningText">
-      ระบบตรวจพบว่ายังมีบางขั้นตอนไม่ครบ เช่น Checklist ยังไม่ครบ หรือยังไม่รัน QA
-      คุณต้องการทำอย่างไรต่อ?
-    </p>
+    <h2>⚠️ ขั้นตอนยังไม่ครบ / ไม่ตรงแนวทาง</h2>
+    <p id="stepWarningText">ระบบตรวจพบว่ามีเงื่อนไขบางข้อยังไม่ครบ คุณต้องการดำเนินการอย่างไร?</p>
     <div class="modal-actions">
       <button class="btn btn-ghost btn-sm" id="btnBackToEdit">⬅ กลับไปแก้ไข</button>
       <button class="btn btn-ghost btn-sm" id="btnAskForHelp">💬 ขอคำแนะนำ</button>
-      <button class="btn btn-primary btn-sm" id="btnOverrideProceed">
-        ✅ ยืนยันดำเนินการต่อ (Override)
-      </button>
+      <button class="btn btn-primary btn-sm" id="btnOverrideProceed">✅ ยืนยันดำเนินการต่อ (Override)</button>
     </div>
   </div>
 </div>
 
-<!-- Modal: ขอคำปรึกษาเมื่อ override ≥ 3 -->
 <div class="modal-backdrop" id="consultModal">
   <div class="modal">
     <h2>💡 ต้องการคำปรึกษาหรือไม่?</h2>
-    <p>
-      ระบบพบว่ามีการ override ขั้นตอนมากกว่า 3 ครั้ง
-      คุณต้องการคำปรึกษาเพิ่มเติมจากผู้เชี่ยวชาญ / Admin ระบบ หรือไม่?
-    </p>
+    <p>มีการ Override ขั้นตอนมากกว่า 3 ครั้ง ต้องการคำปรึกษาจากผู้เชี่ยวชาญการตรวจสอบการเงินหรือไม่?</p>
     <div class="modal-actions">
       <button class="btn btn-primary btn-sm" id="btnNeedConsult">ต้องการคำปรึกษา</button>
       <button class="btn btn-ghost btn-sm" id="btnNoConsult">ไม่ต้องการ</button>
@@ -817,9 +386,9 @@ Ready: รอรับข้อมูล routing จากปุ่ม Export...
 </div>
 
 <script>
-  // ======= GLOBAL STATE =======
+  const FORM_CODE = "LG_8_6";
   const state = {
-    items: [],           // rows ส่วนที่ 1
+    items: [],
     mainFiles: [],
     summaryFiles: [],
     recommendFiles: [],
@@ -828,459 +397,297 @@ Ready: รอรับข้อมูล routing จากปุ่ม Export...
     overrideCount: 0
   };
 
-  // เติมปี 2565–2582
-  (function fillYears(){
+  function initYears(){
     const fy = document.getElementById('fiscalYear');
-    if(!fy) return;
-    const start = 2565, end = 2582;
-    for(let y=start;y<=end;y++){
-      const opt = document.createElement('option');
-      opt.value = y;
-      opt.textContent = y;
-      fy.appendChild(opt);
+    fy.innerHTML = '<option value="">-- เลือกปี --</option>';
+    for(let y=2565;y<=2582;y++){
+      const o=document.createElement('option');o.value=y;o.textContent=y;fy.appendChild(o);
     }
-  })();
+  }
 
-  // Helper สร้าง row ใหม่ในตาราง
-  function addItemRow(data){
+  function addItemRow(data={}){
     const tbody = document.querySelector('#itemsTable tbody');
-    const idx = (state.items.length || 0) + 1;
-
-    const rowData = {
-      id: Date.now() + '-' + idx,
-      description: data?.description || '',
-      amount: data?.amount || '',
-      note: data?.note || '',
-      attachments: []
+    const idx = state.items.length+1;
+    const id = Date.now()+"-"+idx;
+    const row = {
+      id,
+      description:data.description||'',
+      amount:data.amount||'',
+      linkTo:data.linkTo||'',
+      note:data.note||'',
+      attachments:[]
     };
-    state.items.push(rowData);
+    state.items.push(row);
 
-    const tr = document.createElement('tr');
-    tr.dataset.id = rowData.id;
-
+    const tr=document.createElement('tr');tr.dataset.id=id;
     tr.innerHTML = `
       <td class="text-center">${idx}</td>
-      <td>
-        <input type="text" class="item-desc" placeholder="ระบุรายการ / รายละเอียด" value="${rowData.description.replace(/"/g,'&quot;')}" />
-      </td>
-      <td class="text-right">
-        <input type="text" class="item-amount" placeholder="0.00" value="${rowData.amount}" style="text-align:right;" />
-      </td>
-      <td>
-        <input type="text" class="item-note" placeholder="หมายเหตุเพิ่มเติม" value="${rowData.note.replace(/"/g,'&quot;')}" />
-      </td>
+      <td><input class="i-desc" placeholder="รายการ / รายละเอียด" value="${row.description.replace(/"/g,'&quot;')}"></td>
+      <td class="text-right"><input class="i-amt" placeholder="0.00" value="${row.amount}" style="text-align:right;"></td>
+      <td><input class="i-link" placeholder="เช่น 8.6.1 / 8.6.2 / หมายเหตุ..." value="${row.linkTo.replace(/"/g,'&quot;')}"></td>
+      <td><input class="i-note" placeholder="หมายเหตุ" value="${row.note.replace(/"/g,'&quot;')}"></td>
       <td class="text-center">
         <button class="btn btn-ghost btn-sm btn-row-attach">📎 แนบ</button>
         <div class="attach-list row-attach-list">-</div>
-        <input type="file" multiple style="display:none;" class="row-file-input" />
+        <input type="file" multiple class="row-file-input" style="display:none;">
       </td>
-      <td class="text-center">
-        <button class="btn-icon btn-row-delete" title="ลบแถวนี้">✖</button>
-      </td>
+      <td class="text-center"><button class="btn btn-ghost btn-sm btn-row-del">✖</button></td>
     `;
-
     tbody.appendChild(tr);
-    bindRowEvents(tr, rowData.id);
-    updateCurrentDataPreview();
+    bindRowEvents(tr,id);
+    updatePreview();
   }
 
-  function bindRowEvents(tr, id){
-    const fileInput = tr.querySelector('.row-file-input');
-    const btnAttach = tr.querySelector('.btn-row-attach');
-    const attachList = tr.querySelector('.row-attach-list');
-    const btnDelete = tr.querySelector('.btn-row-delete');
-
-    btnAttach.addEventListener('click', () => {
-      fileInput.click();
-    });
-
-    fileInput.addEventListener('change', (e) => {
-      const files = Array.from(e.target.files);
-      const row = state.items.find(r => r.id === id);
-      if(!row) return;
-      row.attachments = files.map(f => f.name);
-      attachList.textContent = row.attachments.length
-        ? row.attachments.join(', ')
-        : '-';
-      updateCurrentDataPreview();
-    });
-
-    tr.querySelector('.item-desc').addEventListener('input', (e)=>{
-      const row = state.items.find(r => r.id === id);
-      if(row){ row.description = e.target.value; updateCurrentDataPreview(); }
-    });
-    tr.querySelector('.item-amount').addEventListener('input', (e)=>{
-      const row = state.items.find(r => r.id === id);
-      if(row){ row.amount = e.target.value; updateCurrentDataPreview(); }
-    });
-    tr.querySelector('.item-note').addEventListener('input', (e)=>{
-      const row = state.items.find(r => r.id === id);
-      if(row){ row.note = e.target.value; updateCurrentDataPreview(); }
-    });
-
-    btnDelete.addEventListener('click', ()=>{
-      // remove from state
-      const idx = state.items.findIndex(r => r.id === id);
-      if(idx >= 0) state.items.splice(idx,1);
+  function bindRowEvents(tr,id){
+    const row = ()=>state.items.find(r=>r.id===id);
+    tr.querySelector('.i-desc').addEventListener('input',e=>{row().description=e.target.value;updatePreview();});
+    tr.querySelector('.i-amt').addEventListener('input',e=>{row().amount=e.target.value;updatePreview();});
+    tr.querySelector('.i-link').addEventListener('input',e=>{row().linkTo=e.target.value;updatePreview();});
+    tr.querySelector('.i-note').addEventListener('input',e=>{row().note=e.target.value;updatePreview();});
+    const fi = tr.querySelector('.row-file-input');
+    const al = tr.querySelector('.row-attach-list');
+    tr.querySelector('.btn-row-attach').onclick = ()=>fi.click();
+    fi.onchange = e=>{
+      const names = Array.from(e.target.files).map(f=>f.name);
+      row().attachments = names;
+      al.textContent = names.length?names.join(', '):'-';
+      updatePreview();
+    };
+    tr.querySelector('.btn-row-del').onclick = ()=>{
+      const idx = state.items.findIndex(r=>r.id===id);
+      if(idx>=0) state.items.splice(idx,1);
       tr.remove();
-      // re-number
-      document.querySelectorAll('#itemsTable tbody tr').forEach((row,i)=>{
-        row.querySelector('td:first-child').textContent = i+1;
-      });
-      updateCurrentDataPreview();
-    });
+      document.querySelectorAll('#itemsTable tbody tr').forEach((r,i)=>r.querySelector('td').textContent=i+1);
+      updatePreview();
+    };
   }
 
-  // Attachments per section
-  function setupSectionAttachment(sectionKey, inputId, listId){
-    const button = document.querySelector(`[data-section-attach="${sectionKey}"]`);
+  function setupSectionAttach(key,inputId,listId){
+    const btn = document.querySelector(`[data-section-attach="${key}"]`);
     const input = document.getElementById(inputId);
     const list = document.getElementById(listId);
-
-    if(!button || !input || !list) return;
-
-    button.addEventListener('click', ()=> input.click());
-
-    input.addEventListener('change',(e)=>{
-      const files = Array.from(e.target.files).map(f => f.name);
-      state[sectionKey+'Files'] = files;
-      list.textContent = files.length
-        ? files.join(', ')
-        : `ยังไม่มีเอกสารแนบ (ส่วนที่ ${sectionKey === 'main' ? '1' : sectionKey==='summary'?'2':'3'})`;
-      updateCurrentDataPreview();
-    });
+    if(!btn||!input||!list) return;
+    btn.onclick = ()=>input.click();
+    input.onchange = e=>{
+      const names = Array.from(e.target.files).map(f=>f.name);
+      state[key+'Files']=names;
+      list.textContent = names.length?names.join(', '):`ยังไม่มีเอกสารแนบ (ส่วนที่ ${key==='main'?'1':key==='summary'?'2':'3'})`;
+      updatePreview();
+    };
   }
-
-  setupSectionAttachment('main','fileMainSection','fileMainSectionList');
-  setupSectionAttachment('summary','fileSummarySection','fileSummarySectionList');
-  setupSectionAttachment('recommend','fileRecommendSection','fileRecommendSectionList');
-
-  // ปุ่มเพิ่มรายการ
-  document.getElementById('btnAddRow').addEventListener('click',()=>{
-    addItemRow({});
-  });
-
-  // ดึงเอกสารจาก fa-db-wp (autoAttachFromWP)
-  document.getElementById('btnAutoAttachWP').addEventListener('click',()=>{
-    autoAttachFromWP();
-  });
 
   function autoAttachFromWP(){
-    // จุดเชื่อม backend จริง:
-    // ตัวอย่าง: GET /api/fa/wp?unit=...&year=...&form=8_6
-    // ตอนนี้จำลอง mock data
-    const mockFiles = ['wp_8_6_support_01.pdf','wp_8_6_support_02.xlsx'];
-    state.mainFiles = mockFiles;
-    document.getElementById('fileMainSectionList').textContent = mockFiles.join(', ');
-    logRouteConsole('autoAttachFromWP(): แนบไฟล์จำลองจาก fa-db-wp → ' + mockFiles.join(', '));
-    updateCurrentDataPreview();
+    const mock = [`${FORM_CODE.toLowerCase()}_wp_01.pdf`,`${FORM_CODE.toLowerCase()}_wp_02.xlsx`];
+    state.mainFiles = mock;
+    document.getElementById('fileMainSectionList').textContent = mock.join(', ');
+    logRouteConsole('autoAttachFromWP(): mock '+mock.join(', '));
+    updatePreview();
   }
 
-  // ปุ่ม Load จากฐานข้อมูล
-  document.getElementById('btnLoadFromDB').addEventListener('click',()=>{
-    loadFromDatabase();
-  });
-
-  function loadFromDatabase(){
-    const unit = document.getElementById('unitName').value.trim();
-    const year = document.getElementById('fiscalYear').value;
-
-    // จุดเชื่อม API จริง:
-    // GET /api/fa/lg/8_6?unit=...&year=...&period=...
-    // ตอนนี้จำลอง mock
-    logRouteConsole(`โหลดข้อมูลจำลองของหน่วย: ${unit || '(ยังไม่ระบุ)'} ปี: ${year || '(ยังไม่เลือก)'}`);
-
-    // ล้างตาราง แล้วใส่ sample 2 แถว
-    state.items = [];
-    document.querySelector('#itemsTable tbody').innerHTML = '';
-    addItemRow({description:'ตัวอย่างรายการจากฐานข้อมูล #1', amount:'100000.00', note:'mock data'});
-    addItemRow({description:'ตัวอย่างรายการจากฐานข้อมูล #2', amount:'250000.00', note:'mock data'});
+  function loadFromDB(){
+    const unit=document.getElementById('unitName').value||'(ยังไม่ระบุ)';
+    const year=document.getElementById('fiscalYear').value||'(ยังไม่เลือก)';
+    logRouteConsole(`โหลดข้อมูลจำลอง: unit=${unit}, year=${year}, form=${FORM_CODE}`);
+    state.items=[];document.querySelector('#itemsTable tbody').innerHTML='';
+    addItemRow({description:'ตัวอย่างยอดสินทรัพย์รวม',amount:'1000000.00',linkTo:'8.6.1',note:'mock'});
+    addItemRow({description:'ตัวอย่างยอดหนี้สินรวม',amount:'500000.00',linkTo:'8.6.2',note:'mock'});
   }
-
-  // ปุ่ม AI ช่วยสรุป
-  document.getElementById('btnAISummarize').addEventListener('click',()=>{
-    aiSummarize();
-  });
 
   function aiSummarize(){
-    // จุดเชื่อม backend AI:
-    // POST /api/ai/summarize  { items, summaryText, recommendText, ... }
-    // ตอนนี้จำลองสรุปจาก state.items
-    const items = state.items || [];
-    if(!items.length){
-      alert('ยังไม่มีรายการในตาราง ส่วนที่ 1 ให้เพิ่มรายการก่อนเพื่อให้ AI สรุปได้มีบริบท');
-      return;
-    }
-    const total = items.reduce((sum,r)=>{
-      const v = parseFloat((r.amount || '0').toString().replace(/,/g,'')) || 0;
-      return sum + v;
-    },0);
-    const unit = document.getElementById('unitName').value || 'หน่วยรับตรวจ';
-    const year = document.getElementById('fiscalYear').value || 'ปีงบประมาณ ...';
-
-    const autoText =
-      `จากการตรวจสอบรายการตามกระดาษทำการ อปท. 8.6 ของ ${unit} `+
-      `ปีงบประมาณ ${year} พบว่ามีจำนวนรายการที่ตรวจสอบทั้งสิ้น ${items.length} รายการ `+
-      `รวมมูลค่าโดยประมาณ ${total.toLocaleString('th-TH',{minimumFractionDigits:2, maximumFractionDigits:2})} บาท `+
-      `โดยรายการที่สำคัญได้แก่ “${items[0].description || '...' }” เป็นต้น `+
-      `ซึ่งผู้ตรวจสอบได้ประเมินผลกระทบต่อความถูกต้องของงบการเงิน และพิจารณาความเพียงพอของเอกสารประกอบแล้ว`;
-
-    const area = document.getElementById('summaryText');
-    if(area.value.trim()){
-      area.value = area.value.trim() + '\n\n[AI ช่วยเสริม]\n' + autoText;
-    }else{
-      area.value = autoText;
-    }
-    updateCurrentDataPreview();
+    const items = state.items||[];
+    if(!items.length){alert('ยังไม่มีรายการใน Lead ให้กรอกก่อน');return;}
+    let total=0;items.forEach(r=>{
+      const v=parseFloat((r.amount||'0').toString().replace(/,/g,''))||0;total+=v;
+    });
+    const unit=document.getElementById('unitName').value||'หน่วยรับตรวจ';
+    const year=document.getElementById('fiscalYear').value||'ปีงบประมาณ ...';
+    const txt =
+      `จากการจัดทำกระดาษทำการ อปท. 8.6 ของ ${unit} ปีงบประมาณ ${year} `+
+      `พบว่ามียอดรวมรายการสำคัญตาม Lead Sheet ประมาณ `+
+      `${total.toLocaleString('th-TH',{minimumFractionDigits:2,maximumFractionDigits:2})} บาท `+
+      `โดยสอดคล้องกับรายละเอียดตามแบบประกอบ 8.6.1, 8.6.1.1 และ 8.6.2 ที่จัดทำแล้ว`;
+    const area=document.getElementById('summaryText');
+    area.value = area.value.trim()?area.value.trim()+`\n\n[AI ช่วยเสริม]\n`+txt:txt;
+    updatePreview();
   }
-
-  // QA – สอบทานความถูกต้อง
-  document.getElementById('btnRunQA').addEventListener('click',()=>{
-    runQA();
-  });
 
   function runQA(){
-    const msgs = [];
-    const unit = document.getElementById('unitName').value.trim();
-    const year = document.getElementById('fiscalYear').value;
-    const items = state.items || [];
-    const summary = document.getElementById('summaryText').value.trim();
-    const recommend = document.getElementById('recommendText').value.trim();
-    const auditor = document.getElementById('auditorName').value.trim();
-    const pos = document.getElementById('auditorPosition').value.trim();
-    const date = document.getElementById('auditDate').value;
+    const msgs=[];
+    const unit=document.getElementById('unitName').value.trim();
+    const year=document.getElementById('fiscalYear').value;
+    const items=state.items||[];
+    const summary=document.getElementById('summaryText').value.trim();
+    const recommend=document.getElementById('recommendText').value.trim();
+    const auditor=document.getElementById('auditorName').value.trim();
+    const pos=document.getElementById('auditorPosition').value.trim();
+    const date=document.getElementById('auditDate').value;
 
-    if(!unit) msgs.push({type:'warn', text:'ยังไม่ได้ระบุ “หน่วยรับตรวจ”'});
-    if(!year) msgs.push({type:'warn', text:'ยังไม่ได้เลือก “ปีงบประมาณ”'});
-    if(!items.length) msgs.push({type:'error', text:'ตารางส่วนที่ 1 ยังไม่มีรายการตรวจสอบเลย'});
-    if(!summary) msgs.push({type:'warn', text:'ยังไม่ได้บันทึกข้อความ “สรุปผลการตรวจสอบ” (ส่วนที่ 2)'});
-    if(!recommend) msgs.push({type:'warn', text:'ยังไม่ได้ระบุ “ข้อเสนอแนะ / มาตรการ” (ส่วนที่ 3)'});
-    if(!auditor || !pos || !date) msgs.push({type:'warn', text:'ข้อมูลผู้ตรวจสอบ / ตำแหน่ง / วันที่จัดทำยังไม่ครบ'});
+    if(!unit) msgs.push({type:'warn',text:'ยังไม่ได้ระบุหน่วยรับตรวจ'});
+    if(!year) msgs.push({type:'warn',text:'ยังไม่ได้เลือกปีงบประมาณ'});
+    if(!items.length) msgs.push({type:'error',text:'ตาราง Lead ยังไม่มีรายการเลย'});
+    if(!summary) msgs.push({type:'warn',text:'ยังไม่ได้บันทึกข้อความสรุปผลในส่วนที่ 2'});
+    if(!recommend) msgs.push({type:'warn',text:'ยังไม่ได้ระบุข้อเสนอแนะในส่วนที่ 3'});
+    if(!auditor||!pos||!date) msgs.push({type:'warn',text:'ข้อมูลผู้ตรวจสอบ / ตำแหน่ง / วันที่ยังไม่ครบ'});
 
-    // ตรวจจำนวนเงินรูปแบบตัวเลข
-    const nonNumeric = items.filter(r => r.amount && isNaN(parseFloat(r.amount.toString().replace(/,/g,''))));
-    if(nonNumeric.length){
-      msgs.push({type:'error', text:`พบจำนวนเงิน ${nonNumeric.length} รายการที่ไม่ใช่ตัวเลข โปรดตรวจสอบช่อง "จำนวนเงิน"`});
-    }
+    const nonNum = items.filter(r=>r.amount && isNaN(parseFloat(r.amount.toString().replace(/,/g,''))));
+    if(nonNum.length) msgs.push({type:'error',text:`พบจำนวนเงิน ${nonNum.length} รายการที่ไม่ใช่ตัวเลข`});
 
-    if(!msgs.length){
-      msgs.push({type:'ok', text:'ไม่พบข้อผิดพลาดเชิงโครงสร้างในฟอร์มเบื้องต้น สามารถดำเนินการขั้นถัดไปได้'});
-    }
+    if(!msgs.length) msgs.push({type:'ok',text:'ไม่พบข้อผิดพลาดเชิงโครงสร้างใน อปท. 8.6 เบื้องต้น'});
 
-    state.qaMessages = msgs;
-    state.qaRan = true;
-
-    const qaList = document.getElementById('qaList');
-    qaList.innerHTML = '';
-    msgs.forEach(m => {
-      const li = document.createElement('li');
-      li.className = 'qa-item';
-      const icon = m.type === 'error' ? '⛔' : (m.type === 'warn' ? '⚠️' : '✅');
-      li.innerHTML = `<span class="icon">${icon}</span><span>${m.text}</span>`;
-      qaList.appendChild(li);
+    state.qaMessages=msgs;state.qaRan=true;
+    const list=document.getElementById('qaList');list.innerHTML='';
+    msgs.forEach(m=>{
+      const li=document.createElement('li');li.className='qa-item';
+      const icon=m.type==='error'?'⛔':m.type==='warn'?'⚠️':'✅';
+      li.innerHTML=`<span class="icon">${icon}</span><span>${m.text}</span>`;
+      list.appendChild(li);
     });
-
-    // auto tick checklist step6 ว่ารัน QA แล้ว
-    const checkbox = document.querySelector('[data-check="step6"]');
-    if(checkbox) checkbox.checked = true;
-
-    updateCurrentDataPreview();
+    const cb=document.querySelector('[data-check="step6"]');if(cb) cb.checked=true;
+    updatePreview();
   }
 
-  // แสดง currentData (JSON preview)
-  function updateCurrentDataPreview(){
-    const preview = document.getElementById('currentDataPreview');
-    const data = {
+  function checklistState(){
+    const o={};document.querySelectorAll('#checklist input').forEach(cb=>o[cb.dataset.check]=cb.checked);return o;
+  }
+
+  function updatePreview(){
+    const data={
+      formCode:FORM_CODE,
       meta:{
-        unit: document.getElementById('unitName').value.trim(),
-        location: document.getElementById('unitLocation').value.trim(),
-        fiscalYear: document.getElementById('fiscalYear').value || null,
-        period: document.getElementById('period').value,
-        auditorName: document.getElementById('auditorName').value.trim(),
-        auditorPosition: document.getElementById('auditorPosition').value.trim(),
-        auditDate: document.getElementById('auditDate').value || null
+        unit:document.getElementById('unitName').value.trim(),
+        location:document.getElementById('unitLocation').value.trim(),
+        fiscalYear:document.getElementById('fiscalYear').value||null,
+        period:document.getElementById('period').value,
+        auditorName:document.getElementById('auditorName').value.trim(),
+        auditorPosition:document.getElementById('auditorPosition').value.trim(),
+        auditDate:document.getElementById('auditDate').value||null
       },
-      section1:{
-        items: state.items
-      },
+      section1:{items:state.items},
       sectionFiles:{
-        main: state.mainFiles,
-        summary: state.summaryFiles,
-        recommend: state.recommendFiles
+        main:state.mainFiles,
+        summary:state.summaryFiles,
+        recommend:state.recommendFiles
       },
-      section2:{
-        summaryText: document.getElementById('summaryText').value.trim()
+      section2:{summaryText:document.getElementById('summaryText').value.trim()},
+      section3:{recommendText:document.getElementById('recommendText').value.trim()},
+      qa:{ran:state.qaRan,messages:state.qaMessages},
+      checklist:checklistState(),
+      routing:{
+        review:document.getElementById('routeReview').checked,
+        db:document.getElementById('routeDB').checked,
+        dashboard:document.getElementById('routeDashboard').checked,
+        notes:document.getElementById('routeNotes').checked
       },
-      section3:{
-        recommendText: document.getElementById('recommendText').value.trim()
-      },
-      qa:{
-        ran: state.qaRan,
-        messages: state.qaMessages
-      },
-      checklist:getChecklistState(),
-      apiComment: document.getElementById('apiComment').value.trim()
+      apiComment:document.getElementById('apiComment').value.trim()
     };
-
-    preview.textContent = JSON.stringify(data,null,2);
+    document.getElementById('currentDataPreview').textContent = JSON.stringify(data,null,2);
   }
+
+  function handleExport(){
+    const ck = checklistState();
+    const allOK = Object.values(ck).every(v=>v);
+    const msgs=[];
+    if(!allOK) msgs.push('Checklist ยังไม่ครบ');
+    if(!state.qaRan) msgs.push('ยังไม่รัน QA');
+    if((state.items||[]).length===0) msgs.push('ตาราง Lead ว่าง');
+
+    if(msgs.length){
+      document.getElementById('stepWarningText').textContent =
+        'ระบบพบข้อจำกัด: '+msgs.join(' / ');
+      openModal('stepWarningModal');
+    }else doExport(false);
+  }
+
+  function doExport(override){
+    updatePreview();
+    const type=document.getElementById('exportType').value;
+    const dataStr=document.getElementById('currentDataPreview').textContent||'{}';
+    const routing={
+      review:document.getElementById('routeReview').checked,
+      db:document.getElementById('routeDB').checked,
+      dashboard:document.getElementById('routeDashboard').checked,
+      notes:document.getElementById('routeNotes').checked
+    };
+    logRouteConsole(`Export type=${type}, override=${override}, routing=${JSON.stringify(routing)}`);
+
+    if(type==='print'){
+      window.print();
+    }else if(type==='json'){
+      const blob=new Blob([dataStr],{type:'application/json'});
+      const a=document.createElement('a');
+      const unit=(document.getElementById('unitName').value||'unit').replace(/\s+/g,'_');
+      const yr=document.getElementById('fiscalYear').value||'year';
+      a.href=URL.createObjectURL(blob);a.download=`${FORM_CODE.toLowerCase()}_${unit}_${yr}.json`;a.click();
+      URL.revokeObjectURL(a.href);alert('ดาวน์โหลด JSON สำเร็จ (สำหรับ backend)');
+    }else if(type==='docx'){
+      alert('DOCX: ให้ backend สร้างไฟล์จาก JSON นี้ (เช่น /api/fa/lg/8_6/export/docx)');
+    }else if(type==='xlsx'){
+      alert('XLSX: ให้ backend สร้างไฟล์จาก JSON นี้ (เช่น /api/fa/lg/8_6/export/xlsx)');
+    }
+  }
+
+  function logRouteConsole(msg){
+    const c=document.getElementById('routeConsole');
+    const t=new Date().toLocaleTimeString('th-TH',{hour12:false});
+    c.textContent+=`\n[${t}] ${msg}`;c.scrollTop=c.scrollHeight;
+  }
+
+  function openModal(id){const m=document.getElementById(id);if(m)m.style.display='flex';}
+  function closeModal(id){const m=document.getElementById(id);if(m)m.style.display='none';}
+
+  function saveDraft(){
+    updatePreview();
+    const d=document.getElementById('currentDataPreview').textContent||'{}';
+    localStorage.setItem('fa_draft_'+FORM_CODE,d);
+    alert('บันทึกร่างลง browser (localStorage) แล้ว – ระบบจริงยิง API /saveDraft แทนได้');
+  }
+  function loadDraftIfAny(){
+    const d=localStorage.getItem('fa_draft_'+FORM_CODE);
+    if(d) logRouteConsole('พบ draft เดิมใน localStorage (ยังไม่ได้ auto-restore)');
+  }
+
+  // init
+  initYears();
+  addItemRow({});
+  setupSectionAttach('main','fileMainSection','fileMainSectionList');
+  setupSectionAttach('summary','fileSummarySection','fileSummarySectionList');
+  setupSectionAttach('recommend','fileRecommendSection','fileRecommendSectionList');
+  document.getElementById('btnAddRow').onclick=()=>addItemRow({});
+  document.getElementById('btnAutoAttachWP').onclick=autoAttachFromWP;
+  document.getElementById('btnLoadFromDB').onclick=loadFromDB;
+  document.getElementById('btnAISummarize').onclick=aiSummarize;
+  document.getElementById('btnRunQA').onclick=runQA;
+  document.getElementById('btnExport').onclick=handleExport;
+  document.getElementById('btnSaveDraft').onclick=saveDraft;
+  document.getElementById('btnResetForm').onclick=()=>{if(confirm('รีเซ็ตข้อมูลทั้งหมด?')) location.reload();};
+  document.getElementById('btnBackToEdit').onclick=()=>closeModal('stepWarningModal');
+  document.getElementById('btnAskForHelp').onclick=()=>{alert('ตัวอย่าง: เปิดคู่มือ / FAQ หรือ chat กับ Admin');closeModal('stepWarningModal');};
+  document.getElementById('btnOverrideProceed').onclick=()=>{
+    state.overrideCount++;closeModal('stepWarningModal');
+    if(state.overrideCount>=3) openModal('consultModal');
+    doExport(true);
+  };
+  document.getElementById('btnNeedConsult').onclick=()=>{alert('ระบบจะส่งคำขอคำปรึกษาไปยังผู้เชี่ยวชาญ/หัวหน้าทีม');closeModal('consultModal');};
+  document.getElementById('btnNoConsult').onclick=()=>closeModal('consultModal');
+
+  document.getElementById('routeSearch').addEventListener('input',e=>{
+    const q=e.target.value.toLowerCase().trim();
+    document.querySelectorAll('#routeGrid .route-item').forEach(it=>{
+      const label=(it.dataset.routeLabel||it.textContent||'').toLowerCase();
+      it.style.display=q?(label.includes(q)?'':''):'';});
+  });
 
   ['unitName','unitLocation','fiscalYear','period','summaryText','recommendText',
    'auditorName','auditorPosition','auditDate','apiComment'
   ].forEach(id=>{
-    const el = document.getElementById(id);
-    if(el) el.addEventListener('input', updateCurrentDataPreview);
-    if(el && el.tagName === 'SELECT') el.addEventListener('change', updateCurrentDataPreview);
+    const el=document.getElementById(id);
+    if(!el)return;
+    const ev=(el.tagName==='SELECT'||el.type==='date')?'change':'input';
+    el.addEventListener(ev,updatePreview);
   });
 
-  function getChecklistState(){
-    const stateCheck = {};
-    document.querySelectorAll('#checklist input[type="checkbox"]').forEach(cb=>{
-      stateCheck[cb.dataset.check] = cb.checked;
-    });
-    return stateCheck;
-  }
-
-  // Export & Routing
-  document.getElementById('btnExport').addEventListener('click',()=>{
-    handleExportFlow();
-  });
-
-  function handleExportFlow(){
-    const checklist = getChecklistState();
-    const allChecked = Object.values(checklist).every(v => v === true);
-    let needWarn = false;
-    let warnMsg = [];
-
-    if(!allChecked){
-      needWarn = true;
-      warnMsg.push('Checklist 7 ข้อยังไม่ครบ');
-    }
-    if(!state.qaRan){
-      needWarn = true;
-      warnMsg.push('ยังไม่รัน “สอบทานความถูกต้อง (QA)”');
-    }
-    if((state.items || []).length === 0){
-      needWarn = true;
-      warnMsg.push('ตารางส่วนที่ 1 ยังว่างอยู่');
-    }
-
-    if(needWarn){
-      const text = document.getElementById('stepWarningText');
-      text.textContent = 'ระบบพบเงื่อนไขที่ยังไม่ครบ: ' + warnMsg.join(' / ');
-      openModal('stepWarningModal');
-    }else{
-      // ขั้นตอนครบแล้ว → export ได้เลย
-      doExport(false);
-    }
-  }
-
-  function doExport(isOverride){
-    const exportType = document.getElementById('exportType').value;
-    updateCurrentDataPreview(); // ensure latest
-    const dataStr = document.getElementById('currentDataPreview').textContent || '{}';
-
-    // Routing log
-    const routing = {
-      review: document.getElementById('routeReview').checked,
-      db: document.getElementById('routeDB').checked,
-      dashboard: document.getElementById('routeDashboard').checked,
-      notes: document.getElementById('routeNotes').checked
-    };
-    logRouteConsole('เริ่ม Export type=' + exportType + ', override=' + isOverride + ', routing=' + JSON.stringify(routing));
-
-    if(exportType === 'print'){
-      window.print();
-    }else if(exportType === 'json'){
-      // ดาวน์โหลด JSON จริง
-      const blob = new Blob([dataStr],{type:'application/json'});
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      const unit = (document.getElementById('unitName').value || 'unit').replace(/\s+/g,'_');
-      const year = document.getElementById('fiscalYear').value || 'year';
-      a.download = `fa_lg_8_6_${unit}_${year}.json`;
-      a.click();
-      URL.revokeObjectURL(a.href);
-      alert('ดาวน์โหลดไฟล์ JSON เรียบร้อย (สำหรับเชื่อม backend / data lake)');
-    }else if(exportType === 'docx'){
-      alert('โหมด DOCX: โปรดเชื่อมต่อ backend (เช่น /api/fa/lg/8_6/export/docx) เพื่อสร้างไฟล์ .docx จากข้อมูลนี้');
-    }else if(exportType === 'xlsx'){
-      alert('โหมด XLSX: โปรดเชื่อมต่อ backend (เช่น /api/fa/lg/8_6/export/xlsx) เพื่อสร้างไฟล์ .xlsx จากข้อมูลนี้');
-    }
-
-    logRouteConsole('Export เสร็จสิ้น (จำลอง) – พร้อมส่งต่อไป backend ตาม routing');
-  }
-
-  function logRouteConsole(msg){
-    const c = document.getElementById('routeConsole');
-    const now = new Date();
-    const time = now.toLocaleTimeString('th-TH',{hour12:false});
-    c.textContent += `\n[${time}] ${msg}`;
-    c.scrollTop = c.scrollHeight;
-    console.log('[RouteConsole]', msg);
-  }
-
-  // Modals
-  function openModal(id){
-    const m = document.getElementById(id);
-    if(m) m.style.display = 'flex';
-  }
-  function closeModal(id){
-    const m = document.getElementById(id);
-    if(m) m.style.display = 'none';
-  }
-
-  // ปุ่มใน modal เตือนขั้นตอน
-  document.getElementById('btnBackToEdit').addEventListener('click',()=>{
-    closeModal('stepWarningModal');
-  });
-  document.getElementById('btnAskForHelp').addEventListener('click',()=>{
-    alert('ตัวอย่าง: ระบบสามารถเปิดคู่มือการใช้งาน / FAQ / ติดต่อ Admin ได้ที่นี่ (เชื่อมหน้า help center ภายหลัง)');
-    closeModal('stepWarningModal');
-  });
-  document.getElementById('btnOverrideProceed').addEventListener('click',()=>{
-    state.overrideCount++;
-    closeModal('stepWarningModal');
-    if(state.overrideCount >= 3){
-      openModal('consultModal');
-    }
-    doExport(true);
-  });
-
-  // ปุ่ม modal ขอคำปรึกษา
-  document.getElementById('btnNeedConsult').addEventListener('click',()=>{
-    alert('ระบบจะบันทึกคำขอคำปรึกษาไว้ (เช่น POST /api/support/ticket) และแจ้ง Admin/หัวหน้าทีมให้รับทราบ');
-    closeModal('consultModal');
-  });
-  document.getElementById('btnNoConsult').addEventListener('click',()=>{
-    closeModal('consultModal');
-  });
-
-  // ปุ่ม Save Draft / Reset
-  document.getElementById('btnSaveDraft').addEventListener('click',()=>{
-    updateCurrentDataPreview();
-    const data = document.getElementById('currentDataPreview').textContent || '{}';
-    // ตัวอย่าง: localStorage แทน backend
-    localStorage.setItem('fa_lg_8_6_draft', data);
-    alert('บันทึกร่างลงใน browser (localStorage) เรียบร้อย – สำหรับระบบจริงให้ยิง API /saveDraft');
-  });
-
-  document.getElementById('btnResetForm').addEventListener('click',()=>{
-    if(!confirm('ยืนยันรีเซ็ตฟอร์มทั้งหมด?')) return;
-    location.reload();
-  });
-
-  // โหลด draft ถ้ามี
-  (function loadDraftIfAny(){
-    const draft = localStorage.getItem('fa_lg_8_6_draft');
-    if(!draft) return;
-    // ไม่ auto-load ทันที แต่ให้ log ไว้สำหรับ dev
-    logRouteConsole('พบ draft ที่เคยบันทึกไว้ใน localStorage (fa_lg_8_6_draft) – สามารถเขียน logic เพื่อ restore ได้');
-  })();
-
-  // เริ่มต้นด้วยการเพิ่มแถวตัวอย่าง 1 แถว
-  addItemRow({description:'ตัวอย่างรายการกระดาษทำการ', amount:'0.00', note:''});
+  loadDraftIfAny();
+  updatePreview();
 </script>
 </body>
 </html>
-
