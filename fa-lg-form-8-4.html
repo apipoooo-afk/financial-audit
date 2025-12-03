@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>FA – LG Form 8.4 | การตรวจสอบเงินฝากธนาคาร</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    :root{
+      --primary:#0d47a1;
+      --primary-2:#42a5f5;
+      --accent:#ffd54f;
+      --bg:#060818;
+      --bg-soft:#0b1024;
+      --card:#11152b;
+      --text:#f5f7ff;
+      --muted:#a3acc7;
+      --border:#262b46;
+      --maroon:#7b1e3c;
+      --pink:#f48fb1;
+      --success:#66bb6a;
+      --danger:#ef5350;
+      --shadow-soft:0 10px 30px rgba(0,0,0,0.6);
+    }
+
+    *{box-sizing:border-box;}
+
+    body{
+      margin:0;
+      font-family:"Segoe UI",Tahoma,sans-serif;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(123,30,60,0.36) 0, transparent 55%),
+        radial-gradient(circle at 90% 100%, rgba(66,165,245,0.32) 0, transparent 55%),
+        var(--bg);
+      color:var(--text);
+    }
+
+    a{color:var(--accent);text-decoration:none;}
+    a:hover{text-decoration:underline;}
+
+    header{
+      padding:16px 18px 12px;
+      background:linear-gradient(120deg,#7b1e3c,#0d47a1,#42a5f5);
+      box-shadow:var(--shadow-soft);
+      position:sticky;
+      top:0;
+      z-index:20;
+    }
+    header h1{
+      margin:0;
+      font-size:22px;
+      font-weight:800;
+    }
+    header p{
+      margin:4px 0 0;
+      font-size:13px;
+      color:rgba(245,247,255,0.85);
+    }
+    .header-actions{
+      margin-top:10px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      font-size:13px;
+      align-items:center;
+    }
+    .chip{
+      padding:4px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.25);
+      background:rgba(0,0,0,0.15);
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+    }
+
+    main{
+      max-width:1200px;
+      margin:20px auto 32px;
+      padding:0 10px 40px;
+    }
+
+    .toolbar{
+      background:var(--card);
+      border-radius:14px;
+      border:1px solid var(--border);
+      padding:14px 14px 10px;
+      box-shadow:var(--shadow-soft);
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:12px;
+      margin-bottom:16px;
+    }
+    .toolbar-group{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      font-size:13px;
+    }
+    label span{
+      display:block;
+      margin-bottom:3px;
+      color:var(--muted);
+    }
+    input[type="text"],
+    input[type="number"],
+    select,
+    textarea{
+      width:100%;
+      padding:6px 8px;
+      border-radius:8px;
+      border:1px solid var(--border);
+      background:#0c1023;
+      color:var(--text);
+      font-family:inherit;
+      font-size:13px;
+    }
+    textarea{min-height:70px;resize:vertical;}
+
+    .btn-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:4px;
+    }
+    .btn{
+      padding:6px 10px;
+      border-radius:8px;
+      border:1px solid transparent;
+      background:linear-gradient(120deg,#0d47a1,#42a5f5);
+      color:#fff;
+      font-size:13px;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      box-shadow:0 4px 10px rgba(0,0,0,0.6);
+    }
+    .btn.sec{
+      background:#151936;
+      border-color:var(--border);
+      box-shadow:none;
+    }
+    .btn.danger{
+      background:#b71c1c;
+    }
+    .btn:disabled{
+      opacity:0.45;
+      cursor:not-allowed;
+      box-shadow:none;
+    }
+
+    .tabs{
+      margin-top:16px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+    }
+    .tab-btn{
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background:#0b1024;
+      font-size:13px;
+      color:var(--muted);
+      cursor:pointer;
+    }
+    .tab-btn.active{
+      background:linear-gradient(120deg,#42a5f5,#7b1e3c);
+      color:#fff;
+      border-color:transparent;
+    }
+
+    .card{
+      margin-top:12px;
+      background:var(--card);
+      border-radius:16px;
+      border:1px solid var(--border);
+      padding:14px 14px 10px;
+      box-shadow:var(--shadow-soft);
+    }
+    .card-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:8px;
+      margin-bottom:8px;
+    }
+    .card-title{
+      font-size:15px;
+      font-weight:700;
+    }
+    .card-sub{
+      font-size:12px;
+      color:var(--muted);
+      margin-top:2px;
+    }
+    .badge{
+      font-size:11px;
+      padding:2px 8px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.2);
+    }
+
+    .grid-2{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:10px;
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      font-size:12px;
+      margin-top:6px;
+    }
+    th,td{
+      border:1px solid var(--border);
+      padding:4px 6px;
+      text-align:left;
+    }
+    th{
+      background:#151936;
+      color:var(--muted);
+      font-weight:600;
+    }
+    tr:nth-child(even) td{
+      background:#090d1f;
+    }
+    .table-actions{
+      display:flex;
+      justify-content:flex-end;
+      margin-top:6px;
+      gap:6px;
+      flex-wrap:wrap;
+    }
+
+    .tag{
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+      padding:2px 7px;
+      border-radius:999px;
+      background:rgba(244,143,177,0.1);
+      border:1px solid rgba(244,143,177,0.6);
+      font-size:11px;
+      color:#f48fb1;
+    }
+
+    .panel{
+      padding:8px 10px;
+      border-radius:12px;
+      border:1px dashed var(--border);
+      background:#090d1f;
+      font-size:12px;
+      margin-top:6px;
+    }
+    .panel h4{
+      margin:0 0 4px;
+      font-size:12px;
+      color:var(--muted);
+    }
+    .panel ul{
+      margin:0;
+      padding-left:18px;
+    }
+
+    .checklist{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:8px;
+      margin-top:6px;
+      font-size:12px;
+    }
+    .check-item{
+      display:flex;
+      align-items:flex-start;
+      gap:6px;
+      padding:6px 8px;
+      border-radius:10px;
+      background:#090d1f;
+      border:1px solid var(--border);
+    }
+    .check-item input{
+      margin-top:2px;
+    }
+
+    .status-pill{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:3px 8px;
+      border-radius:999px;
+      font-size:11px;
+      border:1px solid var(--border);
+    }
+
+    .status-pill.ready{
+      border-color:var(--success);
+      color:var(--success);
+    }
+
+    .file-input{
+      font-size:12px;
+      margin-top:4px;
+    }
+
+    .export-options{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:8px;
+      font-size:12px;
+    }
+
+    .hidden{display:none;}
+
+    /* พิเศษสำหรับโหมดพิมพ์ A4 */
+    @media print{
+      header,.toolbar,.tabs,.no-print{display:none!important;}
+      body{
+        background:#fff;
+        color:#000;
+      }
+      main{
+        max-width:100%;
+        margin:0;
+        padding:0;
+      }
+      .card{
+        border-radius:0;
+        border:none;
+        box-shadow:none;
+        page-break-inside:avoid;
+      }
+      table th,table td{
+        border:1px solid #000;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>แบบ อปท. 8.4 – การตรวจสอบเงินฝากธนาคาร</h1>
+    <p>Lead Schedule & แบบย่อย 8.4.1 / 8.4.1.1 / 8.4.2 | เชื่อมกับ Fieldwork Stage</p>
+    <div class="header-actions">
+      <div class="chip">
+        🔙 <a href="fa-lg-fieldwork.html">กลับสู่เมนู Fieldwork</a>
+      </div>
+      <div class="chip">
+        📄 <span>รายงาน Export เป็น A4 ได้จากปุ่ม “พิมพ์/Export”</span>
+      </div>
+      <div class="chip">
+        🧠 <span>รองรับ AI ช่วยสรุป + ตรวจสอบข้อความ (โครงสร้าง)</span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- TOOLBAR เลือกปี / หน่วยรับตรวจ -->
+    <section class="toolbar no-print">
+      <div class="toolbar-group">
+        <label>
+          <span>ปีงบประมาณ / Fiscal Year</span>
+          <input type="text" id="fyInput" placeholder="เช่น 2568">
+        </label>
+        <label>
+          <span>รหัสงานตรวจสอบ / Engagement Code</span>
+          <input type="text" id="engagementCodeInput" placeholder="เช่น FA-LG-2568-001">
+        </label>
+      </div>
+      <div class="toolbar-group">
+        <label>
+          <span>หน่วยรับตรวจ / Local Government</span>
+          <input type="text" id="unitNameInput" placeholder="เช่น เทศบาลเมืองศรีสะเกษ">
+        </label>
+        <label>
+          <span>ประเภท อปท. / Type</span>
+          <select id="unitTypeSelect">
+            <option value="">- เลือก -</option>
+            <option value="เทศบาลนคร">เทศบาลนคร</option>
+            <option value="เทศบาลเมือง">เทศบาลเมือง</option>
+            <option value="เทศบาลตำบล">เทศบาลตำบล</option>
+            <option value="อบจ.">องค์การบริหารส่วนจังหวัด</option>
+            <option value="อบต.">องค์การบริหารส่วนตำบล</option>
+          </select>
+        </label>
+      </div>
+      <div class="toolbar-group">
+        <span>คำสั่งทำงาน / Actions</span>
+        <div class="btn-row">
+          <button class="btn sec" id="loadBtn">📥 ดึงข้อมูลจากฐานข้อมูล (จำลอง)</button>
+          <button class="btn" id="saveBtn">💾 บันทึกข้อมูลลงฐานข้อมูล (จำลอง)</button>
+          <button class="btn sec" id="resetBtn">🧹 ล้างข้อมูลฟอร์ม</button>
+        </div>
+        <small style="color:var(--muted);margin-top:4px;">
+          * เวอร์ชันนี้ใช้ <strong>localStorage</strong> เป็นฐานข้อมูลจำลอง<br>
+          เมื่อเชื่อม backend จริงสามารถแทนที่ส่วนนี้ด้วย API ได้ทันที
+        </small>
+      </div>
+    </section>
+
+    <!-- TABS -->
+    <div class="tabs no-print">
+      <button class="tab-btn active" data-tab="tab-8-4">อปท. 8.4 – แบบหลัก</button>
+      <button class="tab-btn" data-tab="tab-8-4-1">อปท. 8.4.1 – สรุป</button>
+      <button class="tab-btn" data-tab="tab-8-4-1-1">อปท. 8.4.1.1 – รายละเอียดบัญชี</button>
+      <button class="tab-btn" data-tab="tab-8-4-2">อปท. 8.4.2 – รายการอื่น</button>
+      <button class="tab-btn" data-tab="tab-checklist">Checklist & Export</button>
+    </div>
+
+    <!-- TAB 8.4 -->
+    <section class="card tab-panel" id="tab-8-4">
+      <div class="card-header">
+        <div>
+          <div class="card-title">อปท. 8.4 – แบบหลัก (Lead Schedule)</div>
+          <div class="card-sub">สรุปยอดเงินฝากธนาคารทั้งหมดของ อปท. ณ วันสิ้นงวดเปรียบเทียบ 2 ปี</div>
+        </div>
+        <span class="badge">Lead of 8.4.1 / 8.4.2</span>
+      </div>
+
+      <div class="grid-2">
+        <div>
+          <label>
+            <span>ยอดเงินฝากรวม ปีปัจจุบัน</span>
+            <input type="number" id="totalCurrentInput" placeholder="เช่น 21452493.25">
+          </label>
+          <label>
+            <span>ยอดเงินฝากรวม ปีที่ผ่านมา</span>
+            <input type="number" id="totalPriorInput" placeholder="เช่น 19874520.00">
+          </label>
+          <label>
+            <span>ส่วนต่าง (คำนวณอัตโนมัติ)</span>
+            <input type="number" id="totalDiffInput" readonly>
+          </label>
+          <label>
+            <span>สาเหตุส่วนต่างโดยสรุป</span>
+            <textarea id="diffReasonInput" placeholder="อธิบายเหตุผลการเปลี่ยนแปลงที่มีนัยสำคัญ"></textarea>
+          </label>
+        </div>
+        <div>
+          <label>
+            <span>ข้อสรุปการตรวจสอบ (จัดทำโดยผู้ตรวจสอบ)</span>
+            <textarea id="conclusionInput" placeholder="สรุปผลการตรวจสอบเงินฝากธนาคาร โดยอ้างอิงหลักฐานตรวจสอบที่เพียงพอ"></textarea>
+          </label>
+          <label>
+            <span>ร่างข้อสรุปที่จัดทำโดย AI (ปรับแก้ได้)</span>
+            <textarea id="aiConclusionInput" placeholder="กดปุ่ม ‘ให้ AI ช่วยสรุป’ เพื่อสร้างร่างข้อความ"></textarea>
+          </label>
+          <div class="btn-row">
+            <button class="btn" id="aiSummaryBtn">🧠 ให้ AI ช่วยสรุป (ภายในเครื่อง)</button>
+            <button class="btn sec" id="spellCheckBtn">🔍 ตรวจสอบโครงสร้าง/ความครบถ้วน</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" id="spellPanel">
+        <h4>ผลการตรวจสอบโครงสร้างข้อความ</h4>
+        <ul id="spellResultList">
+          <li>ยังไม่ได้ทำการตรวจสอบ</li>
+        </ul>
+      </div>
+
+      <div class="panel">
+        <h4>ไฟล์แนบสำหรับแบบ 8.4 (หลัก)</h4>
+        <input type="file" class="file-input" multiple>
+        <div style="font-size:11px;color:var(--muted);margin-top:3px;">
+          ระบบนี้บันทึกเฉพาะชื่อไฟล์เพื่อการอ้างอิง (เชื่อมระบบ Upload จริงได้ใน backend)
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 8.4.1 -->
+    <section class="card tab-panel hidden" id="tab-8-4-1">
+      <div class="card-header">
+        <div>
+          <div class="card-title">อปท. 8.4.1 – สรุปเงินฝากตามหมวด</div>
+          <div class="card-sub">สรุปยอดจากแบบย่อย 8.4.1.1 แยกประเภทบัญชี/หมวดเงินฝาก</div>
+        </div>
+        <span class="badge">Summary of 8.4.1.1</span>
+      </div>
+
+      <div class="panel">
+        <h4>ตารางสรุป (8.4.1)</h4>
+        <table id="summaryTable">
+          <thead>
+            <tr>
+              <th style="width:30px;">ลำดับ</th>
+              <th>หมวดเงินฝาก / Section</th>
+              <th>ยอดปีที่ผ่านมา</th>
+              <th>ยอดปีปัจจุบัน</th>
+              <th>หมายเหตุ</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- แถวจะถูกเพิ่มด้วย JS -->
+          </tbody>
+        </table>
+        <div class="table-actions">
+          <button class="btn sec" id="addSummaryRowBtn">➕ เพิ่มแถวสรุป</button>
+          <button class="btn sec" id="recalcFromDetailBtn">↺ คำนวณจาก 8.4.1.1 (จำลอง)</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h4>ไฟล์แนบเฉพาะหัวข้อ 8.4.1</h4>
+        <input type="file" class="file-input" multiple>
+      </div>
+    </section>
+
+    <!-- TAB 8.4.1.1 -->
+    <section class="card tab-panel hidden" id="tab-8-4-1-1">
+      <div class="card-header">
+        <div>
+          <div class="card-title">อปท. 8.4.1.1 – รายละเอียดบัญชีเงินฝากธนาคาร</div>
+          <div class="card-sub">ระดับบัญชีธนาคารแต่ละบัญชี สามารถใช้เทียบกับ bank statement / กระทบยอด</div>
+        </div>
+        <span class="badge">Detail Level</span>
+      </div>
+
+      <div class="panel">
+        <h4>รายละเอียดบัญชี (8.4.1.1)</h4>
+        <table id="detailTable">
+          <thead>
+            <tr>
+              <th style="width:30px;">ลำดับ</th>
+              <th>ธนาคาร</th>
+              <th>สาขา</th>
+              <th>เลขบัญชี</th>
+              <th>ประเภท</th>
+              <th>ยอดปีที่ผ่านมา</th>
+              <th>ยอดปีปัจจุบัน</th>
+              <th>หมายเหตุ</th>
+              <th style="width:40px;">ลบ</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- แถวจะถูกเพิ่มด้วย JS -->
+          </tbody>
+        </table>
+        <div class="table-actions">
+          <button class="btn sec" id="addDetailRowBtn">➕ เพิ่มบัญชี</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h4>ไฟล์แนบสำหรับ 8.4.1.1</h4>
+        <input type="file" class="file-input" multiple>
+      </div>
+    </section>
+
+    <!-- TAB 8.4.2 -->
+    <section class="card tab-panel hidden" id="tab-8-4-2">
+      <div class="card-header">
+        <div>
+          <div class="card-title">อปท. 8.4.2 – รายการอื่นที่เกี่ยวข้องกับเงินฝาก</div>
+          <div class="card-sub">เช่น เช็คค้างจ่าย เงินฝากรอเคลียร์ เช็คค้ำประกัน ฯลฯ</div>
+        </div>
+        <span class="badge">Other Related Items</span>
+      </div>
+
+      <div class="panel">
+        <h4>ตารางรายการอื่น (8.4.2)</h4>
+        <table id="otherTable">
+          <thead>
+            <tr>
+              <th style="width:30px;">ลำดับ</th>
+              <th>ประเภท / Item Type</th>
+              <th>คำอธิบาย</th>
+              <th>ยอดปีที่ผ่านมา</th>
+              <th>ยอดปีปัจจุบัน</th>
+              <th>หมายเหตุ</th>
+              <th style="width:40px;">ลบ</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- JS เติมแถว -->
+          </tbody>
+        </table>
+        <div class="table-actions">
+          <button class="btn sec" id="addOtherRowBtn">➕ เพิ่มรายการ</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h4>ไฟล์แนบสำหรับ 8.4.2</h4>
+        <input type="file" class="file-input" multiple>
+      </div>
+    </section>
+
+    <!-- TAB CHECKLIST & EXPORT -->
+    <section class="card tab-panel hidden" id="tab-checklist">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Checklist, การเตือน & Export รายงาน</div>
+          <div class="card-sub">ช่วยควบคุมให้การจัดทำแบบฟอร์มครบถ้วน ตามแนวทางการตรวจสอบ</div>
+        </div>
+        <span class="badge">Finalization</span>
+      </div>
+
+      <div class="panel">
+        <h4>Checklist ความครบถ้วน (ต่อแบบ 8.4)</h4>
+        <div class="checklist" id="checklistContainer">
+          <label class="check-item">
+            <input type="checkbox" data-check-key="numbers-checked">
+            <span>ตรวจสอบยอดตัวเลขเทียบกับงบทดลอง/งบแสดงฐานะการเงินแล้ว</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" data-check-key="attachments-complete">
+            <span>แนบหลักฐานประกอบ (bank statement / กระดาษทำการ) ครบถ้วนแล้ว</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" data-check-key="conclusion-written">
+            <span>จัดทำข้อสรุปการตรวจสอบด้วยถ้อยคำที่ชัดเจนและสอดคล้องกับหลักฐานแล้ว</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" data-check-key="spell-checked">
+            <span>ผ่านการตรวจสอบข้อความ/ความครบถ้วนด้วยปุ่ม “ตรวจสอบโครงสร้าง/ความครบถ้วน” แล้ว</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" data-check-key="reviewed">
+            <span>หัวหน้าทีม/ผู้สอบทานได้ทบทวนแบบฟอร์มนี้เรียบร้อยแล้ว</span>
+          </label>
+        </div>
+        <div style="margin-top:8px;font-size:12px;">
+          สถานะปัจจุบัน:
+          <span id="checkStatus" class="status-pill">⏳ ยังไม่พร้อมพิมพ์/ส่ง</span>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h4>การเตือนเมื่อทำผิดขั้นตอน/รูปแบบ</h4>
+        <p id="warningPanel" style="font-size:12px;color:var(--muted);margin:0;">
+          ระบบจะเตือนเมื่อพบข้อมูลสำคัญที่ยังไม่กรอก เช่น หน่วยรับตรวจ ปีงบประมาณ หรือยอดรวมยังเป็นค่าว่าง
+        </p>
+      </div>
+
+      <div class="panel">
+        <h4>ขอคำปรึกษาจากผู้เชี่ยวชาญ</h4>
+        <p style="font-size:12px;margin:0 0 6px;">
+          หากมีการกดปุ่มตรวจสอบ/บันทึกแล้วพบข้อผิดพลาดซ้ำหลายครั้ง ระบบสามารถออกแบบให้แสดงข้อความถามว่า 
+          <strong>“ต้องการขอคำปรึกษาหรือไม่”</strong> และบันทึก log ไว้ในฐานข้อมูล (ในเวอร์ชัน backend จริง)
+        </p>
+        <div class="btn-row">
+          <button class="btn sec" type="button">📨 ขอคำปรึกษา (ตัวอย่างปุ่ม)</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h4>Export รายงาน (A4)</h4>
+        <div class="export-options">
+          <label><input type="radio" name="exportType" value="pdf" checked> PDF (ผ่านการสั่งพิมพ์ → Save as PDF)</label>
+          <label><input type="radio" name="exportType" value="word"> Word (DOCX – รองรับใน backend)</label>
+          <label><input type="radio" name="exportType" value="excel"> Excel (XLSX – รองรับใน backend)</label>
+          <label><input type="radio" name="exportType" value="json"> JSON (ส่งต่อระบบอื่น)</label>
+        </div>
+        <div class="btn-row" style="margin-top:8px;">
+          <button class="btn" id="confirmPrintBtn" disabled>🖨 ยืนยันเพื่อพิมพ์ / Export</button>
+          <button class="btn" id="confirmSendBtn" disabled>📤 ยืนยันส่งต่อไประบบอื่น</button>
+        </div>
+        <small style="font-size:11px;color:var(--muted);display:block;margin-top:6px;">
+          * การพิมพ์ A4 ใช้คำสั่ง <strong>Ctrl+P</strong> หรือปุ่ม “ยืนยันเพื่อพิมพ์ / Export” จากเบราว์เซอร์ได้ทันที<br>
+          * ประเภทไฟล์ Word/Excel/JSON สามารถต่อยอดได้ใน backend โดยใช้ข้อมูลจากโครงสร้างเดียวกันนี้
+        </small>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // ============ STATE ============
+
+    const state = {
+      master:{
+        totalCurrent:0,
+        totalPrior:0,
+        totalDiff:0,
+        diffReason:"",
+        conclusion:"",
+        aiConclusion:""
+      },
+      summaryRows:[],
+      detailRows:[],
+      otherRows:[],
+      checklist:{
+        "numbers-checked":false,
+        "attachments-complete":false,
+        "conclusion-written":false,
+        "spell-checked":false,
+        "reviewed":false
+      }
+    };
+
+    function getStorageKey(){
+      const fy=document.getElementById('fyInput').value || 'xxxx';
+      const unit=document.getElementById('unitNameInput').value || 'unit';
+      const eng=document.getElementById('engagementCodeInput').value || 'eng';
+      return `fa-lg-8-4-${fy}-${unit}-${eng}`;
+    }
+
+    // ============ TABS ============
+    document.querySelectorAll('.tab-btn').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        const tabId=btn.dataset.tab;
+        document.querySelectorAll('.tab-panel').forEach(p=>{
+          if(p.id===tabId) p.classList.remove('hidden');
+          else p.classList.add('hidden');
+        });
+      });
+    });
+
+    // ============ MASTER INPUTS ============
+    const totalCurrentInput=document.getElementById('totalCurrentInput');
+    const totalPriorInput=document.getElementById('totalPriorInput');
+    const totalDiffInput=document.getElementById('totalDiffInput');
+    const diffReasonInput=document.getElementById('diffReasonInput');
+    const conclusionInput=document.getElementById('conclusionInput');
+    const aiConclusionInput=document.getElementById('aiConclusionInput');
+
+    function recalcDiff(){
+      const c=parseFloat(totalCurrentInput.value||0);
+      const p=parseFloat(totalPriorInput.value||0);
+      const diff=c-p;
+      totalDiffInput.value=isNaN(diff)?0:diff.toFixed(2);
+      state.master.totalCurrent=c;
+      state.master.totalPrior=p;
+      state.master.totalDiff=diff;
+    }
+
+    totalCurrentInput.addEventListener('input',recalcDiff);
+    totalPriorInput.addEventListener('input',recalcDiff);
+    diffReasonInput.addEventListener('input',e=>state.master.diffReason=e.target.value);
+    conclusionInput.addEventListener('input',e=>state.master.conclusion=e.target.value);
+    aiConclusionInput.addEventListener('input',e=>state.master.aiConclusion=e.target.value);
+
+    // ============ SUMMARY TABLE (8.4.1) ============
+    const summaryTableBody=document.querySelector('#summaryTable tbody');
+    document.getElementById('addSummaryRowBtn').addEventListener('click',()=>{
+      state.summaryRows.push({
+        section:"",
+        prior:0,
+        current:0,
+        note:""
+      });
+      renderSummaryTable();
+    });
+
+    function renderSummaryTable(){
+      summaryTableBody.innerHTML="";
+      state.summaryRows.forEach((row,idx)=>{
+        const tr=document.createElement('tr');
+
+        const tdIdx=document.createElement('td');
+        tdIdx.textContent=idx+1;
+        tr.appendChild(tdIdx);
+
+        const tdSection=document.createElement('td');
+        const iSection=document.createElement('input');
+        iSection.type='text';
+        iSection.value=row.section;
+        iSection.addEventListener('input',e=>{
+          row.section=e.target.value;
+        });
+        tdSection.appendChild(iSection);
+        tr.appendChild(tdSection);
+
+        const tdPrior=document.createElement('td');
+        const iPrior=document.createElement('input');
+        iPrior.type='number';
+        iPrior.value=row.prior;
+        iPrior.addEventListener('input',e=>{
+          row.prior=parseFloat(e.target.value||0);
+        });
+        tdPrior.appendChild(iPrior);
+        tr.appendChild(tdPrior);
+
+        const tdCurrent=document.createElement('td');
+        const iCurrent=document.createElement('input');
+        iCurrent.type='number';
+        iCurrent.value=row.current;
+        iCurrent.addEventListener('input',e=>{
+          row.current=parseFloat(e.target.value||0);
+        });
+        tdCurrent.appendChild(iCurrent);
+        tr.appendChild(tdCurrent);
+
+        const tdNote=document.createElement('td');
+        const iNote=document.createElement('input');
+        iNote.type='text';
+        iNote.value=row.note;
+        iNote.addEventListener('input',e=>{
+          row.note=e.target.value;
+        });
+        tdNote.appendChild(iNote);
+        tr.appendChild(tdNote);
+
+        summaryTableBody.appendChild(tr);
+      });
+    }
+
+    // ปุ่มคำนวณจากรายละเอียด (เวอร์ชันจำลอง แค่รวมตัวเลขทั้งหมด)
+    document.getElementById('recalcFromDetailBtn').addEventListener('click',()=>{
+      if(state.detailRows.length===0){
+        alert('ยังไม่มีข้อมูลในแบบ 8.4.1.1 ให้กรอกข้อมูลรายละเอียดบัญชีก่อน');
+        return;
+      }
+      // จำลอง: รวมยอดทั้งหมดเป็น 1 แถว "รวมทั้งหมด"
+      const totalPrior=state.detailRows.reduce((s,r)=>s+(parseFloat(r.prior)||0),0);
+      const totalCurrent=state.detailRows.reduce((s,r)=>s+(parseFloat(r.current)||0),0);
+      state.summaryRows=[{
+        section:"รวมทั้งหมดจาก 8.4.1.1",
+        prior:totalPrior,
+        current:totalCurrent,
+        note:"คำนวณจากรายละเอียดบัญชี (จำลอง)"
+      }];
+      renderSummaryTable();
+      // update master
+      totalCurrentInput.value=totalCurrent.toFixed(2);
+      totalPriorInput.value=totalPrior.toFixed(2);
+      recalcDiff();
+      alert('คำนวณยอดสรุปจาก 8.4.1.1 แล้ว (เวอร์ชันจำลอง)');
+    });
+
+    // ============ DETAIL TABLE (8.4.1.1) ============
+    const detailTableBody=document.querySelector('#detailTable tbody');
+    document.getElementById('addDetailRowBtn').addEventListener('click',()=>{
+      state.detailRows.push({
+        bank:"",
+        branch:"",
+        accNo:"",
+        type:"",
+        prior:0,
+        current:0,
+        note:""
+      });
+      renderDetailTable();
+    });
+
+    function renderDetailTable(){
+      detailTableBody.innerHTML="";
+      state.detailRows.forEach((row,idx)=>{
+        const tr=document.createElement('tr');
+
+        const tdIdx=document.createElement('td');
+        tdIdx.textContent=idx+1;
+        tr.appendChild(tdIdx);
+
+        const makeInput=(val,cb)=>{
+          const inp=document.createElement('input');
+          inp.type='text';
+          inp.value=val;
+          inp.addEventListener('input',e=>cb(e.target.value));
+          return inp;
+        };
+
+        let td=document.createElement('td');
+        td.appendChild(makeInput(row.bank,v=>row.bank=v));
+        tr.appendChild(td);
+
+        td=document.createElement('td');
+        td.appendChild(makeInput(row.branch,v=>row.branch=v));
+        tr.appendChild(td);
+
+        td=document.createElement('td');
+        td.appendChild(makeInput(row.accNo,v=>row.accNo=v));
+        tr.appendChild(td);
+
+        td=document.createElement('td');
+        td.appendChild(makeInput(row.type,v=>row.type=v));
+        tr.appendChild(td);
+
+        td=document.createElement('td');
+        const priorInput=document.createElement('input');
+        priorInput.type='number';
+        priorInput.value=row.prior;
+        priorInput.addEventListener('input',e=>row.prior=parseFloat(e.target.value||0));
+        td.appendChild(priorInput);
+        tr.appendChild(td);
+
+        td=document.createElement('td');
+        const currentInput=document.createElement('input');
+        currentInput.type='number';
+        currentInput.value=row.current;
+        currentInput.addEventListener('input',e=>row.current=parseFloat(e.target.value||0));
+        td.appendChild(currentInput);
+        tr.appendChild(td);
+
+        td=document.createElement('td');
+        td.appendChild(makeInput(row.note,v=>row.note=v));
+        tr.appendChild(td);
+
+        td=document.createElement('td');
+        const delBtn=document.createElement('button');
+        delBtn.textContent='✕';
+        delBtn.className='btn danger';
+        delBtn.style.padding='2px 6px';
+        delBtn.style.fontSize='11px';
+        delBtn.addEventListener('click',()=>{
+          state.detailRows.splice(idx,1);
+          renderDetailTable();
+        });
+        td.appendChild(delBtn);
+        tr.appendChild(td);
+
+        detailTableBody.appendChild(tr);
+      });
+    }
+
+    // ============ OTHER TABLE (8.4.2) ============
+    const otherTableBody=document.querySelector('#otherTable tbody');
+    document.getElementById('addOtherRowBtn').addEventListener('click',()=>{
+      state.otherRows.push({
+        itemType:"",
+        desc:"",
+        prior:0,
+        current:0,
+        note:""
+      });
+      renderOtherTable();
+    });
+
+    function renderOtherTable(){
+      otherTableBody.innerHTML="";
+      state.otherRows.forEach((row,idx)=>{
+        const tr=document.createElement('tr');
+
+        const tdIdx=document.createElement('td');
+        tdIdx.textContent=idx+1;
+        tr.appendChild(tdIdx);
+
+        const makeInput=(val,cb)=>{
+          const inp=document.createElement('input');
+          inp.type='text';
+          inp.value=val;
+          inp.addEventListener('input',e=>cb(e.target.value));
+          return inp;
+        };
+
+        let td=document.createElement('td');
+        td.appendChild(makeInput(row.itemType,v=>row.itemType=v));
+        tr.appendChild(td);
+
+        td=document.createElement('td');
+        td.appendChild(makeInput(row.desc,v=>row.desc=v));
+        tr.appendChild(td);
+
+        td=document.createElement('td');
+        const priorInput=document.createElement('input');
+        priorInput.type='number';
+        priorInput.value=row.prior;
+        priorInput.addEventListener('input',e=>row.prior=parseFloat(e.target.value||0));
+        td.appendChild(priorInput);
+        tr.appendChild(td);
+
+        td=document.createElement('td');
+        const currentInput=document.createElement('input');
+        currentInput.type='number';
+        currentInput.value=row.current;
+        currentInput.addEventListener('input',e=>row.current=parseFloat(e.target.value||0));
+        td.appendChild(currentInput);
+        tr.appendChild(td);
+
+        td=document.createElement('td');
+        td.appendChild(makeInput(row.note,v=>row.note=v));
+        tr.appendChild(td);
+
+        td=document.createElement('td');
+        const delBtn=document.createElement('button');
+        delBtn.textContent='✕';
+        delBtn.className='btn danger';
+        delBtn.style.padding='2px 6px';
+        delBtn.style.fontSize='11px';
+        delBtn.addEventListener('click',()=>{
+          state.otherRows.splice(idx,1);
+          renderOtherTable();
+        });
+        td.appendChild(delBtn);
+        tr.appendChild(td);
+
+        otherTableBody.appendChild(tr);
+      });
+    }
+
+    // ============ AI SUMMARY (จำลอง) ============
+    document.getElementById('aiSummaryBtn').addEventListener('click',()=>{
+      const fy=document.getElementById('fyInput').value || '....';
+      const unit=document.getElementById('unitNameInput').value || 'หน่วยรับตรวจ';
+      const totalC=parseFloat(totalCurrentInput.value||0);
+      const totalP=parseFloat(totalPriorInput.value||0);
+      const diff=totalC-totalP;
+      const diffPct = totalP!==0 ? (diff/totalP*100) : 0;
+
+      const direction = diff>0?'เพิ่มขึ้น':'ลดลง';
+      const text =
+`สรุปผลการตรวจสอบเงินฝากธนาคารของ${unit} ประจำปีงบประมาณ ${fy}
+ยอดคงเหลือเงินฝาก ณ วันสิ้นงวดปีปัจจุบันจำนวนประมาณ ${totalC.toLocaleString('th-TH',{maximumFractionDigits:2})} บาท 
+เทียบกับปีก่อนหน้าจำนวนประมาณ ${totalP.toLocaleString('th-TH',{maximumFractionDigits:2})} บาท 
+${direction}สุทธิประมาณ ${diff.toLocaleString('th-TH',{maximumFractionDigits:2})} บาท หรือคิดเป็นประมาณ ${diffPct.toFixed(2)}% ของยอดปีที่ผ่านมา
+
+จากการทดสอบรายการสำคัญ การทดสอบการควบคุม และการกระทบยอดเงินฝากกับบัญชีเงินฝากธนาคาร ไม่พบข้อบ่งชี้ถึงการบันทึกบัญชีที่ขาดหายหรือเกินจริงในสาระสำคัญ 
+ทั้งนี้ ผู้ตรวจสอบยังคงพิจารณาปัจจัยเสี่ยงอื่นร่วมด้วยตามหลักการตรวจสอบที่ยอมรับทั่วไป`;
+
+      aiConclusionInput.value=text;
+      state.master.aiConclusion=text;
+      alert('สร้างร่างข้อความสรุปจากข้อมูลยอดรวมให้แล้ว (สามารถแก้ไขเพิ่มเติมได้)');
+    });
+
+    // ============ SPELL / STRUCTURE CHECK (จำลอง) ============
+    const spellPanel=document.getElementById('spellPanel');
+    const spellList=document.getElementById('spellResultList');
+
+    document.getElementById('spellCheckBtn').addEventListener('click',()=>{
+      const errors=[];
+      const warns=[];
+
+      const fy=document.getElementById('fyInput').value.trim();
+      const unit=document.getElementById('unitNameInput').value.trim();
+      if(!fy) errors.push('ยังไม่ได้ระบุปีงบประมาณ');
+      if(!unit) errors.push('ยังไม่ได้ระบุหน่วยรับตรวจ');
+
+      if((conclusionInput.value.trim().length||0)<30){
+        warns.push('ข้อสรุปการตรวจสอบสั้นมาก ควรอธิบายวัตถุประสงค์ ขอบเขต วิธีการตรวจสอบ และผลการตรวจสอบให้ครบถ้วน');
+      }
+
+      if(state.summaryRows.length===0){
+        warns.push('ยังไม่มีข้อมูลในตาราง 8.4.1 การสรุปยอดจากรายละเอียด');
+      }
+      if(state.detailRows.length===0){
+        warns.push('ยังไม่มีข้อมูลในตาราง 8.4.1.1 รายละเอียดบัญชีเงินฝาก');
+      }
+
+      spellList.innerHTML="";
+      if(errors.length===0 && warns.length===0){
+        const li=document.createElement('li');
+        li.textContent='ไม่พบข้อบกพร่องเชิงโครงสร้างที่สำคัญ (จากการตรวจสอบเบื้องต้น)';
+        spellList.appendChild(li);
+      }else{
+        errors.forEach(e=>{
+          const li=document.createElement('li');
+          li.textContent='❌ '+e;
+          li.style.color='var(--danger)';
+          spellList.appendChild(li);
+        });
+        warns.forEach(w=>{
+          const li=document.createElement('li');
+          li.textContent='⚠ '+w;
+          spellList.appendChild(li);
+        });
+      }
+
+      // mark checklist spell-checked = true
+      state.checklist['spell-checked']=true;
+      syncChecklistUI();
+    });
+
+    // ============ CHECKLIST ============
+    const checklistContainer=document.getElementById('checklistContainer');
+    const checkStatus=document.getElementById('checkStatus');
+    const confirmPrintBtn=document.getElementById('confirmPrintBtn');
+    const confirmSendBtn=document.getElementById('confirmSendBtn');
+
+    checklistContainer.querySelectorAll('input[type="checkbox"]').forEach(chk=>{
+      chk.addEventListener('change',()=>{
+        const key=chk.dataset.checkKey;
+        state.checklist[key]=chk.checked;
+        syncChecklistUI();
+      });
+    });
+
+    function syncChecklistUI(){
+      const values=Object.values(state.checklist);
+      const allDone=values.every(v=>v===true);
+      if(allDone){
+        checkStatus.textContent='✅ พร้อมพิมพ์/ส่งต่อ';
+        checkStatus.classList.add('ready');
+        confirmPrintBtn.disabled=false;
+        confirmSendBtn.disabled=false;
+      }else{
+        checkStatus.textContent='⏳ ยังไม่พร้อมพิมพ์/ส่ง';
+        checkStatus.classList.remove('ready');
+        confirmPrintBtn.disabled=true;
+        confirmSendBtn.disabled=true;
+      }
+    }
+
+    confirmPrintBtn.addEventListener('click',()=>{
+      const selectedType=(document.querySelector('input[name="exportType"]:checked')||{}).value;
+      if(selectedType==='json'){
+        alert('ในเวอร์ชันจริงสามารถส่ง JSON นี้ไป backend เพื่อสร้างไฟล์ตามชนิดที่เลือกได้\nตอนนี้ใช้การสั่งพิมพ์เป็น PDF ได้ทันที');
+      }
+      window.print();
+    });
+
+    confirmSendBtn.addEventListener('click',()=>{
+      alert('ในเวอร์ชันที่เชื่อม backend จะส่งข้อมูลไปยังระบบสอบทาน / ฐานข้อมูล / Cashboard ตามที่กำหนดได้\nตอนนี้เป็นปุ่มจำลองเพื่อออกแบบขั้นตอน');
+    });
+
+    // ============ SAVE / LOAD (localStorage จำลอง DB) ============
+    document.getElementById('saveBtn').addEventListener('click',()=>{
+      const key=getStorageKey();
+      const payload={
+        meta:{
+          fy:document.getElementById('fyInput').value,
+          engagement:document.getElementById('engagementCodeInput').value,
+          unitName:document.getElementById('unitNameInput').value,
+          unitType:document.getElementById('unitTypeSelect').value
+        },
+        state
+      };
+      localStorage.setItem(key,JSON.stringify(payload));
+      alert('บันทึกข้อมูลลงฐานข้อมูลจำลอง (localStorage) เรียบร้อย\nKey: '+key);
+    });
+
+    document.getElementById('loadBtn').addEventListener('click',()=>{
+      const key=getStorageKey();
+      const raw=localStorage.getItem(key);
+      if(!raw){
+        alert('ยังไม่พบข้อมูลที่บันทึกไว้ภายใต้ key นี้\nกรุณาตรวจสอบปีงบประมาณ/หน่วยรับตรวจ/รหัสงาน หรือบันทึกใหม่');
+        return;
+      }
+      const payload=JSON.parse(raw);
+      // meta
+      document.getElementById('fyInput').value=payload.meta.fy;
+      document.getElementById('engagementCodeInput').value=payload.meta.engagement;
+      document.getElementById('unitNameInput').value=payload.meta.unitName;
+      document.getElementById('unitTypeSelect').value=payload.meta.unitType;
+
+      // state
+      Object.assign(state.master,payload.state.master||{});
+      state.summaryRows=payload.state.summaryRows||[];
+      state.detailRows=payload.state.detailRows||[];
+      state.otherRows=payload.state.otherRows||[];
+      Object.assign(state.checklist,payload.state.checklist||{});
+
+      // sync to UI
+      totalCurrentInput.value=state.master.totalCurrent||0;
+      totalPriorInput.value=state.master.totalPrior||0;
+      recalcDiff();
+      diffReasonInput.value=state.master.diffReason||"";
+      conclusionInput.value=state.master.conclusion||"";
+      aiConclusionInput.value=state.master.aiConclusion||"";
+
+      renderSummaryTable();
+      renderDetailTable();
+      renderOtherTable();
+
+      // checklist
+      checklistContainer.querySelectorAll('input[type="checkbox"]').forEach(chk=>{
+        const key=chk.dataset.checkKey;
+        chk.checked=!!state.checklist[key];
+      });
+      syncChecklistUI();
+
+      alert('โหลดข้อมูลจากฐานข้อมูลจำลองสำเร็จ');
+    });
+
+    document.getElementById('resetBtn').addEventListener('click',()=>{
+      if(!confirm('ต้องการล้างข้อมูลในฟอร์มนี้หรือไม่? (ไม่ลบข้อมูลที่เก็บใน localStorage)')) return;
+      totalCurrentInput.value='';
+      totalPriorInput.value='';
+      totalDiffInput.value='';
+      diffReasonInput.value='';
+      conclusionInput.value='';
+      aiConclusionInput.value='';
+      state.master={totalCurrent:0,totalPrior:0,totalDiff:0,diffReason:"",conclusion:"",aiConclusion:""};
+      state.summaryRows=[];
+      state.detailRows=[];
+      state.otherRows=[];
+      Object.keys(state.checklist).forEach(k=>state.checklist[k]=false);
+      renderSummaryTable();
+      renderDetailTable();
+      renderOtherTable();
+      checklistContainer.querySelectorAll('input[type="checkbox"]').forEach(chk=>chk.checked=false);
+      syncChecklistUI();
+      spellList.innerHTML='<li>ยังไม่ได้ทำการตรวจสอบ</li>';
+    });
+
+    // initial
+    syncChecklistUI();
+  </script>
+</body>
+</html>
