@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <title>FA – LG Form 8.3 | ลูกหนี้การค้า (Trade Receivables)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <style>
+    :root{
+      --bg:#060818;
+      --bg-soft:#0b1024;
+      --card:#11152b;
+      --border:#262b46;
+      --accent:#42a5f5;
+      --accent2:#26c6da;
+      --danger:#ef5350;
+      --warning:#ffb74d;
+      --success:#66bb6a;
+      --muted:#a3acc7;
+      --text:#f5f7ff;
+      --pink:#f48fb1;
+      --radius-lg:16px;
+      --shadow-soft:0 10px 30px rgba(0,0,0,0.55);
+    }
+
+    *{box-sizing:border-box;}
+
+    body{
+      margin:0;
+      font-family:"Segoe UI", Tahoma, sans-serif;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(123,30,60,0.36) 0, transparent 55%),
+        radial-gradient(circle at 90% 100%, rgba(66,165,245,0.32) 0, transparent 55%),
+        var(--bg);
+      color:var(--text);
+    }
+
+    header{
+      padding:14px 18px;
+      background:linear-gradient(120deg,#7b1e3c,#0d47a1,#42a5f5);
+      box-shadow:0 6px 22px rgba(0,0,0,0.55);
+      position:sticky;
+      top:0;
+      z-index:20;
+    }
+    .header-row{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+    header h1{
+      margin:0;
+      font-size:22px;
+      font-weight:700;
+    }
+    header p{
+      margin:2px 0 0;
+      font-size:12px;
+      color:var(--muted);
+    }
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:3px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.45);
+      font-size:11px;
+      margin-top:6px;
+    }
+
+    main{
+      max-width:1320px;
+      margin:0 auto 40px;
+      padding:18px;
+    }
+
+    .layout{
+      display:grid;
+      grid-template-columns:2.1fr 1.3fr;
+      gap:18px;
+    }
+    @media(max-width:960px){
+      .layout{grid-template-columns:1fr;}
+    }
+
+    .card{
+      background:var(--card);
+      border-radius:var(--radius-lg);
+      border:1px solid var(--border);
+      box-shadow:var(--shadow-soft);
+      padding:14px 14px 12px;
+    }
+    .card-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:8px;
+      margin-bottom:10px;
+    }
+    .card-title{
+      font-size:16px;
+      font-weight:600;
+    }
+    .card-sub{
+      font-size:11px;
+      color:var(--muted);
+      margin-top:2px;
+    }
+    .chip{
+      padding:3px 9px;
+      border-radius:999px;
+      font-size:11px;
+      border:1px solid rgba(66,165,245,0.6);
+      background:rgba(66,165,245,0.12);
+      color:var(--accent2);
+      white-space:nowrap;
+    }
+
+    label{
+      font-size:12px;
+      display:block;
+      margin-bottom:3px;
+    }
+    .label-en{font-size:11px;color:var(--muted);}
+
+    input[type="text"],
+    input[type="number"],
+    select,
+    textarea{
+      width:100%;
+      padding:7px 9px;
+      border-radius:10px;
+      border:1px solid var(--border);
+      background:var(--bg-soft);
+      color:var(--text);
+      font-family:inherit;
+      font-size:13px;
+      outline:none;
+    }
+    textarea{
+      min-height:80px;
+      resize:vertical;
+    }
+    input:focus, select:focus, textarea:focus{
+      border-color:var(--accent);
+      box-shadow:0 0 0 1px rgba(66,165,245,0.7);
+    }
+
+    .row{display:flex;gap:10px;flex-wrap:wrap;}
+    .col{flex:1 1 0;min-width:140px;}
+
+    button{
+      border:none;
+      border-radius:999px;
+      padding:6px 14px;
+      font-size:13px;
+      cursor:pointer;
+      font-family:inherit;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+    }
+    .btn-primary{
+      background:linear-gradient(135deg,#0d47a1,#42a5f5);
+      color:#fff;
+    }
+    .btn-ghost{
+      background:transparent;
+      color:var(--muted);
+      border:1px solid var(--border);
+    }
+    .btn-danger{background:var(--danger);color:#fff;}
+    .btn-success{background:var(--success);color:#fff;}
+    .btn-warning{background:var(--warning);color:#111;}
+    .btn-sm{padding:4px 10px;font-size:11px;}
+
+    .section{
+      margin-bottom:12px;
+      padding:10px;
+      border-radius:12px;
+      border:1px dashed var(--border);
+      background:rgba(6,8,24,0.65);
+    }
+    .section-title{
+      font-size:13px;
+      font-weight:600;
+      margin-bottom:3px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:6px;
+    }
+    .section-sub{
+      font-size:11px;
+      color:var(--muted);
+      margin-bottom:6px;
+    }
+
+    .attachment-list{
+      margin-top:4px;
+      font-size:11px;
+      background:rgba(0,0,0,0.23);
+      border-radius:8px;
+      border:1px solid var(--border);
+      max-height:120px;
+      overflow:auto;
+      padding:5px 7px;
+    }
+    .attachment-item{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:6px;
+      padding:2px 0;
+    }
+    .attachment-name{
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+    }
+
+    .validation-panel{
+      font-size:12px;
+      padding:8px;
+      border-radius:10px;
+      background:rgba(6,8,24,0.9);
+      border:1px solid var(--border);
+      max-height:220px;
+      overflow:auto;
+    }
+    .validation-item{
+      display:flex;
+      gap:6px;
+      align-items:flex-start;
+      margin-bottom:4px;
+    }
+
+    .checklist{
+      font-size:12px;
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+      margin-top:4px;
+    }
+    .checklist label{
+      display:flex;
+      align-items:flex-start;
+      gap:5px;
+      cursor:pointer;
+      margin-bottom:0;
+    }
+    .checklist input[type="checkbox"]{margin-top:2px;}
+
+    .status-tag{
+      font-size:11px;
+      padding:3px 8px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background:rgba(0,0,0,0.2);
+    }
+    .status-tag.ok{border-color:var(--success);color:var(--success);}
+    .status-tag.warn{border-color:var(--warning);color:var(--warning);}
+    .status-tag.err{border-color:var(--danger);color:var(--danger);}
+
+    .pill{
+      font-size:11px;
+      padding:3px 7px;
+      border-radius:999px;
+      border:1px solid rgba(244,143,177,0.65);
+      background:rgba(244,143,177,0.15);
+    }
+
+    .system-list{
+      margin-top:6px;
+      font-size:12px;
+      border-radius:10px;
+      border:1px solid var(--border);
+      background:rgba(6,8,24,0.9);
+      max-height:150px;
+      overflow:auto;
+    }
+    .system-item{
+      padding:6px 8px;
+      border-bottom:1px solid rgba(255,255,255,0.04);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:6px;
+    }
+    .system-item:last-child{border-bottom:none;}
+
+    .export-row{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin-top:6px;
+    }
+
+    /* Modal */
+    .modal-backdrop{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0.65);
+      display:none;
+      justify-content:center;
+      align-items:center;
+      z-index:50;
+    }
+    .modal{
+      background:var(--card);
+      border-radius:16px;
+      border:1px solid var(--border);
+      padding:16px 14px 12px;
+      max-width:420px;
+      width:100%;
+      box-shadow:var(--shadow-soft);
+    }
+    .modal-title{
+      font-size:15px;
+      font-weight:600;
+      margin-bottom:4px;
+    }
+    .modal-body{
+      font-size:13px;
+      color:var(--muted);
+      margin-bottom:8px;
+    }
+    .modal-actions{
+      display:flex;
+      justify-content:flex-end;
+      gap:8px;
+      margin-top:4px;
+    }
+
+    footer{
+      margin-top:14px;
+      font-size:11px;
+      color:var(--muted);
+      text-align:right;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-row">
+    <div>
+      <h1>แบบ อปท. 8.3 – ลูกหนี้การค้า (Trade Receivables)</h1>
+      <p>
+        Digital LG Financial Audit | Working Paper 8.3 – Trade AR Main Form
+      </p>
+      <div class="badge">
+        🔗 Fieldwork · Notes (2Y) · Review · DB · Cashboard
+      </div>
+    </div>
+
+    <div style="text-align:right; min-width:220px;">
+      <div style="margin-bottom:6px;">
+        <button class="btn-ghost btn-sm" onclick="window.location.href='fa-lg-fieldwork.html'">
+          ⬅ กลับ Fieldwork
+        </button>
+      </div>
+      <div id="globalStatusTag" class="status-tag warn">
+        ⏳ สถานะ: อยู่ระหว่างจัดทำ (In progress)
+      </div>
+      <div style="font-size:11px; margin-top:4px;">
+        หน่วยรับตรวจ: <span id="unitNameLabel">-</span><br/>
+        ปีงบประมาณ: <span id="fiscalYearLabel">-</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="layout">
+
+    <!-- LEFT: MAIN FORM -->
+    <div>
+
+      <!-- A. CONTEXT & LOAD -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">A. ข้อมูลหน่วยรับตรวจ / Load Data</div>
+            <div class="card-sub">
+              ดึงข้อมูลลูกหนี้การค้าจากฐานข้อมูลกลาง แล้วปรับแก้ให้สมบูรณ์ได้
+            </div>
+          </div>
+          <span class="chip">Context & Source</span>
+        </div>
+
+        <div class="row" style="margin-bottom:8px;">
+          <div class="col">
+            <label>ปีงบประมาณ <span class="label-en">(Fiscal Year)</span></label>
+            <input type="number" id="fiscalYear" placeholder="2568" />
+          </div>
+          <div class="col">
+            <label>หน่วยรับตรวจ <span class="label-en">(Entity)</span></label>
+            <input type="text" id="unitName" placeholder="เทศบาลเมืองศรีสะเกษ" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <label>จังหวัด (Province)</label>
+            <input type="text" id="province" placeholder="ศรีสะเกษ" />
+          </div>
+          <div class="col">
+            <label>อำเภอ (District)</label>
+            <input type="text" id="district" placeholder="เมืองศรีสะเกษ" />
+          </div>
+        </div>
+
+        <div class="row" style="margin-top:8px; align-items:center;">
+          <div class="col">
+            <button class="btn-primary" id="btnLoadFromDb">
+              📥 ดึงข้อมูลจากฐานข้อมูล
+            </button>
+          </div>
+          <div class="col" style="font-size:11px; color:var(--muted);">
+            ข้อมูลที่ดึงมา สามารถแก้ไข เพิ่มเติมข้อความ และแนบเอกสารเพิ่มได้
+          </div>
+        </div>
+      </div>
+
+      <!-- B. TRADE AR DETAILS -->
+      <div class="card" style="margin-top:14px;">
+        <div class="card-header">
+          <div>
+            <div class="card-title">B. รายละเอียดลูกหนี้การค้า (Trade AR)</div>
+            <div class="card-sub">
+              กระดาษทำการหลักของแบบ อปท.8.3 – ลูกหนี้การค้า – ฟอร์มหลัก
+            </div>
+          </div>
+          <span class="chip">Trade AR Main Form</span>
+        </div>
+
+        <!-- 1) Overview -->
+        <div class="section">
+          <div class="section-title">
+            <span>1) ภาพรวมลูกหนี้การค้า (Overview)</span>
+            <button class="btn-sm btn-ghost" data-ai-target="arOverview">
+              🤖 AI Draft
+            </button>
+          </div>
+          <div class="section-sub">
+            สรุปโครงสร้างลูกหนี้การค้า ยอดต้นงวด เพิ่มขึ้น ระหว่างปี ยอดปลายงวด ลูกหนี้รายใหญ่ ฯลฯ
+          </div>
+          <textarea id="arOverview"
+            placeholder="พิมพ์ / แก้ไขภาพรวมลูกหนี้การค้า เช่น ยอดรวม การเปลี่ยนแปลง โครงสร้าง ฯลฯ..."></textarea>
+
+          <div style="margin-top:6px;">
+            <label style="font-size:11px;">แนบเอกสารประกอบ (Attachments)</label>
+            <div class="row" style="margin-bottom:4px;">
+              <div class="col">
+                <input type="file" id="fileOverview" />
+              </div>
+              <div class="col" style="text-align:right;">
+                <button class="btn-sm btn-ghost" onclick="addAttachment('overview')">➕ เพิ่มไฟล์</button>
+              </div>
+            </div>
+            <div class="attachment-list" id="attachments-overview"></div>
+          </div>
+        </div>
+
+        <!-- 2) Ageing -->
+        <div class="section">
+          <div class="section-title">
+            <span>2) การวิเคราะห์อายุลูกหนี้ (Ageing Analysis)</span>
+            <button class="btn-sm btn-ghost" data-ai-target="arAgeing">
+              🤖 AI Draft
+            </button>
+          </div>
+          <div class="section-sub">
+            วิเคราะห์อายุลูกหนี้ แยกช่วง (0–30, 31–60, 61–90, เกิน 1 ปี) เทียบปีก่อน และประเมินความเสี่ยงการจัดเก็บ
+          </div>
+          <textarea id="arAgeing"
+            placeholder="ลงรายละเอียดตารางอายุลูกหนี้ สัดส่วนลูกหนี้ค้างนาน ลูกหนี้เสี่ยงสูง ฯลฯ..."></textarea>
+
+          <div style="margin-top:6px;">
+            <label style="font-size:11px;">แนบเอกสารประกอบ (Attachments)</label>
+            <div class="row" style="margin-bottom:4px;">
+              <div class="col">
+                <input type="file" id="fileAgeing" />
+              </div>
+              <div class="col" style="text-align:right;">
+                <button class="btn-sm btn-ghost" onclick="addAttachment('ageing')">➕ เพิ่มไฟล์</button>
+              </div>
+            </div>
+            <div class="attachment-list" id="attachments-ageing"></div>
+          </div>
+        </div>
+
+        <!-- 3) Collection & Confirm -->
+        <div class="section">
+          <div class="section-title">
+            <span>3) การติดตามทวงถาม และการยืนยันยอด (Collection & Confirmation)</span>
+            <button class="btn-sm btn-ghost" data-ai-target="arCollection">
+              🤖 AI Draft
+            </button>
+          </div>
+          <div class="section-sub">
+            บันทึกวิธีการติดตามทวงถาม การออกหนังสือทวงถาม การขอหนังสือยืนยันยอด และผลตอบกลับ
+          </div>
+          <textarea id="arCollection"
+            placeholder="อธิบายขั้นตอนทวงถาม ผลการตอบรับ การยืนยันยอดลูกหนี้ ฯลฯ..."></textarea>
+
+          <div style="margin-top:6px;">
+            <label style="font-size:11px;">แนบเอกสารประกอบ (Attachments)</label>
+            <div class="row" style="margin-bottom:4px;">
+              <div class="col">
+                <input type="file" id="fileCollection" />
+              </div>
+              <div class="col" style="text-align:right;">
+                <button class="btn-sm btn-ghost" onclick="addAttachment('collection')">➕ เพิ่มไฟล์</button>
+              </div>
+            </div>
+            <div class="attachment-list" id="attachments-collection"></div>
+          </div>
+        </div>
+
+        <!-- 4) Allowance & Conclusion -->
+        <div class="section">
+          <div class="section-title">
+            <span>4) ค่าเผื่อหนี้สงสัยจะสูญ และข้อสรุปของผู้ตรวจสอบ</span>
+            <button class="btn-sm btn-ghost" data-ai-target="arAllowanceConclusion">
+              🤖 AI Draft
+            </button>
+          </div>
+          <div class="section-sub">
+            ประเมินความเหมาะสมของค่าเผื่อหนี้สงสัยจะสูญ ความเพียงพอของหลักฐาน และสรุปความเห็น
+          </div>
+          <textarea id="arAllowanceConclusion"
+            placeholder="ร่างข้อสรุปเกี่ยวกับลูกหนี้การค้า ค่าเผื่อหนี้สงสัยจะสูญ ข้อเสนอแนะ ฯลฯ..."></textarea>
+
+          <div style="margin-top:6px;">
+            <label style="font-size:11px;">แนบเอกสารประกอบ (Attachments)</label>
+            <div class="row" style="margin-bottom:4px;">
+              <div class="col">
+                <input type="file" id="fileAllowance" />
+              </div>
+              <div class="col" style="text-align:right;">
+                <button class="btn-sm btn-ghost" onclick="addAttachment('allowance')">➕ เพิ่มไฟล์</button>
+              </div>
+            </div>
+            <div class="attachment-list" id="attachments-allowance"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: AI, VALIDATION, ROUTING -->
+    <div>
+
+      <!-- C. AI & PROOFREAD -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">C. AI Assist & Proofreading</div>
+            <div class="card-sub">
+              ตรวจคำผิด ความครบถ้วน และความเป็นไปตามแนวทางการตรวจสอบ
+            </div>
+          </div>
+          <span class="chip">Quality Check</span>
+        </div>
+
+        <div class="row" style="margin-bottom:8px;">
+          <button class="btn-primary" id="btnRunProofread">
+            ✅ ตรวจสอบความถูกต้อง
+          </button>
+          <button class="btn-ghost btn-sm" id="btnClearIssues">
+            🧹 ล้างรายการข้อสังเกต
+          </button>
+        </div>
+
+        <div id="validationPanel" class="validation-panel">
+          <div class="validation-item">
+            <span>ℹ️</span>
+            <span>ยังไม่ได้ตรวจสอบ – กดปุ่ม “ตรวจสอบความถูกต้อง” เพื่อเริ่ม</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- D. CHECKLIST & COMPLETION -->
+      <div class="card" style="margin-top:14px;">
+        <div class="card-header">
+          <div>
+            <div class="card-title">D. Checklist & Completion</div>
+            <div class="card-sub">
+              ยืนยันว่ากระดาษทำการ อปท.8.3 จัดทำครบก่อนส่งต่อ
+            </div>
+          </div>
+          <span class="chip">Completion</span>
+        </div>
+
+        <div class="checklist">
+          <label><input type="checkbox" id="chkDetailsComplete" /> กรอกรายละเอียดลูกหนี้การค้าครบถ้วนแล้ว</label>
+          <label><input type="checkbox" id="chkDocsAttached" /> แนบเอกสารประกอบสำคัญครบแล้ว</label>
+          <label><input type="checkbox" id="chkConclusionReady" /> สรุปผลและข้อเสนอแนะเรียบร้อย</label>
+          <label><input type="checkbox" id="chkProofreadDone" /> ตรวจคำผิดและความเหมาะสมแล้ว</label>
+        </div>
+
+        <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
+          <button class="btn-success" id="btnConfirmComplete">
+            ✔️ ยืนยันจัดทำครบถ้วน
+          </button>
+          <button class="btn-warning" id="btnPrint" disabled>
+            🖨️ ปริ้น
+          </button>
+          <button class="btn-primary" id="btnSubmit" disabled>
+            📤 ส่ง
+          </button>
+        </div>
+
+        <div style="font-size:11px; color:var(--muted); margin-top:6px;">
+          เมื่อยืนยันแล้ว ระบบจะอนุญาตให้ Export / ส่งต่อไปยังหมายเหตุประกอบงบการเงิน และระบบอื่น
+        </div>
+      </div>
+
+      <!-- E. WARNING & EXPERT -->
+      <div class="card" style="margin-top:14px;">
+        <div class="card-header">
+          <div>
+            <div class="card-title">E. Warning & Expert Consultation</div>
+            <div class="card-sub">
+              เตือนเมื่อทำผิดขั้นตอน และเสนอให้ขอคำปรึกษาจากผู้เชี่ยวชาญ
+            </div>
+          </div>
+          <span class="chip">Governance</span>
+        </div>
+
+        <div style="font-size:12px; margin-bottom:6px;">
+          ความผิด/การฝ่าฝืนลำดับขั้นตอน:
+          <span id="errorCounterPill" class="pill">0 ครั้ง</span>
+        </div>
+
+        <button class="btn-ghost" id="btnConsultExpert">
+          👨‍💼 ขอคำปรึกษาจากผู้เชี่ยวชาญการตรวจสอบการเงิน
+        </button>
+
+        <div style="font-size:11px; color:var(--muted); margin-top:6px;">
+          หากระบบตรวจพบความผิดขั้นตอนซ้ำ ≥ 3 ครั้ง จะเสนอให้ติดต่อผู้เชี่ยวชาญโดยอัตโนมัติ
+        </div>
+      </div>
+
+      <!-- F. ROUTING & EXPORT -->
+      <div class="card" style="margin-top:14px;">
+        <div class="card-header">
+          <div>
+            <div class="card-title">F. Routing & Export</div>
+            <div class="card-sub">
+              ส่งต่อข้อมูลไปยัง Fieldwork / Notes / Review / DB / Cashboard และ Export
+            </div>
+          </div>
+          <span class="chip">Integration</span>
+        </div>
+
+        <div class="section">
+          <div class="section-title">
+            <span>1) ส่งต่อไปยังระบบอื่น</span>
+          </div>
+          <div class="section-sub">
+            เลือกระบบปลายทาง เช่น Fieldwork, หมายเหตุประกอบงบการเงิน 2 ปี, ฐานข้อมูล ฯลฯ
+          </div>
+
+          <input type="text" id="systemSearch" placeholder="ค้นหาระบบปลายทาง..." />
+          <div id="systemList" class="system-list"></div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">
+            <span>2) Export รายงาน</span>
+          </div>
+          <div class="section-sub">
+            ส่งออกข้อมูลเพื่อใช้จัดทำไฟล์รายงานอย่างเป็นทางการ
+          </div>
+
+          <div class="export-row">
+            <select id="exportFormat">
+              <option value="pdf">PDF – Official</option>
+              <option value="docx">DOCX – Word</option>
+              <option value="xlsx">XLSX – Excel</option>
+              <option value="html">HTML – Web</option>
+              <option value="json">JSON – Raw Data</option>
+            </select>
+            <button class="btn-primary btn-sm" id="btnExport">
+              ⬇️ Export
+            </button>
+          </div>
+          <div style="font-size:11px; color:var(--muted); margin-top:6px;">
+            ฝั่ง backend สามารถใช้ payload จากหน้านี้เพื่อสร้างไฟล์จริงตามมาตรฐานของสำนักงาน
+          </div>
+        </div>
+
+        <footer>
+          FA – LG 8.3 Trade AR | OAG Sisaket Group 4
+        </footer>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- Modal: Expert Consult -->
+<div id="expertModal" class="modal-backdrop">
+  <div class="modal">
+    <div class="modal-title">ต้องการคำปรึกษาจากผู้เชี่ยวชาญหรือไม่?</div>
+    <div class="modal-body">
+      ระบบตรวจพบว่ามีการทำผิดขั้นตอน / รูปแบบ / แนวทางการตรวจสอบซ้ำหลายครั้ง<br><br>
+      ต้องการให้ระบบแนะนำช่องทางติดต่อผู้เชี่ยวชาญการตรวจสอบการเงิน หรือเปิดคู่มือที่เกี่ยวข้องหรือไม่?
+    </div>
+    <div class="modal-actions">
+      <button class="btn-ghost btn-sm" id="btnConsultNo">ไม่ต้องการ</button>
+      <button class="btn-primary btn-sm" id="btnConsultYes">ต้องการ</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ---------------- GLOBAL STATE ----------------
+  const state = {
+    validationIssues: [],
+    errorCount: 0,
+    isCompleted: false,
+    systems: [
+      { key:'fieldwork', label:'Fieldwork – ระบบตรวจสอบภาคสนาม', href:'fa-lg-fieldwork.html' },
+      { key:'notes', label:'Notes 2Y – หมายเหตุประกอบงบการเงิน 2 ปี', href:'fa-lg-notes-2y.html' },
+      { key:'review', label:'Review – ระบบสอบทาน FA', href:'fa-review-menu.html' },
+      { key:'db', label:'Database – ระบบฐานข้อมูลกลาง', href:'fa-db-data-gov.html' },
+      { key:'cashboard', label:'Cashboard – ระบบติดตามผลการเงิน', href:'fa-cashboard.html' }
+    ]
+  };
+
+  function registerProcessError(reason){
+    state.errorCount += 1;
+    const pill = document.getElementById('errorCounterPill');
+    pill.textContent = state.errorCount + ' ครั้ง';
+    if(state.errorCount >= 3){
+      document.getElementById('expertModal').style.display = 'flex';
+    }
+    console.warn('Process issue:', reason);
+  }
+
+  // --------------- LOAD FROM DB (Mock) ---------------
+  document.getElementById('btnLoadFromDb').addEventListener('click', () => {
+    const fy = document.getElementById('fiscalYear').value || '2568';
+    const unit = document.getElementById('unitName').value || 'เทศบาลเมืองศรีสะเกษ';
+
+    document.getElementById('fiscalYearLabel').textContent = fy;
+    document.getElementById('unitNameLabel').textContent = unit;
+
+    document.getElementById('arOverview').value =
+      `ข้อมูลจากฐานข้อมูลกลาง: ลูกหนี้การค้าของ ${unit} ปีงบประมาณ ${fy} `;
+    document.getElementById('arAgeing').value =
+      'Ageing จากระบบ: 0–30, 31–60, 61–90, >1 ปี พร้อมยอดรวมแต่ละช่วง...';
+    document.getElementById('arCollection').value =
+      'สถานะการทวงถามและการยืนยันยอดจากระบบ: จำนวนจดหมายทวงถาม ยืนยันยอดตอบกลับ ฯลฯ...';
+    document.getElementById('arAllowanceConclusion').value =
+      'ข้อมูลตั้งต้นค่าเผื่อหนี้สงสัยจะสูญจากระบบ: เกณฑ์คำนวณและยอดที่ตั้งไว้...';
+
+    autoAttachFromDb('overview', 'DB-AR-Summary.xlsx');
+    autoAttachFromDb('ageing', 'DB-AR-Ageing-Detail.xlsx');
+    autoAttachFromDb('collection', 'DB-AR-Collection-Status.pdf');
+    autoAttachFromDb('allowance', 'DB-AR-Allowance-Working.xlsx');
+  });
+
+  function autoAttachFromDb(sectionKey, fileName){
+    const container = document.getElementById('attachments-' + sectionKey);
+    if(!container) return;
+    const div = document.createElement('div');
+    div.className = 'attachment-item';
+    div.innerHTML = `
+      <span class="attachment-name">📎 [ระบบ] ${fileName}</span>
+      <button class="btn-sm btn-ghost" onclick="this.parentElement.remove()">ลบ</button>
+    `;
+    container.appendChild(div);
+  }
+
+  // --------------- ATTACHMENTS ----------------
+  function addAttachment(sectionKey){
+    const inputId =
+      sectionKey === 'overview' ? 'fileOverview' :
+      sectionKey === 'ageing' ? 'fileAgeing' :
+      sectionKey === 'collection' ? 'fileCollection' :
+      sectionKey === 'allowance' ? 'fileAllowance' : null;
+
+    if(!inputId) return;
+    const fileInput = document.getElementById(inputId);
+    if(!fileInput || !fileInput.files || !fileInput.files.length){
+      alert('กรุณาเลือกไฟล์ก่อน');
+      return;
+    }
+    const file = fileInput.files[0];
+    const container = document.getElementById('attachments-' + sectionKey);
+    const div = document.createElement('div');
+    div.className = 'attachment-item';
+    div.innerHTML = `
+      <span class="attachment-name">📎 ${file.name}</span>
+      <button class="btn-sm btn-ghost" onclick="this.parentElement.remove()">ลบ</button>
+    `;
+    container.appendChild(div);
+    fileInput.value = '';
+  }
+  window.addAttachment = addAttachment;
+
+  // --------------- AI DRAFT (Mock) ---------------
+  document.querySelectorAll('[data-ai-target]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetId = btn.getAttribute('data-ai-target');
+      const el = document.getElementById(targetId);
+      if(!el) return;
+      const cur = el.value.trim();
+      const draft = '[AI Draft] ร่างข้อความตัวอย่างจากระบบ AI โปรดปรับให้ตรงกับข้อเท็จจริงและมาตรฐานการตรวจสอบ.';
+      el.value = cur ? (cur + '\n\n' + draft) : draft;
+    });
+  });
+
+  // --------------- PROOFREAD / VALIDATION ---------------
+  document.getElementById('btnRunProofread').addEventListener('click', () => {
+    const issues = [];
+
+    function checkRequired(id, label){
+      const v = (document.getElementById(id).value || '').trim();
+      if(!v){
+        issues.push({type:'error', msg:'ยังไม่ได้กรอก: ' + label});
+      }else if(v.length < 20){
+        issues.push({type:'warn', msg:`ข้อความใน "${label}" อาจสั้นเกินไป`});
+      }
+    }
+
+    checkRequired('arOverview', 'ภาพรวมลูกหนี้การค้า');
+    checkRequired('arAgeing', 'การวิเคราะห์อายุลูกหนี้');
+    checkRequired('arCollection', 'การทวงถาม/ยืนยันยอด');
+    checkRequired('arAllowanceConclusion', 'ค่าเผื่อหนี้สงสัยจะสูญและข้อสรุป');
+
+    const allowance = (document.getElementById('arAllowanceConclusion').value || '').trim();
+    if(allowance && !allowance.match(/หนี้สงสัยจะสูญ|allowance/i)){
+      issues.push({
+        type:'warn',
+        msg:'ข้อสรุปยังไม่พบคำว่า “หนี้สงสัยจะสูญ / allowance” อาจยังไม่ได้กล่าวถึงอย่างชัดเจน'
+      });
+    }
+
+    state.validationIssues = issues;
+    renderValidationPanel();
+
+    if(issues.length){
+      registerProcessError('Validation issues found');
+      setStatus('err','⚠ พบประเด็นจากการตรวจสอบ (Issues detected)');
+    }else{
+      setStatus('ok','✅ ผ่านการตรวจสอบเบื้องต้น (Validated)');
+    }
+  });
+
+  document.getElementById('btnClearIssues').addEventListener('click', () => {
+    state.validationIssues = [];
+    renderValidationPanel();
+  });
+
+  function renderValidationPanel(){
+    const panel = document.getElementById('validationPanel');
+    panel.innerHTML = '';
+    if(!state.validationIssues.length){
+      const div = document.createElement('div');
+      div.className = 'validation-item';
+      div.innerHTML = '<span>✅</span><span>ไม่มีข้อสังเกตจากการตรวจสอบล่าสุด</span>';
+      panel.appendChild(div);
+      return;
+    }
+    state.validationIssues.forEach(issue => {
+      const div = document.createElement('div');
+      div.className = 'validation-item';
+      const icon = issue.type === 'error' ? '❌' : '⚠️';
+      div.innerHTML = `<span>${icon}</span><span>${issue.msg}</span>`;
+      panel.appendChild(div);
+    });
+  }
+
+  function setStatus(type, text){
+    const tag = document.getElementById('globalStatusTag');
+    tag.className = 'status-tag ' + (type || '');
+    tag.textContent = text;
+  }
+
+  // --------------- CHECKLIST & COMPLETION ---------------
+  document.getElementById('btnConfirmComplete').addEventListener('click', () => {
+    const a = document.getElementById('chkDetailsComplete').checked;
+    const b = document.getElementById('chkDocsAttached').checked;
+    const c = document.getElementById('chkConclusionReady').checked;
+    const d = document.getElementById('chkProofreadDone').checked;
+
+    if(!(a && b && c && d)){
+      alert('กรุณาติ๊ก Checklist ให้ครบทั้ง 4 ข้อก่อน');
+      registerProcessError('Confirm without checklist');
+      return;
+    }
+    if(state.validationIssues.length){
+      const ok = confirm('ยังมีข้อสังเกตจากการตรวจสอบอยู่ ต้องการยืนยันว่าจัดทำครบถ้วนแล้วหรือไม่?');
+      if(!ok){
+        registerProcessError('Decline completion due to issues');
+        return;
+      }
+    }
+
+    state.isCompleted = true;
+    document.getElementById('btnPrint').disabled = false;
+    document.getElementById('btnSubmit').disabled = false;
+    setStatus('ok','✅ จัดทำครบถ้วนและพร้อมส่ง (Completed & Ready)');
+    alert('ยืนยันแล้วว่าจัดทำแบบ อปท.8.3 ครบถ้วน');
+  });
+
+  document.getElementById('btnPrint').addEventListener('click', () => {
+    if(!state.isCompleted){
+      alert('ยังไม่ได้ยืนยันว่าจัดทำครบถ้วน – ไม่สามารถปริ้นได้');
+      registerProcessError('Print before completion');
+      return;
+    }
+    window.print();
+  });
+
+  document.getElementById('btnSubmit').addEventListener('click', () => {
+    if(!state.isCompleted){
+      alert('ยังไม่ได้ยืนยันว่าจัดทำครบถ้วน – ไม่สามารถส่งได้');
+      registerProcessError('Submit before completion');
+      return;
+    }
+    // TODO: เชื่อม backend บันทึกสถานะจริง
+    alert('จำลองการส่งข้อมูลเรียบร้อย (Mock Submit)');
+  });
+
+  // --------------- EXPERT CONSULT ---------------
+  document.getElementById('btnConsultExpert').addEventListener('click', () => {
+    document.getElementById('expertModal').style.display = 'flex';
+  });
+  document.getElementById('btnConsultNo').addEventListener('click', () => {
+    document.getElementById('expertModal').style.display = 'none';
+  });
+  document.getElementById('btnConsultYes').addEventListener('click', () => {
+    document.getElementById('expertModal').style.display = 'none';
+    alert('ระบบจะเปิดช่องทาง/คู่มือการติดต่อผู้เชี่ยวชาญ (เชื่อมภายหลังได้ เช่น หน้า consult, Line OA, Email).');
+  });
+
+  // --------------- ROUTING ---------------
+  function renderSystemList(){
+    const list = document.getElementById('systemList');
+    const kw = (document.getElementById('systemSearch').value || '').toLowerCase();
+    list.innerHTML = '';
+    state.systems
+      .filter(s => !kw || s.label.toLowerCase().includes(kw))
+      .forEach(s => {
+        const div = document.createElement('div');
+        div.className = 'system-item';
+        div.innerHTML = `
+          <span>${s.label}</span>
+          <button class="btn-sm btn-primary" data-href="${s.href}">ไป</button>
+        `;
+        list.appendChild(div);
+      });
+
+    list.querySelectorAll('button[data-href]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const href = btn.getAttribute('data-href');
+        goToSystem(href);
+      });
+    });
+  }
+  document.getElementById('systemSearch').addEventListener('input', renderSystemList);
+
+  function goToSystem(href){
+    if(!state.isCompleted){
+      alert('กรุณายืนยันว่าจัดทำแบบ อปท.8.3 ครบถ้วนก่อนส่งต่อไปยังระบบอื่น (รวมถึงหมายเหตุประกอบงบการเงิน 2 ปี).');
+      registerProcessError('Route before completion');
+      return;
+    }
+    // ส่ง payload ไปให้ Notes (2Y) ผ่าน localStorage เฉพาะกรณีหมายเหตุ
+    if(href.indexOf('fa-lg-notes-2y.html') !== -1){
+      try{
+        const payload = collectReportData();
+        localStorage.setItem('fa_lg_8_3_payload', JSON.stringify(payload));
+      }catch(e){
+        console.warn('Failed to save payload to localStorage', e);
+      }
+    }
+    window.location.href = href;
+  }
+
+  // --------------- EXPORT ---------------
+  document.getElementById('btnExport').addEventListener('click', () => {
+    if(!state.isCompleted){
+      const ok = confirm('ยังไม่ได้ยืนยันว่าจัดทำครบถ้วน ต้องการ Export แบบ Draft หรือไม่?');
+      if(!ok){
+        registerProcessError('Cancel export before completion');
+        return;
+      }
+    }
+    const fmt = document.getElementById('exportFormat').value;
+    const payload = collectReportData();
+    console.log('Export format:', fmt, 'payload:', payload);
+    alert('Export แบบ ' + fmt + ' (ดู payload ใน console เพื่อเชื่อม backend ต่อได้)');
+  });
+
+  function collectReportData(){
+    // สามารถใช้ payload นี้ส่งไป backend หรือ Notes
+    return {
+      formCode: 'อปท.8.3',
+      formName: 'ลูกหนี้การค้า – ฟอร์มหลัก',
+      fiscalYear: document.getElementById('fiscalYear').value || null,
+      unitName: document.getElementById('unitName').value || null,
+      province: document.getElementById('province').value || null,
+      district: document.getElementById('district').value || null,
+      sections: {
+        overview: document.getElementById('arOverview').value || '',
+        ageing: document.getElementById('arAgeing').value || '',
+        collection: document.getElementById('arCollection').value || '',
+        allowanceConclusion: document.getElementById('arAllowanceConclusion').value || ''
+      },
+      checklist: {
+        detailsComplete: document.getElementById('chkDetailsComplete').checked,
+        docsAttached: document.getElementById('chkDocsAttached').checked,
+        conclusionReady: document.getElementById('chkConclusionReady').checked,
+        proofreadDone: document.getElementById('chkProofreadDone').checked
+      },
+      validationIssues: state.validationIssues,
+      isCompleted: state.isCompleted,
+      errorCount: state.errorCount
+    };
+  }
+
+  // --------------- INIT ---------------
+  renderSystemList();
+</script>
+</body>
+</html>
