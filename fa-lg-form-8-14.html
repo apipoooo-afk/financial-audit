@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>อปท. 8.14 | Financial Audit System</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    --bg:#060818;
+    --card:#11152b;
+    --border:#262b46;
+    --primary:#0d47a1;
+    --primary2:#42a5f5;
+    --accent:#ffd54f;
+    --text:#f5f7ff;
+    --muted:#a3acc7;
+    --radius:14px;
+    --shadow:0 8px 24px rgba(0,0,0,0.45);
+  }
+
+  body{
+    margin:0;
+    font-family:"Segoe UI", Tahoma, sans-serif;
+    background:var(--bg);
+    color:var(--text);
+  }
+
+  header{
+    padding:20px;
+    text-align:center;
+    background:linear-gradient(120deg,#7b1e3c,#0d47a1,#42a5f5);
+    box-shadow:var(--shadow);
+  }
+  header h1{ margin:0; font-size:26px; font-weight:800;}
+
+  .container{
+    max-width:900px;
+    margin:25px auto;
+    padding:20px;
+    background:var(--card);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+  }
+
+  h2{
+    margin-top:0;
+    font-size:22px;
+    border-bottom:1px solid var(--border);
+    padding-bottom:8px;
+  }
+
+  /* Input + Select */
+  select, input{
+    width:100%;
+    padding:10px 12px;
+    margin:7px 0 14px;
+    background:#0b1024;
+    border:1px solid var(--border);
+    color:var(--text);
+    border-radius:var(--radius);
+  }
+
+  /* Buttons */
+  .btn{
+    display:block;
+    width:100%;
+    padding:14px;
+    margin:8px 0;
+    text-align:center;
+    font-weight:700;
+    background:var(--primary);
+    border-radius:var(--radius);
+    color:white;
+    text-decoration:none;
+    box-shadow:var(--shadow);
+  }
+  .btn:hover{ background:var(--primary2); }
+
+  .stats-box{
+    background:#0b1024;
+    border:1px solid var(--border);
+    padding:12px;
+    border-radius:var(--radius);
+    margin-top:15px;
+  }
+</style>
+
+<script>
+// จำลองระบบสถิติผู้ใช้
+document.addEventListener("DOMContentLoaded",()=>{
+  let current = Math.floor(Math.random()*7)+3; 
+  let total = localStorage.getItem("opta14_total") || 128;
+  total = parseInt(total)+1;
+  localStorage.setItem("opta14_total", total);
+
+  document.getElementById("currentUser").innerText = current;
+  document.getElementById("totalUser").innerText = total;
+});
+</script>
+</head>
+
+<body>
+
+<header>
+  <h1>อปท. 8.14 — ระบบตรวจสอบข้อมูล</h1>
+</header>
+
+<div class="container">
+
+  <h2>เมนู 1 : ข้อมูลเบื้องต้นก่อนตรวจ</h2>
+
+  <label>ชื่อหน่วยรับตรวจ</label>
+  <select>
+    <option>-- เลือก --</option>
+    <option>เทศบาลเมืองศรีสะเกษ</option>
+    <option>เทศบาลตำบลน้ำคำ</option>
+  </select>
+
+  <label>ประเภท</label>
+  <select>
+    <option>-- เลือก --</option>
+    <option>เทศบาล</option>
+    <option>อบต.</option>
+  </select>
+
+  <label>อำเภอ</label>
+  <select>
+    <option>-- เลือก --</option>
+    <option>เมืองศรีสะเกษ</option>
+    <option>กันทรารมย์</option>
+  </select>
+
+  <label>จังหวัด</label>
+  <select>
+    <option>ศรีสะเกษ</option>
+  </select>
+
+  <label>ปีงบประมาณปัจจุบัน</label>
+  <select>
+    <option>2569</option>
+    <option>2568</option>
+  </select>
+
+  <label>ปีงบประมาณปีก่อน</label>
+  <select>
+    <option>2568</option>
+    <option>2567</option>
+  </select>
+
+  <h3>เพิ่มชื่อผู้ตรวจสอบ (สูงสุด 6 คน)</h3>
+  <div id="auditors"></div>
+
+  <button class="btn" onclick="addAuditor()">+ เพิ่มผู้ตรวจ</button>
+
+  <script>
+    let count = 0;
+    function addAuditor(){
+      if(count>=6) return alert("เพิ่มได้สูงสุด 6 คน");
+      count++;
+      const div = document.createElement("div");
+      div.innerHTML = `
+        <input placeholder="ชื่อ - นามสกุล ผู้ตรวจคนที่ ${count}">
+        <input placeholder="ตำแหน่ง">
+      `;
+      document.getElementById("auditors").appendChild(div);
+    }
+  </script>
+
+  <label>วันที่ตรวจสอบ</label>
+  <input type="date">
+
+  <a href="#" class="btn">บันทึกข้อมูล</a>
+  <a href="index.html" class="btn">กลับหน้าแรก</a>
+  <a href="fa-lg-fieldwork.html" class="btn">กลับไปหน้า ขั้นตอนปฏิบัติการตรวจสอบ</a>
+
+  <div class="stats-box">
+    👁 ผู้ใช้ปัจจุบัน: <span id="currentUser"></span><br>
+    🔄 ผู้ใช้สะสม: <span id="totalUser"></span>
+  </div>
+
+</div>
+
+<div class="container">
+
+  <h2>เมนู 2 : เลือกแบบ อปท. 8.14 ทั้งหมด</h2>
+
+  <a class="btn" href="fa-lg-form-8-14-main.html">แบบ อปท. 8.14</a>
+  <a class="btn" href="fa-lg-form-8-14-1.html">แบบ อปท. 8.14.1</a>
+  <a class="btn" href="fa-lg-form-8-14-2.html">แบบ อปท. 8.14.2</a>
+  <a class="btn" href="fa-lg-form-8-14-3.html">แบบ อปท. 8.14.3</a>
+  <a class="btn" href="fa-lg-form-8-14-4.html">แบบ อปท. 8.14.4</a>
+
+  <a class="btn" href="excel-template/opto-8-14.xlsx">+ เพิ่มแบบ อปท. 8.14.x (Excel)</a>
+
+  <a href="fa-lg-form-8-14.html" class="btn">กลับเมนู 1</a>
+  <a href="index.html" class="btn">กลับหน้าแรก</a>
+  <a href="fa-lg-fieldwork.html" class="btn">กลับ ขั้นตอนตรวจสอบ</a>
+
+  <div class="stats-box">
+    👁 ผู้ใช้ปัจจุบัน: <span id="currentUser"></span><br>
+    🔄 ผู้ใช้สะสม: <span id="totalUser"></span>
+  </div>
+
+</div>
+
+</body>
+</html>
