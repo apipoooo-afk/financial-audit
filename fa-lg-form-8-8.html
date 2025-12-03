@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <title>อปท. 8.8 – รายการตรวจสอบเฉพาะประเด็น</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root{
+      --bg:#060818;
+      --card:#11152b;
+      --border:#262b46;
+      --text:#f5f7ff;
+      --muted:#a3acc7;
+      --accent:#42a5f5;
+      --accent2:#26c6da;
+      --pink:#f48fb1;
+      --success:#66bb6a;
+      --danger:#ef5350;
+      --warning:#ffb74d;
+    }
+    *{box-sizing:border-box;}
+    body{
+      margin:0;
+      font-family:"Segoe UI", Tahoma, sans-serif;
+      background:var(--bg);
+      color:var(--text);
+    }
+    header{
+      padding:20px;
+      text-align:center;
+      background:linear-gradient(120deg,#0d47a1,#42a5f5,#7b1e3c);
+      box-shadow:0 4px 15px rgba(0,0,0,0.5);
+    }
+    header h1{margin:0;font-size:26px;font-weight:800;}
+    header p{margin:6px 0 0 0;font-size:13px;opacity:0.9;}
+
+    .container{
+      padding:20px;
+      max-width:1200px;
+      margin:auto;
+    }
+
+    .toolbar{
+      margin-bottom:20px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    button{
+      background:var(--accent);
+      border:none;
+      color:#fff;
+      padding:10px 16px;
+      border-radius:8px;
+      cursor:pointer;
+      font-size:13px;
+      font-weight:600;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+    }
+    button.export{background:var(--success);}
+    button.load{background:var(--accent2);}
+    button.save{background:#0d47a1;}
+    button.add-row{background:var(--pink);}
+    button.ai{background:var(--warning);}
+    button.qa{background:var(--danger);}
+
+    button:hover{opacity:0.9;}
+
+    .meta-card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:12px;
+      padding:14px 16px;
+      margin-bottom:18px;
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+      gap:10px 16px;
+      font-size:13px;
+    }
+    .meta-field label{
+      display:block;
+      font-size:12px;
+      color:var(--muted);
+      margin-bottom:3px;
+    }
+    .meta-field span.en{
+      font-size:11px;
+      opacity:0.75;
+    }
+    .meta-field input,
+    .meta-field select{
+      width:100%;
+      padding:6px 8px;
+      border-radius:6px;
+      border:1px solid var(--border);
+      background:#0b1024;
+      color:var(--text);
+      font-size:13px;
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:15px;
+      background:var(--card);
+    }
+    th,td{
+      padding:8px;
+      border:1px solid var(--border);
+      font-size:13px;
+      vertical-align:top;
+    }
+    th{
+      background:#0d47a1;
+      font-weight:700;
+      text-align:center;
+    }
+    input[type="text"],
+    textarea,
+    select.risk-select{
+      width:100%;
+      padding:6px;
+      border-radius:6px;
+      border:1px solid var(--border);
+      background:#0b1024;
+      color:var(--text);
+      font-size:13px;
+    }
+    textarea{height:80px;resize:vertical;}
+
+    .attach-btn{
+      background:#7b1e3c;
+      padding:6px 10px;
+      border-radius:8px;
+      font-size:12px;
+      border:none;
+      color:#fff;
+      cursor:pointer;
+      width:100%;
+    }
+
+    .summary{
+      margin-top:24px;
+      background:var(--card);
+      padding:18px;
+      border-radius:12px;
+      border:1px solid var(--border);
+      font-size:13px;
+    }
+    .summary h3{margin-top:0;margin-bottom:8px;}
+    .summary-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+      gap:10px 16px;
+      margin-bottom:10px;
+    }
+    .summary-item{
+      border-radius:10px;
+      border:1px solid var(--border);
+      padding:8px 10px;
+    }
+    .summary-item strong{display:block;font-size:18px;margin-bottom:4px;}
+    .summary-item span.label{font-size:12px;color:var(--muted);}
+
+    .note{
+      font-size:11px;
+      color:var(--muted);
+      margin-top:4px;
+    }
+
+    .footer-sign{
+      margin-top:24px;
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:16px;
+      font-size:13px;
+    }
+    .sign-block{
+      border-radius:10px;
+      border:1px dashed var(--border);
+      padding:12px 14px;
+      background:#0b1024;
+    }
+    .sign-block label{
+      display:block;
+      font-size:12px;
+      color:var(--muted);
+      margin-bottom:3px;
+    }
+    .sign-block input{
+      width:100%;
+      padding:6px 8px;
+      border-radius:6px;
+      border:1px solid var(--border);
+      background:#060818;
+      color:var(--text);
+    }
+
+    @media print{
+      header{box-shadow:none;}
+      .toolbar{display:none;}
+      body{background:#fff;color:#000;}
+      .container{max-width:100%;padding:10mm;}
+      .meta-card,
+      .summary,
+      .sign-block{
+        background:#fff;
+        border-color:#000;
+      }
+      input,textarea,select{
+        border-color:#000;
+        background:#fff;
+        color:#000;
+      }
+      button{display:none;}
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>อปท. 8.8 – รายการตรวจสอบเฉพาะประเด็น</h1>
+  <p>จังหวัดศรีสะเกษ | ระบบตรวจสอบรายงานการเงินอปท. (Fieldwork)</p>
+</header>
+
+<div class="container">
+
+  <!-- TOOLBAR -->
+  <div class="toolbar">
+    <button class="load" onclick="loadData()">
+      📥 <span>โหลดจากฐานข้อมูล</span>
+    </button>
+    <button class="save" onclick="saveData()">
+      💾 <span>บันทึกลงฐานข้อมูล</span>
+    </button>
+    <button class="add-row" onclick="addRow()">
+      ➕ <span>เพิ่มรายการตรวจสอบ</span>
+    </button>
+    <button class="ai" onclick="aiSummarize()">
+      🤖 <span>AI ช่วยสรุป</span>
+    </button>
+    <button class="qa" onclick="runQA()">
+      ✅ <span>สอบทานความครบถ้วน</span>
+    </button>
+    <button class="export" onclick="exportPDF()">
+      📄 <span>Export PDF (A4)</span>
+    </button>
+  </div>
+
+  <!-- META: หน่วยรับตรวจ -->
+  <div class="meta-card">
+    <div class="meta-field">
+      <label>ปีงบประมาณ <span class="en">Fiscal Year</span></label>
+      <select id="fy">
+        <option value="">- เลือกปี -</option>
+        <option>2565</option>
+        <option>2566</option>
+        <option>2567</option>
+        <option>2568</option>
+        <option>2569</option>
+      </select>
+    </div>
+    <div class="meta-field">
+      <label>หน่วยรับตรวจ <span class="en">Audited Entity</span></label>
+      <input id="entity" type="text" placeholder="เช่น เทศบาลเมืองศรีสะเกษ">
+    </div>
+    <div class="meta-field">
+      <label>จังหวัด <span class="en">Province</span></label>
+      <input id="province" type="text" value="ศรีสะเกษ">
+    </div>
+    <div class="meta-field">
+      <label>อำเภอ <span class="en">District</span></label>
+      <input id="district" type="text">
+    </div>
+    <div class="meta-field">
+      <label>ประเภท อปท. <span class="en">LG Type</span></label>
+      <select id="lgType">
+        <option value="">- เลือก -</option>
+        <option>เทศบาลนคร</option>
+        <option>เทศบาลเมือง</option>
+        <option>เทศบาลตำบล</option>
+        <option>อบต.</option>
+        <option>อื่นๆ</option>
+      </select>
+    </div>
+    <div class="meta-field">
+      <label>วันที่เริ่มตรวจ <span class="en">Start Date</span></label>
+      <input id="startDate" type="date">
+    </div>
+    <div class="meta-field">
+      <label>วันที่สิ้นสุดตรวจ <span class="en">End Date</span></label>
+      <input id="endDate" type="date">
+    </div>
+  </div>
+
+  <!-- ตารางประเด็น -->
+  <table id="auditTable">
+    <thead>
+      <tr>
+        <th style="width:50px;">ลำดับ<br><span style="font-size:11px;">No.</span></th>
+        <th style="width:260px;">ประเด็นการตรวจสอบ<br><span style="font-size:11px;">Audit Issue</span></th>
+        <th>รายละเอียดข้อเท็จจริง<br><span style="font-size:11px;">Findings / Facts</span></th>
+        <th style="width:220px;">ข้อสรุปของผู้ตรวจสอบ<br><span style="font-size:11px;">Auditor's Conclusion</span></th>
+        <th style="width:110px;">ระดับความเสี่ยง<br><span style="font-size:11px;">Risk Level</span></th>
+        <th style="width:120px;">หลักฐาน<br><span style="font-size:11px;">Evidence</span></th>
+      </tr>
+    </thead>
+    <tbody id="auditBody">
+      <!-- Default Rows -->
+      <tr>
+        <td>1</td>
+        <td><input type="text" value="การตรวจสอบรายได้ที่ขาดการบันทึก"></td>
+        <td><textarea></textarea></td>
+        <td><textarea></textarea></td>
+        <td>
+          <select class="risk-select" onchange="updateStats()">
+            <option value="">-</option>
+            <option value="สูง">สูง</option>
+            <option value="ปานกลาง">ปานกลาง</option>
+            <option value="ต่ำ">ต่ำ</option>
+          </select>
+        </td>
+        <td>
+          <button class="attach-btn" onclick="openFileDialog(this)">📎 แนบไฟล์</button>
+          <input type="file" style="display:none;">
+        </td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td><input type="text" value="การใช้จ่ายไม่เป็นไปตามระเบียบ"></td>
+        <td><textarea></textarea></td>
+        <td><textarea></textarea></td>
+        <td>
+          <select class="risk-select" onchange="updateStats()">
+            <option value="">-</option>
+            <option value="สูง">สูง</option>
+            <option value="ปานกลาง">ปานกลาง</option>
+            <option value="ต่ำ">ต่ำ</option>
+          </select>
+        </td>
+        <td>
+          <button class="attach-btn" onclick="openFileDialog(this)">📎 แนบไฟล์</button>
+          <input type="file" style="display:none;">
+        </td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td><input type="text" value="สินทรัพย์สูญหาย / ไม่พบในการตรวจสอบ"></td>
+        <td><textarea></textarea></td>
+        <td><textarea></textarea></td>
+        <td>
+          <select class="risk-select" onchange="updateStats()">
+            <option value="">-</option>
+            <option value="สูง">สูง</option>
+            <option value="ปานกลาง">ปานกลาง</option>
+            <option value="ต่ำ">ต่ำ</option>
+          </select>
+        </td>
+        <td>
+          <button class="attach-btn" onclick="openFileDialog(this)">📎 แนบไฟล์</button>
+          <input type="file" style="display:none;">
+        </td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td><input type="text" value="พบข้อผิดปกติในเอกสารประกอบการเบิก"></td>
+        <td><textarea></textarea></td>
+        <td><textarea></textarea></td>
+        <td>
+          <select class="risk-select" onchange="updateStats()">
+            <option value="">-</option>
+            <option value="สูง">สูง</option>
+            <option value="ปานกลาง">ปานกลาง</option>
+            <option value="ต่ำ">ต่ำ</option>
+          </select>
+        </td>
+        <td>
+          <button class="attach-btn" onclick="openFileDialog(this)">📎 แนบไฟล์</button>
+          <input type="file" style="display:none;">
+        </td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td><input type="text" value="อื่นๆ (ผู้ตรวจสอบระบุ)"></td>
+        <td><textarea></textarea></td>
+        <td><textarea></textarea></td>
+        <td>
+          <select class="risk-select" onchange="updateStats()">
+            <option value="">-</option>
+            <option value="สูง">สูง</option>
+            <option value="ปานกลาง">ปานกลาง</option>
+            <option value="ต่ำ">ต่ำ</option>
+          </select>
+        </td>
+        <td>
+          <button class="attach-btn" onclick="openFileDialog(this)">📎 แนบไฟล์</button>
+          <input type="file" style="display:none;">
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- SUMMARY -->
+  <div class="summary">
+    <h3>สรุปภาพรวมผลการตรวจสอบ</h3>
+    <div class="summary-grid">
+      <div class="summary-item">
+        <strong id="statTotal">0</strong>
+        <span class="label">จำนวนประเด็นทั้งหมด (รายการ)</span>
+      </div>
+      <div class="summary-item">
+        <strong id="statHigh">0</strong>
+        <span class="label">ประเด็นความเสี่ยงสูง</span>
+      </div>
+      <div class="summary-item">
+        <strong id="statMedium">0</strong>
+        <span class="label">ประเด็นความเสี่ยงปานกลาง</span>
+      </div>
+      <div class="summary-item">
+        <strong id="statLow">0</strong>
+        <span class="label">ประเด็นความเสี่ยงต่ำ</span>
+      </div>
+    </div>
+    <textarea id="finalSummary" placeholder="สรุปภาพรวม ข้อบกพร่องสำคัญ ผลกระทบ และข้อเสนอแนะในภาพรวม..."></textarea>
+    <div class="note">
+      * ข้อความในช่องนี้สามารถให้ AI ช่วยร่างได้ โดยกดปุ่ม “AI ช่วยสรุป”
+    </div>
+  </div>
+
+  <!-- ผู้จัดทำ / ผู้สอบทาน -->
+  <div class="footer-sign">
+    <div class="sign-block">
+      <label>ผู้จัดทำ (ผู้ตรวจสอบ) / Prepared by</label>
+      <input id="preparedBy" type="text" placeholder="ชื่อ – สกุล">
+      <label style="margin-top:6px;">ตำแหน่ง / Position</label>
+      <input id="preparedPos" type="text">
+    </div>
+    <div class="sign-block">
+      <label>ผู้สอบทาน / Reviewed by</label>
+      <input id="reviewedBy" type="text" placeholder="ชื่อ – สกุล">
+      <label style="margin-top:6px;">ตำแหน่ง / Position</label>
+      <input id="reviewedPos" type="text">
+    </div>
+  </div>
+
+</div>
+
+<script>
+function addRow(){
+  const table = document.getElementById("auditBody");
+  const rowCount = table.rows.length + 1;
+
+  const row = document.createElement("tr");
+  row.innerHTML = `
+    <td>${rowCount}</td>
+    <td><input type="text" /></td>
+    <td><textarea></textarea></td>
+    <td><textarea></textarea></td>
+    <td>
+      <select class="risk-select" onchange="updateStats()">
+        <option value="">-</option>
+        <option value="สูง">สูง</option>
+        <option value="ปานกลาง">ปานกลาง</option>
+        <option value="ต่ำ">ต่ำ</option>
+      </select>
+    </td>
+    <td>
+      <button class="attach-btn" onclick="openFileDialog(this)">📎 แนบไฟล์</button>
+      <input type="file" style="display:none;">
+    </td>
+  `;
+  table.appendChild(row);
+  updateStats();
+}
+
+function openFileDialog(btn){
+  const fileInput = btn.nextElementSibling;
+  if(fileInput) fileInput.click();
+}
+
+// MOCK: โหลดข้อมูลจากฐาน
+function loadData(){
+  alert("TODO: เชื่อม API จริง เช่น GET /api/fa/lg/8-8?entityId=xxx\nตอนนี้เป็น mock สำหรับทดสอบ UI");
+  // ตัวอย่างโครงสร้าง JSON ที่ควรใช้
+  // fetch('/api/fa/lg/8-8?entityId=xxx')
+  //   .then(r=>r.json())
+  //   .then(data=>{ ...เติมค่าใส่ฟอร์ม... });
+}
+
+// MOCK: บันทึกลงฐาน
+function saveData(){
+  const payload = collectFormData();
+  console.log("FA 8.8 payload", payload);
+  alert("TODO: POST ไปยัง /api/fa/lg/8-8\nดูข้อมูลตัวอย่างใน console (F12)");
+  // fetch('/api/fa/lg/8-8',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
+  //   .then(r=>r.json())
+  //   .then(res=>alert('บันทึกสำเร็จ'));
+}
+
+// รวบรวมข้อมูลทั้งฟอร์ม
+function collectFormData(){
+  const rows = [];
+  const tbody = document.getElementById("auditBody");
+  [...tbody.rows].forEach((tr,idx)=>{
+    const cells = tr.cells;
+    const issue = cells[1].querySelector("input")?.value || "";
+    const fact  = cells[2].querySelector("textarea")?.value || "";
+    const concl = cells[3].querySelector("textarea")?.value || "";
+    const risk  = cells[4].querySelector("select")?.value || "";
+    rows.push({
+      no: idx+1,
+      issue,
+      fact,
+      conclusion: concl,
+      risk
+      // หมายเหตุ: เรื่องไฟล์แนบ ให้จัดการที่ backend / upload แยก endpoint
+    });
+  });
+
+  return {
+    meta:{
+      fy: document.getElementById("fy").value,
+      entity: document.getElementById("entity").value,
+      province: document.getElementById("province").value,
+      district: document.getElementById("district").value,
+      lgType: document.getElementById("lgType").value,
+      startDate: document.getElementById("startDate").value,
+      endDate: document.getElementById("endDate").value
+    },
+    rows,
+    stats:{
+      total: rows.length,
+      // จะ recalculated ที่ backend ก็ได้
+    },
+    finalSummary: document.getElementById("finalSummary").value,
+    preparedBy: document.getElementById("preparedBy").value,
+    preparedPos: document.getElementById("preparedPos").value,
+    reviewedBy: document.getElementById("reviewedBy").value,
+    reviewedPos: document.getElementById("reviewedPos").value
+  };
+}
+
+// สถิติระดับความเสี่ยง
+function updateStats(){
+  const selects = document.querySelectorAll(".risk-select");
+  let total = 0, high=0, med=0, low=0;
+  selects.forEach(sel=>{
+    const v = sel.value;
+    if(v) total++;
+    if(v==="สูง") high++;
+    if(v==="ปานกลาง") med++;
+    if(v==="ต่ำ") low++;
+  });
+  document.getElementById("statTotal").textContent = total;
+  document.getElementById("statHigh").textContent = high;
+  document.getElementById("statMedium").textContent = med;
+  document.getElementById("statLow").textContent = low;
+}
+
+// AI ช่วยสรุป (placeholder)
+function aiSummarize(){
+  const payload = collectFormData();
+  console.log("ส่งข้อมูลให้ AI", payload);
+  alert("TODO: เชื่อม AI backend (เช่น n8n → OpenAI/Gemini) เพื่อร่างสรุปลงช่องสรุปภาพรวม");
+  // ตัวอย่าง:
+  // fetch('/api/ai/summarize-8-8',{method:'POST',body:JSON.stringify(payload)})
+  //   .then(r=>r.json())
+  //   .then(res=>{ document.getElementById("finalSummary").value = res.summary; });
+}
+
+// QA ตรวจความครบถ้วน (placeholder)
+function runQA(){
+  const payload = collectFormData();
+  let missing = 0;
+  payload.rows.forEach(r=>{
+    if(!r.issue && !r.fact && !r.conclusion) return; // ข้ามแถวว่าง
+    if(!r.issue || !r.fact || !r.conclusion) missing++;
+  });
+  alert(
+    "ผลการสอบทานเบื้องต้น:\n" +
+    "- จำนวนแถวที่อาจกรอกไม่ครบ: " + missing + " แถว\n" +
+    "รายละเอียดเชิงลึกสามารถเชื่อม AI/Rule Engine เพิ่มเติมได้"
+  );
+  // สามารถยกระดับเป็น call API QA จริงได้
+  console.log("QA payload", payload);
+}
+
+function exportPDF(){
+  updateStats(); // ให้เลขสถิติอัปเดตล่าสุดก่อนพิมพ์
+  window.print();
+}
+
+// initial
+window.addEventListener("DOMContentLoaded", updateStats);
+</script>
+
+</body>
+</html>
