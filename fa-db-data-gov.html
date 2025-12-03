@@ -744,6 +744,91 @@ const metaInit = loadMetaObj();
 updateBackupInfo(metaInit);
 updateClock();
 setInterval(updateClock,1000);
+
+  /* ============================================================
+   AUTO SUGGEST + AUTO FILL สำหรับช่องค้นหาหน่วยรับตรวจ
+   ============================================================ */
+
+const suggestBox = document.createElement("div");
+suggestBox.style.position = "absolute";
+suggestBox.style.background = "#111827";
+suggestBox.style.border = "1px solid #374151";
+suggestBox.style.color = "#e5e7eb";
+suggestBox.style.fontSize = "13px";
+suggestBox.style.zIndex = "9999";
+suggestBox.style.width = "100%";
+suggestBox.style.maxHeight = "220px";
+suggestBox.style.overflowY = "auto";
+suggestBox.style.display = "none";
+suggestBox.style.borderRadius = "8px";
+suggestBox.style.boxShadow = "0 6px 16px rgba(0,0,0,.45)";
+document.body.appendChild(suggestBox);
+
+const inputUnit = document.getElementById("q-unit");
+
+inputUnit.addEventListener("input", ()=>{
+  const text = normalize(inputUnit.value);
+  if(text.length < 2){
+    suggestBox.style.display = "none";
+    return;
+  }
+
+  let matches = db.filter(r => 
+       normalize(r.name).includes(text)
+    || normalize(r.unit).includes(text)
+  );
+
+  if(matches.length === 0){
+    suggestBox.style.display = "none";
+    return;
+  }
+
+  const rect = inputUnit.getBoundingClientRect();
+  suggestBox.style.left = (rect.left + window.scrollX) + "px";
+  suggestBox.style.top = (rect.bottom + window.scrollY) + "px";
+  suggestBox.style.width = rect.width + "px";
+
+  suggestBox.innerHTML = "";
+
+  matches.slice(0,20).forEach(r=>{
+    const div = document.createElement("div");
+    div.style.padding = "7px 10px";
+    div.style.cursor = "pointer";
+    div.style.borderBottom = "1px solid #1f2937";
+
+    div.textContent =
+      `${r.name || r.unit} – ${r.province || ""}/${r.district || ""}/${r.subdistrict || ""}`;
+
+    div.addEventListener("click", ()=>{
+      inputUnit.value = r.name || r.unit;
+
+      document.getElementById("q-province").value    = r.province || "";
+      document.getElementById("q-district").value    = r.district || "";
+      document.getElementById("q-subdistrict").value = r.subdistrict || "";
+      document.getElementById("q-village").value     = r.village || "";
+
+      suggestBox.style.display = "none";
+    });
+
+    // hover effect
+    div.addEventListener("mouseenter", ()=>{
+      div.style.background = "#1f2937";
+    });
+    div.addEventListener("mouseleave", ()=>{
+      div.style.background = "transparent";
+    });
+
+    suggestBox.appendChild(div);
+  });
+
+  suggestBox.style.display = "block";
+});
+
+document.addEventListener("click", e=>{
+  if(!suggestBox.contains(e.target) && e.target !== inputUnit){
+    suggestBox.style.display = "none";
+  }
+});
 </script>
 
 </body>
