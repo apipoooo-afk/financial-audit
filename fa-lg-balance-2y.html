@@ -13,7 +13,7 @@
       color:#f5f7ff;
     }
     header{
-      padding:18px 20px;
+      padding:18px 20px 12px;
       background:linear-gradient(120deg,#0d47a1,#42a5f5,#7b1e3c);
       box-shadow:0 4px 12px rgba(0,0,0,0.45);
     }
@@ -26,6 +26,25 @@
       margin:4px 0 0 0;
       font-size:13px;
       opacity:0.9;
+    }
+
+    .header-actions{
+      margin-top:10px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+    .btn-header{
+      padding:6px 14px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.3);
+      background:rgba(0,0,0,0.25);
+      color:#fff;
+      font-size:12px;
+      cursor:pointer;
+    }
+    .btn-header:hover{
+      background:rgba(0,0,0,0.45);
     }
 
     .container{
@@ -62,6 +81,20 @@
     }
     .btn-primary:hover{
       background:#64b5f6;
+    }
+
+    .btn-link-report{
+      margin-top:10px;
+      padding:7px 16px;
+      border-radius:999px;
+      border:1px solid #42a5f5;
+      background:transparent;
+      color:#42a5f5;
+      font-size:13px;
+      cursor:pointer;
+    }
+    .btn-link-report:hover{
+      background:rgba(66,165,245,0.12);
     }
 
     table{
@@ -135,6 +168,13 @@
 <header>
   <h1>งบแสดงฐานะการเงิน (2 ปี)</h1>
   <p>ดึงข้อมูลจากกระดาษทำการ แผ่น <strong>BS</strong> – เทียบปีปัจจุบันกับปีก่อน</p>
+
+  <!-- ปุ่มเชื่อมไปหน้า Annual Report -->
+  <div class="header-actions">
+    <button class="btn-header" onclick="goToAnnualReport()">
+      ▶ ไปยังหน้า รายงานการตรวจสอบการเงิน (fa-lg-annual-report.html)
+    </button>
+  </div>
 </header>
 
 <div class="container">
@@ -143,7 +183,7 @@
     <h3>นำเข้าไฟล์ Excel กระดาษทำการ</h3>
     <p class="caption">
       เลือกไฟล์กระดาษทำการปีปัจจุบัน (ปี N) และปีก่อน (ปี N-1)
-      ระบบจะอ่านค่าตามโครงสร้าง SOFP โดยอัตโนมัติ
+      ระบบจะอ่านค่าตามโครงสร้าง SOFP โดยอัตโนมัติ และส่งต่อข้อมูลไปใช้ในรายงานการตรวจสอบการเงินได้
     </p>
 
     <div>
@@ -165,12 +205,32 @@
 
   <div id="bsContainer"></div>
 
+  <!-- ปุ่มส่งต่อข้อมูลไปหน้า Annual Report (จะเตือนถ้ายังไม่ประมวลผล) -->
+  <div id="sendToReportContainer" style="display:none;">
+    <button class="btn-link-report" onclick="sendToAnnualReport()">
+      📤 ส่งข้อมูลงบฐานะการเงิน (2 ปี) ไปใช้ในหน้า รายงานการตรวจสอบการเงิน
+    </button>
+    <p class="caption">
+      ระบบจะบันทึกข้อมูลใน <code>localStorage</code> ภายใต้ key 
+      <code>fa-lg-balance-2y</code> เพื่อให้หน้า <code>fa-lg-annual-report.html</code 
+      > หรือ <code>fa-lg-annual-report-editor.html</code> ดึงไปใช้ได้
+    </p>
+  </div>
+
 </div>
 
 <!-- XLSX -->
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.20.0/dist/xlsx.full.min.js"></script>
 
 <script>
+// ----------------------------------------------------
+// 0) ฟังก์ชันเชื่อมไปหน้า Annual Report
+// ----------------------------------------------------
+function goToAnnualReport(){
+  // ถ้ามี hash source ไว้บอกว่ามาจาก BS 2 ปี
+  window.location.href = 'fa-lg-annual-report.html#source=bs-2y';
+}
+
 // ----------------------------------------------------
 // 1) โครงสร้าง SOFP ตามที่ให้มา
 // ----------------------------------------------------
@@ -260,8 +320,17 @@ function getValue(sheet, excelRow, colIndex=2){
   return cell ? cell.v : "";
 }
 
+// แปลงค่าให้เป็นตัวเลข (ถ้าเป็น string)
+function toNumber(v){
+  if(v === null || v === undefined || v === "") return null;
+  if(typeof v === "number") return v;
+  const cleaned = String(v).replace(/[, ]/g,"");
+  const n = Number(cleaned);
+  return isNaN(n) ? null : n;
+}
+
 // ----------------------------------------------------
-// 3) ประมวลผลงบฐานะการเงิน 2 ปี
+// 3) ประมวลผลงบฐานะการเงิน 2 ปี + ส่ง payload ไป localStorage
 // ----------------------------------------------------
 async function processSOFP(){
   const fileN  = document.getElementById("fileCurrent").files[0];
@@ -294,10 +363,15 @@ async function processSOFP(){
       </tr>
   `;
 
+  // เตรียม payload สำหรับส่งต่อไปหน้า Annual Report
+  const rowsPayload = [];
+
   SOFP_SPEC.lines.forEach(line=>{
     const row = line.excel_row;
-    const vN = getValue(sheetN, row);
-    const vP = getValue(sheetP, row);
+    const rawN = getValue(sheetN, row);
+    const rawP = getValue(sheetP, row);
+    const vN = rawN;
+    const vP = rawP;
 
     // ระดับย่อหน้า
     const lvlClass = line.level_col === 1 ? "lvl-1"
@@ -339,15 +413,62 @@ async function processSOFP(){
         </tr>
       `;
     }
+
+    // เก็บข้อมูลลง payload
+    rowsPayload.push({
+      line_code : line.line_code,
+      label     : line.label,
+      note_ref  : line.note_ref,
+      line_type : line.line_type,
+      level_col : line.level_col,
+      excel_row : line.excel_row,
+      year_N    : toNumber(vN),
+      year_N_1  : toNumber(vP)
+    });
   });
 
   html += `</table>
     <p class="caption">
-      * หมายเหตุสามารถคลิกเพื่อเปิดรายละเอียดในหน้า <code>fa-lg-notes-2y.html</code>
+      * หมายเหตุสามารถคลิกเพื่อเปิดรายละเอียดในหน้า <code>fa-lg-notes-2y.html</code><br>
+      * ข้อมูลจากตารางนี้ถูกจัดเก็บเป็น JSON แล้ว เพื่อให้หน้า <code>fa-lg-annual-report.html</code นำไปใช้ประกอบรายงานการตรวจสอบการเงิน
     </p>
   `;
 
   document.getElementById("bsContainer").innerHTML = html;
+
+  // สร้าง payload และเก็บใน localStorage
+  const payload = {
+    fs_type     : SOFP_SPEC.fs_type,
+    sheet_name  : SOFP_SPEC.sheet_name,
+    description : SOFP_SPEC.description,
+    generated_at: new Date().toISOString(),
+    source_files: {
+      current : fileN.name,
+      previous: fileP.name
+    },
+    rows: rowsPayload
+  };
+
+  try{
+    localStorage.setItem('fa-lg-balance-2y', JSON.stringify(payload));
+    document.getElementById('sendToReportContainer').style.display = 'block';
+  }catch(e){
+    console.error(e);
+    alert("ไม่สามารถบันทึกข้อมูลลง localStorage ได้ – โปรดตรวจสอบพื้นที่จัดเก็บของเบราว์เซอร์");
+  }
+}
+
+// ----------------------------------------------------
+// 4) ส่งต่อข้อมูลไปหน้า Annual Report
+// ----------------------------------------------------
+function sendToAnnualReport(){
+  const data = localStorage.getItem('fa-lg-balance-2y');
+  if(!data){
+    alert("ยังไม่มีข้อมูลงบฐานะการเงินในระบบ กรุณาประมวลผลก่อน");
+    return;
+  }
+  // เปิดหน้า Annual Report พร้อม hash บอกว่าใช้ BS 2 ปี
+  window.location.href = 'fa-lg-annual-report.html#source=bs-2y';
 }
 </script>
 
