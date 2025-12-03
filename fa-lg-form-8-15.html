@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>อปท. 8.15 | Financial Audit System</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    :root{
+      --bg:#060818;
+      --card:#11152b;
+      --border:#262b46;
+      --primary:#0d47a1;
+      --primary2:#42a5f5;
+      --accent:#ffd54f;
+      --text:#f5f7ff;
+      --muted:#a3acc7;
+      --radius:14px;
+      --shadow:0 8px 24px rgba(0,0,0,0.45);
+    }
+
+    *{ box-sizing:border-box; }
+
+    body{
+      margin:0;
+      font-family:"Segoe UI", Tahoma, sans-serif;
+      background:var(--bg);
+      color:var(--text);
+    }
+
+    header{
+      padding:20px;
+      text-align:center;
+      background:linear-gradient(120deg,#7b1e3c,#0d47a1,#42a5f5);
+      box-shadow:var(--shadow);
+    }
+    header h1{
+      margin:0;
+      font-size:26px;
+      font-weight:800;
+    }
+    header p{
+      margin:4px 0 0;
+      font-size:13px;
+      opacity:0.9;
+    }
+
+    .container{
+      max-width:960px;
+      margin:24px auto;
+      padding:20px;
+      background:var(--card);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+    }
+
+    h2{
+      margin-top:0;
+      font-size:22px;
+      border-bottom:1px solid var(--border);
+      padding-bottom:8px;
+    }
+
+    h3{
+      margin-top:20px;
+      font-size:18px;
+      border-left:3px solid var(--accent);
+      padding-left:8px;
+    }
+
+    label{
+      display:block;
+      font-size:14px;
+      color:var(--muted);
+      margin-top:6px;
+    }
+
+    select, input[type="text"], input[type="date"]{
+      width:100%;
+      padding:10px 12px;
+      margin:6px 0 12px;
+      background:#0b1024;
+      border:1px solid var(--border);
+      color:var(--text);
+      border-radius:var(--radius);
+    }
+
+    .row{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .col-6{ flex:1 1 48%; min-width:220px; }
+
+    .btn{
+      display:block;
+      width:100%;
+      padding:12px 14px;
+      margin:8px 0;
+      text-align:center;
+      font-weight:700;
+      background:var(--primary);
+      border-radius:var(--radius);
+      color:white;
+      text-decoration:none;
+      box-shadow:var(--shadow);
+      cursor:pointer;
+      border:none;
+    }
+    .btn:hover{ background:var(--primary2); }
+
+    .btn-secondary{
+      background:#212642;
+    }
+    .btn-secondary:hover{
+      background:#303757;
+    }
+
+    .stats-box{
+      background:#0b1024;
+      border:1px solid var(--border);
+      padding:12px;
+      border-radius:var(--radius);
+      margin-top:12px;
+      font-size:13px;
+    }
+
+    .auditor-block{
+      border:1px dashed var(--border);
+      border-radius:var(--radius);
+      padding:10px;
+      margin-bottom:8px;
+    }
+
+    .summary-box{
+      margin-top:10px;
+      padding:10px;
+      border-radius:var(--radius);
+      background:#0b1024;
+      border:1px solid var(--border);
+      font-size:13px;
+      color:var(--muted);
+    }
+    .summary-box strong{ color:var(--accent); }
+  </style>
+
+  <script>
+    // สถิติผู้ใช้ อปท. 8.15
+    document.addEventListener("DOMContentLoaded", () => {
+      // current online (mock)
+      const current = Math.floor(Math.random()*7)+3;
+      document.querySelectorAll(".currentUser").forEach(e=>e.textContent=current);
+
+      // cumulative
+      let total = localStorage.getItem("opta15_total") || "0";
+      total = parseInt(total,10) + 1;
+      localStorage.setItem("opta15_total", total);
+      document.querySelectorAll(".totalUser").forEach(e=>e.textContent=total);
+
+      // แสดงข้อมูลบันทึกล่าสุดในเมนู 2
+      renderLastSaved();
+    });
+
+    let auditorCount = 0;
+    function addAuditor(){
+      if(auditorCount >= 6){
+        alert("เพิ่มชื่อผู้ตรวจสอบได้สูงสุด 6 คน");
+        return;
+      }
+      auditorCount++;
+      const wrap = document.getElementById("auditors");
+      const box = document.createElement("div");
+      box.className = "auditor-block";
+      box.innerHTML = `
+        <div><strong>ผู้ตรวจคนที่ ${auditorCount}</strong></div>
+        <input type="text" placeholder="ชื่อ - นามสกุล" class="auditor-name">
+        <input type="text" placeholder="ตำแหน่ง" class="auditor-pos">
+      `;
+      wrap.appendChild(box);
+    }
+
+    function saveForm(){
+      const unit = document.getElementById("unitName").value;
+      const type = document.getElementById("lgType").value;
+      const amp = document.getElementById("amphoe").value;
+      const prov = document.getElementById("province").value;
+      const yearCur = document.getElementById("yearCur").value;
+      const yearPrev = document.getElementById("yearPrev").value;
+      const dateAudit = document.getElementById("auditDate").value;
+
+      const auditorNames = Array.from(document.querySelectorAll(".auditor-name")).map(i=>i.value.trim());
+      const auditorPos = Array.from(document.querySelectorAll(".auditor-pos")).map(i=>i.value.trim());
+
+      const data = {
+        unit,
+        type,
+        amp,
+        prov,
+        yearCur,
+        yearPrev,
+        dateAudit,
+        auditors: auditorNames.map((n,idx)=>({name:n, pos:auditorPos[idx]||""})),
+        savedAt: new Date().toISOString()
+      };
+
+      localStorage.setItem("opta15_last_record", JSON.stringify(data));
+      alert("บันทึกข้อมูลเรียบร้อยแล้ว (ข้อมูลจะไปแสดงในเมนู 2)");
+      renderLastSaved();
+    }
+
+    function renderLastSaved(){
+      const box = document.getElementById("lastSavedBox");
+      const raw = localStorage.getItem("opta15_last_record");
+      if(!box) return;
+      if(!raw){
+        box.innerHTML = "ยังไม่มีข้อมูลที่บันทึกจากเมนู 1";
+        return;
+      }
+      try{
+        const d = JSON.parse(raw);
+        const auditorCountLocal = (d.auditors || []).filter(a=>a.name).length;
+        box.innerHTML = `
+          <div><strong>หน่วยรับตรวจ:</strong> ${d.unit || "-"} (${d.type || "-"})</div>
+          <div><strong>อำเภอ/จังหวัด:</strong> ${d.amp || "-"} / ${d.prov || "-"}</div>
+          <div><strong>ปีงบประมาณ:</strong> ปัจจุบัน ${d.yearCur || "-"} | ปีก่อน ${d.yearPrev || "-"}</div>
+          <div><strong>วันที่ตรวจสอบ:</strong> ${d.dateAudit || "-"}</div>
+          <div><strong>จำนวนผู้ตรวจ:</strong> ${auditorCountLocal} คน</div>
+        `;
+      }catch(e){
+        box.innerHTML = "ไม่สามารถอ่านข้อมูลที่บันทึกได้";
+      }
+    }
+  </script>
+</head>
+<body>
+
+  <header>
+    <h1>อปท. 8.15 – ระบบจัดการแบบตรวจสอบ</h1>
+    <p>Local Government Financial Audit – Form 8.15</p>
+  </header>
+
+  <!-- เมนู 1 -->
+  <div class="container">
+    <h2>เมนู 1 : บันทึกข้อมูลการตรวจสอบเบื้องต้น</h2>
+
+    <div class="row">
+      <div class="col-6">
+        <label>ชื่อหน่วยรับตรวจ</label>
+        <select id="unitName">
+          <option value="">-- เลือก --</option>
+          <option>เทศบาลเมืองศรีสะเกษ</option>
+          <option>เทศบาลตำบลน้ำคำ</option>
+          <option>องค์การบริหารส่วนตำบลตัวอย่าง</option>
+        </select>
+      </div>
+      <div class="col-6">
+        <label>ประเภท</label>
+        <select id="lgType">
+          <option value="">-- เลือก --</option>
+          <option>เทศบาล</option>
+          <option>องค์การบริหารส่วนตำบล</option>
+          <option>องค์การบริหารส่วนจังหวัด</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-6">
+        <label>อำเภอ</label>
+        <select id="amphoe">
+          <option value="">-- เลือก --</option>
+          <option>เมืองศรีสะเกษ</option>
+          <option>กันทรารมย์</option>
+          <option>กันทรลักษ์</option>
+        </select>
+      </div>
+      <div class="col-6">
+        <label>จังหวัด</label>
+        <select id="province">
+          <option>ศรีสะเกษ</option>
+          <option>อุบลราชธานี</option>
+          <option>ยโสธร</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-6">
+        <label>ปีงบประมาณปัจจุบัน</label>
+        <select id="yearCur">
+          <option>2569</option>
+          <option>2568</option>
+          <option>2567</option>
+        </select>
+      </div>
+      <div class="col-6">
+        <label>ปีงบประมาณปีก่อน</label>
+        <select id="yearPrev">
+          <option>2568</option>
+          <option>2567</option>
+          <option>2566</option>
+        </select>
+      </div>
+    </div>
+
+    <h3>ผู้ตรวจสอบ (เพิ่มได้สูงสุด 6 คน)</h3>
+    <div id="auditors"></div>
+    <button type="button" class="btn btn-secondary" onclick="addAuditor()">+ เพิ่มชื่อผู้ตรวจสอบ</button>
+
+    <h3>วันที่ตรวจสอบ</h3>
+    <!-- ระบบปฏิทิน 10 ปี (browser date picker รองรับช่วงกว้างอยู่แล้ว) -->
+    <input type="date" id="auditDate">
+
+    <button type="button" class="btn" onclick="saveForm()">💾 บันทึกข้อมูล (ไปแสดงในเมนู 2)</button>
+
+    <div class="row">
+      <div class="col-6">
+        <a href="index.html" class="btn btn-secondary">⬅ กลับหน้าแรก</a>
+      </div>
+      <div class="col-6">
+        <a href="fa-lg-fieldwork.html" class="btn btn-secondary">📋 กลับไปหน้า ขั้นตอนปฏิบัติการตรวจสอบ</a>
+      </div>
+    </div>
+
+    <div class="stats-box">
+      👁 ผู้ใช้ปัจจุบัน: <span class="currentUser"></span><br>
+      🔄 ผู้ใช้สะสม: <span class="totalUser"></span>
+    </div>
+  </div>
+
+  <!-- เมนู 2 -->
+  <div class="container">
+    <h2>เมนู 2 : เลือกแบบ อปท. 8.15 และข้อมูลจากเมนู 1</h2>
+
+    <!-- 2.1 แบบ อปท. มี 5 ปุ่ม -->
+    <button class="btn" onclick="window.location.href='fa-lg-form-8-15-main.html'">
+      แบบ อปท. 8.15
+    </button>
+    <button class="btn" onclick="window.location.href='fa-lg-form-8-15-1.html'">
+      แบบ อปท. 8.15.1
+    </button>
+    <button class="btn" onclick="window.location.href='fa-lg-form-8-15-2.html'">
+      แบบ อปท. 8.15.2
+    </button>
+    <button class="btn" onclick="window.location.href='fa-lg-form-8-15-3.html'">
+      แบบ อปท. 8.15.3
+    </button>
+    <button class="btn" onclick="window.location.href='fa-lg-form-8-15-4.html'">
+      แบบ อปท. 8.15.4
+    </button>
+
+    <!-- 2.2 ปุ่มเพิ่มแบบ อปท. 8.15…. (Excel) -->
+    <a class="btn btn-secondary" href="excel-template/opto-8-15.xlsx" target="_blank">
+      📊 เพิ่มแบบ อปท. 8.15.x (Excel Template)
+    </a>
+
+    <!-- สรุปข้อมูลล่าสุดจากเมนู 1 ให้เห็นในเมนู 2 ตามข้อ 1.9 -->
+    <h3>ข้อมูลล่าสุดที่บันทึกจากเมนู 1</h3>
+    <div id="lastSavedBox" class="summary-box">
+      <!-- จะถูกเติมโดย renderLastSaved() -->
+    </div>
+
+    <div class="row" style="margin-top:10px;">
+      <div class="col-6">
+        <a href="fa-lg-form-8-15.html" class="btn btn-secondary">⬅ กลับเมนู 1</a>
+      </div>
+      <div class="col-6">
+        <a href="index.html" class="btn btn-secondary">🏠 กลับหน้าแรก</a>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-6">
+        <a href="fa-lg-fieldwork.html" class="btn btn-secondary">📋 กลับไปหน้า ขั้นตอนปฏิบัติการตรวจสอบ</a>
+      </div>
+    </div>
+
+    <div class="stats-box">
+      👁 ผู้ใช้ปัจจุบัน: <span class="currentUser"></span><br>
+      🔄 ผู้ใช้สะสม: <span class="totalUser"></span>
+    </div>
+  </div>
+
+</body>
+</html>
