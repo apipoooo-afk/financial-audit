@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>อปท. 8.9 – แบบฟอร์มตรวจสอบ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    body{
+      margin:0;
+      font-family:"Segoe UI", Tahoma, sans-serif;
+      background:#060818;
+      color:#f5f7ff;
+    }
+    header{
+      padding:18px 20px 12px;
+      background:linear-gradient(120deg,#0d47a1,#42a5f5,#7b1e3c);
+      box-shadow:0 4px 12px rgba(0,0,0,0.45);
+    }
+    header h1{
+      margin:0;
+      font-size:26px;
+      font-weight:700;
+    }
+
+    .container{
+      padding:20px;
+      max-width:1000px;
+      margin:auto;
+    }
+    table{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:20px;
+      background:#11152b;
+      border:1px solid #262b46;
+    }
+    th,td{
+      border:1px solid #262b46;
+      padding:8px;
+    }
+    th{
+      background:#0b1024;
+      font-size:14px;
+    }
+    input{
+      width:100%;
+      padding:6px;
+      background:#0b1024;
+      color:#f5f7ff;
+      border:1px solid #262b46;
+      border-radius:4px;
+    }
+
+    .btn-bar{
+      margin-top:20px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+    button{
+      padding:10px 16px;
+      border:0;
+      border-radius:6px;
+      cursor:pointer;
+      font-size:14px;
+      font-weight:600;
+    }
+    .btn-load{background:#42a5f5;}
+    .btn-save{background:#7b1e3c;}
+    .btn-ai{background:#26c6da;}
+    .btn-qa{background:#f48fb1;}
+    .btn-pdf{background:#ffd54f; color:#000;}
+    .btn-back{background:#444;}
+
+    .attach-area{
+      margin-top:20px;
+      padding:15px;
+      border:1px dashed #42a5f5;
+      background:#0b1024;
+      border-radius:12px;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>อปท. 8.9 – รายการตรวจสอบ</h1>
+    <p>ระบบตรวจสอบรายงานการเงิน อปท. – Digital LG Audit</p>
+  </header>
+
+  <div class="container">
+    <h2>📌 รายละเอียดแบบฟอร์ม</h2>
+
+    <div class="btn-bar">
+      <button class="btn-load" onclick="loadData()">ดึงข้อมูลจากฐาน</button>
+      <button class="btn-save" onclick="saveData()">บันทึกข้อมูล</button>
+      <button class="btn-ai" onclick="aiAssist()">AI ช่วยสรุป</button>
+      <button class="btn-qa" onclick="runQA()">สอบทานความถูกต้อง</button>
+      <button class="btn-pdf" onclick="exportPDF()">Export PDF (A4)</button>
+      <button class="btn-back" onclick="window.location.href='fa-lg-fieldwork.html'">กลับหน้าหลัก</button>
+    </div>
+
+    <table id="tbl">
+      <thead>
+        <tr>
+          <th style="width:4%">ลำดับ</th>
+          <th style="width:30%">รายการ</th>
+          <th style="width:15%">ปี 1</th>
+          <th style="width:15%">ปี 2</th>
+          <th style="width:18%">ผลต่าง</th>
+          <th style="width:18%">หมายเหตุ</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+
+    <div class="attach-area">
+      <h3>📎 แนบเอกสารประกอบ</h3>
+      <input type="file" multiple>
+    </div>
+
+    <div id="qaResult" style="margin-top:20px; background:#11152b; padding:15px; border-radius:8px; display:none;"></div>
+  </div>
+
+<script>
+  // สร้าง 30 แถวเริ่มต้น
+  window.onload = () => {
+    let body = document.querySelector("#tbl tbody");
+    for(let i=1;i<=30;i++){
+      let tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${i}</td>
+        <td><input></td>
+        <td><input type="number" step="0.01"></td>
+        <td><input type="number" step="0.01"></td>
+        <td><input readonly></td>
+        <td><input></td>
+      `;
+      body.appendChild(tr);
+    }
+  };
+
+  function loadData(){
+    alert("📡 (Demo) ระบบดึงข้อมูลจากฐานข้อมูลจริง – api/load/8.9");
+  }
+
+  function saveData(){
+    alert("💾 บันทึกข้อมูลสำเร็จ – api/save/8.9");
+  }
+
+  function runQA(){
+    let qa = document.getElementById("qaResult");
+    qa.style.display="block";
+    qa.innerHTML = `
+      <h3>🔍 ผลการสอบทาน</h3>
+      - พบช่องว่าง 4 จุด <br>
+      - พบตัวเลขไม่สัมพันธ์ 2 จุด <br>
+      - ข้อเสนอแนะ: ตรวจสอบรายการ 12, 18 <br>
+    `;
+  }
+
+  function aiAssist(){
+    alert("🤖 AI ช่วยสรุปตามข้อมูลที่บันทึก");
+  }
+
+  function exportPDF(){
+    alert("📄 ระบบ Export PDF A4 – fa-export/8.9");
+  }
+</script>
+
+</body>
+</html>
