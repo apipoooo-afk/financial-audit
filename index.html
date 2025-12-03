@@ -743,6 +743,229 @@
   }); 
 </script>
   
+<style>
+    /* ========================================= */
+    /* 1. ปุ่มค้นหา (ฟ้า-ขาว ไล่เฉด, กว้าง 8cm) */
+    /* ========================================= */
+    .fa-search-trigger {
+        width: 8cm;  /* กว้าง 8 เซนติเมตร */
+        height: 2cm;
+        
+        /* สีฟ้าผสมขาว (Gradient) แบบทันสมัย */
+        background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%);
+        color: white;
+        
+        border: 2px solid rgba(255, 255, 255, 0.8);
+        border-radius: 50px; /* ทำเป็นทรงแคปซูลมนๆ ทันสมัย */
+        
+        /* จัดตำแหน่ง: ล่างสุด ตรงกลาง */
+        position: fixed;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        
+        z-index: 9999;
+        font-family: 'Sarabun', sans-serif;
+        font-size: 20px; /* ตัวหนังสือใหญ่ขึ้นนิดนึง */
+        font-weight: bold;
+        cursor: pointer;
+        
+        /* เงาฟุ้งๆ สีฟ้า ให้ดูเรืองแสง */
+        box-shadow: 0 8px 20px rgba(0, 114, 255, 0.4);
+        
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
 
+    /* เอฟเฟกต์ตอนชี้เมาส์ */
+    .fa-search-trigger:hover {
+        transform: translateX(-50%) translateY(-5px) scale(1.02); /* ลอยขึ้น */
+        background: linear-gradient(135deg, #0072ff 0%, #00c6ff 100%); /* สลับสีไปมา */
+        box-shadow: 0 15px 30px rgba(0, 114, 255, 0.6);
+        border-color: #fff;
+    }
+
+    /* ========================================= */
+    /* 2. หน้าต่างเมนู (Colorful & Modern) */
+    /* ========================================= */
+    .fa-modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255, 255, 255, 0.1); /* พื้นหลังเบลอแบบกระจก */
+        backdrop-filter: blur(10px); /* เอฟเฟกต์เบลอฉากหลัง */
+        z-index: 10000;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .fa-modal-box {
+        background: white;
+        width: 90%;
+        max-width: 550px;
+        border-radius: 20px; /* มุมโค้งมนมาก */
+        box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+        font-family: 'Sarabun', sans-serif;
+        position: relative;
+        overflow: hidden; /* เพื่อให้สีหัวข้อไม่ล้นกรอบ */
+        animation: slideUp 0.4s ease-out;
+    }
+
+    @keyframes slideUp {
+        from { opacity: 0; transform: translateY(50px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* หัวข้อเมนูแบบ Colorful */
+    .fa-modal-box h3 {
+        margin: 0;
+        padding: 20px;
+        /* พื้นหลังหัวข้อสีรุ้งพาสเทล */
+        background: linear-gradient(to right, #8E2DE2, #4A00E0); 
+        color: white;
+        text-align: center;
+        font-size: 1.5rem;
+        letter-spacing: 1px;
+    }
+
+    /* ปุ่มปิด (X) */
+    .fa-close-icon {
+        position: absolute;
+        top: 15px;
+        right: 20px;
+        font-size: 28px;
+        cursor: pointer;
+        color: rgba(255,255,255, 0.8);
+        transition: 0.2s;
+        z-index: 10001;
+    }
+    .fa-close-icon:hover { color: white; transform: rotate(90deg); }
+
+    /* พื้นที่เนื้อหา */
+    .fa-modal-body {
+        padding: 25px;
+    }
+
+    /* แท็บเมนูหลากหลายสี */
+    .fa-tabs {
+        display: flex;
+        background: #f0f2f5;
+        border-radius: 12px;
+        padding: 5px;
+        margin-bottom: 20px;
+    }
+
+    .fa-tab-btn {
+        flex: 1;
+        padding: 12px;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+        color: #777;
+        transition: 0.3s;
+        background: transparent;
+    }
+
+    .fa-tab-btn:hover { color: #333; }
+
+    /* สีของแท็บเมื่อถูกเลือก (Active) */
+    .fa-tab-btn.active {
+        background: white;
+        color: #4A00E0; /* สีม่วงน้ำเงินเข้ม */
+        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    }
+
+    /* เนื้อหาแท็บ */
+    .fa-tab-content { display: none; animation: fadeIn 0.3s; }
+    .fa-tab-content.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    /* กล่องกรอกข้อมูล */
+    .fa-input {
+        width: 100%;
+        padding: 15px;
+        border: 2px solid #eee;
+        border-radius: 12px;
+        font-size: 16px;
+        box-sizing: border-box;
+        transition: 0.3s;
+        background-color: #f9f9f9;
+    }
+
+    .fa-input:focus {
+        border-color: #00c6ff;
+        background-color: white;
+        outline: none;
+        box-shadow: 0 0 0 4px rgba(0, 198, 255, 0.1);
+    }
+
+    /* ผลลัพธ์การค้นหา */
+    .fa-results-list {
+        max-height: 200px;
+        overflow-y: auto;
+        margin-top: 10px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        display: none; /* ซ่อนก่อน */
+    }
+
+    .fa-result-item {
+        padding: 15px;
+        background: white;
+        border-bottom: 1px solid #f0f0f0;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: 0.2s;
+    }
+
+    .fa-result-item:hover {
+        background: linear-gradient(to right, #fdfbfb, #ebedee);
+        color: #0072ff;
+        padding-left: 20px; /* ขยับเล็กน้อย */
+    }
+
+    /* ปุ่มกด ตกลง/ยกเลิก สไตล์ Modern */
+    .fa-btn-group { display: flex; gap: 15px; margin-top: 25px; }
+
+    .fa-btn-ok {
+        background: linear-gradient(45deg, #11998e, #38ef7d); /* สีเขียวมิ้นท์ */
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 50px;
+        cursor: pointer;
+        flex: 1;
+        font-weight: bold;
+        font-size: 16px;
+        box-shadow: 0 4px 10px rgba(56, 239, 125, 0.3);
+        transition: transform 0.2s;
+    }
+    .fa-btn-ok:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(56, 239, 125, 0.4); }
+
+    .fa-btn-cancel {
+        background: linear-gradient(45deg, #ff416c, #ff4b2b); /* สีส้มแดง */
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 50px;
+        cursor: pointer;
+        flex: 1;
+        font-weight: bold;
+        font-size: 16px;
+        box-shadow: 0 4px 10px rgba(255, 75, 43, 0.3);
+        transition: transform 0.2s;
+    }
+    .fa-btn-cancel:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(255, 75, 43, 0.4); }
+
+</style>
 </body>
 </html>
