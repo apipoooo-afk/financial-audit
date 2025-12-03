@@ -235,18 +235,6 @@
       flex-wrap:wrap;
     }
 
-    .tag{
-      display:inline-flex;
-      align-items:center;
-      gap:4px;
-      padding:2px 7px;
-      border-radius:999px;
-      background:rgba(244,143,177,0.1);
-      border:1px solid rgba(244,143,177,0.6);
-      font-size:11px;
-      color:#f48fb1;
-    }
-
     .panel{
       padding:8px 10px;
       border-radius:12px;
@@ -294,7 +282,6 @@
       font-size:11px;
       border:1px solid var(--border);
     }
-
     .status-pill.ready{
       border-color:var(--success);
       color:var(--success);
@@ -313,11 +300,26 @@
       font-size:12px;
     }
 
+    .attach-list{
+      margin-top:6px;
+      font-size:11px;
+      color:var(--muted);
+    }
+    .attach-list ul{
+      margin:0;
+      padding-left:18px;
+    }
+    .attach-list li{
+      margin:1px 0;
+    }
+
     .hidden{display:none;}
 
-    /* พิเศษสำหรับโหมดพิมพ์ A4 */
+    /* โหมดพิมพ์ A4 – เลือกพิมพ์ตามแบบฟอร์ม */
     @media print{
-      header,.toolbar,.tabs,.no-print{display:none!important;}
+      header,.toolbar,.tabs,.no-print{
+        display:none!important;
+      }
       body{
         background:#fff;
         color:#000;
@@ -332,6 +334,10 @@
         border:none;
         box-shadow:none;
         page-break-inside:avoid;
+        display:none;
+      }
+      .card.print-active{
+        display:block;
       }
       table th,table td{
         border:1px solid #000;
@@ -348,10 +354,10 @@
         🔙 <a href="fa-lg-fieldwork.html">กลับสู่เมนู Fieldwork</a>
       </div>
       <div class="chip">
-        📄 <span>รายงาน Export เป็น A4 ได้จากปุ่ม “พิมพ์/Export”</span>
+        📄 Export แยก 4 แบบ: 8.4 / 8.4.1 / 8.4.1.1 / 8.4.2
       </div>
       <div class="chip">
-        🧠 <span>รองรับ AI ช่วยสรุป + ตรวจสอบข้อความ (โครงสร้าง)</span>
+        🧠 AI Assist + Checklist + Attachments ทุกแบบ
       </div>
     </div>
   </header>
@@ -404,7 +410,7 @@
     <div class="tabs no-print">
       <button class="tab-btn active" data-tab="tab-8-4">อปท. 8.4 – แบบหลัก</button>
       <button class="tab-btn" data-tab="tab-8-4-1">อปท. 8.4.1 – สรุป</button>
-      <button class="tab-btn" data-tab="tab-8-4-1-1">อปท. 8.4.1.1 – รายละเอียดบัญชี</button>
+      <button class="tab-btn" data-tab="tab-8-4-1-1">อปท. 8.4.1.1 – รายละเอียด</button>
       <button class="tab-btn" data-tab="tab-8-4-2">อปท. 8.4.2 – รายการอื่น</button>
       <button class="tab-btn" data-tab="tab-checklist">Checklist & Export</button>
     </div>
@@ -463,9 +469,18 @@
 
       <div class="panel">
         <h4>ไฟล์แนบสำหรับแบบ 8.4 (หลัก)</h4>
-        <input type="file" class="file-input" multiple>
-        <div style="font-size:11px;color:var(--muted);margin-top:3px;">
-          ระบบนี้บันทึกเฉพาะชื่อไฟล์เพื่อการอ้างอิง (เชื่อมระบบ Upload จริงได้ใน backend)
+        <button type="button"
+                class="btn sec attach-btn"
+                data-attach-key="8-4-main">
+          📎 เพิ่ม/แนบเอกสารประกอบแบบ อปท. 8.4
+        </button>
+        <input type="file"
+               class="file-input"
+               id="attach-8-4-main"
+               multiple
+               hidden>
+        <div class="attach-list" id="attach-list-8-4-main">
+          ยังไม่มีไฟล์แนบสำหรับแบบนี้
         </div>
       </div>
     </section>
@@ -493,7 +508,6 @@
             </tr>
           </thead>
           <tbody>
-            <!-- แถวจะถูกเพิ่มด้วย JS -->
           </tbody>
         </table>
         <div class="table-actions">
@@ -504,7 +518,19 @@
 
       <div class="panel">
         <h4>ไฟล์แนบเฉพาะหัวข้อ 8.4.1</h4>
-        <input type="file" class="file-input" multiple>
+        <button type="button"
+                class="btn sec attach-btn"
+                data-attach-key="8-4-1">
+          📎 เพิ่ม/แนบเอกสารประกอบแบบ อปท. 8.4.1
+        </button>
+        <input type="file"
+               class="file-input"
+               id="attach-8-4-1"
+               multiple
+               hidden>
+        <div class="attach-list" id="attach-list-8-4-1">
+          ยังไม่มีไฟล์แนบสำหรับแบบนี้
+        </div>
       </div>
     </section>
 
@@ -513,7 +539,7 @@
       <div class="card-header">
         <div>
           <div class="card-title">อปท. 8.4.1.1 – รายละเอียดบัญชีเงินฝากธนาคาร</div>
-          <div class="card-sub">ระดับบัญชีธนาคารแต่ละบัญชี สามารถใช้เทียบกับ bank statement / กระทบยอด</div>
+          <div class="card-sub">ระดับบัญชีธนาคารแต่ละบัญชี ใช้เทียบกับ bank statement / กระทบยอด</div>
         </div>
         <span class="badge">Detail Level</span>
       </div>
@@ -535,7 +561,6 @@
             </tr>
           </thead>
           <tbody>
-            <!-- แถวจะถูกเพิ่มด้วย JS -->
           </tbody>
         </table>
         <div class="table-actions">
@@ -545,7 +570,19 @@
 
       <div class="panel">
         <h4>ไฟล์แนบสำหรับ 8.4.1.1</h4>
-        <input type="file" class="file-input" multiple>
+        <button type="button"
+                class="btn sec attach-btn"
+                data-attach-key="8-4-1-1">
+          📎 เพิ่ม/แนบเอกสารประกอบแบบ อปท. 8.4.1.1
+        </button>
+        <input type="file"
+               class="file-input"
+               id="attach-8-4-1-1"
+               multiple
+               hidden>
+        <div class="attach-list" id="attach-list-8-4-1-1">
+          ยังไม่มีไฟล์แนบสำหรับแบบนี้
+        </div>
       </div>
     </section>
 
@@ -574,7 +611,6 @@
             </tr>
           </thead>
           <tbody>
-            <!-- JS เติมแถว -->
           </tbody>
         </table>
         <div class="table-actions">
@@ -584,7 +620,19 @@
 
       <div class="panel">
         <h4>ไฟล์แนบสำหรับ 8.4.2</h4>
-        <input type="file" class="file-input" multiple>
+        <button type="button"
+                class="btn sec attach-btn"
+                data-attach-key="8-4-2">
+          📎 เพิ่ม/แนบเอกสารประกอบแบบ อปท. 8.4.2
+        </button>
+        <input type="file"
+               class="file-input"
+               id="attach-8-4-2"
+               multiple
+               hidden>
+        <div class="attach-list" id="attach-list-8-4-2">
+          ยังไม่มีไฟล์แนบสำหรับแบบนี้
+        </div>
       </div>
     </section>
 
@@ -592,7 +640,7 @@
     <section class="card tab-panel hidden" id="tab-checklist">
       <div class="card-header">
         <div>
-          <div class="card-title">Checklist, การเตือน & Export รายงาน</div>
+          <div class="card-title">Checklist, การเตือน, Export & ส่งต่อระบบอื่น</div>
           <div class="card-sub">ช่วยควบคุมให้การจัดทำแบบฟอร์มครบถ้วน ตามแนวทางการตรวจสอบ</div>
         </div>
         <span class="badge">Finalization</span>
@@ -631,18 +679,29 @@
       <div class="panel">
         <h4>การเตือนเมื่อทำผิดขั้นตอน/รูปแบบ</h4>
         <p id="warningPanel" style="font-size:12px;color:var(--muted);margin:0;">
-          ระบบจะเตือนเมื่อพบข้อมูลสำคัญที่ยังไม่กรอก เช่น หน่วยรับตรวจ ปีงบประมาณ หรือยอดรวมยังเป็นค่าว่าง
+          ระบบจะเตือนเมื่อพบข้อมูลสำคัญที่ยังไม่กรอก เช่น ปีงบประมาณ หน่วยรับตรวจ หรือยอดรวมยังเป็นค่าว่าง
         </p>
       </div>
 
       <div class="panel">
         <h4>ขอคำปรึกษาจากผู้เชี่ยวชาญ</h4>
-        <p style="font-size:12px;margin:0 0 6px;">
-          หากมีการกดปุ่มตรวจสอบ/บันทึกแล้วพบข้อผิดพลาดซ้ำหลายครั้ง ระบบสามารถออกแบบให้แสดงข้อความถามว่า 
-          <strong>“ต้องการขอคำปรึกษาหรือไม่”</strong> และบันทึก log ไว้ในฐานข้อมูล (ในเวอร์ชัน backend จริง)
+        <p style="font-size:12px;margin:0 0 6px;" id="consultText">
+          หากมีข้อผิดพลาดซ้ำ ๆ ระบบจะเสนอให้ขอคำปรึกษาจากผู้เชี่ยวชาญการตรวจสอบการเงิน
         </p>
         <div class="btn-row">
-          <button class="btn sec" type="button">📨 ขอคำปรึกษา (ตัวอย่างปุ่ม)</button>
+          <button class="btn sec" type="button" id="manualConsultBtn">📨 ขอคำปรึกษา (กดเอง)</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h4>ส่งต่อไประบบอื่น</h4>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;font-size:12px;">
+          <input type="text" id="systemSearchInput" placeholder="ค้นหาชื่อระบบ เช่น review, database, cashboard" style="flex:1;min-width:200px;">
+          <button class="btn sec" id="searchSystemBtn">🔎 ค้นหา/เลือกระบบ</button>
+          <button class="btn" id="sendToSystemBtn" disabled>📤 ส่งข้อมูลไปยังระบบที่เลือก (จำลอง)</button>
+        </div>
+        <div id="systemSearchResult" style="margin-top:6px;font-size:12px;color:var(--muted);">
+          ยังไม่ได้เลือกระบบปลายทาง
         </div>
       </div>
 
@@ -654,12 +713,36 @@
           <label><input type="radio" name="exportType" value="excel"> Excel (XLSX – รองรับใน backend)</label>
           <label><input type="radio" name="exportType" value="json"> JSON (ส่งต่อระบบอื่น)</label>
         </div>
-        <div class="btn-row" style="margin-top:8px;">
-          <button class="btn" id="confirmPrintBtn" disabled>🖨 ยืนยันเพื่อพิมพ์ / Export</button>
-          <button class="btn" id="confirmSendBtn" disabled>📤 ยืนยันส่งต่อไประบบอื่น</button>
+
+        <!-- ปุ่ม Export แยกแบบฟอร์ม -->
+        <div class="btn-row" style="margin-top:8px;flex-wrap:wrap;">
+          <button class="btn" data-export-form="tab-8-4" disabled>
+            🖨 Export แบบ อปท. 8.4
+          </button>
+          <button class="btn" data-export-form="tab-8-4-1" disabled>
+            🖨 Export แบบ อปท. 8.4.1
+          </button>
+          <button class="btn" data-export-form="tab-8-4-1-1" disabled>
+            🖨 Export แบบ อปท. 8.4.1.1
+          </button>
+          <button class="btn" data-export-form="tab-8-4-2" disabled>
+            🖨 Export แบบ อปท. 8.4.2
+          </button>
         </div>
+
+        <!-- ปุ่ม Export ทั้ง 4 แบบพร้อมกัน -->
+        <div class="btn-row" style="margin-top:4px;">
+          <button class="btn sec" id="confirmPrintBtn" disabled>
+            🖨 พิมพ์/Export ทั้ง 4 แบบพร้อมกัน
+          </button>
+          <button class="btn" id="confirmSendBtn" disabled>
+            📤 ยืนยันส่งต่อไประบบอื่น (สรุปแพ็กเดียว)
+          </button>
+        </div>
+
         <small style="font-size:11px;color:var(--muted);display:block;margin-top:6px;">
-          * การพิมพ์ A4 ใช้คำสั่ง <strong>Ctrl+P</strong> หรือปุ่ม “ยืนยันเพื่อพิมพ์ / Export” จากเบราว์เซอร์ได้ทันที<br>
+          * Export ทีละแบบ: ใช้ปุ่ม Export แบบ อปท. 8.4 / 8.4.1 / 8.4.1.1 / 8.4.2 ตามต้องการ<br>
+          * Export ทั้งหมด: ใช้ปุ่ม “พิมพ์/Export ทั้ง 4 แบบพร้อมกัน” (พิมพ์เป็น A4 ต่อเนื่อง)<br>
           * ประเภทไฟล์ Word/Excel/JSON สามารถต่อยอดได้ใน backend โดยใช้ข้อมูลจากโครงสร้างเดียวกันนี้
         </small>
       </div>
@@ -667,8 +750,7 @@
   </main>
 
   <script>
-    // ============ STATE ============
-
+    // ================== STATE หลัก ==================
     const state = {
       master:{
         totalCurrent:0,
@@ -687,7 +769,10 @@
         "conclusion-written":false,
         "spell-checked":false,
         "reviewed":false
-      }
+      },
+      attachments:{},    // เก็บชื่อไฟล์แนบของแต่ละแบบ
+      errorCount:0,      // ใช้ดูว่ามีข้อผิดพลาดซ้ำ ๆ กี่ครั้ง
+      askedConsult:false // ถามแล้วหรือยัง
     };
 
     function getStorageKey(){
@@ -697,7 +782,7 @@
       return `fa-lg-8-4-${fy}-${unit}-${eng}`;
     }
 
-    // ============ TABS ============
+    // ================== TAB ==================
     document.querySelectorAll('.tab-btn').forEach(btn=>{
       btn.addEventListener('click',()=>{
         document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
@@ -710,13 +795,42 @@
       });
     });
 
-    // ============ MASTER INPUTS ============
+    // ================== MASTER INPUTS ==================
     const totalCurrentInput=document.getElementById('totalCurrentInput');
     const totalPriorInput=document.getElementById('totalPriorInput');
     const totalDiffInput=document.getElementById('totalDiffInput');
     const diffReasonInput=document.getElementById('diffReasonInput');
     const conclusionInput=document.getElementById('conclusionInput');
     const aiConclusionInput=document.getElementById('aiConclusionInput');
+    const warningPanel=document.getElementById('warningPanel');
+
+    function updateWarningPanel(){
+      const fy=document.getElementById('fyInput').value.trim();
+      const unit=document.getElementById('unitNameInput').value.trim();
+      const c=parseFloat(totalCurrentInput.value||0);
+      const p=parseFloat(totalPriorInput.value||0);
+      const msgs=[];
+      if(!fy) msgs.push('ยังไม่ได้ระบุปีงบประมาณ');
+      if(!unit) msgs.push('ยังไม่ได้ระบุหน่วยรับตรวจ');
+      if(isNaN(c) || isNaN(p) || (c===0 && p===0)){
+        msgs.push('ยอดรวมเงินฝากปีปัจจุบัน/ปีก่อนหน้ายังไม่ถูกกรอกหรือเป็นศูนย์ทั้งหมด');
+      }
+      if(state.summaryRows.length===0){
+        msgs.push('ไม่มีข้อมูลสรุปในแบบ 8.4.1');
+      }
+      if(state.detailRows.length===0){
+        msgs.push('ไม่มีข้อมูลรายละเอียดบัญชีในแบบ 8.4.1.1');
+      }
+      if(state.otherRows.length===0){
+        msgs.push('ยังไม่มีรายการอื่นในแบบ 8.4.2 (ถ้าไม่มีจริงสามารถระบุว่า “ไม่มีรายการ”)');
+      }
+
+      if(msgs.length===0){
+        warningPanel.textContent='ไม่พบข้อเตือนที่สำคัญจากการตรวจสอบเบื้องต้น';
+      }else{
+        warningPanel.innerHTML='พบข้อเตือนดังนี้:<br>- '+msgs.join('<br>- ');
+      }
+    }
 
     function recalcDiff(){
       const c=parseFloat(totalCurrentInput.value||0);
@@ -726,6 +840,7 @@
       state.master.totalCurrent=c;
       state.master.totalPrior=p;
       state.master.totalDiff=diff;
+      updateWarningPanel();
     }
 
     totalCurrentInput.addEventListener('input',recalcDiff);
@@ -734,7 +849,7 @@
     conclusionInput.addEventListener('input',e=>state.master.conclusion=e.target.value);
     aiConclusionInput.addEventListener('input',e=>state.master.aiConclusion=e.target.value);
 
-    // ============ SUMMARY TABLE (8.4.1) ============
+    // ================== TABLE 8.4.1 SUMMARY ==================
     const summaryTableBody=document.querySelector('#summaryTable tbody');
     document.getElementById('addSummaryRowBtn').addEventListener('click',()=>{
       state.summaryRows.push({
@@ -744,6 +859,7 @@
         note:""
       });
       renderSummaryTable();
+      updateWarningPanel();
     });
 
     function renderSummaryTable(){
@@ -759,9 +875,7 @@
         const iSection=document.createElement('input');
         iSection.type='text';
         iSection.value=row.section;
-        iSection.addEventListener('input',e=>{
-          row.section=e.target.value;
-        });
+        iSection.addEventListener('input',e=>row.section=e.target.value);
         tdSection.appendChild(iSection);
         tr.appendChild(tdSection);
 
@@ -769,9 +883,7 @@
         const iPrior=document.createElement('input');
         iPrior.type='number';
         iPrior.value=row.prior;
-        iPrior.addEventListener('input',e=>{
-          row.prior=parseFloat(e.target.value||0);
-        });
+        iPrior.addEventListener('input',e=>row.prior=parseFloat(e.target.value||0));
         tdPrior.appendChild(iPrior);
         tr.appendChild(tdPrior);
 
@@ -779,9 +891,7 @@
         const iCurrent=document.createElement('input');
         iCurrent.type='number';
         iCurrent.value=row.current;
-        iCurrent.addEventListener('input',e=>{
-          row.current=parseFloat(e.target.value||0);
-        });
+        iCurrent.addEventListener('input',e=>row.current=parseFloat(e.target.value||0));
         tdCurrent.appendChild(iCurrent);
         tr.appendChild(tdCurrent);
 
@@ -789,9 +899,7 @@
         const iNote=document.createElement('input');
         iNote.type='text';
         iNote.value=row.note;
-        iNote.addEventListener('input',e=>{
-          row.note=e.target.value;
-        });
+        iNote.addEventListener('input',e=>row.note=e.target.value);
         tdNote.appendChild(iNote);
         tr.appendChild(tdNote);
 
@@ -799,13 +907,12 @@
       });
     }
 
-    // ปุ่มคำนวณจากรายละเอียด (เวอร์ชันจำลอง แค่รวมตัวเลขทั้งหมด)
     document.getElementById('recalcFromDetailBtn').addEventListener('click',()=>{
       if(state.detailRows.length===0){
         alert('ยังไม่มีข้อมูลในแบบ 8.4.1.1 ให้กรอกข้อมูลรายละเอียดบัญชีก่อน');
+        incrementErrorCount();
         return;
       }
-      // จำลอง: รวมยอดทั้งหมดเป็น 1 แถว "รวมทั้งหมด"
       const totalPrior=state.detailRows.reduce((s,r)=>s+(parseFloat(r.prior)||0),0);
       const totalCurrent=state.detailRows.reduce((s,r)=>s+(parseFloat(r.current)||0),0);
       state.summaryRows=[{
@@ -815,14 +922,13 @@
         note:"คำนวณจากรายละเอียดบัญชี (จำลอง)"
       }];
       renderSummaryTable();
-      // update master
       totalCurrentInput.value=totalCurrent.toFixed(2);
       totalPriorInput.value=totalPrior.toFixed(2);
       recalcDiff();
       alert('คำนวณยอดสรุปจาก 8.4.1.1 แล้ว (เวอร์ชันจำลอง)');
     });
 
-    // ============ DETAIL TABLE (8.4.1.1) ============
+    // ================== TABLE 8.4.1.1 DETAIL ==================
     const detailTableBody=document.querySelector('#detailTable tbody');
     document.getElementById('addDetailRowBtn').addEventListener('click',()=>{
       state.detailRows.push({
@@ -835,6 +941,7 @@
         note:""
       });
       renderDetailTable();
+      updateWarningPanel();
     });
 
     function renderDetailTable(){
@@ -899,6 +1006,7 @@
         delBtn.addEventListener('click',()=>{
           state.detailRows.splice(idx,1);
           renderDetailTable();
+          updateWarningPanel();
         });
         td.appendChild(delBtn);
         tr.appendChild(td);
@@ -907,7 +1015,7 @@
       });
     }
 
-    // ============ OTHER TABLE (8.4.2) ============
+    // ================== TABLE 8.4.2 OTHER ==================
     const otherTableBody=document.querySelector('#otherTable tbody');
     document.getElementById('addOtherRowBtn').addEventListener('click',()=>{
       state.otherRows.push({
@@ -918,6 +1026,7 @@
         note:""
       });
       renderOtherTable();
+      updateWarningPanel();
     });
 
     function renderOtherTable(){
@@ -974,6 +1083,7 @@
         delBtn.addEventListener('click',()=>{
           state.otherRows.splice(idx,1);
           renderOtherTable();
+          updateWarningPanel();
         });
         td.appendChild(delBtn);
         tr.appendChild(td);
@@ -982,7 +1092,48 @@
       });
     }
 
-    // ============ AI SUMMARY (จำลอง) ============
+    // ================== ATTACHMENTS ทุกแบบ ==================
+    function initAttachmentButtons(){
+      const attachButtons=document.querySelectorAll('.attach-btn');
+      attachButtons.forEach(btn=>{
+        const key=btn.getAttribute('data-attach-key');
+        const input=document.getElementById('attach-'+key);
+        const listDiv=document.getElementById('attach-list-'+key);
+        if(!input || !listDiv) return;
+
+        btn.addEventListener('click',()=>input.click());
+
+        input.addEventListener('change',()=>{
+          const files=Array.from(input.files||[]);
+          state.attachments[key]=files.map(f=>f.name);
+          renderAttachmentList(key);
+        });
+      });
+    }
+
+    function renderAttachmentList(key){
+      const listDiv=document.getElementById('attach-list-'+key);
+      if(!listDiv) return;
+      const names=state.attachments[key]||[];
+      if(!names.length){
+        listDiv.textContent='ยังไม่มีไฟล์แนบสำหรับแบบนี้';
+        return;
+      }
+      const ul=document.createElement('ul');
+      names.forEach(name=>{
+        const li=document.createElement('li');
+        li.textContent='📄 '+name;
+        ul.appendChild(li);
+      });
+      listDiv.innerHTML='';
+      listDiv.appendChild(ul);
+    }
+
+    function renderAllAttachmentsFromState(){
+      Object.keys(state.attachments).forEach(key=>renderAttachmentList(key));
+    }
+
+    // ================== AI SUMMARY (จำลอง) ==================
     document.getElementById('aiSummaryBtn').addEventListener('click',()=>{
       const fy=document.getElementById('fyInput').value || '....';
       const unit=document.getElementById('unitNameInput').value || 'หน่วยรับตรวจ';
@@ -1006,23 +1157,42 @@ ${direction}สุทธิประมาณ ${diff.toLocaleString('th-TH',{max
       alert('สร้างร่างข้อความสรุปจากข้อมูลยอดรวมให้แล้ว (สามารถแก้ไขเพิ่มเติมได้)');
     });
 
-    // ============ SPELL / STRUCTURE CHECK (จำลอง) ============
-    const spellPanel=document.getElementById('spellPanel');
+    // ================== ERROR COUNT & CONSULT ==================
+    const consultText=document.getElementById('consultText');
+    function incrementErrorCount(){
+      state.errorCount++;
+      if(state.errorCount>=3 && !state.askedConsult){
+        const want=confirm('พบข้อผิดพลาดซ้ำหลายครั้ง ต้องการขอคำปรึกษาจากผู้เชี่ยวชาญหรือไม่? กด OK หากต้องการ, Cancel หากไม่ต้องการ');
+        state.askedConsult=true;
+        if(want){
+          consultText.textContent='ผู้ใช้เลือกที่จะขอคำปรึกษาจากผู้เชี่ยวชาญ (บันทึกไว้ในระบบได้ในเวอร์ชัน backend จริง)';
+          alert('ระบบจะบันทึกคำขอปรึกษาไว้ (เวอร์ชันจริงสามารถส่งแจ้งเตือนไปยังผู้เชี่ยวชาญได้)');
+        }else{
+          consultText.textContent='ผู้ใช้เลือกยังไม่ขอคำปรึกษา แม้มีข้อผิดพลาดซ้ำหลายครั้ง';
+        }
+      }
+    }
+
+    document.getElementById('manualConsultBtn').addEventListener('click',()=>{
+      consultText.textContent='ผู้ใช้กดขอคำปรึกษาจากผู้เชี่ยวชาญด้วยตนเอง (สามารถส่งต่อไปยังระบบนัดหมาย/แชทได้ในเวอร์ชันจริง)';
+      alert('ระบบจะส่งคำขอปรึกษาไปยังผู้เชี่ยวชาญในเวอร์ชัน backend จริง');
+    });
+
+    // ================== SPELL / STRUCTURE CHECK ==================
     const spellList=document.getElementById('spellResultList');
 
     document.getElementById('spellCheckBtn').addEventListener('click',()=>{
       const errors=[];
       const warns=[];
-
       const fy=document.getElementById('fyInput').value.trim();
       const unit=document.getElementById('unitNameInput').value.trim();
+
       if(!fy) errors.push('ยังไม่ได้ระบุปีงบประมาณ');
       if(!unit) errors.push('ยังไม่ได้ระบุหน่วยรับตรวจ');
 
       if((conclusionInput.value.trim().length||0)<30){
         warns.push('ข้อสรุปการตรวจสอบสั้นมาก ควรอธิบายวัตถุประสงค์ ขอบเขต วิธีการตรวจสอบ และผลการตรวจสอบให้ครบถ้วน');
       }
-
       if(state.summaryRows.length===0){
         warns.push('ยังไม่มีข้อมูลในตาราง 8.4.1 การสรุปยอดจากรายละเอียด');
       }
@@ -1049,16 +1219,18 @@ ${direction}สุทธิประมาณ ${diff.toLocaleString('th-TH',{max
         });
       }
 
-      // mark checklist spell-checked = true
       state.checklist['spell-checked']=true;
       syncChecklistUI();
+      if(errors.length>0 || warns.length>0) incrementErrorCount();
+      updateWarningPanel();
     });
 
-    // ============ CHECKLIST ============
+    // ================== CHECKLIST ==================
     const checklistContainer=document.getElementById('checklistContainer');
     const checkStatus=document.getElementById('checkStatus');
     const confirmPrintBtn=document.getElementById('confirmPrintBtn');
     const confirmSendBtn=document.getElementById('confirmSendBtn');
+    const exportFormButtons=document.querySelectorAll('[data-export-form]');
 
     checklistContainer.querySelectorAll('input[type="checkbox"]').forEach(chk=>{
       chk.addEventListener('change',()=>{
@@ -1074,31 +1246,107 @@ ${direction}สุทธิประมาณ ${diff.toLocaleString('th-TH',{max
       if(allDone){
         checkStatus.textContent='✅ พร้อมพิมพ์/ส่งต่อ';
         checkStatus.classList.add('ready');
-        confirmPrintBtn.disabled=false;
-        confirmSendBtn.disabled=false;
+        if(confirmPrintBtn) confirmPrintBtn.disabled=false;
+        if(confirmSendBtn) confirmSendBtn.disabled=false;
+        exportFormButtons.forEach(btn=>btn.disabled=false);
       }else{
         checkStatus.textContent='⏳ ยังไม่พร้อมพิมพ์/ส่ง';
         checkStatus.classList.remove('ready');
-        confirmPrintBtn.disabled=true;
-        confirmSendBtn.disabled=true;
+        if(confirmPrintBtn) confirmPrintBtn.disabled=true;
+        if(confirmSendBtn) confirmSendBtn.disabled=true;
+        exportFormButtons.forEach(btn=>btn.disabled=true);
       }
     }
 
-    confirmPrintBtn.addEventListener('click',()=>{
-      const selectedType=(document.querySelector('input[name="exportType"]:checked')||{}).value;
-      if(selectedType==='json'){
-        alert('ในเวอร์ชันจริงสามารถส่ง JSON นี้ไป backend เพื่อสร้างไฟล์ตามชนิดที่เลือกได้\nตอนนี้ใช้การสั่งพิมพ์เป็น PDF ได้ทันที');
+    // ================== EXPORT เลือกแบบที่จะพิมพ์ ==================
+    function setPrintTarget(formIdOrAll){
+      const panels=document.querySelectorAll('.tab-panel');
+      panels.forEach(p=>p.classList.remove('print-active'));
+      if(formIdOrAll==='all'){
+        panels.forEach(p=>p.classList.add('print-active'));
+      }else{
+        const target=document.getElementById(formIdOrAll);
+        if(target) target.classList.add('print-active');
       }
-      window.print();
+    }
+
+    exportFormButtons.forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        const formId=btn.getAttribute('data-export-form');
+        const selectedType=(document.querySelector('input[name="exportType"]:checked')||{}).value;
+
+        if(selectedType==='json'){
+          alert('โหมด JSON จะใช้ใน backend เพื่อสร้างไฟล์จริง\nตอนนี้เดโมโหมดการพิมพ์ A4 ผ่านเบราว์เซอร์');
+        }
+
+        setPrintTarget(formId);
+        window.print();
+      });
     });
 
-    confirmSendBtn.addEventListener('click',()=>{
-      alert('ในเวอร์ชันที่เชื่อม backend จะส่งข้อมูลไปยังระบบสอบทาน / ฐานข้อมูล / Cashboard ตามที่กำหนดได้\nตอนนี้เป็นปุ่มจำลองเพื่อออกแบบขั้นตอน');
+    if(confirmPrintBtn){
+      confirmPrintBtn.addEventListener('click',()=>{
+        const selectedType=(document.querySelector('input[name="exportType"]:checked')||{}).value;
+        if(selectedType==='json'){
+          alert('โหมด JSON จะใช้ใน backend เพื่อสร้างไฟล์จริง\nตอนนี้เดโมโหมดการพิมพ์ A4 ผ่านเบราว์เซอร์');
+        }
+        setPrintTarget('all');
+        window.print();
+      });
+    }
+
+    if(confirmSendBtn){
+      confirmSendBtn.addEventListener('click',()=>{
+        alert('ในเวอร์ชันที่เชื่อม backend จะส่งข้อมูลไประบบสอบทาน / ฐานข้อมูล / Cashboard ตามที่กำหนดได้\nตอนนี้เป็นปุ่มจำลองเพื่อออกแบบขั้นตอน');
+      });
+    }
+
+    // ================== ระบบค้นหาระบบปลายทาง (จำลอง) ==================
+    const systemSearchInput=document.getElementById('systemSearchInput');
+    const systemSearchBtn=document.getElementById('searchSystemBtn');
+    const sendToSystemBtn=document.getElementById('sendToSystemBtn');
+    const systemSearchResult=document.getElementById('systemSearchResult');
+    let selectedSystemKey=null;
+
+    const systemRegistry=[
+      {key:'review', name:'ระบบสอบทาน FA'},
+      {key:'database', name:'ระบบฐานข้อมูลกลาง FA-LG'},
+      {key:'cashboard', name:'ระบบ Cash Board การเงินท้องถิ่น'},
+      {key:'other', name:'ระบบอื่น ๆ ของกลุ่ม 4'}
+    ];
+
+    systemSearchBtn.addEventListener('click',()=>{
+      const q=(systemSearchInput.value||'').toLowerCase();
+      const matched=systemRegistry.filter(s=>s.key.includes(q)||s.name.toLowerCase().includes(q));
+      if(!matched.length){
+        systemSearchResult.textContent='ไม่พบระบบที่ตรงกับคำค้น';
+        selectedSystemKey=null;
+        sendToSystemBtn.disabled=true;
+        return;
+      }
+      const s=matched[0];
+      selectedSystemKey=s.key;
+      sendToSystemBtn.disabled=false;
+      systemSearchResult.textContent='เลือกระบบ: '+s.name+' (key: '+s.key+')';
     });
 
-    // ============ SAVE / LOAD (localStorage จำลอง DB) ============
+    sendToSystemBtn.addEventListener('click',()=>{
+      if(!selectedSystemKey){
+        alert('ยังไม่ได้เลือกระบบปลายทาง');
+        return;
+      }
+      alert('จะส่งข้อมูลแบบ 8.4 ทั้งชุดไปยังระบบ: '+selectedSystemKey+' (จำลอง)\nเวอร์ชันจริงจะเรียก API และแนบข้อมูล/ไฟล์ที่เกี่ยวข้อง');
+    });
+
+    // ================== SAVE / LOAD / RESET (localStorage จำลอง DB) ==================
     document.getElementById('saveBtn').addEventListener('click',()=>{
       const key=getStorageKey();
+      const fy=document.getElementById('fyInput').value.trim();
+      const unit=document.getElementById('unitNameInput').value.trim();
+      if(!fy || !unit){
+        alert('ควรกรอกปีงบประมาณและหน่วยรับตรวจให้ครบก่อนบันทึก');
+        incrementErrorCount();
+      }
       const payload={
         meta:{
           fy:document.getElementById('fyInput').value,
@@ -1117,23 +1365,24 @@ ${direction}สุทธิประมาณ ${diff.toLocaleString('th-TH',{max
       const raw=localStorage.getItem(key);
       if(!raw){
         alert('ยังไม่พบข้อมูลที่บันทึกไว้ภายใต้ key นี้\nกรุณาตรวจสอบปีงบประมาณ/หน่วยรับตรวจ/รหัสงาน หรือบันทึกใหม่');
+        incrementErrorCount();
         return;
       }
       const payload=JSON.parse(raw);
-      // meta
       document.getElementById('fyInput').value=payload.meta.fy;
       document.getElementById('engagementCodeInput').value=payload.meta.engagement;
       document.getElementById('unitNameInput').value=payload.meta.unitName;
       document.getElementById('unitTypeSelect').value=payload.meta.unitType;
 
-      // state
       Object.assign(state.master,payload.state.master||{});
       state.summaryRows=payload.state.summaryRows||[];
       state.detailRows=payload.state.detailRows||[];
       state.otherRows=payload.state.otherRows||[];
       Object.assign(state.checklist,payload.state.checklist||{});
+      state.attachments=payload.state.attachments || {};
+      state.errorCount=payload.state.errorCount || 0;
+      state.askedConsult=payload.state.askedConsult || false;
 
-      // sync to UI
       totalCurrentInput.value=state.master.totalCurrent||0;
       totalPriorInput.value=state.master.totalPrior||0;
       recalcDiff();
@@ -1144,13 +1393,14 @@ ${direction}สุทธิประมาณ ${diff.toLocaleString('th-TH',{max
       renderSummaryTable();
       renderDetailTable();
       renderOtherTable();
+      renderAllAttachmentsFromState();
 
-      // checklist
       checklistContainer.querySelectorAll('input[type="checkbox"]').forEach(chk=>{
         const key=chk.dataset.checkKey;
         chk.checked=!!state.checklist[key];
       });
       syncChecklistUI();
+      updateWarningPanel();
 
       alert('โหลดข้อมูลจากฐานข้อมูลจำลองสำเร็จ');
     });
@@ -1163,21 +1413,35 @@ ${direction}สุทธิประมาณ ${diff.toLocaleString('th-TH',{max
       diffReasonInput.value='';
       conclusionInput.value='';
       aiConclusionInput.value='';
+      document.getElementById('fyInput').value='';
+      document.getElementById('engagementCodeInput').value='';
+      document.getElementById('unitNameInput').value='';
+      document.getElementById('unitTypeSelect').value='';
+
       state.master={totalCurrent:0,totalPrior:0,totalDiff:0,diffReason:"",conclusion:"",aiConclusion:""};
       state.summaryRows=[];
       state.detailRows=[];
       state.otherRows=[];
       Object.keys(state.checklist).forEach(k=>state.checklist[k]=false);
+      state.attachments={};
+      state.errorCount=0;
+      state.askedConsult=false;
+
       renderSummaryTable();
       renderDetailTable();
       renderOtherTable();
+      renderAllAttachmentsFromState();
       checklistContainer.querySelectorAll('input[type="checkbox"]').forEach(chk=>chk.checked=false);
       syncChecklistUI();
       spellList.innerHTML='<li>ยังไม่ได้ทำการตรวจสอบ</li>';
+      warningPanel.textContent='ระบบจะเตือนเมื่อพบข้อมูลสำคัญที่ยังไม่กรอก เช่น ปีงบประมาณ หน่วยรับตรวจ หรือยอดรวมยังเป็นค่าว่าง';
+      consultText.textContent='หากมีข้อผิดพลาดซ้ำ ๆ ระบบจะเสนอให้ขอคำปรึกษาจากผู้เชี่ยวชาญการตรวจสอบการเงิน';
     });
 
-    // initial
+    // ================== INITIAL ==================
     syncChecklistUI();
+    initAttachmentButtons();
+    updateWarningPanel();
   </script>
 </body>
 </html>
