@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>อปท. 8.7 | Financial Audit – Local Government</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    :root{
+      --primary:#0d47a1;
+      --primary-2:#42a5f5;
+      --accent:#ffd54f;
+      --accent2:#26c6da;
+      --bg:#060818;
+      --bg-soft:#0b1024;
+      --card:#11152b;
+      --text:#f5f7ff;
+      --muted:#a3acc7;
+      --border:#262b46;
+      --maroon:#7b1e3c;
+      --pink:#f48fb1;
+      --shadow-soft:0 12px 30px rgba(0,0,0,0.55);
+    }
+
+    *{box-sizing:border-box;}
+
+    body{
+      margin:0;
+      font-family:"Segoe UI", Tahoma, sans-serif;
+      background:var(--bg);
+      color:var(--text);
+    }
+
+    header{
+      padding:18px 20px 14px;
+      background:
+        linear-gradient(120deg,#0d47a1,#7b1e3c,#42a5f5);
+      box-shadow:var(--shadow-soft);
+      border-bottom:1px solid rgba(255,255,255,0.12);
+    }
+    header h1{
+      margin:0;
+      font-size:24px;
+      font-weight:800;
+      letter-spacing:0.5px;
+    }
+    header p{
+      margin:4px 0 0 0;
+      font-size:13px;
+      opacity:0.9;
+    }
+
+    .header-meta{
+      margin-top:8px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      font-size:12px;
+      opacity:0.9;
+    }
+    .chip{
+      padding:4px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.25);
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+    }
+
+    .container{
+      max-width:1080px;
+      margin:20px auto;
+      padding:20px;
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:18px;
+      box-shadow:var(--shadow-soft);
+    }
+
+    h2{
+      margin-top:0;
+      margin-bottom:10px;
+      border-left:5px solid var(--accent2);
+      padding-left:10px;
+      font-size:18px;
+    }
+
+    .section{
+      margin-bottom:26px;
+    }
+
+    label{
+      display:block;
+      font-size:13px;
+      margin-top:8px;
+      color:var(--muted);
+    }
+
+    input, select, textarea{
+      width:100%;
+      padding:8px 10px;
+      margin-top:4px;
+      background:var(--bg-soft);
+      border:1px solid var(--border);
+      color:var(--text);
+      border-radius:6px;
+      font-size:13px;
+    }
+    textarea{resize:vertical; min-height:70px;}
+
+    .flex{
+      display:flex;
+      gap:16px;
+      flex-wrap:wrap;
+    }
+    .flex > div{
+      flex:1;
+      min-width:220px;
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      margin:14px 0 6px;
+      font-size:13px;
+    }
+    table th, table td{
+      border:1px solid var(--border);
+      padding:6px 6px;
+      text-align:center;
+    }
+    table th{
+      background:rgba(7,16,46,0.9);
+      font-weight:600;
+      position:sticky;
+      top:0;
+      z-index:2;
+    }
+    table input{
+      width:100%;
+      border:none;
+      background:transparent;
+      text-align:right;
+      font-size:13px;
+      color:var(--text);
+    }
+    td[contenteditable="true"]{
+      text-align:left;
+      background:rgba(255,255,255,0.02);
+    }
+
+    tfoot td{
+      font-weight:700;
+      background:rgba(4,12,40,0.95);
+    }
+
+    .btn{
+      padding:9px 14px;
+      border:none;
+      border-radius:999px;
+      font-size:13px;
+      cursor:pointer;
+      color:#fff;
+      margin:4px 6px 4px 0;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+    }
+    .btn span{font-size:14px;}
+    .btn-primary{background:var(--primary);}
+    .btn-accent{background:var(--accent); color:#000;}
+    .btn-pink{background:var(--pink);}
+    .btn-soft{background:var(--border);}
+    .btn-danger{background:#ef5350;}
+
+    .attachment-box{
+      background:var(--bg-soft);
+      border:1px dashed var(--pink);
+      padding:10px 12px;
+      border-radius:12px;
+      margin-top:10px;
+      font-size:13px;
+      max-height:120px;
+      overflow:auto;
+    }
+
+    .toolbar{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:4px;
+    }
+
+    .note{
+      font-size:11px;
+      color:var(--muted);
+      margin-top:4px;
+    }
+
+    .summary-panel{
+      background:rgba(4,12,40,0.9);
+      border-radius:12px;
+      padding:10px 12px;
+      font-size:12px;
+      border:1px solid var(--border);
+      margin-top:6px;
+    }
+
+    .summary-panel strong{
+      color:var(--accent2);
+    }
+
+    .badge{
+      display:inline-block;
+      padding:2px 8px;
+      border-radius:999px;
+      font-size:11px;
+      background:rgba(66,165,245,0.12);
+      border:1px solid rgba(66,165,245,0.5);
+      margin-left:6px;
+    }
+
+    .print-hint{
+      font-size:11px;
+      color:var(--muted);
+      margin-top:2px;
+    }
+
+    @media (max-width:768px){
+      .container{margin:10px;}
+      header h1{font-size:20px;}
+    }
+
+    /* --- A4 Print Style --- */
+    @media print{
+      body{
+        background:#fff;
+        -webkit-print-color-adjust:exact;
+        print-color-adjust:exact;
+      }
+      header{
+        border-radius:0;
+      }
+      .container{
+        box-shadow:none;
+        border:none;
+        margin:0;
+        max-width:100%;
+      }
+      .no-print{display:none !important;}
+      table{
+        font-size:11px;
+      }
+      @page{
+        size:A4 portrait;
+        margin:15mm;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>อปท. 8.7 – สรุปรายการสำคัญประกอบการตรวจสอบ</h1>
+  <p>แบบฟอร์มดิจิทัลประยุกต์จาก อปท. 8.3, 8.4, 8.5, 8.6 | ใช้เปรียบเทียบปีปัจจุบัน–ปีก่อน พร้อมคำนวณอัตโนมัติ</p>
+  <div class="header-meta">
+    <div class="chip">📁 <span>Financial Audit – Local Government</span></div>
+    <div class="chip">🧮 <span>เปรียบเทียบ 2 ปี + ส่วนต่าง + % เปลี่ยนแปลง</span></div>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- ข้อมูลหน่วยรับตรวจ -->
+  <div class="section">
+    <h2>ข้อมูลหน่วยรับตรวจ</h2>
+    <div class="flex">
+      <div>
+        <label>ชื่อหน่วยรับตรวจ / Local Government Entity</label>
+        <input type="text" id="orgName" placeholder="เช่น เทศบาลเมืองศรีสะเกษ">
+      </div>
+      <div>
+        <label>ปีงบประมาณ (ปีปัจจุบัน) / Fiscal Year (Current)</label>
+        <select id="fiscalYear">
+          <option value="2569">2569</option>
+          <option value="2568" selected>2568</option>
+          <option value="2567">2567</option>
+          <option value="2566">2566</option>
+        </select>
+      </div>
+      <div>
+        <label>ผู้ปฏิบัติงานตรวจสอบ / Auditor</label>
+        <input type="text" id="auditorName" placeholder="ชื่อผู้ตรวจสอบ / Audit Team">
+      </div>
+    </div>
+  </div>
+
+  <!-- ตารางข้อมูลหลัก -->
+  <div class="section">
+    <h2>ตารางรายการ อปท. 8.7 <span class="badge">20–50 รายการ</span></h2>
+    <div class="toolbar no-print">
+      <button class="btn btn-soft" onclick="addRow()"><span>➕</span> เพิ่มแถว</button>
+      <button class="btn btn-danger" onclick="removeLastRow()"><span>🗑</span> ลบแถวท้าย</button>
+      <button class="btn btn-primary" onclick="recalculate()"><span>🧮</span> คำนวณใหม่</button>
+    </div>
+    <div class="note no-print">
+      * ข้อความในคอลัมน์ “รายการ” และ “หมายเหตุ” สามารถพิมพ์แก้ไขได้โดยตรงในตาราง  
+      * ค่าตัวเลขให้กรอกเฉพาะตัวเลข (ไม่ต้องใส่จุลภาค) ระบบจะคำนวณ “ส่วนต่าง” และ “% เปลี่ยนแปลง” ให้อัตโนมัติ
+    </div>
+
+    <div style="max-height:420px; overflow:auto; margin-top:10px;">
+      <table id="mainTable">
+        <thead>
+          <tr>
+            <th style="width:40px;">ลำดับ<br>No.</th>
+            <th style="min-width:220px;">รายการ<br>Item</th>
+            <th style="width:110px;">ปีปัจจุบัน<br>Current Year</th>
+            <th style="width:110px;">ปีก่อน<br>Prior Year</th>
+            <th style="width:110px;">ส่วนต่าง<br>Difference</th>
+            <th style="width:100px;">เปลี่ยนแปลง (%)<br>% Change</th>
+            <th style="min-width:180px;">หมายเหตุ<br>Remark</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- 30 รายการเริ่มต้น (แก้ข้อความได้) -->
+          <!-- กลุ่มรายได้ / ลูกหนี้ / เจ้าหนี้ / สินทรัพย์ ฯลฯ แบบผสม 8.3–8.6 -->
+
+          <!-- 1–5 รายได้ / รายการสำคัญทั่วไป -->
+          <tr>
+            <td>1</td>
+            <td contenteditable="true">รายได้สำคัญที่ 1 / รายการหลักด้านรายได้</td>
+            <td><input type="number" class="curr"></td>
+            <td><input type="number" class="prev"></td>
+            <td class="diff"></td>
+            <td class="pct"></td>
+            <td contenteditable="true"></td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td contenteditable="true">รายได้สำคัญที่ 2 / ภาษีและค่าธรรมเนียม</td>
+            <td><input type="number" class="curr"></td>
+            <td><input type="number" class="prev"></td>
+            <td class="diff"></td>
+            <td class="pct"></td>
+            <td contenteditable="true"></td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td contenteditable="true">รายได้สำคัญที่ 3 / รายได้จากค่าบริการ</td>
+            <td><input type="number" class="curr"></td>
+            <td><input type="number" class="prev"></td>
+            <td class="diff"></td>
+            <td class="pct"></td>
+            <td contenteditable="true"></td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td contenteditable="true">รายได้สำคัญที่ 4 / รายได้อื่น ๆ</td>
+            <td><input type="number" class="curr"></td>
+            <td><input type="number" class="prev"></td>
+            <td class="diff"></td>
+            <td class="pct"></td>
+            <td contenteditable="true"></td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td contenteditable="true">สรุปรายได้รวมที่สำคัญ</td>
+            <td><input type="number" class="curr"></td>
+            <td><input type="number" class="prev"></td>
+            <td class="diff"></td>
+            <td class="pct"></td>
+            <td contenteditable="true"></td>
+          </tr>
+
+          <!-- 6–10 ลูกหนี้ / ลูกหนี้เงินโอน -->
+          <tr>
+            <td>6</td>
+            <td contenteditable="true">ลูกหนี้สำคัญที่ 1 / ลูกหนี้เงินโอน</td>
+            <td><input type="number" class="curr"></td>
+            <td><input type="number" class="prev"></td>
+            <td class="diff"></td>
+            <td class="pct"></td>
+            <td contenteditable="true"></td>
+          </tr>
+          <tr>
+            <td>7</td>
+            <td contenteditable="true">ลูกหนี้สำคัญที่ 2 / ลูกหนี้ค่าธรรมเนียม</td>
+            <td><input type="number" class="curr"></td>
+            <td><input type="number" class="prev"></td>
+            <td class="diff"></td>
+            <td class="pct"></td>
+            <td contenteditable="true"></td>
+          </tr>
+          <tr>
+            <td>8</td>
+            <td contenteditable="true">ลูกหนี้ระยะสั้นอื่น ๆ</td>
+            <td><input type="number" class="curr"></td>
+            <td><input type="number" class="prev"></td>
+            <td class="diff"></td>
+            <td class="pct"></td>
+            <td contenteditable="true"></td>
+          </tr>
+          <tr>
+            <td>9</td>
+            <td contenteditable="true">ลูกหนี้ระยะยาว / ลูกหนี้โครงการ</td>
+            <td><input type="number" class="curr"></td>
+            <td><input type="number" class="prev"></td>
+            <td class="diff"></td>
+            <td class="pct"></td>
+            <td contenteditable="true"></td>
+          </tr>
+          <tr>
+            <td>10</td>
+            <td contenteditable="true">สรุปลูกหนี้รวมที่สำคัญ</td>
+            <td><input type="number" class="curr"></td>
+            <td><input type="number" class="prev"></td>
+            <td class="diff"></td>
+            <td class="pct"></td>
+            <td contenteditable="true"></td>
+          </tr>
+
+          <!-- 11–15 เจ้าหนี้ / หนี้สินระยะสั้น–ยาว -->
+          <tr>
+            <td>11</td>
+            <td contenteditable="true">เจ้าหนี้สำคัญที่ 1 / เจ้าหนี้ค่าสาธารณูปโภค</td>
+            <td><input type="number" class="curr"></td>
+            <td><input type="number" class="prev"></td>
+            <td class="diff"></td>
+            <td class="pct"></td>
+            <td contenteditable="true"></td>
+          </tr>
+          <tr>
+            <td>12</td>
+            <td contenteditable="true">เจ้าหนี้ค่าจ้าง/เงินเดือนค้างจ่าย</td>
+            <td><input type="number" class="curr"></td>
+            <td><input type="number" class="prev"></td>
+            <td class="diff"></td>
+            <td class="pct"></td>
+            <td contenteditable="true"></td>
+          </tr>
+          <tr>
+            <td>13</td>
+            <td contenteditable="true">หนี้สินระยะสั้นอื่น ๆ</td>
+            <td><input type="number" class="curr"></td>
+            <td><input type="number" class="prev"></td>
+            <td class="diff"></td>
+            <td class="pct"></td>
+            <td contenteditable="true"></td>
+          </tr>
+          <tr>
+            <td>14</td>
+            <td contenteditable="true">หนี้สินระยะยาว / เงินกู้</td>
+            <td><input type="number" class="curr"></td>
+            <td><input type="number" class="prev"></td>
+            <td class="diff"></td>
+            <td class="pct"></td>
+            <td contenteditable="true"></td>
+          </tr>
+          <tr>
+            <td>15</td>
+            <td contenteditable="true">สรุปเจ้าหนี้และหนี้สินที่สำคัญ</td>
+            <td><input type="number" class="curr"></td>
+            <td><input type="number" class="prev"></td>
+            <td class="diff"></td>
+            <td class="pct"></td>
+            <td contenteditable="true"></td>
+          </tr>
+
+          <!-- 16–20 สินทรัพย์ถาวร / โครงการลงทุน -->
+          <tr>
+            <td>16</td>
+            <td contenteditable="true">สินทรัพย์ถาวรสำคัญที่ 1 / อาคารสถานที่</td>
+            <td><input type="number" class="curr"></td>
+            <td><input type="number" class="prev"></td>
+            <td class="diff"></td>
+            <td class="pct"></td>
+            <td contenteditable="true"></td>
+          </tr>
+          <tr>
+            <td>17</td>
+            <td contenteditable="true">สินทรัพย์ถาวรสำคัญที่ 2 / เครื่องมือเครื่องใช้</td>
+            <td><input type="number" class="curr"></td>
+            <td><input type="number" class="prev"></td>
+            <td class="diff"></td>
+            <td class="pct"></td>
+            <td contenteditable="true"></td>
+          </tr>
+          <tr>
+            <td>18</td>
+            <td contenteditable="true">สินทรัพย์โครงสร้างพื้นฐาน (ถนน/สะพาน ฯลฯ)</td>
+            <td><input type="number" class="curr"></td>
+            <td><input type="number" class="prev"></td>
+            <td class="diff"></td>
+            <td class="pct"></td>
+            <td contenteditable="true"></td>
+          </tr>
+          <tr>
+            <td>19</td>
+            <td contenteditable="true">โครงการลงทุนระหว่างก่อสร้าง</td>
+            <td><input type="number" class="curr"></td>
+            <td><input type="number" class="prev"></td>
+            <td class="diff"></td>
+            <td class="pct"></td>
+            <td contenteditable="true"></td>
+          </tr>
+          <tr>
+            <td>20</td>
+            <td contenteditable="true">สรุปสินทรัพย์ถาวรและโครงการลงทุนสำคัญ</td>
+            <td><input type="number" class="curr"></td>
+            <td><input type="number" class="prev"></td>
+            <td class="diff"></td>
+            <td class="pct"></td>
+            <td contenteditable="true"></td>
+          </tr>
+
+          <!-- 21–30 รายการทั่วไป / ประเด็นวิเคราะห์เพิ่มเติม -->
+          <tr>
+            <td>21</td>
+            <td contenteditable="true">รายการวิเคราะห์ที่ 1 / รายการสำคัญอื่น</td>
+            <td><input type="number" class="curr"></td>
+            <td><input type="number" class="prev"></td>
+            <td class="diff"></td>
+            <td class="pct"></td>
+            <td contenteditable="true"></td>
+          </tr>
+          <tr>
+            <td>22</td>
+            <td contenteditable="true">รายการวิเคราะห์ที่ 2</td>
+            <td><input type="number" class="curr"></td>
+            <td><input type="number" class="prev"></td>
+            <td class="diff"></td>
+            <td class="pct"></td>
+            <td contenteditable="true"></td>
+          </tr>
+          <tr>
+            <td>23</td>
+            <td contenteditable="true">รายการวิเคราะห์ที่ 3</td>
+            <td><input type="number" class="curr"></td>
+            <td><input type="number" class="prev"></td>
+            <td class="diff"></td>
+            <td class="pct"></td>
+            <td contenteditable="true"></td>
+          </tr>
+          <tr>
+            <td>24</td>
+            <td contenteditable="true">รายการวิเคราะห์ที่ 4</td>
+            <td><input type="number" class="curr"></td>
+            <td><input type="number" class="prev"></td>
+            <td class="diff"></td>
+            <td class="pct"></td>
+            <td contenteditable="true"></td>
+          </tr>
+          <tr>
+            <td>25</td>
+            <td contenteditable="true">รายการวิเคราะห์ที่ 5</td>
+            <td><input type="number" class="curr"></td>
+            <td><input type="number" class="prev"></td>
+            <td class="diff"></td>
+            <td class="pct"></td>
+            <td contenteditable="true"></td>
+          </tr>
+          <tr>
+            <td>26</td>
+            <td contenteditable="true">รายการวิเคราะห์ที่ 6</td>
+            <td><input type="number" class="curr"></td>
+            <td><input type="number" class="prev"></td>
+            <td class="diff"></td>
+            <td class="pct"></td>
+            <td contenteditable="true"></td>
+          </tr>
+          <tr>
+            <td>27</td>
+            <td contenteditable="true">รายการวิเคราะห์ที่ 7</td>
+            <td><input type="number" class="curr"></td>
+            <td><input type="number" class="prev"></td>
+            <td class="diff"></td>
+            <td class="pct"></td>
+            <td contenteditable="true"></td>
+          </tr>
+          <tr>
+            <td>28</td>
+            <td contenteditable="true">รายการวิเคราะห์ที่ 8</td>
+            <td><input type="number" class="curr"></td>
+            <td><input type="number" class="prev"></td>
+            <td class="diff"></td>
+            <td class="pct"></td>
+            <td contenteditable="true"></td>
+          </tr>
+          <tr>
+            <td>29</td>
+            <td contenteditable="true">รายการวิเคราะห์ที่ 9</td>
+            <td><input type="number" class="curr"></td>
+            <td><input type="number" class="prev"></td>
+            <td class="diff"></td>
+            <td class="pct"></td>
+            <td contenteditable="true"></td>
+          </tr>
+          <tr>
+            <td>30</td>
+            <td contenteditable="true">รายการวิเคราะห์ที่ 10 / สรุปประเด็นสำคัญ</td>
+            <td><input type="number" class="curr"></td>
+            <td><input type="number" class="prev"></td>
+            <td class="diff"></td>
+            <td class="pct"></td>
+            <td contenteditable="true"></td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="2">รวม (Sum)</td>
+            <td id="totalCurr"></td>
+            <td id="totalPrev"></td>
+            <td id="totalDiff"></td>
+            <td id="totalPct"></td>
+            <td></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <div class="summary-panel">
+      สรุปเชิงวิเคราะห์:  
+      ปีปัจจุบันรวม <strong id="summaryCurr">0</strong> | ปีก่อนรวม <strong id="summaryPrev">0</strong> | ส่วนต่างรวม <strong id="summaryDiff">0</strong>  
+      ภาพรวมการเปลี่ยนแปลงคิดเป็น <strong id="summaryPct">0%</strong> (เทียบยอดรวม)
+    </div>
+  </div>
+
+  <!-- แนบเอกสาร -->
+  <div class="section">
+    <h2>แนบเอกสารประกอบ</h2>
+    <div class="toolbar no-print">
+      <button class="btn btn-pink" onclick="document.getElementById('attach').click()">
+        <span>📎</span> แนบไฟล์ (Attach Files)
+      </button>
+      <button class="btn btn-soft" onclick="autoAttachFromWP()">
+        <span>🔗</span> แนบจากระบบฐานข้อมูล (WP / Data Center)
+      </button>
+    </div>
+    <input id="attach" type="file" multiple style="display:none">
+    <div class="attachment-box" id="attachList">
+      <p style="margin:0; color:var(--muted);">ยังไม่มีไฟล์แนบ</p>
+    </div>
+    <div class="note">
+      * ใช้แนบไฟล์กระดาษทำการ, รายงานย่อย, สำเนางบการเงิน หรือเอกสารอื่น ๆ ที่เกี่ยวข้องกับรายการในแบบ อปท. 8.7
+    </div>
+  </div>
+
+  <!-- ปุ่มทำงานหลัก -->
+  <div class="section no-print">
+    <h2>คำสั่งระบบ</h2>
+    <div class="toolbar">
+      <button class="btn btn-primary" onclick="loadData()"><span>⏬</span> โหลดข้อมูลจากฐาน (Load)</button>
+      <button class="btn btn-accent" onclick="saveData()"><span>💾</span> บันทึกข้อมูล (Save)</button>
+      <button class="btn btn-pink" onclick="aiSummary()"><span>🤖</span> AI ช่วยสรุป</button>
+      <button class="btn btn-soft" onclick="window.print()"><span>🖨</span> Export A4 / Print to PDF</button>
+      <button class="btn btn-soft" onclick="window.location.href='fa-lg-fieldwork.html'"><span>🏠</span> กลับหน้าหลัก Fieldwork</button>
+    </div>
+    <div class="print-hint">
+      Export A4: คลิกปุ่ม “Export A4 / Print to PDF” → เลือก Printer เป็น “Save as PDF” / “พิมพ์เป็น PDF” → ขนาดกระดาษ A4
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ----------------------------
+   แนบไฟล์
+-----------------------------*/
+document.getElementById('attach').addEventListener('change', function(){
+  const list = document.getElementById('attachList');
+  list.innerHTML = "";
+  if(this.files.length === 0){
+    list.innerHTML = '<p style="margin:0; color:var(--muted);">ยังไม่มีไฟล์แนบ</p>';
+    return;
+  }
+  for(const f of this.files){
+    const item = document.createElement("div");
+    item.textContent = "📎 " + f.name;
+    list.appendChild(item);
+  }
+});
+
+function autoAttachFromWP(){
+  // จุดเชื่อมต่อระบบฐานข้อมูล/WordPress หรือ Data Center
+  alert("autoAttachFromWP(): เตรียมเชื่อมต่อกับระบบฐานข้อมูลกลาง / WP (ต้องกำหนด API endpoint เพิ่มเติม)");
+}
+
+/* ----------------------------
+   คำนวณอัตโนมัติ
+-----------------------------*/
+function recalculate(){
+  const rows = document.querySelectorAll("#mainTable tbody tr");
+  let totalCurr = 0;
+  let totalPrev = 0;
+
+  rows.forEach(row => {
+    const currInput = row.querySelector(".curr");
+    const prevInput = row.querySelector(".prev");
+    const diffCell = row.querySelector(".diff");
+    const pctCell = row.querySelector(".pct");
+
+    const curr = currInput && currInput.value !== "" ? parseFloat(currInput.value) : 0;
+    const prev = prevInput && prevInput.value !== "" ? parseFloat(prevInput.value) : 0;
+
+    const diff = curr - prev;
+    let pct = 0;
+    if(prev !== 0){
+      pct = (diff / prev) * 100;
+    }else if(curr !== 0){
+      pct = 100;
+    }
+
+    if(!isNaN(curr)) totalCurr += curr;
+    if(!isNaN(prev)) totalPrev += prev;
+
+    if(diffCell){
+      diffCell.textContent = diff === 0 ? "" : diff.toLocaleString(undefined,{maximumFractionDigits:2});
+    }
+    if(pctCell){
+      pctCell.textContent = (pct === 0 ? "" : pct.toFixed(2) + "%");
+    }
+  });
+
+  const totalDiff = totalCurr - totalPrev;
+  let totalPct = 0;
+  if(totalPrev !== 0){
+    totalPct = (totalDiff / totalPrev) * 100;
+  }else if(totalCurr !== 0){
+    totalPct = 100;
+  }
+
+  document.getElementById("totalCurr").textContent = totalCurr === 0 ? "" : totalCurr.toLocaleString(undefined,{maximumFractionDigits:2});
+  document.getElementById("totalPrev").textContent = totalPrev === 0 ? "" : totalPrev.toLocaleString(undefined,{maximumFractionDigits:2});
+  document.getElementById("totalDiff").textContent = totalDiff === 0 ? "" : totalDiff.toLocaleString(undefined,{maximumFractionDigits:2});
+  document.getElementById("totalPct").textContent = totalPct === 0 ? "" : totalPct.toFixed(2) + "%";
+
+  document.getElementById("summaryCurr").textContent = totalCurr.toLocaleString(undefined,{maximumFractionDigits:2});
+  document.getElementById("summaryPrev").textContent = totalPrev.toLocaleString(undefined,{maximumFractionDigits:2});
+  document.getElementById("summaryDiff").textContent = totalDiff.toLocaleString(undefined,{maximumFractionDigits:2});
+  document.getElementById("summaryPct").textContent = totalPct.toFixed(2) + "%";
+}
+
+/* Auto recalc on change */
+document.addEventListener("input", function(e){
+  if(e.target.classList.contains("curr") || e.target.classList.contains("prev")){
+    recalculate();
+  }
+});
+
+/* ----------------------------
+   เพิ่ม/ลบแถว (สูงสุด 50)
+-----------------------------*/
+function updateRowNumbers(){
+  const rows = document.querySelectorAll("#mainTable tbody tr");
+  rows.forEach((row, idx) => {
+    const cell = row.querySelector("td:first-child");
+    if(cell) cell.textContent = idx + 1;
+  });
+}
+
+function addRow(){
+  const tbody = document.querySelector("#mainTable tbody");
+  const currentRows = tbody.querySelectorAll("tr").length;
+  if(currentRows >= 50){
+    alert("จำนวนแถวสูงสุด 50 รายการแล้ว");
+    return;
+  }
+  const tr = document.createElement("tr");
+  tr.innerHTML = `
+    <td></td>
+    <td contenteditable="true">รายการเพิ่มเติมที่ ${currentRows + 1}</td>
+    <td><input type="number" class="curr"></td>
+    <td><input type="number" class="prev"></td>
+    <td class="diff"></td>
+    <td class="pct"></td>
+    <td contenteditable="true"></td>
+  `;
+  tbody.appendChild(tr);
+  updateRowNumbers();
+}
+
+function removeLastRow(){
+  const tbody = document.querySelector("#mainTable tbody");
+  const rows = tbody.querySelectorAll("tr");
+  if(rows.length <= 1){
+    alert("ไม่สามารถลบได้ (ต้องเหลืออย่างน้อย 1 แถว)");
+    return;
+  }
+  tbody.removeChild(rows[rows.length - 1]);
+  updateRowNumbers();
+  recalculate();
+}
+
+/* ----------------------------
+   เชื่อมฐานข้อมูลจริง (โครง)
+   NOTE: แก้ URL endpoint และโครง JSON ให้ตรงกับ backend ของคุณ
+-----------------------------*/
+async function loadData(){
+  try{
+    const org = document.getElementById("orgName").value || "";
+    const year = document.getElementById("fiscalYear").value || "";
+    if(!org || !year){
+      alert("กรุณากรอกชื่อหน่วยรับตรวจและเลือกปีงบประมาณก่อนโหลดข้อมูล");
+      return;
+    }
+
+    // TODO: แก้ URL ให้ตรงกับ API จริงของคุณ
+    const res = await fetch("https://example.com/api/fa-lg-8-7?org="+encodeURIComponent(org)+"&year="+encodeURIComponent(year));
+    if(!res.ok){
+      throw new Error("ไม่สามารถโหลดข้อมูลจากฐานข้อมูลได้");
+    }
+    const data = await res.json();
+
+    // ตัวอย่างโครงที่คาดหวัง: { rows: [{item,curr,prev,remark}, ...] }
+    if(Array.isArray(data.rows)){
+      const tbody = document.querySelector("#mainTable tbody");
+      const rows = tbody.querySelectorAll("tr");
+      rows.forEach((row, idx) => {
+        const r = data.rows[idx];
+        if(!r) return;
+        const itemCell = row.cells[1];
+        const currInput = row.querySelector(".curr");
+        const prevInput = row.querySelector(".prev");
+        const remarkCell = row.cells[6];
+
+        if(itemCell && r.item !== undefined) itemCell.textContent = r.item;
+        if(currInput && r.curr !== undefined) currInput.value = r.curr;
+        if(prevInput && r.prev !== undefined) prevInput.value = r.prev;
+        if(remarkCell && r.remark !== undefined) remarkCell.textContent = r.remark;
+      });
+      recalculate();
+      alert("โหลดข้อมูลจากฐานข้อมูลเรียบร้อย");
+    }else{
+      alert("รูปแบบข้อมูลไม่ตรงกับที่ระบบคาดหวัง");
+    }
+  }catch(err){
+    console.error(err);
+    alert("เกิดข้อผิดพลาดในการโหลดข้อมูล (โปรดตรวจสอบ API endpoint)");
+  }
+}
+
+async function saveData(){
+  try{
+    const org = document.getElementById("orgName").value || "";
+    const year = document.getElementById("fiscalYear").value || "";
+    const auditor = document.getElementById("auditorName").value || "";
+
+    if(!org || !year){
+      alert("กรุณากรอกชื่อหน่วยรับตรวจและเลือกปีงบประมาณก่อนบันทึก");
+      return;
+    }
+
+    const rows = [];
+    document.querySelectorAll("#mainTable tbody tr").forEach(row => {
+      const item = row.cells[1]?.textContent?.trim() || "";
+      const curr = row.querySelector(".curr")?.value || "";
+      const prev = row.querySelector(".prev")?.value || "";
+      const remark = row.cells[6]?.textContent?.trim() || "";
+      rows.push({item, curr: curr === "" ? null : Number(curr), prev: prev === "" ? null : Number(prev), remark});
+    });
+
+    const payload = {
+      orgName: org,
+      fiscalYear: year,
+      auditor,
+      rows
+    };
+
+    // TODO: แก้ URL ให้ตรงกับ API จริงของคุณ
+    const res = await fetch("https://example.com/api/fa-lg-8-7",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify(payload)
+    });
+
+    if(!res.ok){
+      throw new Error("ไม่สามารถบันทึกข้อมูลได้");
+    }
+    alert("บันทึกข้อมูลสำเร็จ (ส่งข้อมูลไปยังฐานข้อมูลกลางแล้ว)");
+  }catch(err){
+    console.error(err);
+    alert("เกิดข้อผิดพลาดในการบันทึกข้อมูล (โปรดตรวจสอบ API endpoint)");
+  }
+}
+
+/* ----------------------------
+   AI ช่วยสรุป (โครง)
+-----------------------------*/
+function aiSummary(){
+  // จุดเชื่อมต่อกับ OpenAI / Gemini / ระบบ AI ภายใน
+  alert("AI Summary: เตรียมเชื่อมต่อบริการ AI เพื่อสรุปประเด็นสำคัญจากตาราง อปท. 8.7 (ต้องกำหนด backend เพิ่มเติม)");
+}
+
+/* init ครั้งแรก */
+window.addEventListener("load", () => {
+  updateRowNumbers();
+  recalculate();
+});
+</script>
+
+</body>
+</html>
