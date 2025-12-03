@@ -1,29 +1,1030 @@
-{
-  "unit_id": "SSK-001",
-  "fiscal_year": 2568,
-  "period_end": "2568-09-30",
-  "prepared_by": "",
-  "reviewed_by": "",
-  "objective_texts": ["...", "..."],
-  "procedures": [
-    {
-      "code": "5",
-      "title": "ลูกหนี้เงินยืม",
-      "ref_wp": ["A C"],
-      "result_summary": "",
-      "issues": []
-    }
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8" />
+<title>อปท.8.5 – ลูกหนี้อื่นระยะสั้น | FA – Fieldwork</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<!-- TinyMCE: Rich Text Editor (ใช้เป็นตัวอย่าง) -->
+<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js"
+        referrerpolicy="origin"></script>
+
+<style>
+  :root{
+    --bg:#060818;
+    --card:#11152b;
+    --border:#262b46;
+    --accent:#42a5f5;
+    --accent2:#26c6da;
+    --muted:#a3acc7;
+    --text:#f5f7ff;
+    --danger:#ef5350;
+    --warning:#ffc107;
+    --success:#66bb6a;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Segoe UI",Tahoma,sans-serif;
+    background:
+      radial-gradient(circle at 10% 0%, rgba(123,30,60,0.36) 0, transparent 55%),
+      radial-gradient(circle at 90% 100%, rgba(66,165,245,0.32) 0, transparent 55%),
+      var(--bg);
+    color:var(--text);
+  }
+
+  header{
+    padding:14px 16px;
+    background:linear-gradient(120deg,#7b1e3c,#0d47a1,#f48fb1);
+    box-shadow:0 4px 18px rgba(0,0,0,0.5);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    position:sticky;
+    top:0;
+    z-index:20;
+  }
+  header .title-block{
+    display:flex;
+    flex-direction:column;
+  }
+  header h1{
+    margin:0;
+    font-size:20px;
+    font-weight:700;
+  }
+  header p{
+    margin:2px 0 0 0;
+    font-size:12px;
+    color:var(--muted);
+  }
+  .nav-buttons button{
+    margin-left:6px;
+  }
+
+  main{
+    max-width:1200px;
+    margin:16px auto 32px;
+    padding:0 12px 32px;
+    display:grid;
+    grid-template-columns:minmax(0,3fr) minmax(260px,1.1fr);
+    gap:16px;
+  }
+
+  .section-card{
+    background:var(--card);
+    border-radius:12px;
+    border:1px solid var(--border);
+    padding:14px 16px 16px;
+    margin-bottom:14px;
+    box-shadow:0 10px 26px rgba(0,0,0,0.4);
+  }
+  .section-card h2{
+    margin:0 0 8px;
+    font-size:17px;
+    border-bottom:1px solid rgba(255,255,255,0.08);
+    padding-bottom:4px;
+  }
+  .section-card h3{
+    margin:6px 0 6px;
+    font-size:14px;
+  }
+
+  .form-row{
+    margin-bottom:8px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    align-items:center;
+  }
+  .form-row label{
+    min-width:130px;
+    font-size:13px;
+    color:var(--muted);
+  }
+  select,input[type=text],input[type=date],input[type=number]{
+    background:#0b1024;
+    border:1px solid var(--border);
+    border-radius:6px;
+    padding:4px 8px;
+    color:var(--text);
+    font-size:13px;
+  }
+
+  table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:6px;
+    font-size:13px;
+  }
+  th,td{
+    border:1px solid var(--border);
+    padding:4px 6px;
+  }
+  th{background:#0b1024;}
+
+  .btn{
+    cursor:pointer;
+    padding:6px 10px;
+    border:none;
+    border-radius:999px;
+    font-size:12px;
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+  }
+  .btn-primary{background:var(--accent);color:#fff;}
+  .btn-secondary{background:#303754;color:#fff;}
+  .btn-danger{background:var(--danger);color:#fff;}
+  .btn-warning{background:var(--warning);color:#000;}
+  .btn-success{background:var(--success);color:#000;}
+  .btn-ghost{background:transparent;color:var(--muted);border:1px dashed var(--border);}
+  .btn-sm{padding:4px 8px;font-size:11px;}
+
+  .attachments ul{
+    list-style:none;
+    padding-left:0;
+    margin:4px 0;
+  }
+  .attachments li{
+    margin-bottom:3px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:6px;
+    font-size:12px;
+  }
+
+  /* แถบด้านขวา (Checklist + QA Panel + Route) */
+  aside{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+  .checklist label{
+    display:block;
+    font-size:12px;
+    margin-bottom:4px;
+  }
+  .badge{
+    display:inline-block;
+    padding:2px 6px;
+    border-radius:999px;
+    font-size:11px;
+  }
+  .badge-warning{background:rgba(255,193,7,0.12);color:var(--warning);}
+  .badge-success{background:rgba(76,175,80,0.12);color:var(--success);}
+  .badge-danger{background:rgba(239,83,80,0.12);color:var(--danger);}
+
+  /* QA Panel (Spellcheck / AI ตรวจสอบ) */
+  #qa-panel{
+    max-height:280px;
+    overflow-y:auto;
+    font-size:12px;
+  }
+  #qa-panel h3{font-size:13px;}
+
+  /* Modal เตือนผิดขั้นตอน & ขอคำปรึกษา */
+  .modal-backdrop{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.6);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:99;
+  }
+  .modal{
+    background:var(--card);
+    border-radius:12px;
+    border:1px solid var(--border);
+    padding:16px;
+    max-width:420px;
+    width:90%;
+    box-shadow:0 16px 38px rgba(0,0,0,0.7);
+    font-size:13px;
+  }
+  .modal h3{margin-top:0;font-size:15px;}
+  .modal-actions{
+    margin-top:12px;
+    text-align:right;
+  }
+
+  /* ระบบค้นหาระบบ */
+  .system-search input{
+    width:100%;
+  }
+  .system-search-list{
+    margin-top:6px;
+    font-size:12px;
+  }
+  .system-search-list button{
+    display:block;
+    width:100%;
+    margin-bottom:4px;
+    text-align:left;
+  }
+
+  /* Responsive */
+  @media (max-width:900px){
+    main{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="title-block">
+    <h1>อปท.8.5 – ลูกหนี้อื่นระยะสั้น</h1>
+    <p>FA – Fieldwork | เชื่อมโยง fa-lg-fieldwork, a-lg-notes-2y, fa-db-wp</p>
+  </div>
+  <div class="nav-buttons">
+    <!-- 18. ปุ่มกลับ / ถัดไป / หน้าหลัก -->
+    <button class="btn btn-secondary btn-sm" onclick="window.history.back()">⬅ กลับหน้าก่อนนี้</button>
+    <button class="btn btn-secondary btn-sm" onclick="goNextForm()">ถัดไป ➜</button>
+    <button class="btn btn-primary btn-sm" onclick="goHome()">🏠 กลับหน้าหลัก</button>
+  </div>
+</header>
+
+<main>
+  <!-- ====== ฝั่งซ้าย: ฟอร์มหลัก ====== -->
+  <section>
+
+    <!-- 14. เลือกหน่วยรับตรวจ + ปีงบประมาณ -->
+    <div class="section-card" id="section-basic">
+      <h2>ข้อมูลพื้นฐาน</h2>
+      <div class="form-row">
+        <label for="unit-select">หน่วยรับตรวจ</label>
+        <select id="unit-select"></select>
+      </div>
+      <div class="form-row">
+        <label for="year-select">ปีงบประมาณ</label>
+        <select id="year-select"></select>
+      </div>
+      <div class="form-row">
+        <label>งวดปีงบประมาณ</label>
+        <input type="text" id="period-display" disabled
+               value="30 กันยายน 2565-2582" />
+      </div>
+      <div class="form-row">
+        <button class="btn btn-primary btn-sm" id="btn-load">
+          🔄 โหลดข้อมูล / ดึงจากฐานข้อมูล
+        </button>
+        <button class="btn btn-secondary btn-sm" id="btn-new">
+          🆕 เริ่มแบบฟอร์มใหม่
+        </button>
+      </div>
+      <div class="form-row">
+        <span class="badge badge-warning" id="status-label">สถานะ: ยังไม่โหลดข้อมูล</span>
+      </div>
+    </div>
+
+    <!-- 1–2–3: วัตถุประสงค์ + แนบเอกสาร -->
+    <div class="section-card" id="section-objective">
+      <h2>วัตถุประสงค์การตรวจสอบ</h2>
+      <textarea id="objective-editor"></textarea>
+
+      <div class="attachments" data-section="objective">
+        <h3>เอกสารประกอบวัตถุประสงค์</h3>
+        <ul id="att-objective"></ul>
+        <!-- 2 & 3 & 12. ปุ่มเพิ่มไฟล์ -->
+        <button class="btn btn-secondary btn-sm"
+                onclick="addAttachment('objective')">
+          📎 เพิ่มไฟล์/ลิงก์
+        </button>
+        <button class="btn btn-ghost btn-sm"
+                onclick="autoAttachFromWP('objective')">
+          🔗 แนบจากกระดาษทำการอัตโนมัติ
+        </button>
+      </div>
+    </div>
+
+    <!-- 2–3: วิธีการตรวจสอบ + แนบเอกสาร -->
+    <div class="section-card" id="section-procedures">
+      <h2>วิธีการตรวจสอบ</h2>
+      <textarea id="procedures-editor"></textarea>
+
+      <div class="attachments" data-section="procedures">
+        <h3>เอกสารประกอบวิธีการตรวจสอบ</h3>
+        <ul id="att-procedures"></ul>
+        <button class="btn btn-secondary btn-sm"
+                onclick="addAttachment('procedures')">
+          📎 เพิ่มไฟล์/ลิงก์
+        </button>
+        <button class="btn btn-ghost btn-sm"
+                onclick="autoAttachFromWP('procedures')">
+          🔗 แนบจากกระดาษทำการอัตโนมัติ
+        </button>
+      </div>
+    </div>
+
+    <!-- 3 + 17: ตารางวิเคราะห์ลูกหนี้อื่น + อ้างอิงกระดาษทำการ -->
+    <div class="section-card" id="section-table">
+      <h2>ตารางวิเคราะห์ลูกหนี้อื่นระยะสั้น</h2>
+      <button class="btn btn-secondary btn-sm" onclick="addTableRow()">+ เพิ่มแถว</button>
+      <table id="data-table">
+        <thead>
+          <tr>
+            <th>รหัสบัญชี</th>
+            <th>รายการ</th>
+            <th>ยอดปีปัจจุบัน</th>
+            <th>ยอดปีก่อน</th>
+            <th>ส่วนต่าง</th>
+            <th>% เปลี่ยนแปลง</th>
+            <th>อ้างอิง WP (fa-db-wp)</th>
+            <th>หมายเหตุ/อื่นๆ</th>
+            <th>ลบ</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+
+      <div class="attachments" data-section="table">
+        <h3>เอกสารประกอบตารางและการวิเคราะห์</h3>
+        <ul id="att-table"></ul>
+        <button class="btn btn-secondary btn-sm"
+                onclick="addAttachment('table')">
+          📎 เพิ่มไฟล์/ลิงก์
+        </button>
+        <button class="btn btn-ghost btn-sm"
+                onclick="autoAttachFromWP('table')">
+          🔗 แนบจากกระดาษทำการอัตโนมัติ
+        </button>
+      </div>
+    </div>
+
+    <!-- 4: Notes / Conclusion + AI ช่วยสรุป -->
+    <div class="section-card" id="section-notes">
+      <h2>สรุปผล / ข้อเสนอแนะ</h2>
+      <textarea id="notes-editor"></textarea>
+
+      <div class="form-row" style="margin-top:6px;">
+        <button class="btn btn-warning btn-sm" id="btn-ai-summary">
+          🤖 AI ช่วยสรุปจากข้อมูลแบบฟอร์ม / กระดาษทำการ
+        </button>
+        <span style="font-size:11px;color:var(--muted);">
+          *ระบบจะร่างข้อความให้ แล้วผู้ตรวจสอบแก้ไข/เพิ่มเติมได้
+        </span>
+      </div>
+
+      <div class="attachments" data-section="notes">
+        <h3>เอกสารประกอบสรุปผล</h3>
+        <ul id="att-notes"></ul>
+        <button class="btn btn-secondary btn-sm"
+                onclick="addAttachment('notes')">
+          📎 เพิ่มไฟล์/ลิงก์
+        </button>
+        <button class="btn btn-ghost btn-sm"
+                onclick="autoAttachFromWP('notes')">
+          🔗 แนบจากกระดาษทำการอัตโนมัติ
+        </button>
+      </div>
+    </div>
+
+    <!-- 13: ลงชื่อ -->
+    <div class="section-card" id="section-sign">
+      <h2>ลงชื่อ</h2>
+      <div class="form-row">
+        <label>ผู้จัดทำ</label>
+        <input type="text" id="sign-prep-name" placeholder="ชื่อ-สกุล" />
+        <input type="text" id="sign-prep-pos" placeholder="ตำแหน่ง" />
+        <input type="date" id="sign-prep-date" />
+      </div>
+      <div class="form-row">
+        <label>ผู้สอบทาน</label>
+        <input type="text" id="sign-review-name" placeholder="ชื่อ-สกุล" />
+        <input type="text" id="sign-review-pos" placeholder="ตำแหน่ง" />
+        <input type="date" id="sign-review-date" />
+      </div>
+      <p style="font-size:11px;color:var(--muted);margin-top:6px;">
+        *เวลา export / print ระบบจะเว้นพื้นที่สำหรับเซ็นชื่อด้วยลายมือ
+      </p>
+    </div>
+
+    <!-- 6,7,9,11: ปุ่มบันทึก / ตรวจคำผิด / Export / ส่งต่อ -->
+    <div class="section-card" id="section-actions">
+      <h2>การดำเนินการ</h2>
+      <div class="form-row">
+        <!-- 5. ตรวจคำผิด -->
+        <button class="btn btn-warning btn-sm" id="btn-spellcheck">
+          🔍 ต้องการสอบทานความถูกต้องของข้อความ
+        </button>
+        <!-- 10. ขอคำปรึกษา -->
+        <button class="btn btn-secondary btn-sm" id="btn-consult">
+          💬 ขอคำปรึกษาจากผู้เชี่ยวชาญ
+        </button>
+      </div>
+
+      <div class="form-row">
+        <!-- 11. เลือกชนิด export -->
+        <label>รูปแบบ Export รายงาน</label>
+        <select id="export-type">
+          <option value="print">พิมพ์ (Print/PDF)</option>
+          <option value="json">JSON (โครงสร้างข้อมูล)</option>
+          <option value="docx">ไฟล์ Word (.docx)</option>
+          <option value="xlsx">ไฟล์ Excel (.xlsx)</option>
+        </select>
+      </div>
+
+      <div class="form-row">
+        <!-- 6. ปุ่มยืนยัน -->
+        <button class="btn btn-primary btn-sm" id="btn-save">
+          💾 บันทึกลงระบบ
+        </button>
+        <button class="btn btn-success btn-sm" id="btn-confirm-export">
+          ✅ ยืนยัน Checklist & Export / ส่งต่อ
+        </button>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ====== ฝั่งขวา: Checklist + QA + Route ====== -->
+  <aside>
+
+    <!-- 6. Checklist -->
+    <div class="section-card" id="section-checklist">
+      <h2>Checklist – ความครบถ้วน</h2>
+      <div class="checklist">
+        <label><input type="checkbox" id="chk1"> เลือกหน่วยรับตรวจ / ปีงบประมาณ</label>
+        <label><input type="checkbox" id="chk2"> กรอกวัตถุประสงค์การตรวจสอบ</label>
+        <label><input type="checkbox" id="chk3"> กรอกวิธีการตรวจสอบ</label>
+        <label><input type="checkbox" id="chk4"> มีตารางลูกหนี้อื่นอย่างน้อย 1 แถว</label>
+        <label><input type="checkbox" id="chk5"> บันทึกสรุปผล / ข้อเสนอแนะ</label>
+        <label><input type="checkbox" id="chk6"> แนบเอกสารประกอบครบถ้วน</label>
+        <label><input type="checkbox" id="chk7"> ผ่านการสอบทานคำผิด/ข้อความแล้ว</label>
+      </div>
+      <p style="font-size:11px;color:var(--muted);margin-top:6px;">
+        เมื่อ checklist ครบทุกข้อ ปุ่ม “ยืนยัน Checklist & Export / ส่งต่อ” จะทำงานได้เต็มรูปแบบ  
+        ถ้าข้อใดไม่ครบ ระบบจะเตือน และให้เลือก “กลับไปแก้ไข” หรือ “ให้ระบบช่วยแนะนำ”
+      </p>
+    </div>
+
+    <!-- 5. แสดงผลการตรวจสอบคำผิด / QA -->
+    <div class="section-card" id="section-qa">
+      <h2>ผลการสอบทานข้อความ</h2>
+      <div id="qa-panel">
+        <p style="font-size:12px;color:var(--muted);">
+          กดปุ่ม “ตรวจสอบคำผิด/มาตรฐาน” ที่ด้านล่างฟอร์ม ระบบจะแสดงคำสะกดผิด ข้อความไม่เหมาะสม  
+          และข้อเสนอแนะตามแนวทางการตรวจสอบ
+        </p>
+      </div>
+    </div>
+
+    <!-- 9,15,16,17: ส่งต่อระบบอื่น + ค้นหาระบบ -->
+    <div class="section-card" id="section-route">
+      <h2>เชื่อมโยงระบบอื่น</h2>
+      <div class="system-search">
+        <input type="text" id="system-search-input"
+               placeholder="ค้นหาระบบ (พิมพ์: fieldwork, notes, wp, cashboard, review ... )" />
+        <div class="system-search-list" id="system-search-list">
+          <button class="btn btn-secondary btn-sm"
+                  onclick="goFieldwork()">📂 FA – Fieldwork (fa-lg-fieldwork.html)</button>
+          <button class="btn btn-secondary btn-sm"
+                  onclick="goNotes()">📝 หมายเหตุประกอบงบ 2 ปี (a-lg-notes-2y.html)</button>
+          <button class="btn btn-secondary btn-sm"
+                  onclick="goWorkpaper()">📑 กระดาษทำการ (fa-db-wp.html)</button>
+          <button class="btn btn-secondary btn-sm"
+                  onclick="goCashboard()">📊 Cash Board (fa-db-data-gov / ที่คุณเชื่อมไว้)</button>
+          <button class="btn btn-secondary btn-sm"
+                  onclick="goReview()">🔎 ระบบสอบทาน (fa-review-*.html)</button>
+        </div>
+      </div>
+    </div>
+
+  </aside>
+</main>
+
+<!-- 7 & 10: Modal เตือนผิดขั้นตอน / ขอคำปรึกษา -->
+<div class="modal-backdrop" id="modal-warning">
+  <div class="modal">
+    <h3 id="modal-warning-title">ระบบตรวจพบความไม่ครบถ้วน</h3>
+    <div id="modal-warning-body">
+      <!-- รายการเตือน -->
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary btn-sm" onclick="closeWarningModal()">กลับไปแก้ไข</button>
+      <button class="btn btn-warning btn-sm" onclick="askForGuidance()">ขอคำแนะนำจากระบบ</button>
+      <button class="btn btn-primary btn-sm" onclick="overrideAndContinue()">ยืนยันดำเนินการต่อ</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="modal-consult">
+  <div class="modal">
+    <h3>ต้องการขอคำปรึกษาจากผู้เชี่ยวชาญหรือไม่?</h3>
+    <p>
+      ระบบพบว่ามีการดำเนินการที่ “ขัดกับคำแนะนำของระบบ” ซ้ำหลายครั้ง  
+      คุณต้องการส่งคำถาม / ขอคำปรึกษาจากผู้เชี่ยวชาญการตรวจสอบการเงินหรือไม่?
+    </p>
+    <div class="modal-actions">
+      <button class="btn btn-secondary btn-sm" onclick="closeConsultModal()">ไม่ต้องการ</button>
+      <button class="btn btn-primary btn-sm" onclick="confirmConsult()">ต้องการ</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ==============================
+   โครงสร้างข้อมูลกลาง (currentData)
+   ============================== */
+const DATA_TEMPLATE = {
+  unit_id: '',
+  fiscal_year: '',
+  period_end: '',
+  objective: '',
+  procedures: '',
+  table_rows: [],
+  notes: '',
+  attachments: {
+    objective: [],
+    procedures: [],
+    table: [],
+    notes: []
+  },
+  checklist: {},
+  sign: {
+    prep: {name:'', pos:'', date:''},
+    review: {name:'', pos:'', date:''}
+  }
+};
+
+let currentData = structuredClone(DATA_TEMPLATE);
+let errorOverrideCount = 0;   // ใช้ในข้อ 7 + 10
+
+/* ==============================
+   TinyMCE init
+   ============================== */
+tinymce.init({
+  selector: '#objective-editor,#procedures-editor,#notes-editor',
+  height: 220,
+  menubar: false,
+  skin:'oxide-dark',
+  content_css:'dark',
+  plugins: [
+    'advlist autolink lists link charmap preview anchor',
+    'searchreplace visualblocks code fullscreen',
+    'insertdatetime table code help wordcount'
+    // ต่อไปสามารถเพิ่ม spellchecker / export / ai ตามที่คุณใช้จริง
   ],
-  "balances": [
-    {
-      "account_code": "11401",
-      "account_name": "ลูกหนี้เงินยืม",
-      "current_year": 0,
-      "prior_year": 0,
-      "variance": 0,
-      "variance_pct": 0
-    }
-  ],
-  "notes": "",
-  "conclusion": ""
+  toolbar:
+    'undo redo | formatselect | bold italic underline | ' +
+    'alignleft aligncenter alignright alignjustify | ' +
+    'bullist numlist | removeformat | code'
+});
+
+/* ==============================
+   เตรียม dropdown หน่วย + ปี (ข้อ 14)
+   ============================== */
+function populateUnitYear(){
+  const unitSelect = document.getElementById('unit-select');
+  const yearSelect = document.getElementById('year-select');
+
+  // ตัวอย่าง: คุณไปเปลี่ยนให้ดึงจาก fa-db-data-gov ก็ได้
+  const units = [
+    {id:'SSK-001', name:'อบจ.ศรีสะเกษ'},
+    {id:'SSK-002', name:'เทศบาลเมืองศรีสะเกษ'},
+    {id:'SSK-003', name:'เทศบาลตำบลตัวอย่าง'}
+  ];
+  units.forEach(u=>{
+    const opt = document.createElement('option');
+    opt.value=u.id; opt.textContent=u.name;
+    unitSelect.appendChild(opt);
+  });
+
+  for(let y=2565;y<=2582;y++){
+    const opt = document.createElement('option');
+    opt.value=y; opt.textContent=y;
+    yearSelect.appendChild(opt);
+  }
+
+  yearSelect.addEventListener('change', ()=>{
+    const y = yearSelect.value || '2565-2582';
+    document.getElementById('period-display').value = `30 กันยายน ${y}`;
+  });
 }
+
+/* ==============================
+   โหลดข้อมูลจากฐาน / เริ่มใหม่ (ข้อ 1,2,14)
+   ============================== */
+document.getElementById('btn-load').addEventListener('click', async ()=>{
+  const unit = document.getElementById('unit-select').value;
+  const year = document.getElementById('year-select').value;
+  if(!unit || !year){ alert('กรุณาเลือกหน่วยรับตรวจและปีงบประมาณ'); return; }
+
+  // TODO: เชื่อมต่อ backend จริง
+  // ตัวอย่าง: const res = await fetch(`/api/fa/lg/8_5?unit=${unit}&year=${year}`);
+  // currentData = res.ok ? await res.json() : structuredClone(DATA_TEMPLATE);
+
+  currentData = structuredClone(DATA_TEMPLATE);
+  currentData.unit_id = unit;
+  currentData.fiscal_year = year;
+  currentData.period_end = `30 กันยายน ${year}`;
+
+  document.getElementById('status-label').textContent = `สถานะ: โหลดข้อมูลสำหรับ ${unit} ปี ${year} (โหมดตัวอย่าง – ยังไม่เชื่อมฐานจริง)`;
+
+  renderAll();
+});
+
+document.getElementById('btn-new').addEventListener('click', ()=>{
+  currentData = structuredClone(DATA_TEMPLATE);
+  document.getElementById('status-label').textContent = 'สถานะ: เริ่มแบบฟอร์มใหม่ (ยังไม่บันทึก)';
+  renderAll();
+});
+
+/* ==============================
+   render ฟอร์มจาก currentData
+   ============================== */
+function renderAll(){
+  // editor
+  tinymce.get('objective-editor')?.setContent(currentData.objective || '');
+  tinymce.get('procedures-editor')?.setContent(currentData.procedures || '');
+  tinymce.get('notes-editor')?.setContent(currentData.notes || '');
+
+  // table
+  renderTable();
+
+  // attachments
+  renderAttachments('objective');
+  renderAttachments('procedures');
+  renderAttachments('table');
+  renderAttachments('notes');
+
+  // sign
+  document.getElementById('sign-prep-name').value = currentData.sign.prep.name || '';
+  document.getElementById('sign-prep-pos').value  = currentData.sign.prep.pos  || '';
+  document.getElementById('sign-prep-date').value = currentData.sign.prep.date|| '';
+  document.getElementById('sign-review-name').value = currentData.sign.review.name||'';
+  document.getElementById('sign-review-pos').value  = currentData.sign.review.pos ||'';
+  document.getElementById('sign-review-date').value = currentData.sign.review.date||'';
+
+  // checklist
+  const ck = currentData.checklist || {};
+  ['chk1','chk2','chk3','chk4','chk5','chk6','chk7'].forEach(id=>{
+    document.getElementById(id).checked = !!ck[id];
+  });
+}
+
+/* ==============================
+   ตารางลูกหนี้ (ข้อ 3 + 17)
+   ============================== */
+function renderTable(){
+  const tbody = document.querySelector('#data-table tbody');
+  tbody.innerHTML = '';
+  currentData.table_rows.forEach((row,idx)=>{
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><input type="text" value="${row.code||''}" onchange="updateRow(${idx},'code',this.value)" /></td>
+      <td><input type="text" value="${row.item||''}" onchange="updateRow(${idx},'item',this.value)" /></td>
+      <td><input type="number" value="${row.current||''}" onchange="updateRow(${idx},'current',this.value)" /></td>
+      <td><input type="number" value="${row.prior||''}" onchange="updateRow(${idx},'prior',this.value)" /></td>
+      <td>${calcDiff(row)}</td>
+      <td>${calcPct(row)}</td>
+      <td>
+        <input type="text" placeholder="เช่น WP-AR-O-01"
+               value="${row.wp_ref||''}"
+               onchange="updateRow(${idx},'wp_ref',this.value)" />
+      </td>
+      <td><input type="text" value="${row.note||''}" onchange="updateRow(${idx},'note',this.value)" /></td>
+      <td><button class="btn btn-danger btn-sm" onclick="deleteRow(${idx})">ลบ</button></td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+function addTableRow(){
+  currentData.table_rows.push({code:'',item:'',current:'',prior:'',wp_ref:'',note:''});
+  renderTable();
+}
+function updateRow(idx,field,value){
+  currentData.table_rows[idx][field] = value;
+  renderTable();
+}
+function deleteRow(idx){
+  currentData.table_rows.splice(idx,1);
+  renderTable();
+}
+function calcDiff(row){
+  const c=Number(row.current)||0, p=Number(row.prior)||0;
+  return c-p;
+}
+function calcPct(row){
+  const diff = calcDiff(row);
+  const p = Number(row.prior)||0;
+  if(!p) return '';
+  return ((diff/p)*100).toFixed(2)+'%';
+}
+
+/* ==============================
+   Attachments (ข้อ 2,3,12)
+   ============================== */
+function renderAttachments(section){
+  const ul = document.getElementById(`att-${section}`);
+  ul.innerHTML = '';
+  (currentData.attachments[section] || []).forEach((att,idx)=>{
+    const li = document.createElement('li');
+    li.innerHTML = `
+      <span><a href="${att.url}" target="_blank">${att.name}</a></span>
+      <button class="btn btn-danger btn-sm"
+              onclick="removeAttachment('${section}',${idx})">ลบ</button>
+    `;
+    ul.appendChild(li);
+  });
+}
+function addAttachment(section){
+  const url = prompt('วาง URL เอกสารหรือไฟล์:');
+  if(!url) return;
+  const name = prompt('ชื่อเอกสาร/คำอธิบาย:','เอกสารประกอบ');
+  if(!name) return;
+  currentData.attachments[section] = currentData.attachments[section] || [];
+  currentData.attachments[section].push({name,url});
+  renderAttachments(section);
+}
+function removeAttachment(section,idx){
+  currentData.attachments[section].splice(idx,1);
+  renderAttachments(section);
+}
+
+/* แนบจากกระดาษทำการอัตโนมัติ (ข้อ 3 + 17) */
+function autoAttachFromWP(section){
+  // ตัวอย่าง: สร้าง URL ไป fa-db-wp พร้อม unit/year
+  const unit = currentData.unit_id || document.getElementById('unit-select').value;
+  const year = currentData.fiscal_year || document.getElementById('year-select').value;
+  if(!unit || !year){
+    alert('กรุณาเลือกหน่วยรับตรวจและปีงบประมาณก่อน');
+    return;
+  }
+  const url = `fa-db-wp.html?unit=${encodeURIComponent(unit)}&year=${encodeURIComponent(year)}&from=8_5_${section}`;
+  currentData.attachments[section] = currentData.attachments[section] || [];
+  currentData.attachments[section].push({
+    name:`กระดาษทำการที่เกี่ยวข้อง (${section})`,
+    url
+  });
+  renderAttachments(section);
+}
+
+/* ==============================
+   บันทึก (ข้อ 1,2,6)
+   ============================== */
+document.getElementById('btn-save').addEventListener('click', async ()=>{
+  collectFormToData();
+
+  // TODO: ส่ง currentData ไป backend จริง
+  // await fetch('/api/fa/lg/8_5', { method:'POST', body:JSON.stringify(currentData) ... });
+
+  console.log('บันทึก currentData:', currentData);
+  alert('บันทึกข้อมูล (ในตัวอย่าง log ที่ console) – เมื่อเชื่อม backend จะบันทึกถาวรในฐานข้อมูล');
+});
+
+/* ดึงค่าจากฟอร์มกลับเข้า currentData */
+function collectFormToData(){
+  currentData.objective = tinymce.get('objective-editor').getContent();
+  currentData.procedures = tinymce.get('procedures-editor').getContent();
+  currentData.notes = tinymce.get('notes-editor').getContent();
+
+  currentData.sign.prep.name = document.getElementById('sign-prep-name').value;
+  currentData.sign.prep.pos  = document.getElementById('sign-prep-pos').value;
+  currentData.sign.prep.date = document.getElementById('sign-prep-date').value;
+  currentData.sign.review.name = document.getElementById('sign-review-name').value;
+  currentData.sign.review.pos  = document.getElementById('sign-review-pos').value;
+  currentData.sign.review.date = document.getElementById('sign-review-date').value;
+
+  currentData.checklist = {
+    chk1: document.getElementById('chk1').checked,
+    chk2: document.getElementById('chk2').checked,
+    chk3: document.getElementById('chk3').checked,
+    chk4: document.getElementById('chk4').checked,
+    chk5: document.getElementById('chk5').checked,
+    chk6: document.getElementById('chk6').checked,
+    chk7: document.getElementById('chk7').checked
+  };
+}
+
+/* ==============================
+   ตรวจคำผิด / QA (ข้อ 5)
+   ============================== */
+document.getElementById('btn-spellcheck').addEventListener('click', async ()=>{
+  collectFormToData();
+
+  // TODO: เรียก AI/Service ตรวจคำผิดจริง
+  // ตัวอย่างผลลัพธ์จำลอง
+  const result = {
+    spelling:[
+      '“ลูหนี้” → ควรเป็น “ลูกหนี้”',
+      '“วิเคราะห” → ควรเป็น “วิเคราะห์”'
+    ],
+    incomplete:[
+      'ยังไม่อธิบายสาเหตุการเปลี่ยนแปลงลูกหนี้อื่นที่เพิ่มขึ้นเกิน 30%',
+    ],
+    guideline:[
+      'ควรระบุวิธีการสอบทาน Subsequent Collection สำหรับลูกหนี้ค้างเกิน 90 วัน',
+    ]
+  };
+
+  const panel = document.getElementById('qa-panel');
+  panel.innerHTML = `
+    <h3>ผลการสอบทานข้อความ</h3>
+    <strong>คำสะกด / คำไม่เหมาะสม</strong>
+    <ul>${result.spelling.map(x=>`<li>${x}</li>`).join('')}</ul>
+    <strong>ข้อความไม่ครบถ้วน</strong>
+    <ul>${result.incomplete.map(x=>`<li>${x}</li>`).join('')}</ul>
+    <strong>ข้อเสนอแนะตามแนวทางการตรวจสอบ</strong>
+    <ul>${result.guideline.map(x=>`<li>${x}</li>`).join('')}</ul>
+  `;
+
+  document.getElementById('chk7').checked = true; // ผ่านการสอบทานแล้ว (คนยังต้องตัดสินใจเอง)
+});
+
+/* ==============================
+   AI ช่วยสรุป (ข้อ 4)
+   ============================== */
+document.getElementById('btn-ai-summary').addEventListener('click', async ()=>{
+  collectFormToData();
+
+  // TODO: ส่ง currentData ไป AI backend จริง
+  // ตัวอย่างสรุปที่ระบบสร้างจำลอง
+  const autoSummary =
+    `<p><strong>สรุปผลการตรวจสอบลูกหนี้อื่นระยะสั้น</strong></p>
+     <p>จากการตรวจสอบลูกหนี้อื่นระยะสั้น ณ วันที่ ${currentData.period_end||'30 กันยายน'} 
+     พบว่ามียอดคงเหลือรวมจำนวน XXX บาท เพิ่มขึ้น/ลดลงจากปีก่อนคิดเป็น YYY บาท (Z%).
+     การเปลี่ยนแปลงส่วนใหญ่เกิดจากรายการเงินยืมและค่าใช้จ่ายค้างจ่ายบางรายการ 
+     ซึ่งได้ตรวจสอบเอกสารประกอบและหลักฐานการรับชำระภายหลังแล้วในระดับที่เหมาะสม.</p>
+     <p>รายการลูกหนี้ที่มีอายุหนี้เกิน 90 วัน ได้แจ้งให้หน่วยรับตรวจพิจารณาดำเนินการติดตามหนี้
+     และพิจารณาความเพียงพอของการกันค่าเผื่อหนี้สงสัยจะสูญตามความเหมาะสม.</p>`;
+
+  const editor = tinymce.get('notes-editor');
+  const old = editor.getContent();
+  editor.setContent(old ? old + '<hr/>' + autoSummary : autoSummary);
+});
+
+/* ==============================
+   Checklist + Validation + Warning (ข้อ 6,7)
+   ============================== */
+document.getElementById('btn-confirm-export').addEventListener('click', ()=>{
+  collectFormToData();
+  const problems = validateBeforeExport();
+
+  if(problems.length){
+    // มีปัญหา → ข้อ 7 แสดงเตือน
+    showWarningModal(problems);
+  }else{
+    // Checklist ผ่าน → export / ส่งต่อ
+    doExportAndRoute();
+  }
+});
+
+function validateBeforeExport(){
+  const problems = [];
+  const unit = currentData.unit_id || document.getElementById('unit-select').value;
+  const year = currentData.fiscal_year || document.getElementById('year-select').value;
+
+  if(!unit || !year) problems.push('ยังไม่ได้เลือกหน่วยรับตรวจและปีงบประมาณ');
+  if(!currentData.objective) problems.push('ยังไม่ได้กรอกวัตถุประสงค์การตรวจสอบ');
+  if(!currentData.procedures) problems.push('ยังไม่ได้กรอกวิธีการตรวจสอบ');
+  if(!currentData.table_rows || currentData.table_rows.length===0)
+    problems.push('ยังไม่มีรายการในตารางลูกหนี้อื่น');
+  if(!currentData.notes) problems.push('ยังไม่ได้บันทึกสรุปผล/ข้อเสนอแนะ');
+  if(!currentData.checklist || Object.values(currentData.checklist).some(v=>!v))
+    problems.push('Checklist ยังไม่ครบทุกข้อ');
+
+  return problems;
+}
+
+function showWarningModal(problems){
+  const body = document.getElementById('modal-warning-body');
+  body.innerHTML = `
+    <p>ระบบตรวจพบว่ามีประเด็นต่อไปนี้ที่ยังไม่เป็นไปตามรูปแบบ/แนวทางการตรวจสอบ:</p>
+    <ul>${problems.map(p=>`<li>${p}</li>`).join('')}</ul>
+    <p style="font-size:12px;color:var(--muted);">
+      คุณสามารถเลือก “กลับไปแก้ไข”, “ขอคำแนะนำจากระบบ”, หรือ “ยืนยันดำเนินการต่อ” (ระบบจะบันทึกว่า override มาตรฐาน)
+    </p>
+  `;
+  document.getElementById('modal-warning').style.display='flex';
+}
+function closeWarningModal(){
+  document.getElementById('modal-warning').style.display='none';
+}
+function askForGuidance(){
+  alert('ต่อไปสามารถเชื่อม API/AI เพื่อแนะนำวิธีแก้ไขทีละข้อได้ (เช่น แนะนำข้อความ/ขั้นตอนตามมาตรฐาน)');
+}
+function overrideAndContinue(){
+  errorOverrideCount++;
+  closeWarningModal();
+  // ถ้ามากกว่า 3 ครั้ง → ถามตามข้อ 10
+  if(errorOverrideCount>=3){
+    document.getElementById('modal-consult').style.display='flex';
+  }else{
+    doExportAndRoute();
+  }
+}
+
+/* ==============================
+   Modal ขอคำปรึกษา (ข้อ 10)
+   ============================== */
+document.getElementById('btn-consult').addEventListener('click', ()=>{
+  document.getElementById('modal-consult').style.display='flex';
+});
+function closeConsultModal(){
+  document.getElementById('modal-consult').style.display='none';
+}
+function confirmConsult(){
+  closeConsultModal();
+  alert('ต่อไปสามารถเชื่อมระบบส่งคำถามไปยังผู้เชี่ยวชาญ (เช่น Email, Line OA, ระบบภายใน OAG) ได้');
+}
+
+/* ==============================
+   Export & ส่งต่อ (ข้อ 9,11)
+   ============================== */
+function doExportAndRoute(){
+  const type = document.getElementById('export-type').value;
+  switch(type){
+    case 'print':
+      window.print();
+      break;
+    case 'json':
+      downloadJSON();
+      break;
+    case 'docx':
+      alert('โหมดตัวอย่าง: โปรดเชื่อมระบบสร้าง Word (.docx) จาก currentData ใน backend');
+      break;
+    case 'xlsx':
+      alert('โหมดตัวอย่าง: โปรดเชื่อมระบบสร้าง Excel (.xlsx) จาก currentData ใน backend');
+      break;
+  }
+
+  // ตัวอย่าง "ส่งต่อ" ระบบอื่น (ข้อ 9)
+  console.log('ส่งต่อข้อมูลไประบบสอบทาน / cashboard / ฐานข้อมูล:', currentData);
+}
+
+function downloadJSON(){
+  const blob = new Blob([JSON.stringify(currentData,null,2)],{type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `fa-lg-8-5-${currentData.unit_id||'unit'}-${currentData.fiscal_year||'year'}.json`;
+  a.click();
+}
+
+/* ==============================
+   ลิงก์เชื่อมระบบ 15,16,17 + ระบบอื่น (ข้อ 9,18)
+   ============================== */
+function buildQuery(){
+  const unit = currentData.unit_id || document.getElementById('unit-select').value || '';
+  const year = currentData.fiscal_year || document.getElementById('year-select').value || '';
+  const params = new URLSearchParams();
+  if(unit) params.set('unit',unit);
+  if(year) params.set('year',year);
+  params.set('from','8_5');
+  return params.toString();
+}
+function goHome(){
+  // 15. กลับไปหน้า fieldwork หลัก
+  const q = buildQuery();
+  window.location.href = q ? `fa-lg-fieldwork.html?${q}` : 'fa-lg-fieldwork.html';
+}
+function goFieldwork(){
+  goHome();
+}
+function goNotes(){
+  const q = buildQuery();
+  window.location.href = q ? `a-lg-notes-2y.html?${q}` : 'a-lg-notes-2y.html';
+}
+function goWorkpaper(){
+  const q = buildQuery();
+  window.location.href = q ? `fa-db-wp.html?${q}` : 'fa-db-wp.html';
+}
+function goCashboard(){
+  // สมมติชื่อไฟล์ cashboard ของคุณ
+  const q = buildQuery();
+  window.location.href = q ? `fa-db-data-gov.html?${q}` : 'fa-db-data-gov.html';
+}
+function goReview(){
+  const q = buildQuery();
+  window.location.href = q ? `fa-review-menu.html?${q}` : 'fa-review-menu.html';
+}
+function goNextForm(){
+  // ถ้าคุณมีฟอร์ม 8.6 หรือหน้าอื่น ให้ใส่ไฟล์จริง
+  const q = buildQuery();
+  window.location.href = q ? `fa-lg-form-8-6.html?${q}` : 'fa-lg-form-8-6.html';
+}
+
+/* ==============================
+   init
+   ============================== */
+populateUnitYear();
+renderAll();
+
+/* ระบบค้นหาระบบ (ข้อ 9 – แบบง่าย) */
+document.getElementById('system-search-input').addEventListener('input', (e)=>{
+  const val = (e.target.value||'').toLowerCase();
+  const area = document.getElementById('system-search-list');
+  [...area.querySelectorAll('button')].forEach(btn=>{
+    const t = btn.textContent.toLowerCase();
+    btn.style.display = t.includes(val) ? 'block' : 'none';
+  });
+});
+
+</script>
+
+</body>
+</html>
