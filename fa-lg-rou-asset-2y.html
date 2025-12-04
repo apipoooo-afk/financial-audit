@@ -385,43 +385,71 @@
     </button>
   </div>
 
-  <!-- 2. แนบไฟล์ประกอบ -->
-  <div class="card">
-    <h3>2. แนบเอกสารประกอบการตรวจสอบ (รองรับทุกชนิดไฟล์)</h3>
+ <!-- 2. แนบไฟล์ประกอบ -->
+<div class="card">
+  <h3>2. แนบเอกสารประกอบการตรวจสอบ (รองรับทุกชนิดไฟล์)</h3>
 
-    <p class="helper-text">
-      เลือกไฟล์แนบได้สูงสุด 5 ไฟล์ (รองรับทุกชนิดไฟล์) แล้วกด “บันทึกไฟล์แนบ”
-    </p>
+  <p class="helper-text">
+    เลือกไฟล์แนบได้สูงสุด 5 ไฟล์ (รองรับทุกชนิดไฟล์)<br>
+    ✓ ติ๊กช่องเลือก “ช่องที่ …” เพื่อให้ระบบนำไฟล์ช่องนั้นไปรวมในผลการบันทึก
+  </p>
 
-    <div>
-      <label>ไฟล์แนบช่องที่ 1:
+  <div>
+    <div class="file-slot">
+      <div class="file-row">
+        <input type="checkbox" class="chkAttach">
+        <span class="file-label">ช่องที่ 1:</span>
         <input type="file" class="attachment-input">
-      </label><br>
-
-      <label>ไฟล์แนบช่องที่ 2:
-        <input type="file" class="attachment-input">
-      </label><br>
-
-      <label>ไฟล์แนบช่องที่ 3:
-        <input type="file" class="attachment-input">
-      </label><br>
-
-      <label>ไฟล์แนบช่องที่ 4:
-        <input type="file" class="attachment-input">
-      </label><br>
-
-      <label>ไฟล์แนบช่องที่ 5:
-        <input type="file" class="attachment-input">
-      </label><br>
+        <button type="button" class="btn-file-del" onclick="deleteAttachmentSlot(0)">ลบไฟล์</button>
+      </div>
     </div>
 
-    <div style="margin-top:10px;">
-      <button class="btn-primary" type="button" onclick="collectAttachments()">บันทึกไฟล์แนบ</button>
-      <button class="btn-primary" type="button" style="margin-left:8px;" onclick="viewAttachments()">เรียกดูไฟล์แนบ</button>
+    <div class="file-slot">
+      <div class="file-row">
+        <input type="checkbox" class="chkAttach">
+        <span class="file-label">ช่องที่ 2:</span>
+        <input type="file" class="attachment-input">
+        <button type="button" class="btn-file-del" onclick="deleteAttachmentSlot(1)">ลบไฟล์</button>
+      </div>
     </div>
 
-    <ul id="attachmentsList" class="attach-list"></ul>
+    <div class="file-slot">
+      <div class="file-row">
+        <input type="checkbox" class="chkAttach">
+        <span class="file-label">ช่องที่ 3:</span>
+        <input type="file" class="attachment-input">
+        <button type="button" class="btn-file-del" onclick="deleteAttachmentSlot(2)">ลบไฟล์</button>
+      </div>
+    </div>
+
+    <div class="file-slot">
+      <div class="file-row">
+        <input type="checkbox" class="chkAttach">
+        <span class="file-label">ช่องที่ 4:</span>
+        <input type="file" class="attachment-input">
+        <button type="button" class="btn-file-del" onclick="deleteAttachmentSlot(3)">ลบไฟล์</button>
+      </div>
+    </div>
+
+    <div class="file-slot">
+      <div class="file-row">
+        <input type="checkbox" class="chkAttach">
+        <span class="file-label">ช่องที่ 5:</span>
+        <input type="file" class="attachment-input">
+        <button type="button" class="btn-file-del" onclick="deleteAttachmentSlot(4)">ลบไฟล์</button>
+      </div>
+    </div>
   </div>
+
+  <div style="margin-top:10px;">
+    <button class="btn-primary" type="button" onclick="collectAttachments()">บันทึกไฟล์แนบ</button>
+    <button class="btn-primary" type="button" style="margin-left:8px;" onclick="viewAttachments()">เรียกดูไฟล์แนบ</button>
+    <button class="btn-primary" type="button" style="margin-left:8px;background:#ef5350;"
+            onclick="clearAllAttachmentSlots()">ลบไฟล์แนบทั้งหมด</button>
+  </div>
+
+  <ul id="attachmentsList" class="attach-list"></ul>
+</div>
 
   <!-- 3. ผลประมวล + Export -->
   <div class="card">
