@@ -1,59 +1,79 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-<meta charset="UTF-8" />
-<title>งบแสดงการเปลี่ยนแปลงสินทรัพย์สุทธิ/ส่วนทุน (2 ปี)</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <title>งบแสดงการเปลี่ยนแปลงสินทรัพย์สุทธิ/ส่วนทุน (2 ปี)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<style>
-  body{
-    margin:0;
-    font-family:"Segoe UI", Tahoma, sans-serif;
-    background:#060818;
-    color:#f5f7ff;
-  }
-  header{
-    padding:18px 20px;
-    background:linear-gradient(120deg,#0d47a1,#42a5f5,#7b1e3c);
-    box-shadow:0 4px 12px rgba(0,0,0,0.4);
-  }
-  h1{margin:0;font-size:26px;font-weight:700;}
-  .container{
-    padding:20px;
-  }
-  .upload-box{
-    background:#11152b;
-    padding:20px;
-    border-radius:12px;
-    border:1px solid #262b46;
-    margin-bottom:20px;
-  }
-  table{
-    width:100%;
-    border-collapse:collapse;
-    margin-top:20px;
-    background:#11152b;
-  }
-  th,td{
-    border:1px solid #262b46;
-    padding:8px;
-    font-size:14px;
-  }
-  th{
-    background:#0d47a1;
-    text-align:center;
-  }
-  .note-title{
-    background:#2b3358;
-    font-weight:700;
-    padding:10px;
-    margin-top:25px;
-    border-radius:8px;
-    border:1px solid #3c456e;
-  }
-  .line-label { width:45%; }
-  .year-col { width:25%; text-align:right; }
-</style>
+  <style>
+    body{
+      margin:0;
+      font-family:"Segoe UI", Tahoma, sans-serif;
+      background:#060818;
+      color:#f5f7ff;
+    }
+    header{
+      padding:18px 20px;
+      background:linear-gradient(120deg,#0d47a1,#42a5f5,#7b1e3c);
+      box-shadow:0 4px 12px rgba(0,0,0,0.4);
+    }
+    h1{margin:0;font-size:26px;font-weight:700;}
+    .container{
+      padding:20px;
+    }
+    .upload-box{
+      background:#11152b;
+      padding:20px;
+      border-radius:12px;
+      border:1px solid #262b46;
+      margin-bottom:20px;
+    }
+    .upload-box h3{
+      margin-top:0;
+    }
+    table{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:20px;
+      background:#11152b;
+    }
+    th,td{
+      border:1px solid #262b46;
+      padding:8px;
+      font-size:14px;
+    }
+    th{
+      background:#0d47a1;
+      text-align:center;
+    }
+    .line-label { width:45%; }
+    .year-col { width:25%; text-align:right; }
+    .note-title{
+      background:#2b3358;
+      font-weight:700;
+      padding:10px;
+      margin-top:25px;
+      border-radius:8px;
+      border:1px solid #3c456e;
+    }
+    .btn-primary{
+      padding:10px 20px;
+      background:#42a5f5;
+      color:white;
+      border:none;
+      border-radius:8px;
+      cursor:pointer;
+      font-weight:600;
+    }
+    .btn-primary:hover{
+      background:#1e88e5;
+    }
+    .helper-text{
+      font-size:12px;
+      color:#a3acc7;
+      margin-top:6px;
+    }
+  </style>
 </head>
 
 <body>
@@ -70,14 +90,18 @@
 
     <label>ไฟล์ปีล่าสุด (ปี N):
       <input type="file" id="fileCurrent" accept=".xlsx,.xls,.xlsm" />
-    </label><br><br>
+    </label>
+    <br><br>
 
     <label>ไฟล์ปีก่อน (ปี N-1):
       <input type="file" id="filePrevious" accept=".xlsx,.xls,.xlsm" />
-    </label><br><br>
+    </label>
 
-    <button onclick="processSOCE()" 
-            style="padding:10px 20px;background:#42a5f5;color:white;border:none;border-radius:8px;">
+    <p class="helper-text">
+      *แนะนำให้ใช้ไฟล์กระดาษทำการที่มีโครงสร้างแถว/คอลัมน์ตามแบบ SOCE ของระบบ
+    </p>
+
+    <button class="btn-primary" onclick="processSOCE()">
       ประมวลผลงบ SOCE
     </button>
   </div>
@@ -86,164 +110,152 @@
 
 </div>
 
+<!-- โหลด XLSX เพียงครั้งเดียว -->
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.20.0/dist/xlsx.full.min.js"></script>
 
 <script>
-// =====================================================
-// ① JSON SOCE structure
-// =====================================================
-const SOCE_JSON = {
-  "fs_type":"SOCE",
-  "sheet_name":"Eqiuty",
-  "lines":[
-    {"line_code":"SOCE_001","excel_row":8,"raw_label":"ยอดคงเหลือ ณ วันที่ 30 กันยายน (N-2) ตามที่รายงานเดิม"},
-    {"line_code":"SOCE_002","excel_row":9,"raw_label":"ผลสะสมจากการแก้ไขข้อผิดพลาดปีก่อน"},
-    {"line_code":"SOCE_003","excel_row":10,"raw_label":"ผลสะสมของการเปลี่ยนแปลงนโยบายการบัญชี"},
-    {"line_code":"SOCE_004","excel_row":11,"raw_label":"ยอดคงเหลือหลังปรับปรุง (N-2)"},
-    {"line_code":"SOCE_005","excel_row":12,"raw_label":"การเปลี่ยนแปลงในสินทรัพย์สุทธิ/ส่วนทุน (N-1)"},
-    {"line_code":"SOCE_006","excel_row":13,"raw_label":"การเปลี่ยนแปลงที่ทำให้ทุนเพิ่ม/ลด"},
-    {"line_code":"SOCE_007","excel_row":14,"raw_label":"รายได้สูง/(ต่ำ) กว่าค่าใช้จ่าย"},
-    {"line_code":"SOCE_008","excel_row":15,"raw_label":"ยอดคงเหลือ ณ สิ้นปี N-1"},
+  // =====================================================
+  // ① โครงสร้าง SOCE (Mapping แถวในไฟล์ Excel)
+  // =====================================================
+  const SOCE_TEMPLATE = {
+    fs_type : "SOCE",
+    // ใช้ชื่อชีตตามกระดาษทำการ ถ้าไม่พบจะ fallback ไปชีตแรก
+    sheet_name : "Eqiuty",
+    lines : [
+      { line_code:"SOCE_001", excel_row: 8, raw_label:"ยอดคงเหลือ ณ วันที่ 30 กันยายน (N-2) ตามที่รายงานเดิม" },
+      { line_code:"SOCE_002", excel_row: 9, raw_label:"ผลสะสมจากการแก้ไขข้อผิดพลาดปีก่อน" },
+      { line_code:"SOCE_003", excel_row:10, raw_label:"ผลสะสมของการเปลี่ยนแปลงนโยบายการบัญชี" },
+      { line_code:"SOCE_004", excel_row:11, raw_label:"ยอดคงเหลือหลังปรับปรุง (N-2)" },
+      { line_code:"SOCE_005", excel_row:12, raw_label:"การเปลี่ยนแปลงในสินทรัพย์สุทธิ/ส่วนทุน (N-1)" },
+      { line_code:"SOCE_006", excel_row:13, raw_label:"การเปลี่ยนแปลงที่ทำให้ทุนเพิ่ม/ลด" },
+      { line_code:"SOCE_007", excel_row:14, raw_label:"รายได้สูง/(ต่ำ) กว่าค่าใช้จ่าย" },
+      { line_code:"SOCE_008", excel_row:15, raw_label:"ยอดคงเหลือ ณ สิ้นปี N-1" },
 
-    {"line_code":"SOCE_009","excel_row":17,"raw_label":"ยอดคงเหลือ (N-1) ตามที่รายงานเดิม"},
-    {"line_code":"SOCE_010","excel_row":18,"raw_label":"ผลสะสมแก้ไขข้อผิดพลาด"},
-    {"line_code":"SOCE_011","excel_row":19,"raw_label":"ผลสะสมเปลี่ยนแปลงนโยบาย"},
-    {"line_code":"SOCE_012","excel_row":20,"raw_label":"ยอดคงเหลือหลังปรับปรุง (N-1)"},
-    {"line_code":"SOCE_013","excel_row":21,"raw_label":"การเปลี่ยนแปลงในสินทรัพย์สุทธิ/ส่วนทุน ปี N"},
-    {"line_code":"SOCE_014","excel_row":22,"raw_label":"การเปลี่ยนแปลงที่ทำให้ทุนเพิ่ม/ลด"},
-    {"line_code":"SOCE_015","excel_row":23,"raw_label":"รายได้สูง/(ต่ำ) กว่าค่าใช้จ่าย"},
-    {"line_code":"SOCE_016","excel_row":24,"raw_label":"ยอดคงเหลือ ณ สิ้นปี N"}
-  ]
-};
+      { line_code:"SOCE_009", excel_row:17, raw_label:"ยอดคงเหลือ (N-1) ตามที่รายงานเดิม" },
+      { line_code:"SOCE_010", excel_row:18, raw_label:"ผลสะสมแก้ไขข้อผิดพลาด" },
+      { line_code:"SOCE_011", excel_row:19, raw_label:"ผลสะสมเปลี่ยนแปลงนโยบาย" },
+      { line_code:"SOCE_012", excel_row:20, raw_label:"ยอดคงเหลือหลังปรับปรุง (N-1)" },
+      { line_code:"SOCE_013", excel_row:21, raw_label:"การเปลี่ยนแปลงในสินทรัพย์สุทธิ/ส่วนทุน ปี N" },
+      { line_code:"SOCE_014", excel_row:22, raw_label:"การเปลี่ยนแปลงที่ทำให้ทุนเพิ่ม/ลด" },
+      { line_code:"SOCE_015", excel_row:23, raw_label:"รายได้สูง/(ต่ำ) กว่าค่าใช้จ่าย" },
+      { line_code:"SOCE_016", excel_row:24, raw_label:"ยอดคงเหลือ ณ สิ้นปี N" }
+    ]
+  };
 
-// =====================================================
-// ② Read Excel file into JSON
-// =====================================================
-async function readExcel(file){
-  return new Promise((resolve)=>{
-    const reader=new FileReader();
-    reader.onload=(e)=>{
-      const data=new Uint8Array(e.target.result);
-      const workbook=XLSX.read(data,{type:"array"});
-      resolve(workbook);
-    };
-    reader.readAsArrayBuffer(file);
-  });
-}
-
-// =====================================================
-// ③ Main: Process SOCE
-// =====================================================
-async function processSOCE() {
-  const fileN   = document.getElementById("fileCurrent").files[0];
-  const filePrev = document.getElementById("filePrevious").files[0];
-
-  if (!fileN || !filePrev){
-    alert("กรุณาเลือกไฟล์ครบทั้ง 2 ปี");
-    return;
+  // =====================================================
+  // ② ฟังก์ชันอ่านไฟล์ Excel → Workbook
+  // =====================================================
+  async function readWorkbook(file){
+    return new Promise((resolve, reject)=>{
+      const reader = new FileReader();
+      reader.onload = (e)=>{
+        try{
+          const data = new Uint8Array(e.target.result);
+          const workbook = XLSX.read(data, { type:"array" });
+          resolve(workbook);
+        }catch(err){
+          reject(err);
+        }
+      };
+      reader.onerror = reject;
+      reader.readAsArrayBuffer(file);
+    });
   }
 
-  const wbN   = await readExcel(fileN);
-  const wbPrev = await readExcel(filePrev);
+  // ดึง Sheet ตามชื่อ ถ้าไม่เจอใช้ชีตแรก
+  function getSheetByTemplate(workbook, template){
+    if (!workbook || !workbook.SheetNames || workbook.SheetNames.length === 0){
+      return null;
+    }
+    const targetName = template.sheet_name;
+    if (workbook.Sheets[targetName]){
+      return workbook.Sheets[targetName];
+    }
+    // fallback → ชีตแรก
+    const firstName = workbook.SheetNames[0];
+    return workbook.Sheets[firstName];
+  }
 
-  const sheetName = SOCE_JSON.sheet_name;
-  const sheetN = wbN.Sheets[sheetName];
-  const sheetPrev = wbPrev.Sheets[sheetName];
+  // ดึงค่าจาก cell อย่างปลอดภัย
+  function getCellValue(sheet, rowIndex, colIndex){
+    if (!sheet) return "";
+    const addr = XLSX.utils.encode_cell({ r: rowIndex, c: colIndex });
+    const cell = sheet[addr];
+    return cell ? cell.v : "";
+  }
 
-  let html = `
-    <h2>ผลลัพธ์งบแสดงการเปลี่ยนแปลงสินทรัพย์สุทธิ/ส่วนทุน</h2>
-    <table>
-      <tr>
-        <th class="line-label">รายการ</th>
-        <th class="year-col">ปี N</th>
-        <th class="year-col">ปี N-1</th>
-      </tr>
-  `;
+  // จัดรูปแบบตัวเลข (มีคอมมา, ทศนิยม 2 ตำแหน่ง ถ้าเป็นตัวเลข)
+  function formatNumber(value){
+    if (value === null || value === undefined || value === "") return "";
+    const num = Number(value);
+    if (!isNaN(num)){
+      return num.toLocaleString("th-TH", {
+        minimumFractionDigits:2,
+        maximumFractionDigits:2
+      });
+    }
+    return value; // ถ้าไม่ใช่ตัวเลข ให้แสดงตามเดิม
+  }
 
-  SOCE_JSON.lines.forEach(line => {
-    const row = line.excel_row;
+  // =====================================================
+  // ③ Main: ประมวลผล SOCE
+  // =====================================================
+  async function processSOCE() {
+    const fileN   = document.getElementById("fileCurrent").files[0];
+    const filePrev = document.getElementById("filePrevious").files[0];
 
-    const cellN = XLSX.utils.encode_cell({r: row-1, c: 2});
-    const cellPrev = XLSX.utils.encode_cell({r: row-1, c: 2});
+    if (!fileN || !filePrev){
+      alert("กรุณาเลือกไฟล์ให้ครบทั้ง 2 ปี (ปี N และ ปี N-1)");
+      return;
+    }
 
-    const valN = sheetN[cellN] ? sheetN[cellN].v : "";
-    const valPrev = sheetPrev[cellPrev] ? sheetPrev[cellPrev].v : "";
+    try{
+      const wbN    = await readWorkbook(fileN);
+      const wbPrev = await readWorkbook(filePrev);
 
-    html += `
-      <tr>
-        <td>${line.raw_label}</td>
-        <td style="text-align:right">${valN}</td>
-        <td style="text-align:right">${valPrev}</td>
-      </tr>
-    `;
-  });
+      const sheetN    = getSheetByTemplate(wbN, SOCE_TEMPLATE);
+      const sheetPrev = getSheetByTemplate(wbPrev, SOCE_TEMPLATE);
 
-  html += `</table>`;
-  document.getElementById("soceContainer").innerHTML = html;
-}
- 
-</script>
-<!-- โหลด XLSX -->
-<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-
-<script>
-async function readExcel(file) {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-            try {
-                const data = e.target.result;
-                const workbook = XLSX.read(data, { type: "array" });
-
-                // เลือกชีตแรกเสมอ (กันชื่อชีตไม่ตรง)
-                const sheetName = workbook.SheetNames[0];
-                const sheet = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { defval: 0 });
-
-                resolve(sheet);
-            } catch (err) {
-                reject(err);
-            }
-        };
-        reader.onerror = reject;
-        reader.readAsArrayBuffer(file);
-    });
-}
-
-// ปุ่มประมวลผล
-document.getElementById("processSOCE").addEventListener("click", async () => {
-    const fileN = document.getElementById("fileN").files[0];
-    const fileN1 = document.getElementById("fileN1").files[0];
-
-    if (!fileN || !fileN1) {
-        alert("กรุณาเลือกไฟล์ให้ครบทั้ง 2 ปี (ปี N และ ปี N-1)");
+      if (!sheetN || !sheetPrev){
+        alert("ไม่พบชีตข้อมูลในไฟล์อย่างน้อยหนึ่งไฟล์ กรุณาตรวจสอบโครงสร้างไฟล์ Excel");
         return;
-    }
+      }
 
-    try {
-        // อ่านไฟล์ทั้งสอง
-        const dataN = await readExcel(fileN);
-        const dataN1 = await readExcel(fileN1);
+      let html = `
+        <div class="note-title">ผลลัพธ์งบแสดงการเปลี่ยนแปลงสินทรัพย์สุทธิ/ส่วนทุน (จากไฟล์ Excel)</div>
+        <table>
+          <tr>
+            <th class="line-label">รายการ</th>
+            <th class="year-col">ปี N</th>
+            <th class="year-col">ปี N-1</th>
+          </tr>
+      `;
 
-        console.log("DATA N:", dataN);
-        console.log("DATA N-1:", dataN1);
+      SOCE_TEMPLATE.lines.forEach(line => {
+        const rowIndex = line.excel_row - 1; // Excel row → index เริ่มที่ 0
+        const colIndex = 2; // คอลัมน์ C (0:A,1:B,2:C)
 
-        // ตัวอย่างคำนวณ SOCE (คุณจะปรับสูตรเองได้)
-        const totalN = dataN.reduce((sum, row) => sum + (parseFloat(row["ยอดเงิน"]) || 0), 0);
-        const totalN1 = dataN1.reduce((sum, row) => sum + (parseFloat(row["ยอดเงิน"]) || 0), 0);
+        const valN    = getCellValue(sheetN,    rowIndex, colIndex);
+        const valPrev = getCellValue(sheetPrev, rowIndex, colIndex);
 
-        const diff = totalN - totalN1;
-
-        document.getElementById("result").innerHTML = `
-            <h3>ผลการประมวลผล SOCE</h3>
-            <p>ปี N: ${totalN.toLocaleString()}</p>
-            <p>ปี N-1: ${totalN1.toLocaleString()}</p>
-            <p><b>ความเปลี่ยนแปลง: ${diff.toLocaleString()}</b></p>
+        html += `
+          <tr>
+            <td>${line.raw_label}</td>
+            <td style="text-align:right">${formatNumber(valN)}</td>
+            <td style="text-align:right">${formatNumber(valPrev)}</td>
+          </tr>
         `;
-    } catch (err) {
-        alert("ประมวลผลล้มเหลว: " + err.message);
-        console.error(err);
+      });
+
+      html += `</table>`;
+      document.getElementById("soceContainer").innerHTML = html;
+
+    }catch(err){
+      console.error(err);
+      alert("ประมวลผลล้มเหลว: " + err.message);
     }
-});
+  }
 </script>
+
 </body>
 </html>
