@@ -153,7 +153,7 @@
       margin:8px 0 0;
     }
     ul.attach-list li{
-      margin-bottom:2px;
+      margin-bottom:4px;
       color:#cfd8dc;
     }
     .badge{
@@ -164,15 +164,24 @@
       margin-left:6px;
     }
     .file-slot{
-      margin-bottom:4px;
+      margin-bottom:6px;
+    }
+    .file-row{
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+    .file-label{
+      min-width:60px;
     }
     .report-header-preview{
       text-align:center;
       margin-bottom:12px;
       line-height:1.6;
     }
-    .del-btn{
-      margin-left:12px;
+    .del-btn,
+    .btn-file-del{
+      margin-left:6px;
       padding:2px 8px;
       font-size:11px;
       background:#e53935;
@@ -181,7 +190,8 @@
       border-radius:6px;
       cursor:pointer;
     }
-    .del-btn:hover{
+    .del-btn:hover,
+    .btn-file-del:hover{
       background:#c62828;
     }
   </style>
@@ -254,125 +264,114 @@
       </div>
     </div>
 
-   <div class="note-title" style="margin-top:20px;">ไฟล์กระดาษทำการ Excel ที่ใช้ประมวลผล</div>
+    <div class="note-title" style="margin-top:20px;">ไฟล์กระดาษทำการ Excel ที่ใช้ประมวลผล</div>
 
-<div class="upload-row" style="margin-top:10px;">
-  <!-- ปีล่าสุด (ปี N) -->
-  <div class="col">
-    <label>ไฟล์ปีล่าสุด (ปี N) สูงสุด 5 ไฟล์:</label><br>
-    <div id="fileCurrentGroup">
-      <div class="file-slot">
-        <label class="file-row">
-          <input type="checkbox" class="chkCurrent">
-          <span class="file-label">ช่องที่ 1:</span>
-          <input type="file" class="fileCurrent" accept=".xlsx,.xls,.xlsm">
-          <button type="button" class="btn-file-del" onclick="deleteCurrentFile(0)">ลบไฟล์</button>
-        </label>
+    <div class="upload-row" style="margin-top:10px;">
+      <!-- ปีล่าสุด (ปี N) -->
+      <div class="col">
+        <label>ไฟล์ปีล่าสุด (ปี N) สูงสุด 5 ไฟล์:</label><br>
+        <div id="fileCurrentGroup">
+          <!-- 5 ช่อง -->
+          <div class="file-slot">
+            <div class="file-row">
+              <input type="checkbox" class="chkCurrent">
+              <span class="file-label">ช่องที่ 1:</span>
+              <input type="file" class="fileCurrent" accept=".xlsx,.xls,.xlsm">
+              <button type="button" class="btn-file-del" onclick="deleteCurrentFile(0)">ลบไฟล์</button>
+            </div>
+          </div>
+          <div class="file-slot">
+            <div class="file-row">
+              <input type="checkbox" class="chkCurrent">
+              <span class="file-label">ช่องที่ 2:</span>
+              <input type="file" class="fileCurrent" accept=".xlsx,.xls,.xlsm">
+              <button type="button" class="btn-file-del" onclick="deleteCurrentFile(1)">ลบไฟล์</button>
+            </div>
+          </div>
+          <div class="file-slot">
+            <div class="file-row">
+              <input type="checkbox" class="chkCurrent">
+              <span class="file-label">ช่องที่ 3:</span>
+              <input type="file" class="fileCurrent" accept=".xlsx,.xls,.xlsm">
+              <button type="button" class="btn-file-del" onclick="deleteCurrentFile(2)">ลบไฟล์</button>
+            </div>
+          </div>
+          <div class="file-slot">
+            <div class="file-row">
+              <input type="checkbox" class="chkCurrent">
+              <span class="file-label">ช่องที่ 4:</span>
+              <input type="file" class="fileCurrent" accept=".xlsx,.xls,.xlsm">
+              <button type="button" class="btn-file-del" onclick="deleteCurrentFile(3)">ลบไฟล์</button>
+            </div>
+          </div>
+          <div class="file-slot">
+            <div class="file-row">
+              <input type="checkbox" class="chkCurrent">
+              <span class="file-label">ช่องที่ 5:</span>
+              <input type="file" class="fileCurrent" accept=".xlsx,.xls,.xlsm">
+              <button type="button" class="btn-file-del" onclick="deleteCurrentFile(4)">ลบไฟล์</button>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="file-slot">
-        <label class="file-row">
-          <input type="checkbox" class="chkCurrent">
-          <span class="file-label">ช่องที่ 2:</span>
-          <input type="file" class="fileCurrent" accept=".xlsx,.xls,.xlsm">
-          <button type="button" class="btn-file-del" onclick="deleteCurrentFile(1)">ลบไฟล์</button>
-        </label>
-      </div>
-      <div class="file-slot">
-        <label class="file-row">
-          <input type="checkbox" class="chkCurrent">
-          <span class="file-label">ช่องที่ 3:</span>
-          <input type="file" class="fileCurrent" accept=".xlsx,.xls,.xlsm">
-          <button type="button" class="btn-file-del" onclick="deleteCurrentFile(2)">ลบไฟล์</button>
-        </label>
-      </div>
-      <div class="file-slot">
-        <label class="file-row">
-          <input type="checkbox" class="chkCurrent">
-          <span class="file-label">ช่องที่ 4:</span>
-          <input type="file" class="fileCurrent" accept=".xlsx,.xls,.xlsm">
-          <button type="button" class="btn-file-del" onclick="deleteCurrentFile(3)">ลบไฟล์</button>
-        </label>
-      </div>
-      <div class="file-slot">
-        <label class="file-row">
-          <input type="checkbox" class="chkCurrent">
-          <span class="file-label">ช่องที่ 5:</span>
-          <input type="file" class="fileCurrent" accept=".xlsx,.xls,.xlsm">
-          <button type="button" class="btn-file-del" onclick="deleteCurrentFile(4)">ลบไฟล์</button>
-        </label>
+
+      <!-- ปี N-1 -->
+      <div class="col">
+        <label>ไฟล์ปีก่อน (ปี N-1) สูงสุด 5 ไฟล์:</label><br>
+        <div id="filePreviousGroup">
+          <div class="file-slot">
+            <div class="file-row">
+              <input type="checkbox" class="chkPrevious">
+              <span class="file-label">ช่องที่ 1:</span>
+              <input type="file" class="filePrevious" accept=".xlsx,.xls,.xlsm">
+              <button type="button" class="btn-file-del" onclick="deletePreviousFile(0)">ลบไฟล์</button>
+            </div>
+          </div>
+          <div class="file-slot">
+            <div class="file-row">
+              <input type="checkbox" class="chkPrevious">
+              <span class="file-label">ช่องที่ 2:</span>
+              <input type="file" class="filePrevious" accept=".xlsx,.xls,.xlsm">
+              <button type="button" class="btn-file-del" onclick="deletePreviousFile(1)">ลบไฟล์</button>
+            </div>
+          </div>
+          <div class="file-slot">
+            <div class="file-row">
+              <input type="checkbox" class="chkPrevious">
+              <span class="file-label">ช่องที่ 3:</span>
+              <input type="file" class="filePrevious" accept=".xlsx,.xls,.xlsm">
+              <button type="button" class="btn-file-del" onclick="deletePreviousFile(2)">ลบไฟล์</button>
+            </div>
+          </div>
+          <div class="file-slot">
+            <div class="file-row">
+              <input type="checkbox" class="chkPrevious">
+              <span class="file-label">ช่องที่ 4:</span>
+              <input type="file" class="filePrevious" accept=".xlsx,.xls,.xlsm">
+              <button type="button" class="btn-file-del" onclick="deletePreviousFile(3)">ลบไฟล์</button>
+            </div>
+          </div>
+          <div class="file-slot">
+            <div class="file-row">
+              <input type="checkbox" class="chkPrevious">
+              <span class="file-label">ช่องที่ 5:</span>
+              <input type="file" class="filePrevious" accept=".xlsx,.xls,.xlsm">
+              <button type="button" class="btn-file-del" onclick="deletePreviousFile(4)">ลบไฟล์</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- ปี N-1 -->
-  <div class="col">
-    <label>ไฟล์ปีก่อน (ปี N-1) สูงสุด 5 ไฟล์:</label><br>
-    <div id="filePreviousGroup">
-      <div class="file-slot">
-        <label class="file-row">
-          <input type="checkbox" class="chkPrevious">
-          <span class="file-label">ช่องที่ 1:</span>
-          <input type="file" class="filePrevious" accept=".xlsx,.xls,.xlsm">
-          <button type="button" class="btn-file-del" onclick="deletePreviousFile(0)">ลบไฟล์</button>
-        </label>
-      </div>
-      <div class="file-slot">
-        <label class="file-row">
-          <input type="checkbox" class="chkPrevious">
-          <span class="file-label">ช่องที่ 2:</span>
-          <input type="file" class="filePrevious" accept=".xlsx,.xls,.xlsm">
-          <button type="button" class="btn-file-del" onclick="deletePreviousFile(1)">ลบไฟล์</button>
-        </label>
-      </div>
-      <div class="file-slot">
-        <label class="file-row">
-          <input type="checkbox" class="chkPrevious">
-          <span class="file-label">ช่องที่ 3:</span>
-          <input type="file" class="filePrevious" accept=".xlsx,.xls,.xlsm">
-          <button type="button" class="btn-file-del" onclick="deletePreviousFile(2)">ลบไฟล์</button>
-        </label>
-      </div>
-      <div class="file-slot">
-        <label class="file-row">
-          <input type="checkbox" class="chkPrevious">
-          <span class="file-label">ช่องที่ 4:</span>
-          <input type="file" class="filePrevious" accept=".xlsx,.xls,.xlsm">
-          <button type="button" class="btn-file-del" onclick="deletePreviousFile(3)">ลบไฟล์</button>
-        </label>
-      </div>
-      <div class="file-slot">
-        <label class="file-row">
-          <input type="checkbox" class="chkPrevious">
-          <span class="file-label">ช่องที่ 5:</span>
-          <input type="file" class="filePrevious" accept=".xlsx,.xls,.xlsm">
-          <button type="button" class="btn-file-del" onclick="deletePreviousFile(4)">ลบไฟล์</button>
-        </label>
-      </div>
+    <div style="margin-top:8px;">
+      <button type="button" class="btn-primary" onclick="viewSelectedFiles()">
+        เรียกดูไฟล์ที่เลือก
+      </button>
+      <button type="button" class="btn-primary" style="margin-left:8px;background:#ef5350;"
+              onclick="clearSelectedFiles()">
+        ลบไฟล์ทั้งหมด
+      </button>
     </div>
-  </div>
-</div>
-
-<div style="margin-top:8px;">
-  <button type="button" class="btn-primary" onclick="viewSelectedFiles()">
-    เรียกดูไฟล์ที่เลือก
-  </button>
-  <button type="button" class="btn-primary" style="margin-left:8px;background:#ef5350;"
-          onclick="clearSelectedFiles()">
-    ลบไฟล์ทั้งหมด
-  </button>
-</div>
-
-<div id="fileSummary" class="helper-text" style="margin-top:6px;"></div>
-
-<p class="helper-text">
-  *ไฟล์ควรมีโครงสร้างแถว/คอลัมน์ตามแบบ SOCE ของระบบ (Sheet: <code>Eqiuty</code>, คอลัมน์ C เป็นยอดเงินต่อบรรทัด)
-  ระบบจะรวมยอดจากทุกไฟล์ของแต่ละปีให้เป็นตัวเลขรวมของปีนั้น
-</p>
-
-<button class="btn-primary" style="margin-top:10px;" onclick="processSOCE()">
-  ประมวลผลงบแสดงการเปลี่ยนแปลง SOCE
-</button>
-</div>
 
     <div id="fileSummary" class="helper-text" style="margin-top:6px;"></div>
 
@@ -575,45 +574,62 @@
   updateReportHeader();
 
   // -----------------------------
-  // ดูไฟล์ปี N / ปี N-1 ที่เลือก & ลบไฟล์ทั้งหมด
+  // จัดการไฟล์ปี N / N-1 (ลบช่อง / ดูไฟล์ / ลบทั้งหมด)
   // -----------------------------
-  function viewSelectedFiles(){
-    const currents = Array.from(document.querySelectorAll(".fileCurrent"))
-                       .map((inp, idx) => inp.files[0] ? `ปี N ช่องที่ ${idx+1}: ${inp.files[0].name}` : null)
-                       .filter(Boolean);
+  function deleteCurrentFile(index){
+    const inputs = document.querySelectorAll(".fileCurrent");
+    const checks = document.querySelectorAll(".chkCurrent");
+    if (inputs[index]) inputs[index].value = "";
+    if (checks[index]) checks[index].checked = false;
+  }
 
-    const previous = Array.from(document.querySelectorAll(".filePrevious"))
-                       .map((inp, idx) => inp.files[0] ? `ปี N-1 ช่องที่ ${idx+1}: ${inp.files[0].name}` : null)
-                       .filter(Boolean);
+  function deletePreviousFile(index){
+    const inputs = document.querySelectorAll(".filePrevious");
+    const checks = document.querySelectorAll(".chkPrevious");
+    if (inputs[index]) inputs[index].value = "";
+    if (checks[index]) checks[index].checked = false;
+  }
+
+  function viewSelectedFiles(){
+    const currents = Array.from(document.querySelectorAll(".fileCurrent"));
+    const prevs    = Array.from(document.querySelectorAll(".filePrevious"));
+    const chkC     = Array.from(document.querySelectorAll(".chkCurrent"));
+    const chkP     = Array.from(document.querySelectorAll(".chkPrevious"));
+
+    const listN = currents
+      .map((inp,idx)=> (chkC[idx].checked && inp.files[0]) ? `ปี N ช่องที่ ${idx+1}: ${inp.files[0].name}` : null)
+      .filter(Boolean);
+
+    const listP = prevs
+      .map((inp,idx)=> (chkP[idx].checked && inp.files[0]) ? `ปี N-1 ช่องที่ ${idx+1}: ${inp.files[0].name}` : null)
+      .filter(Boolean);
 
     const summaryDiv = document.getElementById("fileSummary");
 
-    if (currents.length === 0 && previous.length === 0){
-      summaryDiv.textContent = "ยังไม่ได้เลือกไฟล์กระดาษทำการสำหรับปี N และปี N-1";
-      alert("ยังไม่มีไฟล์ที่ถูกเลือก");
+    if (listN.length === 0 && listP.length === 0){
+      summaryDiv.textContent = "ยังไม่มีไฟล์ที่เลือก (ติ๊กถูก) สำหรับปี N หรือปี N-1";
+      alert("ยังไม่มีไฟล์ที่เลือกด้วยเช็กบ็อกซ์");
       return;
     }
 
     let html = "";
-    if (currents.length > 0){
-      html += "ไฟล์ปี N ที่เลือกแล้ว:<br>" + currents.map(s => "• " + s).join("<br>") + "<br>";
+    if (listN.length > 0){
+      html += "ไฟล์ปี N ที่เลือก:<br>" + listN.map(s=>"• " + s).join("<br>") + "<br>";
     }
-    if (previous.length > 0){
+    if (listP.length > 0){
       html += (html ? "<br>" : "") +
-              "ไฟล์ปี N-1 ที่เลือกแล้ว:<br>" + previous.map(s => "• " + s).join("<br>");
+              "ไฟล์ปี N-1 ที่เลือก:<br>" + listP.map(s=>"• " + s).join("<br>");
     }
-
     summaryDiv.innerHTML = html;
   }
 
   function clearSelectedFiles(){
-    document.querySelectorAll(".fileCurrent, .filePrevious").forEach(inp => {
-      inp.value = "";
-    });
+    document.querySelectorAll(".fileCurrent, .filePrevious").forEach(inp => inp.value = "");
+    document.querySelectorAll(".chkCurrent, .chkPrevious").forEach(chk => chk.checked = false);
 
     const summaryDiv = document.getElementById("fileSummary");
     if (summaryDiv){
-      summaryDiv.textContent = "ลบไฟล์ที่เลือกทั้งหมดแล้ว";
+      summaryDiv.textContent = "ลบไฟล์และยกเลิกการเลือกทั้งหมดแล้ว";
     }
 
     alert("ลบไฟล์ปี N และปี N-1 ที่เลือกไว้ทั้งหมดเรียบร้อยแล้ว");
@@ -645,21 +661,12 @@
         };
 
         attachmentsMeta.push(fileData);
-
-        const li = document.createElement("li");
-        li.innerHTML = `
-          ${idx+1}. 
-          <a href="${url}" target="_blank">${f.name}</a> 
-          (${f.type || "ไม่ทราบชนิด"}, ${f.size.toLocaleString()} bytes)
-          <button class="del-btn" onclick="deleteAttachment(${idx})">ลบไฟล์</button>
-        `;
-        list.appendChild(li);
       }
     });
 
-    if (attachmentsMeta.length === 0) {
-      list.innerHTML = "<li>ยังไม่มีไฟล์แนบที่ถูกเลือก</li>";
-    } else {
+    refreshAttachmentList();
+
+    if (attachmentsMeta.length > 0) {
       alert("บันทึกข้อมูลไฟล์แนบเรียบร้อย (" + attachmentsMeta.length + " ไฟล์)");
     }
   }
@@ -710,8 +717,8 @@
     fs_type : "SOCE",
     sheet_name : "Eqiuty",
     lines : [
-      { line_code:"SOCE_001", excel_row: 8, raw_label:"ยอดคงเหลือ ณ วันที่ 30 กันยายน (N-2) ตามที่รายงานเดิม" },
-      { line_code:"SOCE_002", excel_row: 9, raw_label:"ผลสะสมจากการแก้ไขข้อผิดพลาดปีก่อน" },
+      { line_code:"SOCE_001", excel_row: 8,  raw_label:"ยอดคงเหลือ ณ วันที่ 30 กันยายน (N-2) ตามที่รายงานเดิม" },
+      { line_code:"SOCE_002", excel_row: 9,  raw_label:"ผลสะสมจากการแก้ไขข้อผิดพลาดปีก่อน" },
       { line_code:"SOCE_003", excel_row:10, raw_label:"ผลสะสมของการเปลี่ยนแปลงนโยบายการบัญชี" },
       { line_code:"SOCE_004", excel_row:11, raw_label:"ยอดคงเหลือหลังปรับปรุง (N-2)" },
       { line_code:"SOCE_005", excel_row:12, raw_label:"การเปลี่ยนแปลงในสินทรัพย์สุทธิ/ส่วนทุน (N-1)" },
@@ -788,7 +795,7 @@
       if (!sheet) return;
       template.lines.forEach(line=>{
         const rowIndex = line.excel_row - 1;
-        const colIndex = 2;
+        const colIndex = 2; // คอลัมน์ C
         const raw = getCellValue(sheet, rowIndex, colIndex);
         const num = Number(raw);
         if (!isNaN(num)){
@@ -814,13 +821,20 @@
       return;
     }
 
-    const filesN = Array.from(document.querySelectorAll(".fileCurrent"))
-                    .map(i => i.files[0]).filter(Boolean);
-    const filesPrev = Array.from(document.querySelectorAll(".filePrevious"))
-                    .map(i => i.files[0]).filter(Boolean);
+    const fileInputsN   = Array.from(document.querySelectorAll(".fileCurrent"));
+    const fileInputsPrev= Array.from(document.querySelectorAll(".filePrevious"));
+    const chkC          = Array.from(document.querySelectorAll(".chkCurrent"));
+    const chkP          = Array.from(document.querySelectorAll(".chkPrevious"));
+
+    const filesN = fileInputsN
+      .map((inp,idx)=> (chkC[idx].checked && inp.files[0]) ? inp.files[0] : null)
+      .filter(Boolean);
+    const filesPrev = fileInputsPrev
+      .map((inp,idx)=> (chkP[idx].checked && inp.files[0]) ? inp.files[0] : null)
+      .filter(Boolean);
 
     if (filesN.length === 0 || filesPrev.length === 0){
-      alert("กรุณาเลือกไฟล์ Excel อย่างน้อย 1 ไฟล์สำหรับทั้งปี N และปี N-1");
+      alert("กรุณาเลือกไฟล์ (และติ๊กเช็กบ็อกซ์) อย่างน้อย 1 ไฟล์สำหรับทั้งปี N และปี N-1");
       return;
     }
 
@@ -841,8 +855,8 @@
         <table>
           <tr>
             <th class="line-label">รายการ</th>
-            <th class="year-col">ปี N (รวมทุกไฟล์)</th>
-            <th class="year-col">ปี N-1 (รวมทุกไฟล์)</th>
+            <th class="year-col">ปี N (รวมทุกไฟล์ที่เลือก)</th>
+            <th class="year-col">ปี N-1 (รวมทุกไฟล์ที่เลือก)</th>
           </tr>
       `;
 
