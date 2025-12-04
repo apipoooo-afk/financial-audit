@@ -166,6 +166,11 @@
     .file-slot{
       margin-bottom:4px;
     }
+    .report-header-preview{
+      text-align:center;
+      margin-bottom:12px;
+      line-height:1.6;
+    }
   </style>
 </head>
 
@@ -180,7 +185,7 @@
   </div>
 
   <div class="nav-bar">
-    <!-- แก้ href ให้ตรงกับระบบจริงของคุณได้ -->
+    <!-- แก้ href ให้ตรงระบบจริงได้ -->
     <button class="btn-nav" onclick="location.href='index.html'">กลับไปหน้าหลักระบบ</button>
     <button class="btn-nav" onclick="location.href='fa-lg-fieldwork.html'">ไปหน้า FA – กระดาษทำการ</button>
     <button class="btn-nav" onclick="location.href='fa-lg-annual-report.html'">ไปหน้ารายงานการตรวจสอบ</button>
@@ -189,9 +194,9 @@
 
 <div class="container">
 
-  <!-- 1. เลือกปีงบฯ + ไฟล์ Excel -->
+  <!-- 1. ข้อมูลหน่วยรับตรวจ และไฟล์ Excel -->
   <div class="card">
-    <h3>1. เลือกปีงบประมาณ และนำเข้าไฟล์ Excel กระดาษทำการ SOCE</h3>
+    <h3>1. ข้อมูลหน่วยรับตรวจ และนำเข้าไฟล์ Excel กระดาษทำการ SOCE</h3>
 
     <div class="row">
       <div class="col">
@@ -218,13 +223,32 @@
       </div>
     </div>
 
+    <!-- แถวใหม่: ชื่อหน่วยรับตรวจ + ปีสิ้นสุด 30 ก.ย. -->
+    <div class="row" style="margin-top:12px;">
+      <div class="col">
+        <label>ชื่อหน่วยรับตรวจ:</label><br>
+        <input type="text" id="entityName" placeholder="เช่น เทศบาลเมืองทดสอบ">
+      </div>
+      <div class="col">
+        <label>สำหรับปีสิ้นสุดวันที่ 30 กันยายน (พ.ศ.):</label><br>
+        <select id="yearEnd">
+          <option value="">-- เลือกปีสิ้นสุด --</option>
+          <option>2565</option><option>2566</option><option>2567</option>
+          <option>2568</option><option>2569</option><option>2570</option>
+          <option>2571</option><option>2572</option><option>2573</option>
+          <option>2574</option><option>2575</option><option>2576</option>
+          <option>2577</option><option>2578</option><option>2579</option>
+          <option>2580</option><option>2581</option><option>2582</option>
+        </select>
+      </div>
+    </div>
+
     <div class="note-title" style="margin-top:20px;">ไฟล์กระดาษทำการ Excel ที่ใช้ประมวลผล</div>
 
     <div class="upload-row" style="margin-top:10px;">
       <div class="col">
         <label>ไฟล์ปีล่าสุด (ปี N) สูงสุด 10 ไฟล์:</label><br>
         <div id="fileCurrentGroup">
-          <!-- 10 ช่องสำหรับปี N -->
           <div class="file-slot"><input type="file" class="fileCurrent" accept=".xlsx,.xls,.xlsm"></div>
           <div class="file-slot"><input type="file" class="fileCurrent" accept=".xlsx,.xls,.xlsm"></div>
           <div class="file-slot"><input type="file" class="fileCurrent" accept=".xlsx,.xls,.xlsm"></div>
@@ -241,7 +265,6 @@
       <div class="col">
         <label>ไฟล์ปีก่อน (ปี N-1) สูงสุด 10 ไฟล์:</label><br>
         <div id="filePreviousGroup">
-          <!-- 10 ช่องสำหรับปี N-1 -->
           <div class="file-slot"><input type="file" class="filePrevious" accept=".xlsx,.xls,.xlsm"></div>
           <div class="file-slot"><input type="file" class="filePrevious" accept=".xlsx,.xls,.xlsm"></div>
           <div class="file-slot"><input type="file" class="filePrevious" accept=".xlsx,.xls,.xlsm"></div>
@@ -266,7 +289,7 @@
     </button>
   </div>
 
-  <!-- 2. แนบไฟล์ประกอบ -->
+  <!-- 2. แนบไฟล์อื่น -->
   <div class="card">
     <h3>2. แนบเอกสารประกอบการตรวจสอบ (รองรับทุกชนิดไฟล์)</h3>
     <label>ไฟล์แนบเพิ่มเติม (PDF, รูปภาพ, Word, อื่น ๆ):<br>
@@ -278,9 +301,13 @@
     <ul id="attachmentsList" class="attach-list"></ul>
   </div>
 
-  <!-- 3. ผลการประมวล -->
+  <!-- 3. ผลประมวล + หัวงบแบบเรียลไทม์ -->
   <div class="card">
     <h3>3. ผลการประมวลงบแสดงการเปลี่ยนแปลงสินทรัพย์สุทธิ/ส่วนทุน</h3>
+
+    <!-- หัวงบแบบเดียวกับ Excel (อัปเดตเรียลไทม์) -->
+    <div id="reportHeaderPreview" class="report-header-preview"></div>
+
     <div id="soceContainer">
       <p class="helper-text">
         ยังไม่มีการประมวลผล แสดงผลเมื่อเลือกไฟล์และกดปุ่ม “ประมวลผลงบ SOCE”
@@ -288,7 +315,7 @@
     </div>
   </div>
 
-  <!-- 4. บันทึกผลการประมวล -->
+  <!-- 4. บันทึกผล -->
   <div class="card">
     <h3>4. การบันทึกผลการประมวลลงระบบฐานข้อมูลรายงานการตรวจสอบ</h3>
 
@@ -316,7 +343,7 @@
     </button>
   </div>
 
-  <!-- 5. ตัวอย่าง layout งบ -->
+  <!-- 5. ตัวอย่าง layout -->
   <div class="card">
     <h3>5. ตัวอย่างรูปแบบงบแสดงการเปลี่ยนแปลงสินทรัพย์สุทธิ/ส่วนทุน</h3>
     <p class="helper-text">
@@ -377,11 +404,11 @@
 
 </div>
 
-<!-- โหลด XLSX -->
+<!-- XLSX -->
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.20.0/dist/xlsx.full.min.js"></script>
 
 <script>
-  // แสดงวันเวลา
+  // เวลา
   function updateDateTime(){
     const now = new Date();
     const options = {
@@ -394,13 +421,13 @@
   setInterval(updateDateTime, 1000);
   updateDateTime();
 
-  // ปี N-1
+  // ปี N-1 อัตโนมัติ
   document.getElementById("yearN").addEventListener("change", ()=>{
     const y = parseInt(document.getElementById("yearN").value,10);
     document.getElementById("yearNMinus1").textContent = isNaN(y) ? "-" : (y-1);
   });
 
-  // ไฟล์แนบอื่น ๆ
+  // ไฟล์แนบ
   let attachmentsMeta = [];
   document.getElementById("attachments").addEventListener("change", (e)=>{
     const files = Array.from(e.target.files);
@@ -417,6 +444,23 @@
       list.appendChild(li);
     });
   });
+
+  // หัวรายงานแบบเรียลไทม์
+  function updateReportHeader(){
+    const entity = (document.getElementById("entityName").value || "").trim() || "ชื่อหน่วยรับตรวจ";
+    const yearEnd = document.getElementById("yearEnd").value;
+    const line2 = "งบแสดงการเปลี่ยนแปลงสินทรัพย์สุทธิ/ส่วนทุน";
+    const line3 = "สำหรับปีสิ้นสุดวันที่ 30 กันยายน " + (yearEnd || "........");
+    document.getElementById("reportHeaderPreview").innerHTML = `
+      <div>${entity}</div>
+      <div>${line2}</div>
+      <div>${line3}</div>
+    `;
+  }
+
+  document.getElementById("entityName").addEventListener("input", updateReportHeader);
+  document.getElementById("yearEnd").addEventListener("change", updateReportHeader);
+  updateReportHeader(); // เรียกครั้งแรก
 
   // Template SOCE
   const SOCE_TEMPLATE = {
@@ -490,7 +534,6 @@
     return value;
   }
 
-  // รวมยอดจากหลายไฟล์ต่อปี
   function aggregateYear(workbooks, template){
     const result = {};
     template.lines.forEach(line=>{
@@ -502,7 +545,7 @@
       if (!sheet) return;
       template.lines.forEach(line=>{
         const rowIndex = line.excel_row - 1;
-        const colIndex = 2; // คอลัมน์ C
+        const colIndex = 2;
         const raw = getCellValue(sheet, rowIndex, colIndex);
         const num = Number(raw);
         if (!isNaN(num)){
@@ -528,7 +571,6 @@
       return;
     }
 
-    // รวบรวมไฟล์จาก 10 ช่องของแต่ละปี
     const filesN = Array.from(document.querySelectorAll(".fileCurrent"))
                     .map(i => i.files[0]).filter(Boolean);
     const filesPrev = Array.from(document.querySelectorAll(".filePrevious"))
@@ -607,6 +649,9 @@
         rows: rows,
         attachments: attachmentsMeta
       };
+
+      // อัปเดตหัวรายงานอีกครั้ง (เผื่อมีการแก้ชื่อ/ปี)
+      updateReportHeader();
 
     }catch(err){
       console.error(err);
