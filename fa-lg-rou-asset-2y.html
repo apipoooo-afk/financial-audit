@@ -611,6 +611,101 @@
   updateReportHeader();
 
   // ---------- จัดการไฟล์ Excel ----------
+    // ---------- จัดการไฟล์ Excel ----------
+  let workingFilesMeta = { yearN: [], yearPrev: [] };
+
+  function saveWorkingFiles(){
+    const filesN = Array.from(document.querySelectorAll(".fileCurrent"))
+                      .map((inp, idx) => inp.files[0]
+                        ? { slot: idx + 1, name: inp.files[0].name, size: inp.files[0].size }
+                        : null
+                      )
+                      .filter(Boolean);
+
+    const filesPrev = Array.from(document.querySelectorAll(".filePrevious"))
+                      .map((inp, idx) => inp.files[0]
+                        ? { slot: idx + 1, name: inp.files[0].name, size: inp.files[0].size }
+                        : null
+                      )
+                      .filter(Boolean);
+
+    const summaryDiv = document.getElementById("fileSummary");
+
+    if (filesN.length === 0 && filesPrev.length === 0){
+      workingFilesMeta.yearN = [];
+      workingFilesMeta.yearPrev = [];
+      summaryDiv.textContent = "ยังไม่มีไฟล์กระดาษทำการที่เลือก";
+      alert("ยังไม่มีไฟล์ให้บันทึก");
+      return;
+    }
+
+    // เก็บ metadata ไว้ในตัวแปรกลาง
+    workingFilesMeta.yearN = filesN;
+    workingFilesMeta.yearPrev = filesPrev;
+
+    let html = "";
+    if (filesN.length > 0){
+      html += "ไฟล์ปี N ที่บันทึกแล้ว:<br>" +
+              filesN.map(f => "• ช่องที่ " + f.slot + ": " + f.name).join("<br>") +
+              "<br>";
+    }
+    if (filesPrev.length > 0){
+      html += (html ? "<br>" : "") +
+              "ไฟล์ปี N-1 ที่บันทึกแล้ว:<br>" +
+              filesPrev.map(f => "• ช่องที่ " + f.slot + ": " + f.name).join("<br>");
+    }
+
+    summaryDiv.innerHTML = html;
+    alert("บันทึกข้อมูลไฟล์กระดาษทำการเรียบร้อยแล้ว (" + (filesN.length + filesPrev.length) + " ไฟล์)");
+  }
+
+  function viewSelectedFiles(){
+    const currents = Array.from(document.querySelectorAll(".fileCurrent"))
+                       .map((inp, idx) => inp.files[0] ? `ปี N ช่องที่ ${idx+1}: ${inp.files[0].name}` : null)
+                       .filter(Boolean);
+
+    const previous = Array.from(document.querySelectorAll(".filePrevious"))
+                       .map((inp, idx) => inp.files[0] ? `ปี N-1 ช่องที่ ${idx+1}: ${inp.files[0].name}` : null)
+                       .filter(Boolean);
+
+    const summaryDiv = document.getElementById("fileSummary");
+
+    if (currents.length === 0 && previous.length === 0){
+      summaryDiv.textContent = "ยังไม่ได้เลือกไฟล์กระดาษทำการสำหรับปี N และปี N-1";
+      alert("ยังไม่มีไฟล์ที่ถูกเลือก");
+      return;
+    }
+
+    let html = "";
+    if (currents.length > 0){
+      html += "ไฟล์ปี N ที่เลือกแล้ว:<br>" + currents.map(s => "• " + s).join("<br>") + "<br>";
+    }
+    if (previous.length > 0){
+      html += (html ? "<br>" : "") +
+              "ไฟล์ปี N-1 ที่เลือกแล้ว:<br>" + previous.map(s => "• " + s).join("<br>");
+    }
+
+    summaryDiv.innerHTML = html;
+  }
+
+  function clearSelectedFiles(){
+    document.querySelectorAll(".fileCurrent, .filePrevious").forEach(inp => {
+      inp.value = "";
+    });
+    document.querySelectorAll(".chkCurrent, .chkPrevious").forEach(chk => chk.checked = false);
+
+    // ล้าง metadata ด้วย
+    workingFilesMeta.yearN = [];
+    workingFilesMeta.yearPrev = [];
+
+    const summaryDiv = document.getElementById("fileSummary");
+    if (summaryDiv){
+      summaryDiv.textContent = "ลบไฟล์ที่เลือกทั้งหมดแล้ว";
+    }
+
+    alert("ลบไฟล์ปี N และปี N-1 ที่เลือกไว้ทั้งหมดเรียบร้อยแล้ว");
+  }
+
   function viewSelectedFiles(){
     const currents = Array.from(document.querySelectorAll(".fileCurrent"))
                        .map((inp, idx) => inp.files[0] ? `ปี N ช่องที่ ${idx+1}: ${inp.files[0].name}` : null)
