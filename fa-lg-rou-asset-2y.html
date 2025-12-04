@@ -349,7 +349,15 @@
   <div class="card">
     <h3>3. ผลการประมวลงบแสดงการเปลี่ยนแปลงสินทรัพย์สุทธิ/ส่วนทุน</h3>
 
-    <!-- หัวงบแบบเดียวกับ Excel (อัปเดตเรียลไทม์) -->
+      <!-- หัวงบแบบเดียวกับ Excel (อัปเดตเรียลไทม์) + ปุ่ม Export -->
+  <div class="export-row" style="display:flex;justify-content:flex-end;gap:8px;margin-bottom:10px;">
+    <button class="btn-primary" type="button" onclick="exportSOCEToExcel()">Export Excel</button>
+    <button class="btn-primary" type="button" onclick="exportSOCEToWord()">Export Word</button>
+    <button class="btn-primary" type="button" onclick="exportSOCEToPDF()">Export PDF</button>
+  </div>
+
+  <!-- ส่วนที่ใช้เป็นเนื้อหาในการ Export (หัว + ตาราง) -->
+  <div id="reportSection">
     <div id="reportHeaderPreview" class="report-header-preview"></div>
 
     <div id="soceContainer">
@@ -358,6 +366,7 @@
       </p>
     </div>
   </div>
+</div>
 
   <!-- 4. บันทึกผล -->
   <div class="card">
@@ -386,6 +395,82 @@
       บันทึกผลการประมวล
     </button>
   </div>
+// -------------------------
+// ฟังก์ชัน Export SOCE
+// -------------------------
+function getSOCEFileName(prefix){
+  const entity = (document.getElementById("entityName")?.value || "").trim() || "SOCE";
+  const yearEnd = document.getElementById("yearEnd")?.value || "";
+  const safeEntity = entity.replace(/[\\/:*?"<>|]/g, "_");
+  return `${prefix}_${safeEntity}_${yearEnd || "XXXX"}`;
+}
+
+// Export เป็น Excel (ใช้ XLSX จาก CDN เดิม)
+function exportSOCEToExcel(){
+  const table = document.querySelector("#soceContainer table");
+  if (!table){
+    alert("ยังไม่มีตารางผลการประมวล ไม่สามารถส่งออกได้");
+    return;
+  }
+  const wb = XLSX.utils.table_to_book(table, { sheet: "SOCE" });
+  const fileName = getSOCEFileName("SOCE") + ".xlsx";
+  XLSX.writeFile(wb, fileName);
+}
+
+// Export เป็น Word (ไฟล์ .doc เปิดด้วย MS Word ได้)
+function exportSOCEToWord(){
+  const headerDiv = document.getElementById("reportHeaderPreview");
+  const table = document.querySelector("#soceContainer table");
+  if (!table){
+    alert("ยังไม่มีตารางผลการประมวล ไม่สามารถส่งออกได้");
+    return;
+  }
+
+  const headerHtml = headerDiv ? headerDiv.innerHTML : "";
+  const tableHtml = table.outerHTML;
+
+  const html =
+    '<html xmlns:o="urn:schemas-microsoft-com:office:office" ' +
+    'xmlns:w="urn:schemas-microsoft-com:office:word" ' +
+    'xmlns="http://www.w3.org/TR/REC-html40">' +
+    "<head><meta charset='utf-8'><title>SOCE</title></head><body>" +
+    headerHtml +
+    tableHtml +
+    "</body></html>";
+
+  const blob = new Blob(['\ufeff', html], { type: "application/msword" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = getSOCEFileName("SOCE") + ".doc";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+// Export เป็น PDF (จับภาพทั้ง #reportSection)
+async function exportSOCEToPDF(){
+  const section = document.getElementById("reportSection");
+  if (!section || !document.querySelector("#soceContainer table")){
+    alert("ยังไม่มีตารางผลการประมวล ไม่สามารถส่งออกได้");
+    return;
+  }
+
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF("p", "mm", "a4");
+
+  // แปลง DOM เป็นภาพด้วย html2canvas
+  const canvas = await html2canvas(section, { scale: 2 });
+  const imgData = canvas.toDataURL("image/png");
+
+  const pdfWidth = pdf.internal.pageSize.getWidth();
+  const imgProps = pdf.getImageProperties(imgData);
+  const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+  pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+  pdf.save(getSOCEFileName("SOCE") + ".pdf");
+}
 
   <!-- 5. ตัวอย่าง layout -->
   <div class="card">
