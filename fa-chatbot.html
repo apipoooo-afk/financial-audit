@@ -2,173 +2,89 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8">
-  <title>FA Chatbot | ผู้ช่วยตรวจสอบการเงิน</title>
+  <title>FA Chatbot | ผู้ช่วยตรวจสอบการเงิน & ระบบจัดการข้อมูล</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <style>
-    body {
-      margin:0;
-      padding:0;
-      font-family:"Segoe UI",Arial,sans-serif;
-      background:#f5f6fa;
-      color:#222;
-    }
-
-    header {
-      background:linear-gradient(120deg,#0d6efd,#6f42c1,#20c997);
-      color:white;
-      padding:16px 20px;
-      box-shadow:0 3px 10px rgba(0,0,0,0.25);
-      display:flex;
-      justify-content:space-between;
-      align-items:flex-start;
-      flex-wrap:wrap;
-    }
-
-    .title {
-      font-size:22px;
-      font-weight:700;
-    }
-
-    .subtitle {
-      font-size:13px;
-      margin-top:4px;
-      opacity:0.9;
-      max-width:360px;
-      line-height:1.5;
-    }
-
-    .right-box {
-      text-align:right;
-      font-size:12px;
-    }
-
-    .right-box a {
-      color:#fff;
-      text-decoration:underline;
-    }
-
-    .metrics-bar {
-      background:#ffffff;
-      padding:10px 16px;
-      border-bottom:1px solid #ddd;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      font-size:13px;
-      flex-wrap:wrap;
-      gap:6px;
-    }
-
-    .metric-pill {
-      background:#e8f0ff;
-      padding:5px 12px;
-      border-radius:999px;
-      font-size:13px;
-      display:inline-flex;
-      align-items:center;
-      gap:6px;
-    }
-
-    .container {
-      display:flex;
-      height:calc(100vh - 130px);
-    }
-
-    .left-pane {
-      flex:3;
-      display:flex;
-      flex-direction:column;
-      padding:12px;
-      background:#ffffff;
-      border-right:1px solid #ddd;
-    }
-
-    .right-pane {
-      flex:1.4;
-      padding:14px;
-      background:#f0f4ff;
-      overflow-y:auto;
-    }
-
-    .greeting-box {
-      background:#f2f7ff;
-      border-radius:12px;
-      padding:12px 14px;
-      margin-bottom:10px;
-      line-height:1.5;
-      font-size:13px;
-      box-shadow:0 1px 4px rgba(0,0,0,0.08);
-    }
-
-    .label {
-      margin-top:10px;
-      margin-bottom:6px;
-      font-weight:700;
-      font-size:14px;
-    }
-
-    textarea {
-      width:100%;
-      min-height:80px;
-      resize:none;
-      border-radius:8px;
-      border:1px solid #ccc;
-      padding:10px;
-      font-size:14px;
-      font-family:inherit;
-    }
-
-    .controls {
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      margin-top:8px;
-      margin-bottom:8px;
-    }
-
-    .controls button {
-      padding:8px 14px;
-      border:none;
-      border-radius:8px;
-      font-size:13px;
-      cursor:pointer;
-      display:flex;
-      align-items:center;
-      gap:6px;
-    }
-
+    /* --- CSS เดิม --- */
+    body { margin:0; padding:0; font-family:"Segoe UI",Arial,sans-serif; background:#f5f6fa; color:#222; }
+    header { background:linear-gradient(120deg,#0d6efd,#6f42c1,#20c997); color:white; padding:16px 20px; box-shadow:0 3px 10px rgba(0,0,0,0.25); display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; }
+    .title { font-size:22px; font-weight:700; }
+    .subtitle { font-size:13px; margin-top:4px; opacity:0.9; max-width:360px; line-height:1.5; }
+    .right-box { text-align:right; font-size:12px; }
+    .right-box a, .right-box span { color:#fff; text-decoration:none; cursor:pointer; }
+    .right-box a:hover { text-decoration:underline; }
+    .metrics-bar { background:#ffffff; padding:10px 16px; border-bottom:1px solid #ddd; display:flex; justify-content:space-between; align-items:center; font-size:13px; flex-wrap:wrap; gap:6px; }
+    .metric-pill { background:#e8f0ff; padding:5px 12px; border-radius:999px; font-size:13px; display:inline-flex; align-items:center; gap:6px; }
+    .container { display:flex; height:calc(100vh - 130px); }
+    .left-pane { flex:3; display:flex; flex-direction:column; padding:12px; background:#ffffff; border-right:1px solid #ddd; }
+    .right-pane { flex:1.4; padding:14px; background:#f0f4ff; overflow-y:auto; }
+    .greeting-box { background:#f2f7ff; border-radius:12px; padding:12px 14px; margin-bottom:10px; line-height:1.5; font-size:13px; box-shadow:0 1px 4px rgba(0,0,0,0.08); }
+    .label { margin-top:10px; margin-bottom:6px; font-weight:700; font-size:14px; }
+    textarea { width:100%; min-height:80px; resize:none; border-radius:8px; border:1px solid #ccc; padding:10px; font-size:14px; font-family:inherit; box-sizing: border-box; }
+    .controls { display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; margin-bottom:8px; }
+    .controls button { padding:8px 14px; border:none; border-radius:8px; font-size:13px; cursor:pointer; display:flex; align-items:center; gap:6px; transition: 0.2s; }
+    .controls button:hover { opacity: 0.9; transform: translateY(-1px); }
     .btn-send { background:#0d6efd; color:white; }
     .btn-clear { background:#eeeeee; }
     .btn-back { background:#6c757d; color:white; margin-left:auto; }
     .btn-processing { background:#ffeb3b; color:#222; }
     .btn-speak { background:#20c997; color:white; }
-
-    .answer-box {
-      flex:1;
-      padding:12px;
-      border-radius:10px;
-      background:#f7f7f7;
-      border:1px solid #ddd;
-      font-size:14px;
-      line-height:1.6;
-      overflow-y:auto;
-      white-space:pre-wrap;
+    .answer-box { flex:1; padding:12px; border-radius:10px; background:#f7f7f7; border:1px solid #ddd; font-size:14px; line-height:1.6; overflow-y:auto; white-space:pre-wrap; }
+    .sample-item { background:#ffffff; border-radius:10px; padding:10px 12px; margin-bottom:10px; cursor:pointer; box-shadow:0 1px 4px rgba(0,0,0,0.08); font-size:13px; transition:0.15s; }
+    .sample-item:hover { background:#e7f0ff; }
+    
+    /* --- เพิ่มเติมสำหรับ Admin Modal --- */
+    .admin-btn { background: rgba(255,255,255,0.2); padding: 5px 10px; border-radius: 4px; margin-top: 5px; display: inline-block; font-weight: bold; }
+    
+    .modal-overlay {
+      display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%;
+      background-color: rgba(0,0,0,0.5); backdrop-filter: blur(2px);
+      align-items: center; justify-content: center;
     }
-
-    .sample-item {
-      background:#ffffff;
-      border-radius:10px;
-      padding:10px 12px;
-      margin-bottom:10px;
-      cursor:pointer;
-      box-shadow:0 1px 4px rgba(0,0,0,0.08);
-      font-size:13px;
-      transition:0.15s;
+    
+    .modal-content {
+      background-color: #fefefe; padding: 20px; border-radius: 12px;
+      width: 90%; max-width: 600px; max-height: 90vh; overflow-y: auto;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3); position: relative;
     }
-    .sample-item:hover {
-      background:#e7f0ff;
+    
+    .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 15px; }
+    .modal-title { font-size: 18px; font-weight: bold; color: #0d6efd; }
+    .btn-close-modal { background: none; border: none; font-size: 24px; cursor: pointer; color: #aaa; }
+    
+    .admin-controls { display: flex; gap: 10px; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 15px; }
+    
+    .form-group { margin-bottom: 15px; }
+    .form-group label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 13px; }
+    .form-input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
+    
+    .file-list { list-style: none; padding: 0; margin: 0; }
+    .file-item { 
+      background: #f8f9fa; border: 1px solid #ddd; padding: 10px; margin-bottom: 8px; border-radius: 6px; 
+      display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: 0.2s;
     }
+    .file-item:hover { background: #e2e6ea; border-color: #adb5bd; }
+    .file-icon { margin-right: 8px; font-size: 16px; }
+    
+    /* ปุ่มใน Modal */
+    .btn-action { padding: 8px 16px; border-radius: 6px; border: none; cursor: pointer; font-size: 14px; font-weight: 600; }
+    .btn-primary { background: #0d6efd; color: white; }
+    .btn-success { background: #20c997; color: white; }
+    .btn-danger { background: #dc3545; color: white; }
+    .btn-secondary { background: #6c757d; color: white; }
+    .btn-outline { background: white; border: 1px solid #ccc; color: #333; }
+    
+    /* Success Popup */
+    .success-popup {
+      display: none; position: fixed; z-index: 1100; left: 0; top: 0; width: 100%; height: 100%;
+      background-color: rgba(0,0,0,0.4); align-items: center; justify-content: center;
+    }
+    .success-content {
+      background: white; padding: 30px; border-radius: 15px; text-align: center; width: 300px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+    .success-icon { font-size: 50px; color: #20c997; margin-bottom: 15px; display: block; }
 
     @media(max-width:900px) {
       .container { flex-direction:column; height:auto; }
@@ -183,14 +99,13 @@
   <div>
     <div class="title">🤖 FA Chatbot</div>
     <div class="subtitle">
-      ผู้ช่วยอัจฉริยะสำหรับตอบคำถามเกี่ยวกับระเบียบ กฎหมาย ขั้นตอนการตรวจสอบ
-      และสรุปข้อมูลจากฐานข้อมูลตรวจสอบ FA (RAG)
+      ผู้ช่วยอัจฉริยะสำหรับตรวจสอบการเงิน & ฐานข้อมูลหน่วยงาน
     </div>
   </div>
 
   <div class="right-box">
-    ผู้ใช้ระบบ: <span id="username-label">Guest</span><br>
-    <a href="index.html">🏠 กลับหน้า Index</a>
+    ผู้ใช้ระบบ: <span id="username-label">Admin User</span><br>
+    <a href="#" onclick="openAdminModal()" class="admin-btn">⚙️ จัดการข้อมูล (Admin)</a>
   </div>
 </header>
 
@@ -201,57 +116,232 @@
 </div>
 
 <div class="container">
-
-  <!-- Left pane (Chat Area) -->
   <div class="left-pane">
-
     <div class="greeting-box">
       สวัสดีค่ะ/ครับ 👋<br>
-      ฉันคือ​ <b>FA Chatbot</b> ผู้ช่วยด้านการตรวจสอบการเงิน (Financial Audit – FA)<br><br>
-      ✔ อ้างอิงข้อมูลจากคู่มือ ปี 2564, แนวการตรวจสอบ ปี 2567, นโยบายการตรวจสอบบัญชีภาครัฐ<br>
-      ✔ ตอบคำถามจากฐานข้อมูลความรู้ของหน่วยงาน (RAG)
+      ฉันคือ​ <b>FA Chatbot</b> ผู้ช่วยด้านการตรวจสอบการเงิน<br>
+      ถามคำถามเกี่ยวกับการเงิน พัสดุ หรือระเบียบต่างๆ ได้เลยครับ
     </div>
 
     <div class="label">พิมพ์คำถามของคุณ</div>
     <textarea id="question-input" placeholder="ตัวอย่าง: ขั้นตอนการกำหนด Materiality..."></textarea>
 
     <div class="controls">
-
       <button class="btn-send" id="btn-send">📤 ส่งคำถาม</button>
       <button class="btn-clear" id="btn-clear">🧹 ล้าง</button>
       <button class="btn-processing" id="btn-processing" disabled style="display:none;">⏳ กำลังประมวลผล...</button>
       <button class="btn-speak" id="btn-speak" disabled>🔊 ฟังคำตอบ</button>
-
-      <button class="btn-back" onclick="window.location.href='index.html'">⬅ กลับ</button>
     </div>
 
     <div class="label">คำตอบจากระบบ</div>
     <div id="answer-box" class="answer-box">ระบบจะตอบคำถามของคุณที่นี่…</div>
-
   </div>
 
-  <!-- Right pane (Sample Questions) -->
   <div class="right-pane">
     <h3>🎯 คำถามตัวอย่าง</h3>
     <div id="sample-list"></div>
   </div>
+</div>
 
+<div id="adminModal" class="modal-overlay">
+  <div class="modal-content">
+    <div class="modal-header">
+      <div class="modal-title">🛠️ ระบบจัดการข้อมูล (Knowledge Base)</div>
+      <button class="btn-close-modal" onclick="closeAdminModal()">×</button>
+    </div>
+
+    <div class="admin-controls">
+      <button class="btn-action btn-primary" onclick="switchMode('add')">➕ เพิ่มข้อมูลใหม่</button>
+      <button class="btn-action btn-outline" onclick="switchMode('view')">📂 ดูข้อมูลที่บันทึกไว้</button>
+    </div>
+
+    <div id="section-form" style="display:block;">
+      <h4 id="form-title" style="margin-top:0;">เพิ่มข้อมูลเข้าระบบ</h4>
+      <input type="hidden" id="edit-id"> <div class="form-group">
+        <label>ชื่อเรื่อง / ชื่อไฟล์:</label>
+        <input type="text" id="kb-title" class="form-input" placeholder="เช่น ระเบียบการเบิกจ่าย 2567">
+      </div>
+      
+      <div class="form-group">
+        <label>เนื้อหา / รายละเอียด:</label>
+        <textarea id="kb-content" class="form-input" style="min-height:150px;" placeholder="ใส่เนื้อหาข้อมูลที่ต้องการให้ระบบเรียนรู้..."></textarea>
+      </div>
+
+      <div class="controls" style="justify-content: flex-end;">
+        <button class="btn-action btn-danger" id="btn-delete" onclick="deleteData()" style="display:none; margin-right:auto;">🗑️ ลบข้อมูล</button>
+        <button class="btn-action btn-secondary" onclick="clearForm()">❌ ยกเลิก</button>
+        <button class="btn-action btn-success" onclick="saveData()">💾 บันทึกลงระบบ</button>
+      </div>
+    </div>
+
+    <div id="section-list" style="display:none;">
+      <h4 style="margin-top:0;">รายการไฟล์ในระบบ</h4>
+      <p style="font-size:12px; color:#666;">คลิกที่ไฟล์เพื่อดูรายละเอียดหรือแก้ไข</p>
+      <ul id="file-list-container" class="file-list">
+        </ul>
+    </div>
+  </div>
+</div>
+
+<div id="successModal" class="success-popup">
+  <div class="success-content">
+    <span class="success-icon">✅</span>
+    <h3>บันทึกแล้ว</h3>
+    <p>ข้อมูลถูกบันทึกลงระบบเรียบร้อยแล้ว</p>
+    <button class="btn-action btn-primary" style="width:100%;" onclick="closeSuccessModal()">ตกลง</button>
+  </div>
 </div>
 
 <script>
   // ============================
-  // SAMPLE QUESTIONS
+  // MOCK DATABASE (จำลองฐานข้อมูล)
+  // ============================
+  let knowledgeBase = [
+    { id: 1, title: "คู่มือการเบิกจ่าย 2564", content: "เนื้อหาเกี่ยวกับระเบียบการเบิกจ่ายปี 2564..." },
+    { id: 2, title: "แนวทางการตรวจสอบพัสดุ", content: "ขั้นตอนการตรวจสอบพัสดุคงคลัง..." }
+  ];
+
+  // ============================
+  // ADMIN MODAL LOGIC
+  // ============================
+  const adminModal = document.getElementById('adminModal');
+  const successModal = document.getElementById('successModal');
+  const sectionForm = document.getElementById('section-form');
+  const sectionList = document.getElementById('section-list');
+  
+  // Inputs
+  const inpTitle = document.getElementById('kb-title');
+  const inpContent = document.getElementById('kb-content');
+  const inpId = document.getElementById('edit-id');
+  const btnDelete = document.getElementById('btn-delete');
+  const formTitle = document.getElementById('form-title');
+
+  function openAdminModal() {
+    adminModal.style.display = 'flex';
+    switchMode('add'); // เปิดมาเจอหน้าเพิ่มข้อมูลก่อนเสมอ
+  }
+
+  function closeAdminModal() {
+    adminModal.style.display = 'none';
+  }
+
+  // สลับระหว่างหน้า เพิ่มข้อมูล vs ดูข้อมูล
+  function switchMode(mode) {
+    if (mode === 'add') {
+      sectionForm.style.display = 'block';
+      sectionList.style.display = 'none';
+      clearForm(); // เคลียร์ฟอร์มให้พร้อมเพิ่มใหม่
+    } else {
+      sectionForm.style.display = 'none';
+      sectionList.style.display = 'block';
+      renderFileList(); // โหลดรายการไฟล์
+    }
+  }
+
+  // ฟังก์ชันล้างฟอร์ม (ยกเลิก / เตรียมเพิ่มใหม่)
+  function clearForm() {
+    inpId.value = "";
+    inpTitle.value = "";
+    inpContent.value = "";
+    btnDelete.style.display = 'none'; // ซ่อนปุ่มลบ
+    formTitle.innerText = "เพิ่มข้อมูลเข้าระบบ";
+  }
+
+  // ฟังก์ชันบันทึกข้อมูล (Save)
+  function saveData() {
+    const title = inpTitle.value.trim();
+    const content = inpContent.value.trim();
+    const id = inpId.value;
+
+    if(!title || !content) {
+      alert("กรุณากรอกชื่อเรื่องและเนื้อหาให้ครบถ้วน");
+      return;
+    }
+
+    if(id) {
+      // --- กรณีแก้ไข (Update) ---
+      const index = knowledgeBase.findIndex(item => item.id == id);
+      if(index !== -1) {
+        knowledgeBase[index].title = title;
+        knowledgeBase[index].content = content;
+      }
+    } else {
+      // --- กรณีเพิ่มใหม่ (Create) ---
+      const newId = knowledgeBase.length > 0 ? knowledgeBase[knowledgeBase.length - 1].id + 1 : 1;
+      knowledgeBase.push({ id: newId, title: title, content: content });
+    }
+
+    // แสดงแจ้งเตือนสำเร็จ
+    successModal.style.display = 'flex';
+  }
+
+  // ฟังก์ชันกด "ตกลง" หลังบันทึกสำเร็จ
+  function closeSuccessModal() {
+    successModal.style.display = 'none';
+    // เคลียร์ฟอร์มเพื่อให้เพิ่มข้อมูลใหม่ได้อีกไม่จำกัดทันที
+    clearForm();
+    // ถ้าอยู่ในหน้า List ก็ให้กลับไปหน้า Add (หรือจะ Update List ก็ได้)
+    switchMode('add'); 
+  }
+
+  // ฟังก์ชันแสดงรายการไฟล์ (Read)
+  function renderFileList() {
+    const container = document.getElementById('file-list-container');
+    container.innerHTML = "";
+    
+    knowledgeBase.forEach(item => {
+      const li = document.createElement('li');
+      li.className = 'file-item';
+      li.innerHTML = `
+        <div>
+          <span class="file-icon">📄</span> <b>${item.title}</b>
+        </div>
+        <small style="color:#888;">ID: ${item.id}</small>
+      `;
+      // คลิกเพื่อแก้ไข
+      li.onclick = () => loadForEdit(item.id);
+      container.appendChild(li);
+    });
+  }
+
+  // ฟังก์ชันโหลดข้อมูลมาแก้ไข (Edit Mode)
+  function loadForEdit(id) {
+    const item = knowledgeBase.find(i => i.id == id);
+    if(item) {
+      // สลับไปหน้าฟอร์ม
+      sectionForm.style.display = 'block';
+      sectionList.style.display = 'none';
+
+      // ใส่ข้อมูลลงใน Input
+      inpId.value = item.id;
+      inpTitle.value = item.title;
+      inpContent.value = item.content;
+      
+      // เปลี่ยนหัวข้อ และโชว์ปุ่มลบ
+      formTitle.innerText = "แก้ไขข้อมูลไฟล์: " + item.title;
+      btnDelete.style.display = 'inline-flex';
+    }
+  }
+
+  // ฟังก์ชันลบข้อมูล (Delete)
+  function deleteData() {
+    const id = inpId.value;
+    if(!id) return;
+
+    if(confirm("ยืนยันการลบข้อมูลนี้?")) {
+      knowledgeBase = knowledgeBase.filter(item => item.id != id);
+      alert("ลบข้อมูลเรียบร้อยแล้ว");
+      switchMode('view'); // กลับไปหน้ารายการ
+    }
+  }
+
+  // ============================
+  // EXISTING CHAT LOGIC (ส่วนแชทเดิม)
   // ============================
   const sampleQuestions = [
     "ขอบเขตการตรวจสอบการเงินของหน่วยรับตรวจ FA มีอะไรบ้าง?",
     "การกำหนด Materiality ตามคู่มือ 2564 ทำอย่างไร?",
     "ขั้นตอนทดสอบการควบคุมภายในด้านการเงินมีอะไรบ้าง?",
-    "หลักฐานการตรวจสอบที่เพียงพอและเหมาะสมคืออะไร?",
-    "แนวการตรวจสอบการเงิน พ.ศ. 2567 เปลี่ยนแปลงอย่างไร?",
-    "การสุ่มตัวอย่างค่าใช้จ่ายที่เหมาะสมต้องทำอย่างไร?",
-    "การจัดทำกระดาษทำการตรวจสอบมีหัวข้ออะไรบ้าง?",
-    "การประเมินความเสี่ยงทุจริตด้านการเงินทำอย่างไร?",
-    "การรายงานข้อสังเกตตามนโยบายการตรวจสอบบัญชีภาครัฐมีขั้นตอนใด?",
     "พบปัญหาเงินทดรองราชการผิดปกติควรดำเนินการอย่างไร?"
   ];
 
@@ -262,131 +352,38 @@
     div.textContent = q;
     div.onclick = () => {
       document.getElementById("question-input").value = q;
-      sendQuestion();
+      // จำลองการส่ง (ไม่ได้ต่อ Server จริง)
+      simulateChatResponse(q);
     };
     sampleList.appendChild(div);
   });
 
-  // ============================
-  // ELEMENTS
-  // ============================
-  const questionInput = document.getElementById("question-input");
-  const answerBox = document.getElementById("answer-box");
-  const btnSend = document.getElementById("btn-send");
-  const btnClear = document.getElementById("btn-clear");
-  const btnProcessing = document.getElementById("btn-processing");
-  const btnSpeak = document.getElementById("btn-speak");
-  const statusLabel = document.getElementById("system-status");
-  const currentUsersEl = document.getElementById("current-users");
-  const totalQuestionsEl = document.getElementById("total-questions");
-
-  let lastAnswer = "";
-
-  // ============================
-  // LOCAL SESSION
-  // ============================
-  let userSession = null;
-  try {
-    userSession = sessionStorage.getItem("fa_user_session");
-    const obj = JSON.parse(userSession || "{}");
-    document.getElementById("username-label").textContent = obj.username || "Guest";
-  } catch (e) {}
-
-  // ============================
-  // SEND QUESTION → BACKEND
-  // ============================
-  btnSend.addEventListener("click", sendQuestion);
-  questionInput.addEventListener("keydown", e => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      sendQuestion();
-    }
+  document.getElementById("btn-send").addEventListener("click", () => {
+    const q = document.getElementById("question-input").value;
+    if(q) simulateChatResponse(q);
   });
 
-  async function sendQuestion() {
-    const q = questionInput.value.trim();
-    if (!q) return;
+  document.getElementById("btn-clear").addEventListener("click", () => {
+    document.getElementById("question-input").value = "";
+    document.getElementById("answer-box").textContent = "ระบบจะตอบคำถามของคุณที่นี่…";
+  });
 
-    btnProcessing.style.display = "inline-flex";
-    btnSend.disabled = true;
-    btnClear.disabled = true;
-    btnSpeak.disabled = true;
-    statusLabel.textContent = "กำลังประมวลผล…";
-
-    answerBox.textContent = "⏳ กำลังประมวลผลคำตอบจากฐานความรู้…";
-
-    try {
-      const res = await fetch("/api/fa-chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question: q, user_session: userSession })
-      });
-
-      const data = await res.json();
-
-      let answer = data.answer || "ไม่สามารถประมวลผลคำตอบได้";
-      if (data.sources && data.sources.length > 0) {
-        answer += "\n\nแหล่งอ้างอิง:\n- " + data.sources.join("\n- ");
+  function simulateChatResponse(question) {
+    const answerBox = document.getElementById("answer-box");
+    answerBox.textContent = "⏳ กำลังค้นหาข้อมูลจากฐานข้อมูล...";
+    
+    setTimeout(() => {
+      // ตรวจสอบว่าคำถามตรงกับข้อมูลที่เราเพิ่มไปไหม (Mock RAG)
+      const found = knowledgeBase.find(k => question.includes(k.title) || k.content.includes(question));
+      
+      if(found) {
+        answerBox.textContent = `พบข้อมูลในไฟล์ "${found.title}":\n\n${found.content}`;
+      } else {
+        answerBox.textContent = "ระบบได้รับคำถาม: " + question + "\n\n(นี่คือโหมดจำลอง: ระบบจะตอบตามข้อมูลที่คุณเพิ่มในปุ่ม Admin)";
       }
-
-      answerBox.textContent = answer;
-      lastAnswer = answer;
-      btnSpeak.disabled = false;
-
-      statusLabel.textContent = "ตอบสำเร็จ";
-
-    } catch (err) {
-      answerBox.textContent = "เกิดข้อผิดพลาดในการเชื่อมต่อกับเซิร์ฟเวอร์";
-      statusLabel.textContent = "ผิดพลาด";
-    }
-
-    btnProcessing.style.display = "none";
-    btnSend.disabled = false;
-    btnClear.disabled = false;
-
-    fetchStats();
+    }, 1000);
   }
 
-  // ============================
-  // CLEAR
-  // ============================
-  btnClear.addEventListener("click", () => {
-    questionInput.value = "";
-    answerBox.textContent = "ระบบจะตอบคำถามของคุณที่นี่…";
-    btnSpeak.disabled = true;
-  });
-
-  // ============================
-  // SPEAK ANSWER
-  // ============================
-  btnSpeak.addEventListener("click", () => {
-    if (!lastAnswer) return;
-    try {
-      window.speechSynthesis.cancel();
-      const u = new SpeechSynthesisUtterance(lastAnswer);
-      u.lang = "th-TH";
-      u.rate = 1;
-      u.pitch = 1;
-      window.speechSynthesis.speak(u);
-    } catch (e) {
-      alert("เบราว์เซอร์ไม่รองรับการอ่านออกเสียง");
-    }
-  });
-
-  // ============================
-  // STATS
-  // ============================
-  async function fetchStats() {
-    try {
-      const r = await fetch("/api/fa-stats");
-      const d = await r.json();
-      currentUsersEl.textContent = d.current_users;
-      totalQuestionsEl.textContent = d.total_questions;
-    } catch (e) {}
-  }
-
-  fetchStats();
-  setInterval(fetchStats, 30000); // อัปเดตทุก 30 วินาที
 </script>
 
 </body>
