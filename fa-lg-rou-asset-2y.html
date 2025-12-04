@@ -185,7 +185,6 @@
   </div>
 
   <div class="nav-bar">
-    <!-- แก้ href ให้ตรงระบบจริงได้ -->
     <button class="btn-nav" onclick="location.href='index.html'">กลับไปหน้าหลักระบบ</button>
     <button class="btn-nav" onclick="location.href='fa-lg-fieldwork.html'">ไปหน้า FA – กระดาษทำการ</button>
     <button class="btn-nav" onclick="location.href='fa-lg-annual-report.html'">ไปหน้ารายงานการตรวจสอบ</button>
@@ -223,7 +222,6 @@
       </div>
     </div>
 
-    <!-- แถวใหม่: ชื่อหน่วยรับตรวจ + ปีสิ้นสุด 30 ก.ย. -->
     <div class="row" style="margin-top:12px;">
       <div class="col">
         <label>ชื่อหน่วยรับตรวจ:</label><br>
@@ -247,7 +245,7 @@
 
     <div class="upload-row" style="margin-top:10px;">
       <div class="col">
-        <label>ไฟล์ปีล่าสุด (ปี N) สูงสุด 10 ไฟล์:</label><br>
+        <label>ไฟล์ปีล่าสุด (ปี N) สูงสุด 5 ไฟล์:</label><br>
         <div id="fileCurrentGroup">
           <div class="file-slot"><input type="file" class="fileCurrent" accept=".xlsx,.xls,.xlsm"></div>
           <div class="file-slot"><input type="file" class="fileCurrent" accept=".xlsx,.xls,.xlsm"></div>
@@ -258,14 +256,14 @@
       </div>
 
       <div class="col">
-        <label>ไฟล์ปีก่อน (ปี N-1) สูงสุด 10 ไฟล์:</label><br>
+        <label>ไฟล์ปีก่อน (ปี N-1) สูงสุด 5 ไฟล์:</label><br>
         <div id="filePreviousGroup">
           <div class="file-slot"><input type="file" class="filePrevious" accept=".xlsx,.xls,.xlsm"></div>
           <div class="file-slot"><input type="file" class="filePrevious" accept=".xlsx,.xls,.xlsm"></div>
           <div class="file-slot"><input type="file" class="filePrevious" accept=".xlsx,.xls,.xlsm"></div>
           <div class="file-slot"><input type="file" class="filePrevious" accept=".xlsx,.xls,.xlsm"></div>
           <div class="file-slot"><input type="file" class="filePrevious" accept=".xlsx,.xls,.xlsm"></div>
-         </div>
+        </div>
       </div>
     </div>
 
@@ -279,7 +277,7 @@
     </button>
   </div>
 
-  <!-- 2. แนบไฟล์ 1 -->
+  <!-- 2. แนบไฟล์ประกอบ -->
   <div class="card">
     <h3>2. แนบเอกสารประกอบการตรวจสอบ (รองรับทุกชนิดไฟล์)</h3>
     <label>ไฟล์แนบเพิ่มเติม (PDF, รูปภาพ, Word, อื่น ๆ):<br>
@@ -290,83 +288,27 @@
     </p>
     <ul id="attachmentsList" class="attach-list"></ul>
   </div>
-<!-- 2. แนบไฟล์ 2 -->
-  <div class="card">
-    <h3>2. แนบเอกสารประกอบการตรวจสอบ (รองรับทุกชนิดไฟล์)</h3>
-    <label>ไฟล์แนบเพิ่มเติม (PDF, รูปภาพ, Word, อื่น ๆ):<br>
-      <input type="file" id="attachments" multiple />
-    </label>
-    <p class="helper-text">
-      ระบบจะบันทึกข้อมูลเมตาของไฟล์แนบ (ชื่อไฟล์ ประเภท ขนาด) ไปพร้อมกับผลการประมวล SOCE
-    </p>
-    <ul id="attachmentsList" class="attach-list"></ul>
-  </div>
-  <!-- 2. แนบไฟล์ 3 -->
-  <div class="card">
-    <h3>2. แนบเอกสารประกอบการตรวจสอบ (รองรับทุกชนิดไฟล์)</h3>
-    <label>ไฟล์แนบเพิ่มเติม (PDF, รูปภาพ, Word, อื่น ๆ):<br>
-      <input type="file" id="attachments" multiple />
-    </label>
-    <p class="helper-text">
-      ระบบจะบันทึกข้อมูลเมตาของไฟล์แนบ (ชื่อไฟล์ ประเภท ขนาด) ไปพร้อมกับผลการประมวล SOCE
-    </p>
-    <ul id="attachmentsList" class="attach-list"></ul>
-  </div>
-  <!-- 2. แนบไฟล์ 4 -->
-  <div class="card">
-    <h3>2. แนบเอกสารประกอบการตรวจสอบ (รองรับทุกชนิดไฟล์)</h3>
-    <label>ไฟล์แนบเพิ่มเติม (PDF, รูปภาพ, Word, อื่น ๆ):<br>
-      <input type="file" id="attachments" multiple />
-    </label>
-    <p class="helper-text">
-      ระบบจะบันทึกข้อมูลเมตาของไฟล์แนบ (ชื่อไฟล์ ประเภท ขนาด) ไปพร้อมกับผลการประมวล SOCE
-    </p>
-    <ul id="attachmentsList" class="attach-list"></ul>
-  </div>
-  <!-- 2. แนบไฟล์ 5 -->
-  <div class="card">
-    <h3>2. แนบเอกสารประกอบการตรวจสอบ (รองรับทุกชนิดไฟล์)</h3>
-    <label>ไฟล์แนบเพิ่มเติม (PDF, รูปภาพ, Word, อื่น ๆ):<br>
-      <input type="file" id="attachments" multiple />
-    </label>
-    <p class="helper-text">
-      ระบบจะบันทึกข้อมูลเมตาของไฟล์แนบ (ชื่อไฟล์ ประเภท ขนาด) ไปพร้อมกับผลการประมวล SOCE
-    </p>
-    <ul id="attachmentsList" class="attach-list"></ul>
-  </div>
-  <!-- 2. แนบไฟล์ 6 -->
-  <div class="card">
-    <h3>2. แนบเอกสารประกอบการตรวจสอบ (รองรับทุกชนิดไฟล์)</h3>
-    <label>ไฟล์แนบเพิ่มเติม (PDF, รูปภาพ, Word, อื่น ๆ):<br>
-      <input type="file" id="attachments" multiple />
-    </label>
-    <p class="helper-text">
-      ระบบจะบันทึกข้อมูลเมตาของไฟล์แนบ (ชื่อไฟล์ ประเภท ขนาด) ไปพร้อมกับผลการประมวล SOCE
-    </p>
-    <ul id="attachmentsList" class="attach-list"></ul>
-  </div>
-  <!-- 3. ผลประมวล + หัวงบแบบเรียลไทม์ -->
+
+  <!-- 3. ผลประมวล + Export -->
   <div class="card">
     <h3>3. ผลการประมวลงบแสดงการเปลี่ยนแปลงสินทรัพย์สุทธิ/ส่วนทุน</h3>
 
-      <!-- หัวงบแบบเดียวกับ Excel (อัปเดตเรียลไทม์) + ปุ่ม Export -->
-  <div class="export-row" style="display:flex;justify-content:flex-end;gap:8px;margin-bottom:10px;">
-    <button class="btn-primary" type="button" onclick="exportSOCEToExcel()">Export Excel</button>
-    <button class="btn-primary" type="button" onclick="exportSOCEToWord()">Export Word</button>
-    <button class="btn-primary" type="button" onclick="exportSOCEToPDF()">Export PDF</button>
-  </div>
+    <div class="export-row" style="display:flex;justify-content:flex-end;gap:8px;margin-bottom:10px;">
+      <button class="btn-primary" type="button" onclick="exportSOCEToExcel()">Export Excel</button>
+      <button class="btn-primary" type="button" onclick="exportSOCEToWord()">Export Word</button>
+      <button class="btn-primary" type="button" onclick="exportSOCEToPDF()">Export PDF</button>
+    </div>
 
-  <!-- ส่วนที่ใช้เป็นเนื้อหาในการ Export (หัว + ตาราง) -->
-  <div id="reportSection">
-    <div id="reportHeaderPreview" class="report-header-preview"></div>
-
-    <div id="soceContainer">
-      <p class="helper-text">
-        ยังไม่มีการประมวลผล แสดงผลเมื่อเลือกไฟล์และกดปุ่ม “ประมวลผลงบ SOCE”
-      </p>
+    <!-- ส่วนที่ใช้เป็นเนื้อหาในการ Export -->
+    <div id="reportSection">
+      <div id="reportHeaderPreview" class="report-header-preview"></div>
+      <div id="soceContainer">
+        <p class="helper-text">
+          ยังไม่มีการประมวลผล แสดงผลเมื่อเลือกไฟล์และกดปุ่ม “ประมวลผลงบ SOCE”
+        </p>
+      </div>
     </div>
   </div>
-</div>
 
   <!-- 4. บันทึกผล -->
   <div class="card">
@@ -395,82 +337,6 @@
       บันทึกผลการประมวล
     </button>
   </div>
-// -------------------------
-// ฟังก์ชัน Export SOCE
-// -------------------------
-function getSOCEFileName(prefix){
-  const entity = (document.getElementById("entityName")?.value || "").trim() || "SOCE";
-  const yearEnd = document.getElementById("yearEnd")?.value || "";
-  const safeEntity = entity.replace(/[\\/:*?"<>|]/g, "_");
-  return `${prefix}_${safeEntity}_${yearEnd || "XXXX"}`;
-}
-
-// Export เป็น Excel (ใช้ XLSX จาก CDN เดิม)
-function exportSOCEToExcel(){
-  const table = document.querySelector("#soceContainer table");
-  if (!table){
-    alert("ยังไม่มีตารางผลการประมวล ไม่สามารถส่งออกได้");
-    return;
-  }
-  const wb = XLSX.utils.table_to_book(table, { sheet: "SOCE" });
-  const fileName = getSOCEFileName("SOCE") + ".xlsx";
-  XLSX.writeFile(wb, fileName);
-}
-
-// Export เป็น Word (ไฟล์ .doc เปิดด้วย MS Word ได้)
-function exportSOCEToWord(){
-  const headerDiv = document.getElementById("reportHeaderPreview");
-  const table = document.querySelector("#soceContainer table");
-  if (!table){
-    alert("ยังไม่มีตารางผลการประมวล ไม่สามารถส่งออกได้");
-    return;
-  }
-
-  const headerHtml = headerDiv ? headerDiv.innerHTML : "";
-  const tableHtml = table.outerHTML;
-
-  const html =
-    '<html xmlns:o="urn:schemas-microsoft-com:office:office" ' +
-    'xmlns:w="urn:schemas-microsoft-com:office:word" ' +
-    'xmlns="http://www.w3.org/TR/REC-html40">' +
-    "<head><meta charset='utf-8'><title>SOCE</title></head><body>" +
-    headerHtml +
-    tableHtml +
-    "</body></html>";
-
-  const blob = new Blob(['\ufeff', html], { type: "application/msword" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = getSOCEFileName("SOCE") + ".doc";
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-}
-
-// Export เป็น PDF (จับภาพทั้ง #reportSection)
-async function exportSOCEToPDF(){
-  const section = document.getElementById("reportSection");
-  if (!section || !document.querySelector("#soceContainer table")){
-    alert("ยังไม่มีตารางผลการประมวล ไม่สามารถส่งออกได้");
-    return;
-  }
-
-  const { jsPDF } = window.jspdf;
-  const pdf = new jsPDF("p", "mm", "a4");
-
-  // แปลง DOM เป็นภาพด้วย html2canvas
-  const canvas = await html2canvas(section, { scale: 2 });
-  const imgData = canvas.toDataURL("image/png");
-
-  const pdfWidth = pdf.internal.pageSize.getWidth();
-  const imgProps = pdf.getImageProperties(imgData);
-  const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-
-  pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-  pdf.save(getSOCEFileName("SOCE") + ".pdf");
-}
 
   <!-- 5. ตัวอย่าง layout -->
   <div class="card">
@@ -533,8 +399,10 @@ async function exportSOCEToPDF(){
 
 </div>
 
-<!-- XLSX -->
+<!-- Libraries -->
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.20.0/dist/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 
 <script>
   // เวลา
@@ -586,10 +454,9 @@ async function exportSOCEToPDF(){
       <div>${line3}</div>
     `;
   }
-
   document.getElementById("entityName").addEventListener("input", updateReportHeader);
   document.getElementById("yearEnd").addEventListener("change", updateReportHeader);
-  updateReportHeader(); // เรียกครั้งแรก
+  updateReportHeader();
 
   // Template SOCE
   const SOCE_TEMPLATE = {
@@ -779,8 +646,7 @@ async function exportSOCEToPDF(){
         attachments: attachmentsMeta
       };
 
-      // อัปเดตหัวรายงานอีกครั้ง (เผื่อมีการแก้ชื่อ/ปี)
-      updateReportHeader();
+      updateReportHeader(); // เผื่อแก้ชื่อ/ปี
 
     }catch(err){
       console.error(err);
@@ -840,6 +706,77 @@ async function exportSOCEToPDF(){
         alert("ไม่สามารถส่งข้อมูลไปยัง API ได้: " + err.message);
       });
     }
+  }
+
+  // ---------- ฟังก์ชัน Export ----------
+  function getSOCEFileName(prefix){
+    const entity = (document.getElementById("entityName")?.value || "").trim() || "SOCE";
+    const yearEnd = document.getElementById("yearEnd")?.value || "";
+    const safeEntity = entity.replace(/[\\/:*?"<>|]/g, "_");
+    return `${prefix}_${safeEntity}_${yearEnd || "XXXX"}`;
+  }
+
+  function exportSOCEToExcel(){
+    const table = document.querySelector("#soceContainer table");
+    if (!table){
+      alert("ยังไม่มีตารางผลการประมวล ไม่สามารถส่งออกได้");
+      return;
+    }
+    const wb = XLSX.utils.table_to_book(table, { sheet: "SOCE" });
+    const fileName = getSOCEFileName("SOCE") + ".xlsx";
+    XLSX.writeFile(wb, fileName);
+  }
+
+  function exportSOCEToWord(){
+    const headerDiv = document.getElementById("reportHeaderPreview");
+    const table = document.querySelector("#soceContainer table");
+    if (!table){
+      alert("ยังไม่มีตารางผลการประมวล ไม่สามารถส่งออกได้");
+      return;
+    }
+
+    const headerHtml = headerDiv ? headerDiv.innerHTML : "";
+    const tableHtml = table.outerHTML;
+
+    const html =
+      '<html xmlns:o="urn:schemas-microsoft-com:office:office" ' +
+      'xmlns:w="urn:schemas-microsoft-com:office:word" ' +
+      'xmlns="http://www.w3.org/TR/REC-html40">' +
+      "<head><meta charset='utf-8'><title>SOCE</title></head><body>" +
+      headerHtml +
+      tableHtml +
+      "</body></html>";
+
+    const blob = new Blob(['\ufeff', html], { type: "application/msword" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = getSOCEFileName("SOCE") + ".doc";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  async function exportSOCEToPDF(){
+    const section = document.getElementById("reportSection");
+    if (!section || !document.querySelector("#soceContainer table")){
+      alert("ยังไม่มีตารางผลการประมวล ไม่สามารถส่งออกได้");
+      return;
+    }
+
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF("p", "mm", "a4");
+
+    const canvas = await html2canvas(section, { scale: 2 });
+    const imgData = canvas.toDataURL("image/png");
+
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const imgProps = pdf.getImageProperties(imgData);
+    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+    pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+    pdf.save(getSOCEFileName("SOCE") + ".pdf");
   }
 </script>
 
