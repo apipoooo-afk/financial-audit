@@ -41,8 +41,8 @@
     .upload-row{
       display:flex;
       flex-wrap:wrap;
-      gap:12px;
-      align-items:center;
+      gap:16px;
+      align-items:flex-start;
     }
     label{
       font-size:14px;
@@ -163,6 +163,9 @@
       background:#263238;
       margin-left:6px;
     }
+    .file-slot{
+      margin-bottom:4px;
+    }
   </style>
 </head>
 
@@ -177,7 +180,7 @@
   </div>
 
   <div class="nav-bar">
-    <!-- ปรับ href ให้ตรงกับระบบจริงของคุณได้เลย -->
+    <!-- แก้ href ให้ตรงกับระบบจริงของคุณได้ -->
     <button class="btn-nav" onclick="location.href='index.html'">กลับไปหน้าหลักระบบ</button>
     <button class="btn-nav" onclick="location.href='fa-lg-fieldwork.html'">ไปหน้า FA – กระดาษทำการ</button>
     <button class="btn-nav" onclick="location.href='fa-lg-annual-report.html'">ไปหน้ารายงานการตรวจสอบ</button>
@@ -186,7 +189,7 @@
 
 <div class="container">
 
-  <!-- เลือกปีงบประมาณ + ไฟล์ Excel SOCE -->
+  <!-- 1. เลือกปีงบฯ + ไฟล์ Excel -->
   <div class="card">
     <h3>1. เลือกปีงบประมาณ และนำเข้าไฟล์ Excel กระดาษทำการ SOCE</h3>
 
@@ -194,9 +197,7 @@
       <div class="col">
         <label>ปีงบประมาณ (ปี N):</label><br>
         <select id="yearN">
-          <!-- ปี 2560–2582 -->
           <option value="">-- เลือกปี --</option>
-          <!-- เติมผ่าน JS ก็ได้ แต่ตรง ๆ แบบนี้ชัดเจน -->
           <option>2560</option><option>2561</option><option>2562</option>
           <option>2563</option><option>2564</option><option>2565</option>
           <option>2566</option><option>2567</option><option>2568</option>
@@ -221,20 +222,43 @@
 
     <div class="upload-row" style="margin-top:10px;">
       <div class="col">
-        <label>ไฟล์ปีล่าสุด (ปี N):<br>
-          <input type="file" id="fileCurrent" accept=".xlsx,.xls,.xlsm" />
-        </label>
+        <label>ไฟล์ปีล่าสุด (ปี N) สูงสุด 10 ไฟล์:</label><br>
+        <div id="fileCurrentGroup">
+          <!-- 10 ช่องสำหรับปี N -->
+          <div class="file-slot"><input type="file" class="fileCurrent" accept=".xlsx,.xls,.xlsm"></div>
+          <div class="file-slot"><input type="file" class="fileCurrent" accept=".xlsx,.xls,.xlsm"></div>
+          <div class="file-slot"><input type="file" class="fileCurrent" accept=".xlsx,.xls,.xlsm"></div>
+          <div class="file-slot"><input type="file" class="fileCurrent" accept=".xlsx,.xls,.xlsm"></div>
+          <div class="file-slot"><input type="file" class="fileCurrent" accept=".xlsx,.xls,.xlsm"></div>
+          <div class="file-slot"><input type="file" class="fileCurrent" accept=".xlsx,.xls,.xlsm"></div>
+          <div class="file-slot"><input type="file" class="fileCurrent" accept=".xlsx,.xls,.xlsm"></div>
+          <div class="file-slot"><input type="file" class="fileCurrent" accept=".xlsx,.xls,.xlsm"></div>
+          <div class="file-slot"><input type="file" class="fileCurrent" accept=".xlsx,.xls,.xlsm"></div>
+          <div class="file-slot"><input type="file" class="fileCurrent" accept=".xlsx,.xls,.xlsm"></div>
+        </div>
       </div>
 
       <div class="col">
-        <label>ไฟล์ปีก่อน (ปี N-1):<br>
-          <input type="file" id="filePrevious" accept=".xlsx,.xls,.xlsm" />
-        </label>
+        <label>ไฟล์ปีก่อน (ปี N-1) สูงสุด 10 ไฟล์:</label><br>
+        <div id="filePreviousGroup">
+          <!-- 10 ช่องสำหรับปี N-1 -->
+          <div class="file-slot"><input type="file" class="filePrevious" accept=".xlsx,.xls,.xlsm"></div>
+          <div class="file-slot"><input type="file" class="filePrevious" accept=".xlsx,.xls,.xlsm"></div>
+          <div class="file-slot"><input type="file" class="filePrevious" accept=".xlsx,.xls,.xlsm"></div>
+          <div class="file-slot"><input type="file" class="filePrevious" accept=".xlsx,.xls,.xlsm"></div>
+          <div class="file-slot"><input type="file" class="filePrevious" accept=".xlsx,.xls,.xlsm"></div>
+          <div class="file-slot"><input type="file" class="filePrevious" accept=".xlsx,.xls,.xlsm"></div>
+          <div class="file-slot"><input type="file" class="filePrevious" accept=".xlsx,.xls,.xlsm"></div>
+          <div class="file-slot"><input type="file" class="filePrevious" accept=".xlsx,.xls,.xlsm"></div>
+          <div class="file-slot"><input type="file" class="filePrevious" accept=".xlsx,.xls,.xlsm"></div>
+          <div class="file-slot"><input type="file" class="filePrevious" accept=".xlsx,.xls,.xlsm"></div>
+        </div>
       </div>
     </div>
 
     <p class="helper-text">
-      *ไฟล์ควรมีโครงสร้างแถว/คอลัมน์ตามแบบ SOCE ของระบบ (Sheet: <code>Eqiuty</code>, คอลัมน์ C เป็นยอดเงิน)
+      *ไฟล์ควรมีโครงสร้างแถว/คอลัมน์ตามแบบ SOCE ของระบบ (Sheet: <code>Eqiuty</code>, คอลัมน์ C เป็นยอดเงินต่อบรรทัด)
+      ระบบจะรวมยอดจากทุกไฟล์ของแต่ละปีให้เป็นตัวเลขรวมของปีนั้น
     </p>
 
     <button class="btn-primary" style="margin-top:10px;" onclick="processSOCE()">
@@ -242,7 +266,7 @@
     </button>
   </div>
 
-  <!-- เมนูอัปโหลดไฟล์แนบได้ทุกรูปแบบ -->
+  <!-- 2. แนบไฟล์ประกอบ -->
   <div class="card">
     <h3>2. แนบเอกสารประกอบการตรวจสอบ (รองรับทุกชนิดไฟล์)</h3>
     <label>ไฟล์แนบเพิ่มเติม (PDF, รูปภาพ, Word, อื่น ๆ):<br>
@@ -254,7 +278,7 @@
     <ul id="attachmentsList" class="attach-list"></ul>
   </div>
 
-  <!-- แสดงผลการประมวล SOCE -->
+  <!-- 3. ผลการประมวล -->
   <div class="card">
     <h3>3. ผลการประมวลงบแสดงการเปลี่ยนแปลงสินทรัพย์สุทธิ/ส่วนทุน</h3>
     <div id="soceContainer">
@@ -264,7 +288,7 @@
     </div>
   </div>
 
-  <!-- ระบบบันทึกผลการประมวลลงฐานข้อมูล -->
+  <!-- 4. บันทึกผลการประมวล -->
   <div class="card">
     <h3>4. การบันทึกผลการประมวลลงระบบฐานข้อมูลรายงานการตรวจสอบ</h3>
 
@@ -292,59 +316,72 @@
     </button>
   </div>
 
-  <!-- ตัวอย่างงบแสดงการเปลี่ยนแปลงสินทรัพย์สุทธิ -->
+  <!-- 5. ตัวอย่าง layout งบ -->
   <div class="card">
     <h3>5. ตัวอย่างรูปแบบงบแสดงการเปลี่ยนแปลงสินทรัพย์สุทธิ/ส่วนทุน</h3>
     <p class="helper-text">
-      ตัวอย่างนี้ใช้เพื่ออ้างอิงรูปแบบการจัดวางรายการ และไม่ใช่ข้อมูลจริงจากไฟล์ Excel
+      ตัวอย่างนี้ใช้เพื่ออ้างอิงรูปแบบการจัดวางคอลัมน์ให้ใกล้เคียงแบบใน Excel จริง
+      ไม่ใช่ข้อมูลที่ประมวลผลจากไฟล์
     </p>
 
     <table>
       <tr>
-        <th class="line-label">รายการ</th>
-        <th class="year-col">ปี N (ตัวอย่าง)</th>
-        <th class="year-col">ปี N-1 (ตัวอย่าง)</th>
+        <th rowspan="2" style="width:24%;">รายการ / หมายเหตุ</th>
+        <th colspan="8">ส่วนประกอบของสินทรัพย์สุทธิ/ส่วนทุน</th>
       </tr>
       <tr>
-        <td>ยอดคงเหลือ ณ วันที่ 30 กันยายน (N-2) ตามที่รายงานเดิม</td>
-        <td style="text-align:right">1,000,000.00</td>
-        <td style="text-align:right">950,000.00</td>
+        <th>เงินสะสม</th>
+        <th>เงินทุนสำรองเงินสะสม</th>
+        <th>รายได้สะสม</th>
+        <th>ทุนสำรองเงินทุน</th>
+        <th>กำไร/ขาดทุนสะสม</th>
+        <th>รวมรายได้สูง/(ต่ำ) กว่าค่าใช้จ่ายสะสม</th>
+        <th>องค์ประกอบอื่นของสินทรัพย์สุทธิ/ส่วนทุน</th>
+        <th>รวมสินทรัพย์สุทธิ/ส่วนทุน</th>
       </tr>
       <tr>
-        <td>ผลสะสมจากการแก้ไขข้อผิดพลาดปีก่อน</td>
-        <td style="text-align:right">20,000.00</td>
-        <td style="text-align:right">10,000.00</td>
+        <td>ยอดคงเหลือ ณ วันที่ 30 กันยายน 2566 - ตามที่รายงานไว้เดิม</td>
+        <td style="text-align:right">2,899,668,388.22</td>
+        <td style="text-align:right">269,429,560.62</td>
+        <td style="text-align:right">241,397,572.95</td>
+        <td style="text-align:right">43,231,069.10</td>
+        <td style="text-align:right">-</td>
+        <td style="text-align:right">3,453,726,590.89</td>
+        <td style="text-align:right">-</td>
+        <td style="text-align:right">3,453,726,590.89</td>
       </tr>
       <tr>
-        <td>ผลสะสมของการเปลี่ยนแปลงนโยบายการบัญชี</td>
-        <td style="text-align:right">5,000.00</td>
-        <td style="text-align:right">3,000.00</td>
+        <td>รายได้สูง/(ต่ำ) กว่าค่าใช้จ่ายของปี</td>
+        <td style="text-align:right">236,915,000.21</td>
+        <td style="text-align:right">-</td>
+        <td style="text-align:right">95,097,170.35</td>
+        <td style="text-align:right">44,665,910.15</td>
+        <td style="text-align:right">3,390,191.43</td>
+        <td style="text-align:right">3,390,191.43</td>
+        <td style="text-align:right">-</td>
+        <td style="text-align:right">335,402,361.99</td>
       </tr>
       <tr>
-        <td>ยอดคงเหลือหลังปรับปรุง (N-2)</td>
-        <td style="text-align:right">1,025,000.00</td>
-        <td style="text-align:right">963,000.00</td>
-      </tr>
-      <tr>
-        <td>รายได้สูง/(ต่ำ) กว่าค่าใช้จ่าย</td>
-        <td style="text-align:right">150,000.00</td>
-        <td style="text-align:right">120,000.00</td>
-      </tr>
-      <tr>
-        <td><strong>ยอดคงเหลือ ณ สิ้นปี</strong></td>
-        <td style="text-align:right"><strong>1,175,000.00</strong></td>
-        <td style="text-align:right"><strong>1,083,000.00</strong></td>
+        <td><strong>ยอดคงเหลือ ณ วันที่ 30 กันยายน 2567</strong></td>
+        <td style="text-align:right"><strong>3,590,192,339.54</strong></td>
+        <td style="text-align:right"><strong>-</strong></td>
+        <td style="text-align:right"><strong>344,660,593.55</strong></td>
+        <td style="text-align:right"><strong>44,665,910.15</strong></td>
+        <td style="text-align:right"><strong>3,390,191.43</strong></td>
+        <td style="text-align:right"><strong>3,982,099,034.67</strong></td>
+        <td style="text-align:right"><strong>-</strong></td>
+        <td style="text-align:right"><strong>3,982,099,034.67</strong></td>
       </tr>
     </table>
   </div>
 
 </div>
 
-<!-- โหลด XLSX เพียงครั้งเดียว -->
+<!-- โหลด XLSX -->
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.20.0/dist/xlsx.full.min.js"></script>
 
 <script>
-  // แสดงวันเดือนปีเวลา ปัจจุบัน
+  // แสดงวันเวลา
   function updateDateTime(){
     const now = new Date();
     const options = {
@@ -357,15 +394,14 @@
   setInterval(updateDateTime, 1000);
   updateDateTime();
 
-  // อัปเดตปี N-1 เมื่อเลือกปี N
+  // ปี N-1
   document.getElementById("yearN").addEventListener("change", ()=>{
     const y = parseInt(document.getElementById("yearN").value,10);
     document.getElementById("yearNMinus1").textContent = isNaN(y) ? "-" : (y-1);
   });
 
-  // เก็บเมตาไฟล์แนบ
+  // ไฟล์แนบอื่น ๆ
   let attachmentsMeta = [];
-
   document.getElementById("attachments").addEventListener("change", (e)=>{
     const files = Array.from(e.target.files);
     attachmentsMeta = files.map(f => ({
@@ -373,11 +409,8 @@
       size: f.size,
       type: f.type
     }));
-
     const list = document.getElementById("attachmentsList");
     list.innerHTML = "";
-    if (attachmentsMeta.length === 0) return;
-
     attachmentsMeta.forEach(a=>{
       const li = document.createElement("li");
       li.textContent = a.name + " (" + a.type + ", " + a.size.toLocaleString() + " bytes)";
@@ -385,7 +418,7 @@
     });
   });
 
-  // โครงสร้าง SOCE (mapping แถวจาก Excel)
+  // Template SOCE
   const SOCE_TEMPLATE = {
     fs_type : "SOCE",
     sheet_name : "Eqiuty",
@@ -398,7 +431,6 @@
       { line_code:"SOCE_006", excel_row:13, raw_label:"การเปลี่ยนแปลงที่ทำให้ทุนเพิ่ม/ลด" },
       { line_code:"SOCE_007", excel_row:14, raw_label:"รายได้สูง/(ต่ำ) กว่าค่าใช้จ่าย" },
       { line_code:"SOCE_008", excel_row:15, raw_label:"ยอดคงเหลือ ณ สิ้นปี N-1" },
-
       { line_code:"SOCE_009", excel_row:17, raw_label:"ยอดคงเหลือ (N-1) ตามที่รายงานเดิม" },
       { line_code:"SOCE_010", excel_row:18, raw_label:"ผลสะสมแก้ไขข้อผิดพลาด" },
       { line_code:"SOCE_011", excel_row:19, raw_label:"ผลสะสมเปลี่ยนแปลงนโยบาย" },
@@ -410,7 +442,6 @@
     ]
   };
 
-  // ฟังก์ชันอ่าน workbook
   async function readWorkbook(file){
     return new Promise((resolve, reject)=>{
       const reader = new FileReader();
@@ -459,12 +490,35 @@
     return value;
   }
 
-  // จะใช้เก็บผลล่าสุด สำหรับบันทึกลงฐานข้อมูล
+  // รวมยอดจากหลายไฟล์ต่อปี
+  function aggregateYear(workbooks, template){
+    const result = {};
+    template.lines.forEach(line=>{
+      result[line.line_code] = { sum:0, hasValue:false };
+    });
+
+    workbooks.forEach(wb=>{
+      const sheet = getSheetByTemplate(wb, template);
+      if (!sheet) return;
+      template.lines.forEach(line=>{
+        const rowIndex = line.excel_row - 1;
+        const colIndex = 2; // คอลัมน์ C
+        const raw = getCellValue(sheet, rowIndex, colIndex);
+        const num = Number(raw);
+        if (!isNaN(num)){
+          const rec = result[line.line_code];
+          rec.sum += num;
+          rec.hasValue = true;
+        }
+      });
+    });
+
+    return result;
+  }
+
   let latestSoceData = null;
 
   async function processSOCE() {
-    const fileN   = document.getElementById("fileCurrent").files[0];
-    const filePrev = document.getElementById("filePrevious").files[0];
     const yearN = document.getElementById("yearN").value;
     const yearPrev = document.getElementById("yearNMinus1").textContent;
     const auditId = document.getElementById("auditId").value.trim();
@@ -473,27 +527,28 @@
       alert("กรุณาเลือกปีงบประมาณ (ปี N)");
       return;
     }
-    if (!fileN || !filePrev){
-      alert("กรุณาเลือกไฟล์ Excel ให้ครบทั้ง 2 ปี (ปี N และ ปี N-1)");
+
+    // รวบรวมไฟล์จาก 10 ช่องของแต่ละปี
+    const filesN = Array.from(document.querySelectorAll(".fileCurrent"))
+                    .map(i => i.files[0]).filter(Boolean);
+    const filesPrev = Array.from(document.querySelectorAll(".filePrevious"))
+                    .map(i => i.files[0]).filter(Boolean);
+
+    if (filesN.length === 0 || filesPrev.length === 0){
+      alert("กรุณาเลือกไฟล์ Excel อย่างน้อย 1 ไฟล์สำหรับทั้งปี N และปี N-1");
       return;
     }
 
     try{
-      const wbN    = await readWorkbook(fileN);
-      const wbPrev = await readWorkbook(filePrev);
+      const wbNList = await Promise.all(filesN.map(readWorkbook));
+      const wbPrevList = await Promise.all(filesPrev.map(readWorkbook));
 
-      const sheetN    = getSheetByTemplate(wbN, SOCE_TEMPLATE);
-      const sheetPrev = getSheetByTemplate(wbPrev, SOCE_TEMPLATE);
+      const sumsN = aggregateYear(wbNList, SOCE_TEMPLATE);
+      const sumsPrev = aggregateYear(wbPrevList, SOCE_TEMPLATE);
 
-      if (!sheetN || !sheetPrev){
-        alert("ไม่พบชีตข้อมูลในไฟล์อย่างน้อยหนึ่งไฟล์ กรุณาตรวจสอบโครงสร้างไฟล์ Excel");
-        return;
-      }
-
-      const rows = [];
       let html = `
         <div class="note-title">
-          ผลลัพธ์งบแสดงการเปลี่ยนแปลงสินทรัพย์สุทธิ/ส่วนทุน จากไฟล์ Excel
+          ผลลัพธ์งบแสดงการเปลี่ยนแปลงสินทรัพย์สุทธิ/ส่วนทุน (รวมจากหลายไฟล์)
           <span class="badge">ปี N: ${yearN || "-"}</span>
           <span class="badge">ปี N-1: ${yearPrev || "-"}</span>
           ${auditId ? '<span class="badge">รหัสงาน: '+auditId+'</span>' : ''}
@@ -501,35 +556,37 @@
         <table>
           <tr>
             <th class="line-label">รายการ</th>
-            <th class="year-col">ปี N</th>
-            <th class="year-col">ปี N-1</th>
+            <th class="year-col">ปี N (รวมทุกไฟล์)</th>
+            <th class="year-col">ปี N-1 (รวมทุกไฟล์)</th>
           </tr>
       `;
 
-      SOCE_TEMPLATE.lines.forEach(line => {
-        const rowIndex = line.excel_row - 1;
-        const colIndex = 2; // คอลัมน์ C
+      const rows = [];
 
-        const rawN    = getCellValue(sheetN,    rowIndex, colIndex);
-        const rawPrev = getCellValue(sheetPrev, rowIndex, colIndex);
+      SOCE_TEMPLATE.lines.forEach(line=>{
+        const recN = sumsN[line.line_code] || {sum:"",hasValue:false};
+        const recP = sumsPrev[line.line_code] || {sum:"",hasValue:false};
 
-        const valN    = formatNumber(rawN);
-        const valPrev = formatNumber(rawPrev);
+        const rawN = recN.hasValue ? recN.sum : "";
+        const rawP = recP.hasValue ? recP.sum : "";
+
+        const valN = formatNumber(rawN);
+        const valP = formatNumber(rawP);
 
         rows.push({
           line_code: line.line_code,
           label: line.raw_label,
           yearN_raw: rawN,
           yearN_display: valN,
-          yearPrev_raw: rawPrev,
-          yearPrev_display: valPrev
+          yearPrev_raw: rawP,
+          yearPrev_display: valP
         });
 
         html += `
           <tr>
             <td>${line.raw_label}</td>
             <td style="text-align:right">${valN}</td>
-            <td style="text-align:right">${valPrev}</td>
+            <td style="text-align:right">${valP}</td>
           </tr>
         `;
       });
@@ -544,8 +601,8 @@
         yearPrev: yearPrev || null,
         generated_at: new Date().toISOString(),
         source_files: {
-          yearN_file_name: fileN.name,
-          yearPrev_file_name: filePrev.name
+          yearN_files: filesN.map(f=>f.name),
+          yearPrev_files: filesPrev.map(f=>f.name)
         },
         rows: rows,
         attachments: attachmentsMeta
@@ -557,7 +614,6 @@
     }
   }
 
-  // toggle ช่อง URL API
   document.getElementById("saveTarget").addEventListener("change", (e)=>{
     document.getElementById("apiUrlContainer").style.display =
       e.target.value === "api" ? "block" : "none";
@@ -568,7 +624,6 @@
       alert("ยังไม่มีผลการประมวล โปรดประมวลผลงบ SOCE ก่อน");
       return;
     }
-
     const target = document.getElementById("saveTarget").value;
 
     if (target === "local"){
@@ -577,8 +632,7 @@
       current.push(latestSoceData);
       localStorage.setItem(key, JSON.stringify(current));
       alert("บันทึกข้อมูลลงฐานข้อมูลในเครื่อง (localStorage) เรียบร้อยแล้ว");
-    }
-    else if (target === "download"){
+    }else if (target === "download"){
       const blob = new Blob([JSON.stringify(latestSoceData,null,2)], {type:"application/json"});
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
@@ -589,8 +643,7 @@
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
-    }
-    else if (target === "api"){
+    }else if (target === "api"){
       const apiUrl = document.getElementById("apiUrl").value.trim();
       if (!apiUrl){
         alert("กรุณาระบุ URL ของ API ที่ต้องการส่งข้อมูลไปเก็บ");
