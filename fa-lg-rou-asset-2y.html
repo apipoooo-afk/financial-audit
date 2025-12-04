@@ -181,6 +181,70 @@ async function processSOCE() {
   html += `</table>`;
   document.getElementById("soceContainer").innerHTML = html;
 }
+<!-- โหลด XLSX -->
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+<script>
+async function readExcel(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            try {
+                const data = e.target.result;
+                const workbook = XLSX.read(data, { type: "array" });
+
+                // เลือกชีตแรกเสมอ (กันชื่อชีตไม่ตรง)
+                const sheetName = workbook.SheetNames[0];
+                const sheet = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { defval: 0 });
+
+                resolve(sheet);
+            } catch (err) {
+                reject(err);
+            }
+        };
+        reader.onerror = reject;
+        reader.readAsArrayBuffer(file);
+    });
+}
+
+// ปุ่มประมวลผล
+document.getElementById("processSOCE").addEventListener("click", async () => {
+    const fileN = document.getElementById("fileN").files[0];
+    const fileN1 = document.getElementById("fileN1").files[0];
+
+    if (!fileN || !fileN1) {
+        alert("กรุณาเลือกไฟล์ให้ครบทั้ง 2 ปี (ปี N และ ปี N-1)");
+        return;
+    }
+
+    try {
+        // อ่านไฟล์ทั้งสอง
+        const dataN = await readExcel(fileN);
+        const dataN1 = await readExcel(fileN1);
+
+        console.log("DATA N:", dataN);
+        console.log("DATA N-1:", dataN1);
+
+        // ตัวอย่างคำนวณ SOCE (คุณจะปรับสูตรเองได้)
+        const totalN = dataN.reduce((sum, row) => sum + (parseFloat(row["ยอดเงิน"]) || 0), 0);
+        const totalN1 = dataN1.reduce((sum, row) => sum + (parseFloat(row["ยอดเงิน"]) || 0), 0);
+
+        const diff = totalN - totalN1;
+
+        document.getElementById("result").innerHTML = `
+            <h3>ผลการประมวลผล SOCE</h3>
+            <p>ปี N: ${totalN.toLocaleString()}</p>
+            <p>ปี N-1: ${totalN1.toLocaleString()}</p>
+            <p><b>ความเปลี่ยนแปลง: ${diff.toLocaleString()}</b></p>
+        `;
+    } catch (err) {
+        alert("ประมวลผลล้มเหลว: " + err.message);
+        console.error(err);
+    }
+});
+</script>
+
+  
 </script>
 
 </body>
