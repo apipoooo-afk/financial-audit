@@ -2,262 +2,351 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8">
-  <title>FA Cash Board | Financial Audit System</title>
+  <title>FA Cash Board | Executive Summary</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- ใช้ Chart.js จาก CDN -->
+  <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
     :root{
-      --bg:#060818;
-      --card:#11152b;
-      --card-soft:#161b3b;
-      --accent:#fdd835;
-      --accent2:#42a5f5;
-      --accent3:#66bb6a;
-      --accent4:#ef5350;
-      --muted:#a3acc7;
-      --border:#262b46;
+      --bg-page:#f3f5fb;
+      --bg-header:#ffffff;
+      --bg-card:#ffffff;
+      --bg-sidebar:#0f172a;
+      --bg-kpi:#ffffff;
+      --border-soft:#e2e8f0;
+      --border-strong:#cbd5e1;
+      --accent:#2563eb;
+      --accent-soft:#e0edff;
+      --accent-danger:#ef4444;
+      --accent-success:#16a34a;
+      --accent-warning:#eab308;
+      --text-main:#0f172a;
+      --text-muted:#64748b;
+      --shadow-soft:0 6px 20px rgba(15,23,42,0.15);
+      --radius-lg:16px;
     }
     *{box-sizing:border-box;}
+
     body{
       margin:0;
-      font-family:"Segoe UI",Arial,sans-serif;
-      background:
-        radial-gradient(circle at 10% 0%, rgba(123,30,60,0.36) 0, transparent 55%),
-        radial-gradient(circle at 90% 100%, rgba(66,165,245,0.32) 0, transparent 55%),
-        var(--bg);
-      color:#f5f7ff;
+      font-family:"Segoe UI",Tahoma,Arial,sans-serif;
+      background:var(--bg-page);
+      color:var(--text-main);
     }
 
-    header{
-      padding:16px 14px 14px;
-      background:linear-gradient(120deg,#0d47a1,#6f42c1,#20c997);
-      box-shadow:0 4px 16px rgba(0,0,0,0.55);
+    .layout{
+      display:flex;
+      min-height:100vh;
+    }
+
+    /* SIDEBAR LEFT */
+
+    .sidebar{
+      width:70px;
+      background:var(--bg-sidebar);
+      color:#e5e7eb;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      padding:12px 8px;
+      gap:10px;
+      box-shadow:2px 0 8px rgba(15,23,42,0.4);
       position:sticky;
       top:0;
-      z-index:20;
     }
-    .h-inner{
-      max-width:1200px;
-      margin:0 auto;
+
+    .sb-logo{
+      font-size:22px;
+      margin-bottom:6px;
+    }
+    .sb-title{
+      font-size:11px;
+      text-align:center;
+      line-height:1.2;
+      margin-bottom:8px;
+    }
+    .sb-nav{
       display:flex;
-      flex-wrap:wrap;
-      gap:12px;
-      align-items:flex-start;
+      flex-direction:column;
+      gap:8px;
+      margin-top:4px;
+      flex:1;
+    }
+    .sb-btn{
+      width:46px;
+      height:46px;
+      border-radius:14px;
+      border:none;
+      background:transparent;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      position:relative;
+    }
+    .sb-btn span{
+      font-size:22px;
+    }
+    .sb-btn.active{
+      background:linear-gradient(135deg,#2563eb,#4f46e5);
+    }
+    .sb-btn:hover{
+      background:rgba(148,163,184,0.25);
+    }
+    .sb-tooltip{
+      position:absolute;
+      left:54px;
+      top:50%;
+      transform:translateY(-50%);
+      background:#111827;
+      color:#e5e7eb;
+      padding:4px 8px;
+      border-radius:6px;
+      font-size:11px;
+      white-space:nowrap;
+      opacity:0;
+      pointer-events:none;
+      transition:.12s;
+    }
+    .sb-btn:hover .sb-tooltip{
+      opacity:1;
+    }
+
+    .sb-footer{
+      font-size:10px;
+      color:#94a3b8;
+      text-align:center;
+      margin-top:10px;
+    }
+
+    /* MAIN */
+
+    .main{
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      min-width:0;
+    }
+
+    /* HEADER TOP */
+
+    header{
+      background:var(--bg-header);
+      box-shadow:0 2px 6px rgba(148,163,184,.35);
+      padding:10px 16px 8px;
+      position:sticky;
+      top:0;
+      z-index:10;
+    }
+    .header-row1{
+      display:flex;
       justify-content:space-between;
+      align-items:flex-start;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .h-title-block{
+      display:flex;
+      flex-direction:column;
+      gap:4px;
     }
     .h-title{
-      font-size:24px;
+      font-size:22px;
       font-weight:800;
+      color:#0f172a;
     }
     .h-sub{
       font-size:13px;
-      opacity:.9;
-      margin-top:4px;
+      color:var(--text-muted);
     }
-    .h-tags{
-      font-size:11px;
-      opacity:.9;
+    .h-tag{
       margin-top:2px;
+      font-size:11px;
+      color:var(--text-muted);
     }
     .h-right{
       display:flex;
       flex-direction:column;
-      gap:6px;
       align-items:flex-end;
+      gap:4px;
       min-width:220px;
     }
-    .tag-pill{
-      font-size:12px;
-      padding:4px 8px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.5);
-      background:rgba(0,0,0,.15);
-    }
-    .dt-box{
-      font-size:12px;
-      background:rgba(0,0,0,.25);
-      padding:6px 10px;
-      border-radius:10px;
-    }
-    .dt-row{
+    .h-filters-top{
       display:flex;
       gap:6px;
-      align-items:center;
-    }
-
-    main{
-      max-width:1200px;
-      margin:16px auto 40px;
-      padding:0 14px 60px;
-    }
-
-    .top-bar{
-      display:flex;
       flex-wrap:wrap;
-      justify-content:space-between;
-      gap:10px;
-      margin-bottom:10px;
-      font-size:13px;
-      color:var(--muted);
     }
-
-    /* NAV BUTTONS */
-    .nav-row{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      margin-bottom:12px;
-    }
-    .btn-nav{
-      border:none;
-      border-radius:999px;
-      padding:6px 12px;
-      font-size:12px;
-      cursor:pointer;
+    .filter-pill{
       display:inline-flex;
       align-items:center;
       gap:6px;
-      background:rgba(15,23,42,.9);
-      color:#e0f2fe;
-      border:1px solid rgba(148,163,184,.7);
+      padding:4px 8px;
+      border-radius:999px;
+      border:1px solid var(--border-soft);
+      background:#f8fafc;
+      font-size:12px;
     }
-    .btn-nav:hover{
-      background:rgba(30,64,175,.95);
+    .dt-box{
+      font-size:11px;
+      border-radius:10px;
+      padding:4px 8px;
+      background:#0f172a;
+      color:#e5e7eb;
+      display:inline-flex;
+      flex-direction:column;
+      align-items:flex-end;
+      gap:2px;
     }
 
-    /* FILTER BAR */
-    .filter-bar{
+    .header-row2{
+      margin-top:8px;
       display:flex;
       flex-wrap:wrap;
-      gap:10px;
-      margin:10px 0 14px;
-      font-size:13px;
+      gap:8px;
+      align-items:center;
+      font-size:12px;
     }
-    .filter-group{
-      display:flex;
-      flex-direction:column;
-      gap:3px;
-      min-width:130px;
-    }
-    .filter-group label{
-      color:var(--muted);
-    }
-    select{
-      padding:6px 8px;
-      border-radius:8px;
-      border:1px solid var(--border);
-      background:#020617;
-      color:#e5e7eb;
-      font-size:13px;
+    .hdr-label{
+      font-weight:600;
+      color:var(--text-muted);
     }
 
-    /* SUMMARY CARDS */
-    .summary-grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
-      gap:12px;
-      margin-bottom:16px;
+    .hdr-select{
+      padding:4px 8px;
+      border-radius:999px;
+      border:1px solid var(--border-strong);
+      background:#eff6ff;
+      font-size:12px;
+      min-width:100px;
     }
-    .summary-card{
-      background:var(--card);
-      border-radius:16px;
-      padding:10px 12px;
-      border:1px solid rgba(148,163,184,.3);
-      box-shadow:0 8px 20px rgba(15,23,42,.85);
+
+    /* CONTENT */
+
+    .content{
+      padding:12px 16px 24px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    /* KPI CARDS */
+
+    .kpi-row{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+      gap:10px;
+    }
+    .kpi-card{
+      background:var(--bg-kpi);
+      border-radius:var(--radius-lg);
+      box-shadow:var(--shadow-soft);
+      padding:8px 10px;
+      border:1px solid var(--border-soft);
       position:relative;
       overflow:hidden;
       cursor:default;
     }
-    .summary-card::after{
+    .kpi-card::after{
       content:"";
       position:absolute;
       right:-20px;
       top:-20px;
-      width:70px;
-      height:70px;
+      width:80px;
+      height:80px;
       border-radius:50%;
-      background:rgba(255,255,255,0.05);
+      background:rgba(148,163,184,0.13);
     }
-    .sc-label{
-      font-size:12px;
-      color:var(--muted);
-      margin-bottom:4px;
+    .kpi-label{
+      font-size:11px;
+      color:var(--text-muted);
+      margin-bottom:2px;
+      display:flex;
+      justify-content:space-between;
+      gap:4px;
     }
-    .sc-value{
+    .kpi-main{
+      display:flex;
+      align-items:flex-end;
+      gap:6px;
+    }
+    .kpi-value{
       font-size:20px;
       font-weight:800;
+      color:#0f172a;
     }
-    .sc-sub{
+    .kpi-unit{
       font-size:11px;
-      color:var(--muted);
+      color:var(--text-muted);
+      margin-bottom:2px;
+    }
+    .kpi-chip{
+      font-size:10px;
+      padding:2px 6px;
+      border-radius:999px;
+      background:var(--accent-soft);
+      color:var(--accent);
+      border:1px solid rgba(37,99,235,0.35);
+    }
+    .kpi-foot{
+      font-size:10px;
+      color:var(--text-muted);
       margin-top:4px;
     }
-    .sc-tag{
-      font-size:11px;
-      margin-top:6px;
-      display:inline-block;
-      padding:2px 8px;
-      border-radius:999px;
-      background:rgba(15,23,42,.9);
-      border:1px solid rgba(148,163,184,.5);
-      color:#e0f2fe;
-    }
-
-    /* tooltip แบบ hover */
-    .summary-card[data-tip]:hover::before{
+    .kpi-card[data-tip]:hover::before{
       content:attr(data-tip);
       position:absolute;
-      left:10px;
-      bottom:8px;
-      max-width:260px;
-      background:rgba(15,23,42,.97);
-      border-radius:8px;
-      padding:6px 8px;
-      font-size:11px;
+      left:8px;
+      bottom:6px;
+      padding:4px 6px;
+      border-radius:6px;
+      background:#0f172a;
       color:#e5e7eb;
-      box-shadow:0 6px 14px rgba(0,0,0,.7);
-      z-index:5;
+      font-size:10px;
+      max-width:260px;
+      box-shadow:0 4px 12px rgba(15,23,42,0.7);
       white-space:normal;
+      z-index:5;
     }
 
-    /* CHARTS */
-    .chart-grid{
+    /* CHART AREA */
+
+    .chart-row{
       display:grid;
       grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-      gap:14px;
-      margin-bottom:18px;
+      gap:12px;
     }
     .chart-card{
-      background:var(--card-soft);
-      border-radius:16px;
-      padding:10px 10px 14px;
-      border:1px solid rgba(148,163,184,.35);
-      box-shadow:0 10px 22px rgba(15,23,42,.9);
+      background:#ffffff;
+      border-radius:var(--radius-lg);
+      box-shadow:var(--shadow-soft);
+      border:1px solid var(--border-soft);
+      padding:10px 12px 12px;
     }
     .chart-title{
       font-size:13px;
-      margin-bottom:4px;
+      font-weight:600;
+      margin-bottom:2px;
     }
     .chart-sub{
       font-size:11px;
-      color:var(--muted);
+      color:var(--text-muted);
       margin-bottom:4px;
     }
     .chart-wrap{
       position:relative;
-      height:240px;
+      height:220px;
     }
 
     /* TABLE */
+
     .table-card{
-      background:var(--card);
-      border-radius:16px;
-      padding:10px 10px 14px;
-      border:1px solid rgba(148,163,184,.35);
-      box-shadow:0 10px 22px rgba(15,23,42,.9);
+      background:#ffffff;
+      border-radius:var(--radius-lg);
+      box-shadow:var(--shadow-soft);
+      border:1px solid var(--border-soft);
+      padding:10px 12px 12px;
     }
     .table-head{
       display:flex;
@@ -266,254 +355,335 @@
       margin-bottom:6px;
       font-size:13px;
     }
-    .table-head-right{
+    .table-info{
       font-size:11px;
-      color:var(--muted);
+      color:var(--text-muted);
     }
-    .table-search{
-      margin-bottom:8px;
+    .table-search-row{
       display:flex;
-      gap:6px;
       flex-wrap:wrap;
-      font-size:13px;
+      gap:6px;
+      margin-bottom:8px;
+      font-size:11px;
+      color:var(--text-muted);
     }
-    .table-search input{
+    .table-search-row input{
       padding:6px 8px;
-      border-radius:8px;
-      border:1px solid var(--border);
-      background:#020617;
-      color:#e5e7eb;
-      min-width:180px;
+      border-radius:999px;
+      border:1px solid var(--border-strong);
+      min-width:210px;
+      font-size:12px;
     }
-
+    .table-container{
+      max-height:280px;
+      overflow:auto;
+      border-radius:12px;
+      border:1px solid var(--border-strong);
+    }
     table{
       width:100%;
       border-collapse:collapse;
       font-size:11px;
     }
     thead{
-      background:#020617;
-    }
-    th,td{
-      padding:5px 6px;
-      border-bottom:1px solid rgba(31,41,55,.9);
-      text-align:left;
-      white-space:nowrap;
-    }
-    th{
+      background:#eff6ff;
       position:sticky;
       top:0;
       z-index:5;
     }
+    th,td{
+      padding:5px 6px;
+      border-bottom:1px solid #e5e7eb;
+      white-space:nowrap;
+      text-align:left;
+    }
     tbody tr:nth-child(even){
-      background:#0b1024;
+      background:#f8fafc;
     }
     tbody tr:hover{
-      background:#1e293b;
+      background:#e0f2fe;
     }
     .col-code{font-family:monospace;}
+
     .link-small a{
-      color:#93c5fd;
+      color:#2563eb;
       text-decoration:none;
     }
-    .link-small a:hover{
-      text-decoration:underline;
-    }
+    .link-small a:hover{text-decoration:underline;}
 
-    /* เมนูเพิ่มข้อมูล / กลับ */
+    /* BOTTOM BUTTONS */
+
     .bottom-row{
       display:flex;
       flex-wrap:wrap;
       gap:8px;
-      margin-top:12px;
+      margin-top:8px;
       font-size:12px;
     }
     .btn-secondary{
-      border-radius:999px;
-      border:1px solid rgba(148,163,184,.7);
-      background:#020617;
-      color:#e0f2fe;
-      padding:6px 10px;
-      cursor:pointer;
       display:inline-flex;
       align-items:center;
       gap:6px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid var(--border-strong);
+      background:#ffffff;
+      box-shadow:0 2px 6px rgba(148,163,184,.35);
+      cursor:pointer;
       text-decoration:none;
+      color:var(--text-main);
     }
     .btn-secondary:hover{
-      background:#111827;
+      background:#eff6ff;
     }
 
     @media(max-width:768px){
-      .h-inner{flex-direction:column;align-items:flex-start;}
+      .header-row1{flex-direction:column;}
       .h-right{align-items:flex-start;}
+      .sidebar{display:none;} /* บนมือถือซ่อน sidebar */
     }
   </style>
 </head>
 <body>
 
-<header>
-  <div class="h-inner">
-    <div>
-      <div class="h-title">📈 FA Cash Board – แดชบอร์ดกลาง</div>
-      <div class="h-sub">
-        เชื่อมฐานข้อมูลกลาง อปท. (<code>localStorage["fa-db-data-gov"]</code>) สำหรับการวิเคราะห์ภาพรวมทั้งประเทศ
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sb-logo">📊</div>
+    <div class="sb-title">
+      FA<br>CASH<br>BOARD
+    </div>
+
+    <div class="sb-nav">
+      <button class="sb-btn" onclick="location.href='index.html'">
+        <span>🏠</span>
+        <div class="sb-tooltip">Portal หลัก</div>
+      </button>
+      <button class="sb-btn" onclick="location.href='fa-menu.html'">
+        <span>📂</span>
+        <div class="sb-tooltip">ระบบตรวจสอบการเงิน (FA)</div>
+      </button>
+      <button class="sb-btn" onclick="location.href='fa-tracking.html'">
+        <span>📌</span>
+        <div class="sb-tooltip">ระบบติดตามผล</div>
+      </button>
+      <button class="sb-btn" onclick="location.href='fa-review-login.html'">
+        <span>🧮</span>
+        <div class="sb-tooltip">ระบบสอบทาน</div>
+      </button>
+      <button class="sb-btn" onclick="location.href='fa-chatbot.html'">
+        <span>🤖</span>
+        <div class="sb-tooltip">Chatbot FA</div>
+      </button>
+      <button class="sb-btn active" onclick="location.href='fa-dashboard.html'">
+        <span>📈</span>
+        <div class="sb-tooltip">FA Cash Board</div>
+      </button>
+      <button class="sb-btn" onclick="location.href='fa-db-data-gov.html'">
+        <span>🗄</span>
+        <div class="sb-tooltip">ฐานข้อมูลกลาง อปท.</div>
+      </button>
+    </div>
+
+    <div class="sb-footer">
+      OAG SS<br>Group 4
+    </div>
+  </aside>
+
+  <!-- MAIN PANEL -->
+  <div class="main">
+
+    <header>
+      <div class="header-row1">
+        <div class="h-title-block">
+          <div class="h-title">EXECUTIVE SUMMARY – FA CASH BOARD</div>
+          <div class="h-sub">
+            ภาพรวมสถานะหน่วยรับตรวจ อปท. ทั้งประเทศ (Real-time จากฐานข้อมูลกลาง)
+          </div>
+          <div class="h-tag">
+            กลุ่มตรวจสอบที่ 4 • สำนักงานการตรวจเงินแผ่นดินจังหวัดศรีสะเกษ
+          </div>
+        </div>
+
+        <div class="h-right">
+          <div class="h-filters-top">
+            <div class="filter-pill">
+              🔄 Data refresh:
+              <span id="lastRefresh">รอโหลดข้อมูล...</span>
+            </div>
+            <div class="filter-pill">
+              ⚡ Mode: Real-time polling (30s)
+            </div>
+          </div>
+          <div class="dt-box">
+            <div>📅 <span id="thaiDate">--</span></div>
+            <div>🕒 <span id="thaiTime">--:--:--</span> น.</div>
+          </div>
+        </div>
       </div>
-      <div class="h-tags">
-        กลุ่มตรวจสอบที่ 4 • สำนักงานการตรวจเงินแผ่นดินจังหวัดศรีสะเกษ
+
+      <div class="header-row2">
+        <span class="hdr-label">Filter:</span>
+        <select id="yearFilter" class="hdr-select">
+          <option value="">ทุกปีงบประมาณ</option>
+        </select>
+        <select id="quarterFilter" class="hdr-select">
+          <option value="">ทุกไตรมาส</option>
+          <option value="Q1">Q1</option>
+          <option value="Q2">Q2</option>
+          <option value="Q3">Q3</option>
+          <option value="Q4">Q4</option>
+        </select>
+        <select id="regionFilter" class="hdr-select">
+          <option value="">ทุกภูมิภาค</option>
+          <option value="Central">Central</option>
+          <option value="North">North</option>
+          <option value="NorthEast">North East</option>
+          <option value="South">South</option>
+          <option value="Bangkok">Bangkok</option>
+        </select>
+        <span style="font-size:11px;color:var(--text-muted);">
+          (* ถ้าฐานข้อมูลยังไม่มี field ปี / ภูมิภาค ระบบจะถือว่าเป็น “ทุกปี / ทุกภูมิภาค” อัตโนมัติ)
+        </span>
       </div>
-    </div>
-    <div class="h-right">
-      <div class="tag-pill">Real-time view (front-end only)</div>
-      <div class="dt-box">
-        <div class="dt-row">📅 <span id="thaiDate">--</span></div>
-        <div class="dt-row">🕒 <span id="thaiTime">--:--:--</span> น.</div>
+    </header>
+
+    <div class="content">
+
+      <!-- KPI ROW -->
+      <div class="kpi-row">
+        <div class="kpi-card" id="kpiTotalUnits"
+             data-tip="จำนวนหน่วย อปท. ทั้งหมดที่อยู่ในฐานข้อมูลกลาง (หลังจากใช้ตัวกรองด้านบนแล้ว)">
+          <div class="kpi-label">
+            <span>จำนวน อปท. ทั้งหมด</span>
+            <span class="kpi-chip">1.1 Total LG Units</span>
+          </div>
+          <div class="kpi-main">
+            <div class="kpi-value" id="kpiTotalUnitsValue">0</div>
+            <div class="kpi-unit">หน่วย</div>
+          </div>
+          <div class="kpi-foot" id="kpiTotalUnitsFoot">–</div>
+        </div>
+
+        <div class="kpi-card" id="kpiFsClosed"
+             data-tip="ใช้ field fsStatus = closed / notClosed / late / notSubmitted เพื่อสรุปสถานะปิดงบการเงิน">
+          <div class="kpi-label">
+            <span>ปิดงบการเงินแล้ว</span>
+            <span class="kpi-chip" style="background:#dcfce7;color:#166534;border-color:#22c55e;">
+              1.2 FS Closed
+            </span>
+          </div>
+          <div class="kpi-main">
+            <div class="kpi-value" id="kpiFsClosedValue">0</div>
+            <div class="kpi-unit">หน่วย</div>
+          </div>
+          <div class="kpi-foot" id="kpiFsClosedFoot">–</div>
+        </div>
+
+        <div class="kpi-card" id="kpiFsOpinion"
+             data-tip="ใช้ field fsOpinion = unqualified / qualified / adverse / disclaimer เพื่อดูคุณภาพงบการเงิน">
+          <div class="kpi-label">
+            <span>งบการเงินไม่มีเงื่อนไข (Unqualified)</span>
+            <span class="kpi-chip" style="background:#e0f2fe;color:#0ea5e9;border-color:#0ea5e9;">
+              1.3 FS Opinion
+            </span>
+          </div>
+          <div class="kpi-main">
+            <div class="kpi-value" id="kpiFsUnqValue">0</div>
+            <div class="kpi-unit">หน่วย</div>
+          </div>
+          <div class="kpi-foot" id="kpiFsUnqFoot">–</div>
+        </div>
+
+        <div class="kpi-card" id="kpiAuditProgress"
+             data-tip="ใช้ field progressStep = followUp / reportSent ถือว่าเสร็จสิ้นกระบวนการตรวจสอบทั้งหมด">
+          <div class="kpi-label">
+            <span>หน่วยที่ตรวจสอบเสร็จสิ้น</span>
+            <span class="kpi-chip" style="background:#fee2e2;color:#b91c1c;border-color:#f97373;">
+              1.5–1.6 Audit Progress
+            </span>
+          </div>
+          <div class="kpi-main">
+            <div class="kpi-value" id="kpiAuditDoneValue">0%</div>
+            <div class="kpi-unit">ของทั้งหมด</div>
+          </div>
+          <div class="kpi-foot" id="kpiAuditDoneFoot">–</div>
+        </div>
       </div>
-    </div>
-  </div>
-</header>
 
-<main>
-  <div class="top-bar">
-    <span>📌 ข้อมูลทั้งหมดดึงจากฐานกลาง <code>fa-db-data-gov</code> ถ้าไม่มีข้อมูลใน localStorage จะแสดงค่า 0 อัตโนมัติ</span>
-    <span>🧩 สามารถเพิ่ม/แก้ข้อมูลได้จากหน้า FA DB แล้ว refresh หน้านี้</span>
-  </div>
+      <!-- CHARTS -->
+      <div class="chart-row">
+        <div class="chart-card">
+          <div class="chart-title">จำนวน อปท. ตามประเภท</div>
+          <div class="chart-sub">
+            ใช้ field <code>type / ประเภท</code> (เช่น กทม, เมืองพัทยา, อบจ., ทน., ทต., อบต.) – สำหรับตอบโจทย์ 1.1
+          </div>
+          <div class="chart-wrap">
+            <canvas id="chartType"></canvas>
+          </div>
+        </div>
 
-  <!-- NAV เมนูไปยังระบบอื่น -->
-  <div class="nav-row">
-    <button class="btn-nav" onclick="location.href='index.html'">⬅ กลับหน้าแรก (Portal)</button>
-    <button class="btn-nav" onclick="location.href='fa-menu.html'">📂 ระบบตรวจสอบการเงิน (FA)</button>
-    <button class="btn-nav" onclick="location.href='fa-review-login.html'">🧮 ระบบสอบทาน</button>
-    <button class="btn-nav" onclick="location.href='fa-tracking.html'">📌 ระบบติดตามผล</button>
-    <button class="btn-nav" onclick="location.href='fa-chatbot.html'">🤖 Chatbot FA</button>
-    <button class="btn-nav" onclick="location.href='fa-db-data-gov.html'">🗄 ไปหน้าฐานข้อมูลกลาง อปท.</button>
-  </div>
-
-  <!-- FILTER -->
-  <div class="filter-bar">
-    <div class="filter-group">
-      <label for="filterProvince">จังหวัด (Province)</label>
-      <select id="filterProvince">
-        <option value="">ทุกจังหวัด</option>
-      </select>
-    </div>
-    <div class="filter-group">
-      <label for="filterType">ประเภท อปท. (Type)</label>
-      <select id="filterType">
-        <option value="">ทุกประเภท</option>
-      </select>
-    </div>
-    <div class="filter-group">
-      <label>จำนวนหน่วยในชุดข้อมูลที่ใช้คำนวณ</label>
-      <div id="filterCount" style="font-size:13px;color:#e5e7eb;">- หน่วย</div>
-    </div>
-  </div>
-
-  <!-- SUMMARY CARDS -->
-  <div class="summary-grid">
-    <div class="summary-card" id="cardTotalUnits"
-         data-tip="จำนวนหน่วย อปท. ทั้งหมดที่มีในฐานข้อมูลกลาง fa-db-data-gov (หลังจากใช้ตัวกรอง จังหวัด + ประเภท แล้ว)">
-      <div class="sc-label">จำนวน อปท. ทั้งหมด (หลังกรอง)</div>
-      <div class="sc-value" id="scTotalUnits">0</div>
-      <div class="sc-sub" id="scTotalUnitsSub">พบ 0 หน่วย</div>
-      <div class="sc-tag">1.1 Total LG Units</div>
-    </div>
-
-    <div class="summary-card" id="cardProvince"
-         data-tip="จำนวนจังหวัดที่มีหน่วย อปท. ในชุดข้อมูลนี้ เช่น ถ้าทั้งประเทศจะเห็นครบทุกจังหวัด">
-      <div class="sc-label">จำนวนจังหวัดที่มีข้อมูล</div>
-      <div class="sc-value" id="scProvinceCount">0</div>
-      <div class="sc-sub" id="scProvinceSub">-</div>
-      <div class="sc-tag">By Province</div>
-    </div>
-
-    <div class="summary-card"
-         data-tip="ต้องการใช้จริงสำหรับ 1.2 / 1.3 / 1.4 สามารถเพิ่ม field สถานะงบการเงินในฐานกลาง เช่น fsStatus, fsOpinion, fsAdjusted แล้วระบบจะนับให้อัตโนมัติ">
-      <div class="sc-label">ภาพรวมสถานะงบการเงิน (demo)</div>
-      <div class="sc-value" id="scFsStatus">0 / 0</div>
-      <div class="sc-sub" id="scFsStatusSub">ปิดงบแล้ว / ยังไม่ปิดงบ (สมมติจาก field ตัวอย่าง)</div>
-      <div class="sc-tag">1.2 – 1.4 FS Status</div>
-    </div>
-
-    <div class="summary-card"
-         data-tip="หากเพิ่ม field progressStep (open, doc, wp, closeMeeting, explain, report, qaReview, reportSent, followUp) ระบบนี้จะใช้เป็น mini KPI tracking ได้เลย">
-      <div class="sc-label">ความคืบหน้าการตรวจสอบ (demo)</div>
-      <div class="sc-value" id="scAuditProgress">0%</div>
-      <div class="sc-sub" id="scAuditProgressSub">หน่วยที่อยู่ในขั้นตอนสุดท้าย / ทั้งหมด</div>
-      <div class="sc-tag">1.5 – 1.6 Audit Progress</div>
-    </div>
-  </div>
-
-  <!-- CHARTS -->
-  <div class="chart-grid">
-    <div class="chart-card">
-      <div class="chart-title">สัดส่วน อปท. ตามประเภท</div>
-      <div class="chart-sub">
-        ใช้สำหรับ 1.1 (ประเภท: กทม, เมืองพัทยา, อบจ., ทน., ทต., อบต. ฯลฯ) – ดึงจาก field <code>type / ประเภท</code>
+        <div class="chart-card">
+          <div class="chart-title">สถานะงบการเงิน และความคืบหน้าการตรวจสอบ</div>
+          <div class="chart-sub">
+            แสดงจำนวนหน่วย: ปิดงบแล้ว / ยังไม่ปิด / ล่าช้า / ไม่ส่งงบ + สัดส่วนหน่วยที่เสร็จสิ้นการตรวจสอบ
+            (ใช้ field <code>fsStatus</code>, <code>progressStep</code>)
+          </div>
+          <div class="chart-wrap">
+            <canvas id="chartStatus"></canvas>
+          </div>
+        </div>
       </div>
-      <div class="chart-wrap">
-        <canvas id="chartTypePie"></canvas>
+
+      <!-- TABLE -->
+      <div class="table-card">
+        <div class="table-head">
+          <div>Sales-like table → ตารางหน่วยรับตรวจ อปท. (จากฐานข้อมูลกลาง)</div>
+          <div class="table-info" id="tableInfo">แสดง 0 จาก 0 รายการ</div>
+        </div>
+        <div class="table-search-row">
+          <span>🔍 ค้นหา:</span>
+          <input id="searchInput" type="text" placeholder="พิมพ์ชื่อหน่วย / รหัส / จังหวัด...">
+        </div>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th style="width:40px;">#</th>
+                <th>รหัส</th>
+                <th>ชื่อหน่วยงาน</th>
+                <th>ประเภท</th>
+                <th>จังหวัด</th>
+                <th>อำเภอ</th>
+                <th>ตำบล</th>
+                <th>สถานะงบการเงิน</th>
+                <th>ขั้นตอนตรวจสอบ</th>
+                <th>เว็บไซต์</th>
+                <th>ลิงก์</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+          </table>
+        </div>
+
+        <div class="bottom-row">
+          <a class="btn-secondary" href="fa-db-data-gov.html">
+            🗄 เพิ่ม/แก้ไขข้อมูล ฐานกลาง อปท. (FA DB)
+          </a>
+          <a class="btn-secondary" href="index.html">
+            ⬅ กลับ Portal หลัก
+          </a>
+        </div>
       </div>
-    </div>
 
-    <div class="chart-card">
-      <div class="chart-title">Top จังหวัดที่มีจำนวน อปท. มากสุด</div>
-      <div class="chart-sub">
-        แสดง 10 จังหวัดแรก (ตามชุดข้อมูลหลังกรอง) – ใช้ field <code>province / จังหวัด</code>
-      </div>
-      <div class="chart-wrap">
-        <canvas id="chartProvinceBar"></canvas>
-      </div>
-    </div>
-  </div>
+    </div> <!-- content -->
 
-  <!-- TABLE -->
-  <div class="table-card">
-    <div class="table-head">
-      <div>📊 ตารางหน่วยรับตรวจ / อปท. (จากฐานกลาง)</div>
-      <div class="table-head-right" id="tableInfo">แสดง 0 จาก 0 รายการ</div>
-    </div>
-
-    <div class="table-search">
-      <span>🔍 ค้นหาชื่อหน่วย / รหัส</span>
-      <input type="text" id="tableSearchInput" placeholder="พิมพ์ชื่อ อปท. หรือรหัส...">
-    </div>
-
-    <div style="max-height:360px;overflow:auto;border-radius:12px;border:1px solid rgba(15,23,42,.9);">
-      <table>
-        <thead>
-          <tr>
-            <th style="width:40px;">#</th>
-            <th>รหัส</th>
-            <th>ชื่อหน่วยงาน</th>
-            <th>ประเภท</th>
-            <th>จังหวัด</th>
-            <th>อำเภอ</th>
-            <th>ตำบล</th>
-            <th>หมู่บ้าน</th>
-            <th>เว็บไซต์</th>
-            <th>ลิงก์</th>
-          </tr>
-        </thead>
-        <tbody id="tableBody">
-          <!-- เติมด้วย JS -->
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- ปุ่มด้านล่าง -->
-  <div class="bottom-row">
-    <a class="btn-secondary" href="fa-db-data-gov.html">
-      🗄 เพิ่ม/แก้ไขข้อมูลฐานกลาง อปท. (FA DB)
-    </a>
-    <a class="btn-secondary" href="index.html">⬅ กลับหน้าแรก (Portal)</a>
-  </div>
-
-</main>
+  </div><!-- main -->
+</div><!-- layout -->
 
 <script>
-  /* ========= Date / Time ไทย ========= */
+  /* ========= Date/Time ไทย ========= */
   function updateThaiDateTime(){
     const now = new Date();
     const thMonths = [
@@ -522,9 +692,10 @@
     ];
     const d = now.getDate();
     const m = now.getMonth();
-    const y = now.getFullYear() + 543;
+    const y = now.getFullYear()+543;
     document.getElementById("thaiDate").textContent =
-      d + " " + thMonths[m] + " พ.ศ. " + y;
+      d+" "+thMonths[m]+" พ.ศ. "+y;
+
     const hh = String(now.getHours()).padStart(2,"0");
     const mm = String(now.getMinutes()).padStart(2,"0");
     const ss = String(now.getSeconds()).padStart(2,"0");
@@ -533,15 +704,21 @@
   updateThaiDateTime();
   setInterval(updateThaiDateTime,1000);
 
-  /* ========= ตั้งค่า Real-time Source =========
-     - API_URL: แหล่งข้อมูลกลาง (JSON)
-     - fallback: localStorage["fa-db-data-gov"]
-  ============================================== */
+  /* ========= CONFIG REAL-TIME SOURCE ========= */
   const API_URL = "https://apipoooo-afk.github.io/financial-audit/fa-db-data-gov.json";
-
   let rawData = [];
+  let chartType = null;
+  let chartStatus = null;
 
-  /* ========= Utility: ดึง field แบบรองรับชื่อไทย/อังกฤษ ========= */
+  const yearFilter   = document.getElementById("yearFilter");
+  const quarterFilter= document.getElementById("quarterFilter");
+  const regionFilter = document.getElementById("regionFilter");
+  const searchInput  = document.getElementById("searchInput");
+  const lastRefreshEl= document.getElementById("lastRefresh");
+  const tableBody    = document.getElementById("tableBody");
+  const tableInfo    = document.getElementById("tableInfo");
+
+  /* utility: ดึง field รองรับทั้งชื่อไทย/อังกฤษ */
   function getField(row, keys, fallback=""){
     if(!row) return fallback;
     for(const k of keys){
@@ -552,8 +729,8 @@
     return fallback;
   }
 
-  /* ========= โหลดจาก localStorage (fallback) ========= */
-  function loadFromLocalStorage(){
+  /* โหลดจาก localStorage เป็น fallback */
+  function loadFromLocal(){
     try{
       const raw = localStorage.getItem("fa-db-data-gov");
       const arr = raw ? JSON.parse(raw) : [];
@@ -563,249 +740,270 @@
     }
   }
 
-  /* ========= ดึงข้อมูลจาก API แบบ real-time (poll ทุก 30 วิ) ========= */
-  async function fetchCentralData(isInitial=false){
+  async function fetchCentralData(){
     try{
-      const res = await fetch(API_URL + "?t=" + Date.now(), { cache: "no-store" });
-      if(!res.ok) throw new Error("HTTP " + res.status);
-
+      const res = await fetch(API_URL + "?t=" + Date.now(), {cache:"no-store"});
+      if(!res.ok) throw new Error("HTTP "+res.status);
       const data = await res.json();
-      if(Array.isArray(data)){
-        rawData = data;
-      }else if(Array.isArray(data.data)){
-        rawData = data.data;
-      }else{
-        rawData = [];
-      }
-
-      // cache ลง localStorage เผื่อ offline
+      if(Array.isArray(data)) rawData = data;
+      else if(Array.isArray(data.data)) rawData = data.data;
+      else rawData = [];
       try{
         localStorage.setItem("fa-db-data-gov", JSON.stringify(rawData));
       }catch(e){}
-
-      console.log("[CashBoard] ใช้ข้อมูลจาก API realtime:", rawData.length);
-    }catch(err){
-      console.warn("[CashBoard] ดึง API ไม่ได้ ใช้ข้อมูลจาก localStorage แทน", err);
-      loadFromLocalStorage();
+      lastRefreshEl.textContent = new Date().toLocaleString("th-TH");
+      console.log("[FA CashBoard] loaded from API:", rawData.length);
+    }catch(e){
+      console.warn("[FA CashBoard] API error, fallback localStorage", e);
+      loadFromLocal();
+      lastRefreshEl.textContent = "Offline – ใช้ข้อมูลล่าสุดจาก localStorage";
     }
 
-    buildFilterOptions();
+    buildYearOptions();
     refreshAll();
   }
 
-  /* ========= DOM Elements & Filters ========= */
-  const filterProvinceEl = document.getElementById("filterProvince");
-  const filterTypeEl = document.getElementById("filterType");
-  const filterCountEl = document.getElementById("filterCount");
-  const tableSearchInput = document.getElementById("tableSearchInput");
-  const tableBody = document.getElementById("tableBody");
-  const tableInfo = document.getElementById("tableInfo");
-
-  function buildFilterOptions(){
-    // ล้าง option เดิม (เหลือ "ทุกจังหวัด/ทุกประเภท" อันแรก)
-    [...filterProvinceEl.options].slice(1).forEach(o=>o.remove());
-    [...filterTypeEl.options].slice(1).forEach(o=>o.remove());
-
-    const provinces = new Set();
-    const types = new Set();
-
-    rawData.forEach(row=>{
-      const p = getField(row,["province","จังหวัด"]);
-      const t = getField(row,["type","ประเภท"]);
-      if(p) provinces.add(p);
-      if(t) types.add(t);
-    });
-
-    [...provinces].sort().forEach(p=>{
-      const opt = document.createElement("option");
-      opt.value = p;
-      opt.textContent = p;
-      filterProvinceEl.appendChild(opt);
-    });
-
-    [...types].sort().forEach(t=>{
-      const opt = document.createElement("option");
-      opt.value = t;
-      opt.textContent = t;
-      filterTypeEl.appendChild(opt);
-    });
+  /* filter helper */
+  function getYear(row){
+    return getField(row,["fiscalYear","year","ปีงบประมาณ","ปี"],"");
+  }
+  function getRegion(row){
+    return getField(row,["region","ภูมิภาค"],"");
   }
 
   function getFilteredData(){
-    const p = filterProvinceEl.value;
-    const t = filterTypeEl.value;
-    const keyword = tableSearchInput.value.trim().toLowerCase();
+    const y = yearFilter.value;
+    const q = quarterFilter.value;
+    const r = regionFilter.value;
+    const kw= searchInput.value.trim().toLowerCase();
 
     return rawData.filter(row=>{
-      const rrProvince = getField(row,["province","จังหวัด"]);
-      const rrType     = getField(row,["type","ประเภท"]);
-      const code       = String(getField(row,["code","รหัส"],"")).toLowerCase();
-      const name       = String(getField(row,["name","ชื่อหน่วยงาน","unit","หน่วยรับตรวจ"],"")).toLowerCase();
+      const fy = String(getYear(row));
+      const rg = String(getRegion(row));
 
-      if(p && rrProvince !== p) return false;
-      if(t && rrType !== t) return false;
+      if(y && fy !== y) return false;
+      if(r && rg !== r) return false;
 
-      if(keyword){
-        if(!code.includes(keyword) && !name.includes(keyword)) return false;
+      // quarter: ถ้ามี field quarter หรือ fsMonth
+      const fsQuarter = getField(row,["quarter","ไตรมาส"],"");
+      const fsMonth   = getField(row,["fsMonth","เดือน"],"");
+      if(q){
+        if(fsQuarter){
+          if(fsQuarter !== q) return false;
+        }else if(fsMonth){
+          const m = Number(fsMonth);
+          const qGuess = m>=10 || m<=12 ? "Q1"
+                       : m<=3  ? "Q2"
+                       : m<=6  ? "Q3"
+                               : "Q4";
+          if(qGuess !== q) return false;
+        }
+      }
+
+      if(kw){
+        const code = String(getField(row,["code","รหัส"],"")).toLowerCase();
+        const name = String(getField(row,["name","ชื่อหน่วยงาน","unit","หน่วยรับตรวจ"],"")).toLowerCase();
+        const prov = String(getField(row,["province","จังหวัด"],"")).toLowerCase();
+        if(!code.includes(kw) && !name.includes(kw) && !prov.includes(kw)) return false;
       }
       return true;
     });
   }
 
-  /* ========= Summary / KPI ========= */
-  function updateSummary(filtered){
+  function buildYearOptions(){
+    const years = new Set();
+    rawData.forEach(r=>{
+      const y = getYear(r);
+      if(y) years.add(String(y));
+    });
+    // clear old (keep first option)
+    [...yearFilter.options].slice(1).forEach(o=>o.remove());
+    [...years].sort().forEach(y=>{
+      const opt=document.createElement("option");
+      opt.value=y;
+      opt.textContent="ปีงบ "+y;
+      yearFilter.appendChild(opt);
+    });
+  }
+
+  /* ========= KPI UPDATE ========= */
+  function updateKPI(filtered){
     const total = filtered.length;
-    filterCountEl.textContent = `${total.toLocaleString("th-TH")} หน่วย`;
 
     // 1) Total units
-    document.getElementById("scTotalUnits").textContent = total.toLocaleString("th-TH");
-    document.getElementById("scTotalUnitsSub").textContent =
-      `พบ ${total.toLocaleString("th-TH")} หน่วยจากฐานกลาง`;
+    document.getElementById("kpiTotalUnitsValue").textContent =
+      total.toLocaleString("th-TH");
+    document.getElementById("kpiTotalUnitsFoot").textContent =
+      `ข้อมูลจากฐานกลางหลังกรอง: ${total.toLocaleString("th-TH")} หน่วย`;
 
-    // 2) Province count
-    const provinces = new Set();
-    filtered.forEach(r=>{
-      const p = getField(r,["province","จังหวัด"]);
-      if(p) provinces.add(p);
-    });
-    const pvCount = provinces.size;
-    document.getElementById("scProvinceCount").textContent = pvCount.toLocaleString("th-TH");
-    document.getElementById("scProvinceSub").textContent =
-      pvCount>0 ? `มีข้อมูลใน ${pvCount.toLocaleString("th-TH")} จังหวัด` : "ยังไม่มีข้อมูลจังหวัดในชุดนี้";
-
-    // 3) FS Status demo (ต้องมี field fsStatus ในฐานกลาง)
-    let closed=0, notClosed=0;
-    filtered.forEach(r=>{
-      const s = getField(r,["fsStatus"],"");
-      if(s==="closed") closed++;
-      else if(s==="notClosed" || s==="late" || s==="notSubmitted") notClosed++;
-    });
-    document.getElementById("scFsStatus").textContent =
-      `${closed.toLocaleString("th-TH")} / ${notClosed.toLocaleString("th-TH")}`;
-    document.getElementById("scFsStatusSub").textContent =
-      `ปิดงบแล้ว ${closed.toLocaleString("th-TH")} หน่วย | ยังไม่ปิด/ล่าช้า ${notClosed.toLocaleString("th-TH")} หน่วย`;
-
-    // 4) Audit progress demo – หน่วยที่ progressStep = followUp / reportSent ถือว่าเสร็จสมบูรณ์
+    // 2) FS closed vs others (fsStatus)
+    let closed=0, notClosed=0, late=0, notSub=0;
+    let unq=0, qual=0, adv=0, disc=0;
     let done=0;
+
     filtered.forEach(r=>{
+      const st = getField(r,["fsStatus"],"");
+      if(st==="closed") closed++;
+      else if(st==="notClosed") notClosed++;
+      else if(st==="late") late++;
+      else if(st==="notSubmitted") notSub++;
+
+      const op = getField(r,["fsOpinion"],"");
+      if(op==="unqualified") unq++;
+      else if(op==="qualified") qual++;
+      else if(op==="adverse")   adv++;
+      else if(op==="disclaimer")disc++;
+
       const step = getField(r,["progressStep"],"");
       if(step==="followUp" || step==="reportSent") done++;
     });
-    const pct = total>0 ? (done*100/total) : 0;
-    document.getElementById("scAuditProgress").textContent = `${pct.toFixed(1)}%`;
-    document.getElementById("scAuditProgressSub").textContent =
-      `เสร็จสิ้นแล้ว ${done.toLocaleString("th-TH")} / ${total.toLocaleString("th-TH")} หน่วย (ตาม field progressStep)`;
+
+    const other = notClosed+late+notSub;
+    const pctClosed = total>0 ? (closed*100/total):0;
+    document.getElementById("kpiFsClosedValue").textContent =
+      closed.toLocaleString("th-TH");
+    document.getElementById("kpiFsClosedFoot").textContent =
+      `ปิดงบแล้ว ${closed.toLocaleString("th-TH")} หน่วย (${pctClosed.toFixed(1)}% ของทั้งหมด)`;
+
+    // 3) FS opinion – unqualified
+    const pctUnq = total>0 ? (unq*100/total):0;
+    document.getElementById("kpiFsUnqValue").textContent =
+      unq.toLocaleString("th-TH");
+    document.getElementById("kpiFsUnqFoot").textContent =
+      `Unqualified ${pctUnq.toFixed(1)}% | Qualified ${qual.toLocaleString("th-TH")} | Adverse ${adv.toLocaleString("th-TH")} | Disclaimer ${disc.toLocaleString("th-TH")}`;
+
+    // 4) Audit progress
+    const pctDone = total>0 ? (done*100/total):0;
+    document.getElementById("kpiAuditDoneValue").textContent =
+      pctDone.toFixed(1)+"%";
+    document.getElementById("kpiAuditDoneFoot").textContent =
+      `เสร็จสิ้นแล้ว ${done.toLocaleString("th-TH")} หน่วย จาก ${total.toLocaleString("th-TH")} หน่วย (ตาม progressStep)`;
   }
 
-  /* ========= Chart.js ========= */
-  let chartTypePie = null;
-  let chartProvinceBar = null;
+  /* ========= CHARTS ========= */
+  function updateCharts(filtered){
+    const ctxType   = document.getElementById("chartType");
+    const ctxStatus = document.getElementById("chartStatus");
+    if(!ctxType || !ctxStatus || !window.Chart) return;
 
-  function buildCharts(filtered){
-    const ctxType = document.getElementById("chartTypePie");
-    const ctxProv = document.getElementById("chartProvinceBar");
-    if(!ctxType || !ctxProv || !window.Chart) return;
-
-    // นับตามประเภท
+    // type distribution
     const typeMap = {};
     filtered.forEach(r=>{
       const t = getField(r,["type","ประเภท"],"ไม่ระบุ");
-      typeMap[t] = (typeMap[t] || 0) + 1;
+      typeMap[t]=(typeMap[t]||0)+1;
     });
     const typeLabels = Object.keys(typeMap);
     const typeValues = typeLabels.map(k=>typeMap[k]);
 
-    if(chartTypePie) chartTypePie.destroy();
-    chartTypePie = new Chart(ctxType,{
-      type:"pie",
-      data:{
-        labels:typeLabels,
-        datasets:[{data:typeValues}]
-      },
-      options:{
-        plugins:{
-          legend:{position:"bottom",labels:{font:{size:11}}},
-          tooltip:{callbacks:{
-            label:(ctx)=>{
-              const label = ctx.label || "";
-              const value = ctx.raw || 0;
-              const total = typeValues.reduce((a,b)=>a+b,0)||1;
-              const pct = (value*100/total).toFixed(1);
-              return `${label}: ${value.toLocaleString("th-TH")} หน่วย (${pct}%)`;
-            }
-          }}
-        }
-      }
-    });
-
-    // นับตามจังหวัด (top 10)
-    const pvMap = {};
-    filtered.forEach(r=>{
-      const p = getField(r,["province","จังหวัด"],"ไม่ระบุ");
-      pvMap[p] = (pvMap[p] || 0) + 1;
-    });
-    const pvArr = Object.entries(pvMap).sort((a,b)=>b[1]-a[1]).slice(0,10);
-    const pvLabels = pvArr.map(([k])=>k);
-    const pvValues = pvArr.map(([,v])=>v);
-
-    if(chartProvinceBar) chartProvinceBar.destroy();
-    chartProvinceBar = new Chart(ctxProv,{
+    if(chartType) chartType.destroy();
+    chartType = new Chart(ctxType,{
       type:"bar",
       data:{
-        labels:pvLabels,
-        datasets:[{data:pvValues}]
+        labels:typeLabels,
+        datasets:[{
+          label:"จำนวนหน่วย",
+          data:typeValues
+        }]
       },
       options:{
-        scales:{
-          x:{ticks:{font:{size:10}}},
-          y:{beginAtZero:true}
-        },
         plugins:{
           legend:{display:false},
           tooltip:{callbacks:{
             label:(ctx)=>{
-              const value = ctx.raw || 0;
-              return `${value.toLocaleString("th-TH")} หน่วย`;
+              const v=ctx.raw||0;
+              const sum=typeValues.reduce((a,b)=>a+b,0)||1;
+              const pct=(v*100/sum).toFixed(1);
+              return `${v.toLocaleString("th-TH")} หน่วย (${pct}%)`;
             }
           }}
+        },
+        scales:{
+          x:{ticks:{font:{size:10}}},
+          y:{beginAtZero:true}
+        }
+      }
+    });
+
+    // status chart – bar + line
+    let closed=0, notClosed=0, late=0, notSub=0;
+    let done=0;
+    filtered.forEach(r=>{
+      const st = getField(r,["fsStatus"],"");
+      if(st==="closed") closed++;
+      else if(st==="notClosed") notClosed++;
+      else if(st==="late") late++;
+      else if(st==="notSubmitted") notSub++;
+      const step = getField(r,["progressStep"],"");
+      if(step==="followUp" || step==="reportSent") done++;
+    });
+
+    const statusLabels = ["ปิดงบแล้ว","ยังไม่ปิด","ส่งล่าช้า","ไม่ส่งงบ"];
+    const barValues    = [closed,notClosed,late,notSub];
+    const total = filtered.length||1;
+    const donePct = (done*100/total).toFixed(1);
+    const lineValues = statusLabels.map(()=>donePct);
+
+    if(chartStatus) chartStatus.destroy();
+    chartStatus = new Chart(ctxStatus,{
+      data:{
+        labels:statusLabels,
+        datasets:[
+          {
+            type:"bar",
+            label:"จำนวนหน่วย",
+            data:barValues
+          },
+          {
+            type:"line",
+            label:"% หน่วยที่ตรวจเสร็จสิ้น",
+            data:lineValues,
+            yAxisID:"y1"
+          }
+        ]
+      },
+      options:{
+        scales:{
+          y:{beginAtZero:true,position:"left",title:{display:true,text:"จำนวนหน่วย"}},
+          y1:{beginAtZero:true,position:"right",title:{display:true,text:"% เสร็จสิ้น"},ticks:{callback:v=>v+"%"}}
         }
       }
     });
   }
 
-  /* ========= Table ========= */
+  /* ========= TABLE ========= */
   function renderTable(filtered){
-    tableBody.innerHTML = "";
+    tableBody.innerHTML="";
     const total = filtered.length;
-    const limit = 200; // กัน table หนักเกินไป
-    const showArr = filtered.slice(0,limit);
+    const showArr = filtered.slice(0,300);
 
     showArr.forEach((row,idx)=>{
-      const tr = document.createElement("tr");
+      const tr=document.createElement("tr");
       const code = getField(row,["code","รหัส"],"-");
       const name = getField(row,["name","ชื่อหน่วยงาน","unit","หน่วยรับตรวจ"],"-");
       const type = getField(row,["type","ประเภท"],"-");
-      const province = getField(row,["province","จังหวัด"],"-");
-      const district = getField(row,["district","อำเภอ","อำเภอ/เขต","เขต"],"-");
-      const subdistrict = getField(row,["subdistrict","ตำบล","แขวง"],"-");
-      const village = getField(row,["village","หมู่บ้าน","ชุมชน"],"-");
-      const website = getField(row,["website","เว็บ","url"],"");
-      const detailUrl = getField(row,["detailUrl","link","ลิงก์"],"");
+      const prov = getField(row,["province","จังหวัด"],"-");
+      const dist = getField(row,["district","อำเภอ","เขต"],"-");
+      const subd = getField(row,["subdistrict","ตำบล","แขวง"],"-");
+      const fsStatus = getField(row,["fsStatus"],"");
+      const progress = getField(row,["progressStep"],"");
+      const website  = getField(row,["website","url"],"");
+      const link     = getField(row,["detailUrl","link","ลิงก์"],"");
 
       tr.innerHTML = `
         <td>${idx+1}</td>
         <td class="col-code">${code}</td>
         <td>${name}</td>
         <td>${type}</td>
-        <td>${province}</td>
-        <td>${district}</td>
-        <td>${subdistrict}</td>
-        <td>${village}</td>
+        <td>${prov}</td>
+        <td>${dist}</td>
+        <td>${subd}</td>
+        <td>${fsStatus || "-"}</td>
+        <td>${progress || "-"}</td>
         <td class="link-small">
           ${website ? `<a href="${website}" target="_blank">เปิดเว็บ</a>` : "-"}
         </td>
         <td class="link-small">
-          ${detailUrl ? `<a href="${detailUrl}" target="_blank">ดูรายละเอียด</a>` : "-"}
+          ${link ? `<a href="${link}" target="_blank">รายละเอียด</a>` : "-"}
         </td>
       `;
       tableBody.appendChild(tr);
@@ -815,27 +1013,21 @@
       `แสดง ${showArr.length.toLocaleString("th-TH")} จากทั้งหมด ${total.toLocaleString("th-TH")} รายการ`;
   }
 
-  /* ========= main refresh ========= */
   function refreshAll(){
     const filtered = getFilteredData();
-    updateSummary(filtered);
-    buildCharts(filtered);
+    updateKPI(filtered);
+    updateCharts(filtered);
     renderTable(filtered);
   }
 
-  /* ========= Init ========= */
+  /* ========= INIT ========= */
+  fetchCentralData();            // โหลดรอบแรก
+  setInterval(fetchCentralData, 30000);  // real-time polling ทุก 30 วินาที
 
-  // โหลดครั้งแรกจาก API (ถ้า error จะ fallback ไป localStorage ในฟังก์ชันเอง)
-  fetchCentralData(true);
-
-  // Poll ทุก 30 วินาที ≈ "real-time" บนระบบ static
-  setInterval(() => {
-    fetchCentralData(false);
-  }, 30000);
-
-  filterProvinceEl.addEventListener("change",refreshAll);
-  filterTypeEl.addEventListener("change",refreshAll);
-  tableSearchInput.addEventListener("input",refreshAll);
+  yearFilter.addEventListener("change",refreshAll);
+  quarterFilter.addEventListener("change",refreshAll);
+  regionFilter.addEventListener("change",refreshAll);
+  searchInput.addEventListener("input",refreshAll);
 </script>
 
 </body>
