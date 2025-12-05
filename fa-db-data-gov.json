@@ -1,0 +1,40 @@
+[
+  {
+    "code": "LG-001",
+    "name": "เทศบาลเมืองตัวอย่าง",
+    "type": "ทน.",
+    "province": "ศรีสะเกษ",
+    "district": "เมืองศรีสะเกษ",
+    "subdistrict": "หนองครก",
+
+    "fiscalYear": "2568",
+    "region": "NorthEast",
+
+    "fsStatus": "closed",
+    "fsOpinion": "unqualified",
+    "fsAdjusted": true,
+
+    "progressStep": "followUp",
+    "website": "https://example.go.th",
+    "detailUrl": "https://example.go.th/audit"
+  },
+  {
+    "code": "LG-002",
+    "name": "อบต.ตัวอย่าง",
+    "type": "อบต.",
+    "province": "ศรีสะเกษ",
+    "district": "กันทรารมย์",
+    "subdistrict": "หนองผือ",
+
+    "fiscalYear": "2568",
+    "region": "NorthEast",
+
+    "fsStatus": "notClosed",
+    "fsOpinion": "qualified",
+    "fsAdjusted": false,
+
+    "progressStep": "wp",
+    "website": "",
+    "detailUrl": ""
+  }
+]
