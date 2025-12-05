@@ -533,6 +533,14 @@
   updateThaiDateTime();
   setInterval(updateThaiDateTime,1000);
 
+  /* ========= ตั้งค่า Real-time Source =========
+     - API_URL: แหล่งข้อมูลกลาง (JSON)
+     - fallback: localStorage["fa-db-data-gov"]
+  ============================================== */
+  const API_URL = "https://apipoooo-afk.github.io/financial-audit/fa-db-data-gov.json";
+
+  let rawData = [];
+
   /* ========= Utility: ดึง field แบบรองรับชื่อไทย/อังกฤษ ========= */
   function getField(row, keys, fallback=""){
     if(!row) return fallback;
@@ -544,9 +552,8 @@
     return fallback;
   }
 
-  /* ========= โหลดข้อมูลจาก localStorage["fa-db-data-gov"] ========= */
-  let rawData = [];
-  function loadCentralData(){
+  /* ========= โหลดจาก localStorage (fallback) ========= */
+  function loadFromLocalStorage(){
     try{
       const raw = localStorage.getItem("fa-db-data-gov");
       const arr = raw ? JSON.parse(raw) : [];
@@ -554,56 +561,51 @@
     }catch(e){
       rawData = [];
     }
-
-    // ถ้าไม่มีข้อมูลเลย ลองสร้างตัวอย่างเล็ก ๆ ให้เห็นหน้าตา (เพื่อ demo)
-    if(rawData.length === 0){
-      rawData = [
-        {
-          code:"LG-001",
-          name:"เทศบาลเมืองตัวอย่าง",
-          unit:"เทศบาลเมืองตัวอย่าง",
-          type:"ทน.",
-          province:"ศรีสะเกษ",
-          district:"เมืองศรีสะเกษ",
-          subdistrict:"หนองครก",
-          village:"หมู่ 1",
-          website:"https://example.go.th",
-          detailUrl:"#",
-          // field ตัวอย่างสำหรับ 1.2–1.6
-          fsStatus:"closed",             // closed / notClosed / late / notSubmitted
-          fsOpinion:"qualified",         // unqualified / qualified / adverse / disclaimer
-          fsAdjusted:true,               // มีการปรับปรุงงบการเงินหรือไม่
-          auditStatus:"completed",       // notStarted / inProgress / completed
-          progressStep:"followUp"        // open/doc/wp/closeMeeting/explain/report/qaReview/reportSent/followUp
-        },
-        {
-          code:"LG-002",
-          name:"องค์การบริหารส่วนตำบลตัวอย่าง",
-          unit:"อบต.ตัวอย่าง",
-          type:"อบต.",
-          province:"ศรีสะเกษ",
-          district:"กันทรารมย์",
-          subdistrict:"หนองผือ",
-          village:"หมู่ 3",
-          website:"",
-          detailUrl:"#",
-          fsStatus:"notClosed",
-          fsOpinion:"unqualified",
-          fsAdjusted:false,
-          auditStatus:"inProgress",
-          progressStep:"wp"
-        }
-      ];
-    }
   }
 
-  /* ========= Filters ========= */
+  /* ========= ดึงข้อมูลจาก API แบบ real-time (poll ทุก 30 วิ) ========= */
+  async function fetchCentralData(isInitial=false){
+    try{
+      const res = await fetch(API_URL + "?t=" + Date.now(), { cache: "no-store" });
+      if(!res.ok) throw new Error("HTTP " + res.status);
+
+      const data = await res.json();
+      if(Array.isArray(data)){
+        rawData = data;
+      }else if(Array.isArray(data.data)){
+        rawData = data.data;
+      }else{
+        rawData = [];
+      }
+
+      // cache ลง localStorage เผื่อ offline
+      try{
+        localStorage.setItem("fa-db-data-gov", JSON.stringify(rawData));
+      }catch(e){}
+
+      console.log("[CashBoard] ใช้ข้อมูลจาก API realtime:", rawData.length);
+    }catch(err){
+      console.warn("[CashBoard] ดึง API ไม่ได้ ใช้ข้อมูลจาก localStorage แทน", err);
+      loadFromLocalStorage();
+    }
+
+    buildFilterOptions();
+    refreshAll();
+  }
+
+  /* ========= DOM Elements & Filters ========= */
   const filterProvinceEl = document.getElementById("filterProvince");
   const filterTypeEl = document.getElementById("filterType");
   const filterCountEl = document.getElementById("filterCount");
   const tableSearchInput = document.getElementById("tableSearchInput");
+  const tableBody = document.getElementById("tableBody");
+  const tableInfo = document.getElementById("tableInfo");
 
   function buildFilterOptions(){
+    // ล้าง option เดิม (เหลือ "ทุกจังหวัด/ทุกประเภท" อันแรก)
+    [...filterProvinceEl.options].slice(1).forEach(o=>o.remove());
+    [...filterTypeEl.options].slice(1).forEach(o=>o.remove());
+
     const provinces = new Set();
     const types = new Set();
 
@@ -657,7 +659,8 @@
 
     // 1) Total units
     document.getElementById("scTotalUnits").textContent = total.toLocaleString("th-TH");
-    document.getElementById("scTotalUnitsSub").textContent = `พบ ${total.toLocaleString("th-TH")} หน่วยจากฐานกลาง`;
+    document.getElementById("scTotalUnitsSub").textContent =
+      `พบ ${total.toLocaleString("th-TH")} หน่วยจากฐานกลาง`;
 
     // 2) Province count
     const provinces = new Set();
@@ -682,7 +685,7 @@
     document.getElementById("scFsStatusSub").textContent =
       `ปิดงบแล้ว ${closed.toLocaleString("th-TH")} หน่วย | ยังไม่ปิด/ล่าช้า ${notClosed.toLocaleString("th-TH")} หน่วย`;
 
-    // 4) Audit progress demo – หน่วยที่ progressStep = followUp ถือว่าเสร็จสมบูรณ์
+    // 4) Audit progress demo – หน่วยที่ progressStep = followUp / reportSent ถือว่าเสร็จสมบูรณ์
     let done=0;
     filtered.forEach(r=>{
       const step = getField(r,["progressStep"],"");
@@ -771,9 +774,6 @@
   }
 
   /* ========= Table ========= */
-  const tableBody = document.getElementById("tableBody");
-  const tableInfo = document.getElementById("tableInfo");
-
   function renderTable(filtered){
     tableBody.innerHTML = "";
     const total = filtered.length;
@@ -824,9 +824,14 @@
   }
 
   /* ========= Init ========= */
-  loadCentralData();
-  buildFilterOptions();
-  refreshAll();
+
+  // โหลดครั้งแรกจาก API (ถ้า error จะ fallback ไป localStorage ในฟังก์ชันเอง)
+  fetchCentralData(true);
+
+  // Poll ทุก 30 วินาที ≈ "real-time" บนระบบ static
+  setInterval(() => {
+    fetchCentralData(false);
+  }, 30000);
 
   filterProvinceEl.addEventListener("change",refreshAll);
   filterTypeEl.addEventListener("change",refreshAll);
