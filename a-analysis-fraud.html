@@ -1,0 +1,1447 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <title>FA – วิเคราะห์ความเสี่ยงทุจริตจากรายงานการเงิน</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <style>
+    :root{
+      --bg:#060818;
+      --bg-soft:#0b1024;
+      --card:#11152b;
+      --border:#262b46;
+      --primary:#0d47a1;
+      --primary-2:#42a5f5;
+      --accent:#ffd54f;
+      --text:#f5f7ff;
+      --muted:#a3acc7;
+      --danger:#ef5350;
+      --warning:#ffb74d;
+      --success:#66bb6a;
+      --radius-lg:16px;
+      --shadow-soft:0 12px 30px rgba(0,0,0,0.55);
+    }
+
+    *{box-sizing:border-box;}
+
+    body{
+      margin:0;
+      font-family:"Segoe UI", Tahoma, sans-serif;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(123,30,60,0.3) 0, transparent 55%),
+        radial-gradient(circle at 90% 100%, rgba(66,165,245,0.22) 0, transparent 55%),
+        #060818;
+      color:var(--text);
+      min-height:100vh;
+    }
+
+    header{
+      padding:18px 20px 12px;
+      background:linear-gradient(120deg,#7b1e3c,#0d47a1,#42a5f5);
+      box-shadow:0 4px 18px rgba(0,0,0,0.55);
+      border-bottom:1px solid rgba(255,255,255,0.18);
+    }
+    header h1{
+      margin:0;
+      font-size:22px;
+      font-weight:700;
+    }
+    header p{
+      margin:4px 0 0;
+      font-size:13px;
+      opacity:0.9;
+    }
+
+    .nav-bar{
+      margin-top:10px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      font-size:13px;
+      align-items:center;
+    }
+    .nav-bar a{
+      color:#ffebee;
+      text-decoration:none;
+    }
+    .nav-bar span{
+      opacity:0.8;
+    }
+
+    main{
+      max-width:1180px;
+      margin:20px auto 40px;
+      padding:0 12px 30px;
+      display:grid;
+      grid-template-columns:340px minmax(0,1fr);
+      gap:18px;
+    }
+    @media(max-width:960px){
+      main{
+        grid-template-columns:1fr;
+      }
+    }
+
+    .card{
+      background:linear-gradient(160deg,rgba(17,21,43,0.97),rgba(11,16,36,0.99));
+      border-radius:var(--radius-lg);
+      border:1px solid var(--border);
+      padding:16px 16px 18px;
+      box-shadow:var(--shadow-soft);
+      margin-bottom:10px;
+    }
+
+    .card-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:8px;
+      margin-bottom:8px;
+    }
+    .card-header h2{
+      margin:0;
+      font-size:17px;
+    }
+    .card-header small{
+      font-size:12px;
+      color:var(--muted);
+    }
+
+    label{
+      font-size:13px;
+      display:block;
+      margin-bottom:4px;
+    }
+    input[type="file"],
+    select,
+    input[type="text"],
+    input[type="number"],
+    textarea{
+      width:100%;
+      padding:7px 9px;
+      border-radius:8px;
+      border:1px solid var(--border);
+      background:#050814;
+      color:var(--text);
+      font-size:13px;
+    }
+    textarea{
+      min-height:60px;
+      resize:vertical;
+    }
+
+    .row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+    .col{
+      flex:1 1 140px;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      border-radius:999px;
+      border:none;
+      padding:7px 14px;
+      font-size:13px;
+      cursor:pointer;
+      background:var(--primary);
+      color:#fff;
+      box-shadow:0 4px 12px rgba(0,0,0,0.45);
+      transition:transform 0.08s ease, box-shadow 0.08s ease, background 0.15s;
+      text-decoration:none;
+    }
+    .btn:hover{
+      transform:translateY(-1px);
+      box-shadow:0 7px 18px rgba(0,0,0,0.6);
+      background:var(--primary-2);
+    }
+    .btn-secondary{
+      background:#26324f;
+    }
+    .btn-secondary:hover{
+      background:#39476c;
+    }
+    .btn-ghost{
+      background:transparent;
+      border:1px solid rgba(255,255,255,0.18);
+      box-shadow:none;
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+      font-size:11px;
+      padding:3px 9px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.16);
+      background:rgba(0,0,0,0.25);
+      color:var(--muted);
+    }
+
+    .status{
+      font-size:12px;
+      margin-top:5px;
+    }
+    .status.ok{color:var(--success);}
+    .status.err{color:var(--danger);}
+    .status.warn{color:var(--warning);}
+
+    .subtext{
+      font-size:11px;
+      color:var(--muted);
+      margin-top:4px;
+    }
+
+    .tag-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      margin:4px 0;
+    }
+    .tag{
+      font-size:11px;
+      padding:3px 7px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.18);
+      background:rgba(0,0,0,0.2);
+      color:var(--muted);
+    }
+
+    .slot-card{
+      border-radius:12px;
+      border:1px solid #1f2440;
+      padding:8px 8px 8px;
+      background:#050814;
+      margin-bottom:6px;
+    }
+    .slot-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:6px;
+      margin-bottom:4px;
+    }
+    .slot-title{
+      font-size:12px;
+      font-weight:600;
+    }
+    .slot-buttons{
+      display:flex;
+      gap:4px;
+      flex-wrap:wrap;
+    }
+    .slot-status{
+      font-size:11px;
+      color:var(--muted);
+      margin-top:2px;
+    }
+
+    .checkbox-list{
+      list-style:none;
+      padding-left:0;
+      margin:6px 0 0;
+      font-size:12px;
+    }
+    .checkbox-list li{
+      display:flex;
+      align-items:center;
+      gap:6px;
+      margin-bottom:4px;
+    }
+    .checkbox-list label{
+      margin-bottom:0;
+      font-size:12px;
+    }
+
+    /* RIGHT – dashboard */
+    .risk-level-badge{
+      padding:5px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:600;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+    }
+    .risk-low{
+      background:rgba(102,187,106,0.14);
+      color:#a5d6a7;
+      border:1px solid rgba(165,214,167,0.8);
+    }
+    .risk-medium{
+      background:rgba(255,183,77,0.16);
+      color:#ffe082;
+      border:1px solid rgba(255,224,130,0.85);
+    }
+    .risk-high{
+      background:rgba(239,83,80,0.16);
+      color:#ef9a9a;
+      border:1px solid rgba(239,154,154,0.85);
+    }
+
+    .score-box{
+      display:flex;
+      align-items:baseline;
+      gap:6px;
+      font-size:12px;
+      color:var(--muted);
+    }
+    .score-number{
+      font-size:26px;
+      font-weight:800;
+      color:#fff;
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      font-size:12px;
+      margin-top:6px;
+    }
+    thead th{
+      background:#101530;
+      padding:6px 6px;
+      border-bottom:1px solid #1f2440;
+      text-align:left;
+      position:sticky;
+      top:0;
+      z-index:1;
+    }
+    tbody td{
+      padding:5px 6px;
+      border-top:1px solid #1f2440;
+    }
+    tbody tr:nth-child(even){
+      background:#080c1c;
+    }
+    tbody tr:nth-child(odd){
+      background:#0b1024;
+    }
+
+    .issue-high{
+      color:var(--danger);
+      font-weight:600;
+    }
+    .issue-medium{
+      color:var(--warning);
+      font-weight:600;
+    }
+    .issue-low{
+      color:var(--success);
+      font-weight:600;
+    }
+
+    .muted{
+      color:var(--muted);
+      font-size:11px;
+    }
+
+    .tab-bar{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      margin:8px 0 6px;
+      border-bottom:1px solid #1f2440;
+      padding-bottom:4px;
+      font-size:12px;
+    }
+    .tab-btn{
+      border:none;
+      background:transparent;
+      padding:4px 8px;
+      border-radius:999px;
+      font-size:12px;
+      cursor:pointer;
+      color:var(--muted);
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+      transition:background 0.12s,color 0.12s;
+    }
+    .tab-btn.active{
+      background:rgba(66,165,245,0.18);
+      color:#e3f2fd;
+    }
+
+    .panel{
+      display:none;
+      margin-top:2px;
+    }
+    .panel.active{
+      display:block;
+    }
+
+    pre{
+      background:#050814;
+      border-radius:10px;
+      border:1px solid var(--border);
+      padding:8px;
+      font-size:11px;
+      max-height:220px;
+      overflow:auto;
+      white-space:pre-wrap;
+      word-break:break-word;
+    }
+
+    code{
+      font-size:11px;
+      background:#050814;
+      padding:2px 4px;
+      border-radius:4px;
+      border:1px solid #1f2440;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>FA – วิเคราะห์ความเสี่ยงทุจริตจากรายงานการเงิน</h1>
+  <p>ประเมินความเสี่ยงทุจริตจากข้อมูลงบการเงิน โดยใช้ตัวชี้วัดเชิงบัญชีและ Red Flags ที่พบบ่อย</p>
+
+  <div class="nav-bar">
+    <a href="index.html">🏠 หน้าหลักระบบตรวจสอบการเงิน</a>
+    <span>›</span>
+    <a href="fa-analysis-menu.html">📊 ระบบวิเคราะห์รายงานการเงิน (FA – Analysis Menu)</a>
+    <span>›</span>
+    <span>วิเคราะห์ความเสี่ยงทุจริต</span>
+  </div>
+</header>
+
+<main>
+
+  <!-- LEFT: INPUT & CONFIG -->
+  <aside>
+    <!-- 1. Context -->
+    <section class="card">
+      <div class="card-header">
+        <div>
+          <h2>1. ขอบเขต & บริบทการวิเคราะห์</h2>
+          <small>กำหนดหน่วยรับตรวจ / ปีงบ / โฟกัสความเสี่ยงทุจริต</small>
+        </div>
+        <span class="pill">Step 1/3 · Context</span>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <label>ชื่อหน่วยรับตรวจ (Organization / LG)</label>
+          <input type="text" id="orgName" placeholder="เช่น เทศบาลเมืองศรีสะเกษ">
+        </div>
+        <div class="col">
+          <label>รหัสหน่วยรับตรวจ (Org Code)</label>
+          <input type="text" id="orgCode" placeholder="เช่น 3350401">
+        </div>
+      </div>
+
+      <div class="row" style="margin-top:6px;">
+        <div class="col">
+          <label>ปีงบประมาณหลัก (ปีที่ต้องการประเมินความเสี่ยง)</label>
+          <input type="number" id="mainFiscalYear" placeholder="เช่น 2568">
+        </div>
+        <div class="col">
+          <label>ปีเปรียบเทียบ (ถ้ามี)</label>
+          <input type="number" id="compareYear" placeholder="เช่น 2567">
+        </div>
+      </div>
+
+      <label style="margin-top:8px;">โฟกัสความเสี่ยงหลัก</label>
+      <select id="fraudFocus">
+        <option value="fs">1) ทุจริตเกี่ยวกับการจัดทำ/รายงานงบการเงิน</option>
+        <option value="asset">2) การยักยอก/เบียดบังสินทรัพย์</option>
+        <option value="corruption">3) ทุจริตเชิงนโยบาย / จัดซื้อจัดจ้าง (ใช้ข้อมูลงบเป็นตัวชี้)</option>
+        <option value="all">4) วิเคราะห์ครอบคลุมทุกมิติ (แนะนำ)</option>
+      </select>
+
+      <label style="margin-top:8px;">บันทึกบริบท/สมมติฐานการวิเคราะห์</label>
+      <textarea id="contextNote" placeholder="เช่น ใช้ข้อมูลงบการเงินจาก new e-LASS ที่ปิดบัญชีแล้ว และงบทดลองปิด ณ 30 กันยายน ..."></textarea>
+    </section>
+
+    <!-- 2. Data slots (max 10) -->
+    <section class="card">
+      <div class="card-header">
+        <div>
+          <h2>2. ชุดข้อมูลสำหรับวิเคราะห์ (สูงสุด 10 ชุด)</h2>
+          <small>แต่ละชุดคือไฟล์ JSON มาตรฐานจากระบบนำเข้าข้อมูล</small>
+        </div>
+        <span class="pill">Step 2/3 · Data</span>
+      </div>
+
+      <div class="subtext">
+        รูปแบบ JSON ที่แนะนำ: <code>[ { fiscal_year, org_code, org_name, account_code, account_name, amount_net, ... } ]</code><br>
+        เช่น export จากระบบ import new e-LASS หรือฐานข้อมูลกลางของคุณ
+      </div>
+
+      <div style="margin-top:8px;display:flex;justify-content:space-between;align-items:center;gap:8px;">
+        <span class="pill">ชุดข้อมูลที่สร้างแล้ว: <span id="slotCount">0</span> / 10</span>
+        <button class="btn-secondary btn" id="btnAddSlot">
+          ➕ เพิ่มชุดข้อมูล (Slot)
+        </button>
+      </div>
+
+      <div id="slotContainer" style="margin-top:8px;"></div>
+    </section>
+
+    <!-- 3. Analysis config -->
+    <section class="card">
+      <div class="card-header">
+        <div>
+          <h2>3. ตั้งค่าการวิเคราะห์ความเสี่ยงทุจริต</h2>
+          <small>เลือกชุดข้อมูล / วิธีการวิเคราะห์ / รูปแบบการแสดงผล</small>
+        </div>
+        <span class="pill">Step 3/3 · Analysis</span>
+      </div>
+
+      <label>เลือกชุดข้อมูลสำหรับวิเคราะห์ (เลือกได้หลายชุด)</label>
+      <ul id="analysisSlotList" class="checkbox-list">
+        <!-- auto -->
+      </ul>
+
+      <label style="margin-top:8px;">เลือกวิธีการวิเคราะห์</label>
+      <select id="analysisMethod">
+        <option value="rule">Rule-based Red Flags (แนะนำ)</option>
+        <option value="ratio">Ratio-based (มองจากอัตราส่วนหลัก)</option>
+        <option value="custom">Custom / เงื่อนไขเฉพาะของผู้ตรวจสอบ</option>
+      </select>
+
+      <label style="margin-top:8px;">เลือกการแสดงผลการวิเคราะห์</label>
+      <select id="viewMode">
+        <option value="dashboard">1) Dashboard + ตารางสรุป + Red Flags</option>
+        <option value="table">2) เน้นตารางสรุปตัวเลข (สำหรับ Excel)</option>
+        <option value="json">3) เน้น JSON Output (สำหรับเชื่อม API)</option>
+      </select>
+
+      <label style="margin-top:8px;">คำสั่ง/เงื่อนไขเฉพาะของผู้ตรวจสอบ (ถ้าเลือก Custom)</label>
+      <textarea id="customRule" placeholder="เช่น ตรวจกรณีรายได้เพิ่มขึ้น > 30% ขณะที่ลูกหนี้และสินค้าคงเหลือเพิ่มเกิน 50% เป็นต้น"></textarea>
+
+      <div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
+        <button class="btn" id="btnRunAnalysis">
+          ✅ วิเคราะห์ความเสี่ยงทุจริต
+        </button>
+        <button class="btn-ghost" id="btnClearResult">
+          🧹 ล้างผลการวิเคราะห์
+        </button>
+      </div>
+
+      <div id="analysisStatus" class="status warn" style="margin-top:6px;">
+        เลือกชุดข้อมูลอย่างน้อย 1 ชุด จากนั้นกด “วิเคราะห์ความเสี่ยงทุจริต”
+      </div>
+    </section>
+
+    <!-- Navigation back -->
+    <section class="card">
+      <div class="row" style="gap:8px;">
+        <div class="col">
+          <a href="fa-analysis-menu.html" class="btn-secondary btn" style="width:100%;justify-content:center;">
+            ⬅ กลับเมนูระบบวิเคราะห์รายงานการเงิน
+          </a>
+        </div>
+        <div class="col">
+          <a href="index.html" class="btn-ghost btn" style="width:100%;justify-content:center;">
+            🏠 กลับหน้าหลักระบบตรวจสอบการเงิน
+          </a>
+        </div>
+      </div>
+    </section>
+  </aside>
+
+  <!-- RIGHT: DASHBOARD & RESULT -->
+  <section>
+    <!-- Dashboard -->
+    <section class="card">
+      <div class="card-header" style="margin-bottom:4px;">
+        <div>
+          <h2>Fraud Risk Dashboard</h2>
+          <div class="muted" id="dashboardContext">
+            ยังไม่มีผลการวิเคราะห์ กรุณาเลือกชุดข้อมูลและกด “วิเคราะห์ความเสี่ยงทุจริต”
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <div id="overallRiskBadge" class="risk-level-badge risk-low">
+            🔍 ยังไม่ประเมิน
+          </div>
+          <div class="score-box" style="margin-top:6px;">
+            <span>Fraud Risk Score (เฉลี่ย)</span>
+            <span class="score-number" id="overallScore">–</span>
+            <span>/ 100</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tag-row" id="riskTagRow">
+        <span class="tag">Financial Statement Fraud</span>
+        <span class="tag">Asset Misappropriation</span>
+        <span class="tag">Corruption / Procurement</span>
+        <span class="tag">Red Flags – Earnings Quality</span>
+      </div>
+    </section>
+
+    <!-- Detail tabs -->
+    <section class="card">
+      <div class="card-header" style="margin-bottom:4px;">
+        <div>
+          <h2>รายละเอียดผลการวิเคราะห์ความเสี่ยงทุจริต</h2>
+          <small>สรุปตามชุดข้อมูล / รายการ Red Flags / ตัวเลขสำคัญ</small>
+        </div>
+      </div>
+
+      <div class="tab-bar">
+        <button class="tab-btn active" data-panel-btn data-target="panel-summary">
+          📊 สรุประดับความเสี่ยงตามชุดข้อมูล
+        </button>
+        <button class="tab-btn" data-panel-btn data-target="panel-flags">
+          🚩 รายการ Red Flags
+        </button>
+        <button class="tab-btn" data-panel-btn data-target="panel-metrics">
+          📈 ตัวชี้วัดเชิงตัวเลข
+        </button>
+      </div>
+
+      <!-- Panel 1: Summary per dataset -->
+      <div class="panel active" id="panel-summary">
+        <p class="muted">
+          ตารางนี้แสดง Risk Score (0–100) ของแต่ละชุดข้อมูล พร้อมระดับความเสี่ยง และจำนวน Red Flags ที่พบ
+        </p>
+        <table>
+          <thead>
+            <tr>
+              <th style="width:28%;">ชุดข้อมูล</th>
+              <th style="width:12%;">ปีงบ</th>
+              <th style="width:16%;">Fraud Risk Score</th>
+              <th style="width:14%;">ระดับความเสี่ยง</th>
+              <th style="width:12%;"># Red Flags</th>
+              <th>หมายเหตุย่อ</th>
+            </tr>
+          </thead>
+          <tbody id="summaryTableBody">
+            <!-- dynamic -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Panel 2: Red Flags -->
+      <div class="panel" id="panel-flags">
+        <p class="muted">
+          รายการ Red Flags แบ่งตามความรุนแรง (สูง/กลาง/ต่ำ) พร้อมคำอธิบายเบื้องต้น ใช้เพื่อกำหนดขั้นตอนการตรวจสอบเชิงลึกต่อไป
+        </p>
+        <table>
+          <thead>
+            <tr>
+              <th style="width:24%;">ชุดข้อมูล</th>
+              <th style="width:16%;">ประเภทความเสี่ยง</th>
+              <th style="width:12%;">ระดับ</th>
+              <th>รายละเอียด / คำอธิบาย</th>
+            </tr>
+          </thead>
+          <tbody id="flagsTableBody">
+            <!-- dynamic -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Panel 3: Metrics -->
+      <div class="panel" id="panel-metrics">
+        <p class="muted">
+          ตัวชี้วัดหลักที่ใช้ในการประเมิน เช่น รายได้ กำไรสุทธิ Margin ลูกหนี้ สินค้าคงเหลือ ฯลฯ
+          ใช้ส่งออกไป Excel เพื่อทำ Infographic หรือ Dashboard เพิ่มเติมได้
+        </p>
+        <table>
+          <thead>
+            <tr>
+              <th style="width:24%;">ชุดข้อมูล</th>
+              <th style="width:12%;">ปีงบ</th>
+              <th style="width:14%;">รายได้ (Revenue)</th>
+              <th style="width:14%;">กำไรสุทธิ (Net)</th>
+              <th style="width:12%;">Net Margin</th>
+              <th style="width:12%;">ลูกหนี้รวม</th>
+              <th>สินค้าคงเหลือ</th>
+            </tr>
+          </thead>
+          <tbody id="metricsTableBody">
+            <!-- dynamic -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Raw preview -->
+    <section class="card">
+      <div class="card-header" style="margin-bottom:4px;">
+        <div>
+          <h2>ตัวอย่างข้อมูลดิบ (Raw Preview)</h2>
+          <small>แสดงบางส่วนจากชุดข้อมูลที่เลือก “ดูตัวอย่าง” ทางซ้าย</small>
+        </div>
+      </div>
+      <pre id="rawPreview">ยังไม่ได้เลือกชุดข้อมูลสำหรับดูตัวอย่าง</pre>
+    </section>
+
+    <!-- Export / Save -->
+    <section class="card">
+      <div class="card-header" style="margin-bottom:4px;">
+        <div>
+          <h2>Export &amp; การจัดเก็บผลการวิเคราะห์</h2>
+          <small>เพื่อแนบรายงาน / ทำ Infographic / เก็บในฐานข้อมูลกลาง</small>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-wrap:wrap;gap:8px;">
+        <button class="btn-secondary btn" id="btnExportCSV">
+          📁 Export – CSV (สำหรับ Excel / BI)
+        </button>
+        <button class="btn-secondary btn" id="btnExportJSON">
+          🧾 Export – JSON (ผลการวิเคราะห์)
+        </button>
+        <button class="btn-secondary btn" id="btnPrint">
+          🖨 Print / Export PDF (ผ่าน Browser)
+        </button>
+        <button class="btn-ghost btn" id="btnSaveAPI">
+          🗄 บันทึกเข้าฐานข้อมูลกลาง (Hook API)
+        </button>
+      </div>
+
+      <p class="muted" style="margin-top:8px;">
+        • CSV → เปิดใน Excel / Power BI เพื่อทำกราฟและ Infographic เพิ่มเติม<br>
+        • Print → ใช้ฟังก์ชัน Print to PDF ของ Browser เพื่อสร้างไฟล์ PDF แนบรายงาน<br>
+        • JSON → ส่งต่อให้ระบบ AI / n8n / API อื่น ๆ เพื่อวิเคราะห์ต่อเชิงลึก<br>
+        • ปุ่ม “บันทึกเข้าฐานข้อมูลกลาง” เป็นจุด Hook สำหรับเชื่อม REST API หรือ Database ของคุณเอง
+      </p>
+    </section>
+  </section>
+
+</main>
+
+<script>
+  // ====== STATE ======
+  const MAX_SLOTS = 10;
+  let slotCounter = 0;
+  const slots = []; // {id, nameInput, yearGuess, records, metrics, result}
+
+  let lastAnalysis = null; // สำหรับ Export
+
+  // ====== DOM ======
+  const slotContainer   = document.getElementById('slotContainer');
+  const slotCountEl     = document.getElementById('slotCount');
+  const analysisSlotList= document.getElementById('analysisSlotList');
+  const btnAddSlot      = document.getElementById('btnAddSlot');
+
+  const btnRunAnalysis  = document.getElementById('btnRunAnalysis');
+  const btnClearResult  = document.getElementById('btnClearResult');
+  const analysisStatus  = document.getElementById('analysisStatus');
+
+  const orgNameEl       = document.getElementById('orgName');
+  const orgCodeEl       = document.getElementById('orgCode');
+  const mainYearEl      = document.getElementById('mainFiscalYear');
+  const compareYearEl   = document.getElementById('compareYear');
+  const fraudFocusEl    = document.getElementById('fraudFocus');
+  const analysisMethodEl= document.getElementById('analysisMethod');
+  const viewModeEl      = document.getElementById('viewMode');
+  const customRuleEl    = document.getElementById('customRule');
+  const contextNoteEl   = document.getElementById('contextNote');
+
+  const dashboardContext= document.getElementById('dashboardContext');
+  const overallRiskBadge= document.getElementById('overallRiskBadge');
+  const overallScoreEl  = document.getElementById('overallScore');
+  const riskTagRow      = document.getElementById('riskTagRow');
+
+  const summaryTableBody= document.getElementById('summaryTableBody');
+  const flagsTableBody  = document.getElementById('flagsTableBody');
+  const metricsTableBody= document.getElementById('metricsTableBody');
+  const rawPreviewEl    = document.getElementById('rawPreview');
+
+  const btnExportCSV    = document.getElementById('btnExportCSV');
+  const btnExportJSON   = document.getElementById('btnExportJSON');
+  const btnPrint        = document.getElementById('btnPrint');
+  const btnSaveAPI      = document.getElementById('btnSaveAPI');
+
+  const tabButtons      = document.querySelectorAll('[data-panel-btn]');
+  const panels = {
+    'panel-summary': document.getElementById('panel-summary'),
+    'panel-flags':   document.getElementById('panel-flags'),
+    'panel-metrics': document.getElementById('panel-metrics')
+  };
+
+  // ====== TAB SWITCH ======
+  tabButtons.forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const target = btn.dataset.target;
+      tabButtons.forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      Object.keys(panels).forEach(k=>{
+        panels[k].classList.toggle('active', k===target);
+      });
+    });
+  });
+
+  // ====== SLOT MANAGEMENT ======
+  btnAddSlot.addEventListener('click', ()=>{
+    if(slots.length >= MAX_SLOTS){
+      alert('สร้างชุดข้อมูลครบ 10 ชุดแล้ว');
+      return;
+    }
+    addSlot();
+  });
+
+  function addSlot(){
+    slotCounter++;
+    const id = 'slot_'+slotCounter;
+
+    const wrapper = document.createElement('div');
+    wrapper.className = 'slot-card';
+    wrapper.dataset.slotId = id;
+
+    const header = document.createElement('div');
+    header.className = 'slot-header';
+
+    const title = document.createElement('div');
+    title.className = 'slot-title';
+    title.textContent = `ชุดข้อมูลที่ ${slotCounter}`;
+
+    const btns = document.createElement('div');
+    btns.className = 'slot-buttons';
+
+    const btnPreview = document.createElement('button');
+    btnPreview.type = 'button';
+    btnPreview.className = 'btn-ghost';
+    btnPreview.style.fontSize = '11px';
+    btnPreview.textContent = '🔍 ดูตัวอย่าง';
+
+    const btnDelete = document.createElement('button');
+    btnDelete.type = 'button';
+    btnDelete.className = 'btn-ghost';
+    btnDelete.style.fontSize = '11px';
+    btnDelete.textContent = '🗑 ลบ';
+
+    btns.appendChild(btnPreview);
+    btns.appendChild(btnDelete);
+
+    header.appendChild(title);
+    header.appendChild(btns);
+
+    const nameLabel = document.createElement('label');
+    nameLabel.textContent = 'ชื่อชุดข้อมูล';
+    nameLabel.style.marginBottom = '2px';
+
+    const nameInput = document.createElement('input');
+    nameInput.type = 'text';
+    nameInput.placeholder = 'เช่น new e-LASS ปี 2568 (งบการเงิน)';
+    nameInput.value = `Dataset ${slotCounter}`;
+
+    const fileLabel = document.createElement('label');
+    fileLabel.textContent = 'ไฟล์ JSON ของชุดข้อมูลนี้';
+    fileLabel.style.marginTop = '6px';
+    fileLabel.style.marginBottom = '2px';
+
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = '.json';
+
+    const status = document.createElement('div');
+    status.className = 'slot-status';
+    status.textContent = 'ยังไม่ได้โหลดไฟล์';
+
+    wrapper.appendChild(header);
+    wrapper.appendChild(nameLabel);
+    wrapper.appendChild(nameInput);
+    wrapper.appendChild(fileLabel);
+    wrapper.appendChild(fileInput);
+    wrapper.appendChild(status);
+
+    slotContainer.appendChild(wrapper);
+
+    const slotObj = {
+      id,
+      dom:wrapper,
+      nameInput,
+      fileInput,
+      statusEl:status,
+      yearGuess:null,
+      records:null,
+      metrics:null,
+      result:null
+    };
+    slots.push(slotObj);
+    refreshSlotCount();
+    refreshAnalysisSlotList();
+
+    fileInput.addEventListener('change', (e)=>{
+      const file = e.target.files[0];
+      if(!file){
+        slotObj.records = null;
+        slotObj.metrics = null;
+        slotObj.statusEl.textContent = 'ยังไม่ได้เลือกไฟล์';
+        return;
+      }
+      readSlotFile(slotObj, file);
+    });
+
+    btnPreview.addEventListener('click', ()=>{
+      previewSlot(slotObj);
+    });
+
+    btnDelete.addEventListener('click', ()=>{
+      if(!confirm('ต้องการลบชุดข้อมูลนี้หรือไม่')) return;
+      const idx = slots.findIndex(s=>s.id===id);
+      if(idx>=0){
+        slots.splice(idx,1);
+      }
+      wrapper.remove();
+      refreshSlotCount();
+      refreshAnalysisSlotList();
+    });
+  }
+
+  function refreshSlotCount(){
+    slotCountEl.textContent = String(slots.length);
+  }
+
+  function refreshAnalysisSlotList(){
+    analysisSlotList.innerHTML = '';
+    if(!slots.length){
+      const li = document.createElement('li');
+      li.textContent = 'ยังไม่มีชุดข้อมูล ให้เพิ่มชุดข้อมูลด้านบนก่อน';
+      analysisSlotList.appendChild(li);
+      return;
+    }
+
+    slots.forEach(s=>{
+      const li = document.createElement('li');
+      const cb = document.createElement('input');
+      cb.type = 'checkbox';
+      cb.value = s.id;
+      cb.id = 'chk_'+s.id;
+
+      const lb = document.createElement('label');
+      lb.setAttribute('for', cb.id);
+      const nm = s.nameInput.value || '(ไม่ระบุชื่อชุดข้อมูล)';
+      const yr = s.yearGuess ? ` · ปีงบ: ${s.yearGuess}` : '';
+      lb.textContent = nm + yr;
+
+      li.appendChild(cb);
+      li.appendChild(lb);
+      analysisSlotList.appendChild(li);
+    });
+  }
+
+  function readSlotFile(slot, file){
+    const reader = new FileReader();
+    slot.statusEl.textContent = 'กำลังอ่านไฟล์...';
+    reader.onload = (evt)=>{
+      try{
+        const text = evt.target.result;
+        const data = JSON.parse(text);
+        if(!Array.isArray(data)){
+          throw new Error('JSON ต้องเป็น array ของ records');
+        }
+        slot.records = data;
+        slot.metrics = computeMetrics(data);
+        slot.yearGuess = guessYearFromRecords(data);
+
+        const recCount = data.length;
+        const yr = slot.yearGuess ? `ปีงบประมาณ ${slot.yearGuess}` : 'ปีงบไม่ชัดเจน';
+        slot.statusEl.textContent = `โหลดสำเร็จ: ${recCount} รายการ · ${yr}`;
+        slot.statusEl.className = 'slot-status';
+
+        refreshAnalysisSlotList();
+      }catch(err){
+        console.error(err);
+        slot.records = null;
+        slot.metrics = null;
+        slot.statusEl.textContent = 'อ่าน JSON ไม่สำเร็จ โปรดตรวจสอบโครงสร้างไฟล์';
+        slot.statusEl.className = 'slot-status';
+      }
+    };
+    reader.onerror = ()=>{
+      slot.statusEl.textContent = 'อ่านไฟล์ไม่สำเร็จ';
+    };
+    reader.readAsText(file, 'utf-8');
+  }
+
+  function previewSlot(slot){
+    if(!slot.records || !Array.isArray(slot.records)){
+      rawPreviewEl.textContent = 'ชุดข้อมูลนี้ยังไม่มีข้อมูล หรืออ่านไฟล์ไม่สำเร็จ';
+      return;
+    }
+    const nm = slot.nameInput.value || '(ไม่ระบุชื่อชุดข้อมูล)';
+    const sample = slot.records.slice(0, 10);
+    rawPreviewEl.textContent =
+      `ชุดข้อมูล: ${nm}\nตัวอย่าง 10 records แรก:\n\n` +
+      JSON.stringify(sample, null, 2);
+  }
+
+  function guessYearFromRecords(records){
+    for(const r of records){
+      if(r.fiscal_year) return r.fiscal_year;
+      if(r.year) return r.year;
+    }
+    return null;
+  }
+
+  // ====== METRICS & FRAUD LOGIC ======
+  function computeMetrics(records){
+    let revenue = 0;
+    let expense = 0;
+    let ar = 0;
+    let inventory = 0;
+    let cash = 0;
+    let liabilities = 0;
+    let equity = 0;
+    let nonRecurring = 0;
+
+    records.forEach(r=>{
+      const code = String(r.account_code || '');
+      const name = String(r.account_name || '');
+      const amtRaw = r.amount_net ?? r.balance ?? 0;
+      const amt = Number(amtRaw) || 0;
+
+      const lowerName = name.toLowerCase();
+
+      // Revenue
+      if(code.startsWith('4') || lowerName.includes('รายได้') || lowerName.includes('income')){
+        revenue += amt;
+      }
+
+      // Expenses
+      if(code.startsWith('5') || code.startsWith('6') ||
+         lowerName.includes('ค่าใช้จ่าย') || lowerName.includes('expense')){
+        expense += Math.abs(amt);
+      }
+
+      // Receivables
+      if(lowerName.includes('ลูกหนี้') || lowerName.includes('receiv')){
+        ar += amt;
+      }
+
+      // Inventory
+      if(lowerName.includes('สินค้าคงเหลือ') || lowerName.includes('inventory')){
+        inventory += amt;
+      }
+
+      // Cash / bank
+      if(lowerName.includes('เงินสด') || lowerName.includes('เงินฝาก') || lowerName.includes('cash') || lowerName.includes('bank')){
+        cash += amt;
+      }
+
+      // Liabilities
+      if(code.startsWith('2') || lowerName.includes('หนี้สิน') || lowerName.includes('liabil')){
+        liabilities += amt;
+      }
+
+      // Equity / net asset
+      if(code.startsWith('3') || lowerName.includes('ทุน') || lowerName.includes('สินทรัพย์สุทธิ') ||
+         lowerName.includes('equity') || lowerName.includes('net asset')){
+        equity += amt;
+      }
+
+      // Non-recurring
+      if(lowerName.includes('พิเศษ') || lowerName.includes('ครั้งเดียว') ||
+         lowerName.includes('extraordinary') || lowerName.includes('one-off')){
+        nonRecurring += amt;
+      }
+    });
+
+    const netProfit = revenue - expense;
+    const margin = revenue ? netProfit / revenue : 0;
+
+    return {
+      revenue,
+      expense,
+      netProfit,
+      margin,
+      ar,
+      inventory,
+      cash,
+      liabilities,
+      equity,
+      nonRecurring
+    };
+  }
+
+  function analyzeSlotFraud(slot, method){
+    const m = slot.metrics || computeMetrics(slot.records || []);
+    const flags = [];
+    let riskScore = 20; // ฐาน (0–100)
+
+    function addFlag(level, category, title, detail){
+      flags.push({level, category, title, detail});
+      if(level === 'HIGH') riskScore += 25;
+      else if(level === 'MEDIUM') riskScore += 15;
+      else riskScore += 8;
+    }
+
+    const rev = m.revenue;
+    const exp = m.expense;
+    const net = m.netProfit;
+    const margin = m.margin;
+    const ar = m.ar;
+    const inv = m.inventory;
+    const cash = m.cash;
+    const liab = m.liabilities;
+    const eq = m.equity;
+    const nonRec = m.nonRecurring;
+
+    if(method === 'ratio' || method === 'rule' || method === 'custom'){
+      // Earnings quality
+      if(rev > 0 && Math.abs(margin) > 0.35){
+        addFlag('MEDIUM','Earnings Quality',
+          'กำไรสุทธิสูง/ขาดทุนสูงเมื่อเทียบกับรายได้',
+          `Net margin ประมาณ ${(margin*100).toFixed(1)}% อาจบ่งชี้การรับรู้รายได้/ค่าใช้จ่ายผิดปกติ`);
+      }
+
+      // Revenue vs AR
+      if(rev > 0 && ar > rev * 1.5){
+        addFlag('HIGH','Receivables',
+          'ยอดลูกหนี้สูงเกินกว่ารายได้',
+          `ยอดลูกหนี้รวม ~ ${formatNumber(ar)} บาท เทียบกับรายได้ ~ ${formatNumber(rev)} บาท (AR > 150% ของรายได้)`);
+      }
+
+      // Inventory vs revenue
+      if(rev > 0 && inv > rev){
+        addFlag('MEDIUM','Inventory',
+          'สินค้าคงเหลือสูงกว่ารายได้ทั้งปี',
+          `สินค้าคงเหลือ ~ ${formatNumber(inv)} บาท มากกว่ารายได้ทั้งปี ~ ${formatNumber(rev)} บาท`);
+      }
+
+      // Revenue = 0 but expenses positive
+      if(rev === 0 && exp > 0){
+        addFlag('MEDIUM','PL Structure',
+          'มีค่าใช้จ่ายแต่ไม่มีรายได้',
+          'มีค่าใช้จ่ายบันทึกอยู่แต่ไม่มีรายได้ อาจเกิดจากการบันทึกไม่ครบ หรือมีโครงสร้างงบผิดปกติ');
+      }
+
+      // Positive profit but low cash
+      if(net > 0 && cash < net * 0.2){
+        addFlag('MEDIUM','Cash vs Profit',
+          'กำไรสูงแต่เงินสดต่ำ',
+          `กำไรสุทธิ ~ ${formatNumber(net)} บาท แต่ยอดเงินสด ~ ${formatNumber(cash)} บาท (ต่ำกว่า 20% ของกำไร) อาจสะท้อนการสร้างกำไรเชิงบัญชี`);
+      }
+
+      // Debt vs equity
+      if(eq > 0 && liab > eq * 2){
+        addFlag('LOW','Leverage',
+          'หนี้สินสูงเมื่อเทียบกับทุน',
+          `หนี้สินรวม ~ ${formatNumber(liab)} บาท เทียบกับทุน/สินทรัพย์สุทธิ ~ ${formatNumber(eq)} บาท (D/E > 2 เท่า)`);
+      }
+
+      // Non-recurring large
+      if(rev > 0 && Math.abs(nonRec) > Math.abs(rev * 0.3)){
+        addFlag('MEDIUM','Non-recurring',
+          'รายการพิเศษ/ครั้งเดียวมีสัดส่วนสูง',
+          `รายการ Non-recurring ~ ${formatNumber(nonRec)} บาท (> 30% ของรายได้) ควรตรวจหมายเหตุประกอบงบอย่างละเอียด`);
+      }
+    }
+
+    // Clamp
+    if(riskScore < 0) riskScore = 0;
+    if(riskScore > 100) riskScore = 100;
+
+    let levelText = 'ต่ำ';
+    let levelClass = 'risk-low';
+    if(riskScore >= 61){
+      levelText = 'สูง';
+      levelClass = 'risk-high';
+    }else if(riskScore >= 31){
+      levelText = 'ปานกลาง';
+      levelClass = 'risk-medium';
+    }
+
+    return {
+      metrics:m,
+      riskScore,
+      levelText,
+      levelClass,
+      flags
+    };
+  }
+
+  // ====== RUN ANALYSIS ======
+  btnRunAnalysis.addEventListener('click', ()=>{
+    runAnalysis();
+  });
+
+  btnClearResult.addEventListener('click', ()=>{
+    clearAnalysis();
+  });
+
+  function runAnalysis(){
+    const selectedIds = Array.from(analysisSlotList.querySelectorAll('input[type="checkbox"]:checked'))
+      .map(cb=>cb.value);
+    if(!selectedIds.length){
+      alert('กรุณาเลือกชุดข้อมูลอย่างน้อย 1 ชุดสำหรับวิเคราะห์');
+      return;
+    }
+
+    const method = analysisMethodEl.value;
+    const viewMode = viewModeEl.value;
+
+    const results = [];
+    selectedIds.forEach(id=>{
+      const slot = slots.find(s=>s.id===id);
+      if(!slot || !slot.records || !slot.records.length){
+        return;
+      }
+      slot.metrics = slot.metrics || computeMetrics(slot.records);
+      const res = analyzeSlotFraud(slot, method);
+      slot.result = res;
+      results.push({slot, res});
+    });
+
+    if(!results.length){
+      alert('ชุดข้อมูลที่เลือกยังไม่มีข้อมูลที่อ่านได้ โปรดตรวจสอบไฟล์ JSON');
+      return;
+    }
+
+    // Summary
+    updateDashboard(results);
+    updateTables(results, viewMode);
+
+    lastAnalysis = {
+      timestamp: new Date().toISOString(),
+      orgName: orgNameEl.value,
+      orgCode: orgCodeEl.value,
+      mainFiscalYear: mainYearEl.value,
+      compareYear: compareYearEl.value,
+      fraudFocus: fraudFocusEl.value,
+      analysisMethod: method,
+      viewMode,
+      customRule: customRuleEl.value,
+      contextNote: contextNoteEl.value,
+      results: results.map(r=>serializeResult(r))
+    };
+
+    analysisStatus.textContent = 'วิเคราะห์ความเสี่ยงทุจริตสำเร็จ – ผลลัพธ์อัปเดตแล้ว';
+    analysisStatus.className = 'status ok';
+  }
+
+  function serializeResult(r){
+    return {
+      slotName: r.slot.nameInput.value,
+      year: r.slot.yearGuess,
+      metrics: r.res.metrics,
+      riskScore: r.res.riskScore,
+      levelText: r.res.levelText,
+      flags: r.res.flags
+    };
+  }
+
+  function clearAnalysis(){
+    overallScoreEl.textContent = '–';
+    overallRiskBadge.textContent = '🔍 ยังไม่ประเมิน';
+    overallRiskBadge.className = 'risk-level-badge risk-low';
+    dashboardContext.textContent = 'ยังไม่มีผลการวิเคราะห์ กรุณาเลือกชุดข้อมูลและกด “วิเคราะห์ความเสี่ยงทุจริต”';
+    summaryTableBody.innerHTML = '';
+    flagsTableBody.innerHTML = '';
+    metricsTableBody.innerHTML = '';
+    rawPreviewEl.textContent = 'ยังไม่ได้เลือกชุดข้อมูลสำหรับดูตัวอย่าง';
+    lastAnalysis = null;
+    analysisStatus.textContent = 'เลือกชุดข้อมูลอย่างน้อย 1 ชุด จากนั้นกด “วิเคราะห์ความเสี่ยงทุจริต”';
+    analysisStatus.className = 'status warn';
+  }
+
+  function updateDashboard(results){
+    const scores = results.map(r=>r.res.riskScore);
+    const avgScore = scores.reduce((a,b)=>a+b,0)/scores.length;
+    overallScoreEl.textContent = avgScore.toFixed(0);
+
+    let badgeClass = 'risk-low';
+    let text = '';
+    if(avgScore >= 61){
+      badgeClass = 'risk-high';
+      text = '⚠️ ความเสี่ยงทุจริตโดยรวม: สูง';
+    }else if(avgScore >= 31){
+      badgeClass = 'risk-medium';
+      text = '⚠ ความเสี่ยงทุจริตโดยรวม: ปานกลาง';
+    }else{
+      badgeClass = 'risk-low';
+      text = '✅ ความเสี่ยงทุจริตโดยรวม: ต่ำ';
+    }
+    overallRiskBadge.className = 'risk-level-badge '+badgeClass;
+    overallRiskBadge.textContent = text;
+
+    const org = orgNameEl.value || '(ไม่ระบุหน่วยรับตรวจ)';
+    const method = analysisMethodEl.value;
+    const methodText =
+      method === 'rule'  ? 'Rule-based Red Flags' :
+      method === 'ratio' ? 'Ratio-based' :
+                           'Custom / ตามเงื่อนไขผู้ตรวจสอบ';
+
+    dashboardContext.textContent =
+      `${org} · ชุดข้อมูลที่ใช้วิเคราะห์ ${results.length} ชุด · วิธีการวิเคราะห์: ${methodText}`;
+
+    // Highlight tags looselyตามโฟกัส
+    Array.from(riskTagRow.children).forEach(tag=>{
+      tag.style.borderColor = 'rgba(255,255,255,0.18)';
+      tag.style.background = 'rgba(0,0,0,0.2)';
+    });
+
+    if(fraudFocusEl.value === 'fs' || fraudFocusEl.value === 'all'){
+      riskTagRow.children[0].style.borderColor = '#ffd54f';
+      riskTagRow.children[0].style.background = 'rgba(255,213,79,0.08)';
+    }
+    if(fraudFocusEl.value === 'asset' || fraudFocusEl.value === 'all'){
+      riskTagRow.children[1].style.borderColor = '#66bb6a';
+      riskTagRow.children[1].style.background = 'rgba(102,187,106,0.1)';
+    }
+    if(fraudFocusEl.value === 'corruption' || fraudFocusEl.value === 'all'){
+      riskTagRow.children[2].style.borderColor = '#ef5350';
+      riskTagRow.children[2].style.background = 'rgba(239,83,80,0.12)';
+    }
+  }
+
+  function updateTables(results, viewMode){
+    summaryTableBody.innerHTML = '';
+    flagsTableBody.innerHTML = '';
+    metricsTableBody.innerHTML = '';
+
+    results.forEach(r=>{
+      const s = r.slot;
+      const res = r.res;
+      const m = res.metrics;
+
+      // Summary row
+      const tr1 = document.createElement('tr');
+      tr1.innerHTML = `
+        <td>${escapeHtml(s.nameInput.value || '(ไม่ระบุชื่อชุดข้อมูล)')}</td>
+        <td>${escapeHtml(s.yearGuess || '-')}</td>
+        <td>${res.riskScore.toFixed(0)}</td>
+        <td>${escapeHtml(res.levelText)}</td>
+        <td>${res.flags.length}</td>
+        <td>${res.flags.length ? escapeHtml(res.flags[0].title) : 'ไม่พบ Red Flags ที่กำหนดในกติกาเบื้องต้น'}</td>
+      `;
+      summaryTableBody.appendChild(tr1);
+
+      // Flags rows
+      res.flags.forEach(f=>{
+        const tr2 = document.createElement('tr');
+        let levelClass = 'issue-low';
+        if(f.level === 'HIGH') levelClass = 'issue-high';
+        else if(f.level === 'MEDIUM') levelClass = 'issue-medium';
+
+        tr2.innerHTML = `
+          <td>${escapeHtml(s.nameInput.value || '(ไม่ระบุชื่อชุดข้อมูล)')}</td>
+          <td>${escapeHtml(f.category || '-')}</td>
+          <td class="${levelClass}">${escapeHtml(f.level)}</td>
+          <td>${escapeHtml(f.title)} – ${escapeHtml(f.detail)}</td>
+        `;
+        flagsTableBody.appendChild(tr2);
+      });
+
+      // Metrics row
+      const tr3 = document.createElement('tr');
+      const marginPercent = m.revenue ? (m.margin*100).toFixed(1)+'%' : '-';
+      tr3.innerHTML = `
+        <td>${escapeHtml(s.nameInput.value || '(ไม่ระบุชื่อชุดข้อมูล)')}</td>
+        <td>${escapeHtml(s.yearGuess || '-')}</td>
+        <td>${formatNumber(m.revenue)}</td>
+        <td>${formatNumber(m.netProfit)}</td>
+        <td>${marginPercent}</td>
+        <td>${formatNumber(m.ar)}</td>
+        <td>${formatNumber(m.inventory)}</td>
+      `;
+      metricsTableBody.appendChild(tr3);
+    });
+
+    // View mode (ตอนนี้ใช้ผลเหมือนกัน แต่อนาคตถ้าต้องการซ่อนบางส่วนค่อยเพิ่ม)
+    // dashboard / table / json – ตอนนี้เป็นเพียง config logic ฝั่ง backend/export
+  }
+
+  // ====== EXPORT / SAVE ======
+  btnExportCSV.addEventListener('click', ()=>{
+    if(!lastAnalysis){
+      alert('ยังไม่มีผลการวิเคราะห์สำหรับ Export');
+      return;
+    }
+    const rows = [];
+    rows.push([
+      'slotName','year','riskScore','riskLevel',
+      'revenue','netProfit','margin','ar','inventory','cash','liabilities','equity',
+      'flagsCount'
+    ].join(','));
+
+    lastAnalysis.results.forEach(r=>{
+      const m = r.metrics;
+      const margin = m.revenue ? (m.netProfit/m.revenue) : 0;
+      rows.push([
+        csvEscape(r.slotName),
+        csvEscape(r.year || ''),
+        r.riskScore.toFixed(0),
+        csvEscape(r.levelText),
+        m.revenue,
+        m.netProfit,
+        margin.toFixed(4),
+        m.ar,
+        m.inventory,
+        m.cash,
+        m.liabilities,
+        m.equity,
+        r.flags.length
+      ].join(','));
+    });
+
+    const csv = rows.join('\n');
+    downloadFile(csv, 'text/csv;charset=utf-8;', 'fa-fraud-analysis.csv');
+  });
+
+  btnExportJSON.addEventListener('click', ()=>{
+    if(!lastAnalysis){
+      alert('ยังไม่มีผลการวิเคราะห์สำหรับ Export');
+      return;
+    }
+    const json = JSON.stringify(lastAnalysis, null, 2);
+    downloadFile(json, 'application/json;charset=utf-8;', 'fa-fraud-analysis.json');
+  });
+
+  btnPrint.addEventListener('click', ()=>{
+    window.print();
+  });
+
+  btnSaveAPI.addEventListener('click', ()=>{
+    if(!lastAnalysis){
+      alert('ยังไม่มีผลการวิเคราะห์ที่จะบันทึก');
+      return;
+    }
+    console.log('FA Fraud Analysis – payload for API:', lastAnalysis);
+    alert('นี่คือจุดเชื่อม API: ขณะนี้ระบบเพียง log ข้อมูลใน console\nคุณสามารถเชื่อมต่อ REST API / n8n / Database เพื่อบันทึกข้อมูลนี้ได้');
+  });
+
+  function downloadFile(content, mimeType, fileName){
+    const blob = new Blob([content], {type:mimeType});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = fileName;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  function csvEscape(val){
+    const s = String(val ?? '');
+    if(s.includes(',') || s.includes('"') || s.includes('\n')){
+      return `"${s.replace(/"/g,'""')}"`;
+    }
+    return s;
+  }
+
+  // ====== UTILS ======
+  function formatNumber(num){
+    const n = Number(num) || 0;
+    return n.toLocaleString('th-TH', {maximumFractionDigits:2});
+  }
+
+  function escapeHtml(str){
+    return String(str)
+      .replace(/&/g,'&amp;')
+      .replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;')
+      .replace(/'/g,'&#039;');
+  }
+</script>
+
+</body>
+</html>
