@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <title>FA – Analysis Accuracy | วิเคราะห์ความถูกต้องของงบการเงิน</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- SheetJS (Excel/CSV) -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+  <style>
+    :root{
+      --bg:#060818;
+      --bg-soft:#0b1024;
+      --card:#11152b;
+      --border:#262b46;
+      --primary:#0d47a1;
+      --primary-2:#42a5f5;
+      --accent:#ffd54f;
+      --text:#f5f7ff;
+      --muted:#a3acc7;
+      --danger:#ef5350;
+      --warn:#ffb74d;
+      --success:#66bb6a;
+      --radius-lg:16px;
+      --shadow-soft:0 12px 30px rgba(0,0,0,0.55);
+      --chip-bg:rgba(255,255,255,0.06);
+    }
+
+    *{box-sizing:border-box;}
+    body{
+      margin:0;
+      font-family:"Segoe UI", Tahoma, sans-serif;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(123,30,60,0.30) 0, transparent 55%),
+        radial-gradient(circle at 90% 100%, rgba(66,165,245,0.22) 0, transparent 55%),
+        var(--bg);
+      color:var(--text);
+      min-height:100vh;
+    }
+
+    header{
+      padding:18px 20px 12px;
+      background:linear-gradient(120deg,#7b1e3c,#0d47a1,#42a5f5);
+      box-shadow:0 4px 18px rgba(0,0,0,0.55);
+      border-bottom:1px solid rgba(255,255,255,0.18);
+      position:sticky; top:0; z-index:20;
+    }
+    header h1{margin:0;font-size:22px;font-weight:800;}
+    header p{margin:4px 0 0;font-size:13px;opacity:0.92;}
+    .nav-bar{
+      margin-top:10px;
+      display:flex; flex-wrap:wrap; gap:8px;
+      font-size:13px; align-items:center;
+    }
+    .nav-bar a{color:#ffebee;text-decoration:none;}
+    .nav-bar span{opacity:0.8;}
+
+    main{
+      max-width:1200px;
+      margin:18px auto 40px;
+      padding:0 12px 30px;
+      display:grid;
+      grid-template-columns: 360px minmax(0,1fr);
+      gap:16px;
+    }
+    @media(max-width:980px){
+      main{grid-template-columns:1fr;}
+    }
+
+    .card{
+      background:linear-gradient(160deg,rgba(17,21,43,0.96),rgba(11,16,36,0.98));
+      border-radius:var(--radius-lg);
+      border:1px solid var(--border);
+      padding:16px 16px 18px;
+      box-shadow:var(--shadow-soft);
+    }
+    .card + .card{margin-top:14px;}
+    .card-header{
+      display:flex; justify-content:space-between; align-items:flex-start;
+      gap:10px; margin-bottom:10px;
+    }
+    .card-header h2{margin:0;font-size:16px;}
+    .pill{
+      display:inline-flex;align-items:center;gap:6px;
+      font-size:11px;padding:4px 10px;border-radius:999px;
+      border:1px solid rgba(255,255,255,0.14);
+      background:rgba(0,0,0,0.25);
+      color:var(--muted);
+      white-space:nowrap;
+    }
+
+    label{font-size:12.5px;display:block;margin-bottom:6px;color:#dfe6ff;}
+    input[type="text"], input[type="number"], input[type="file"], select, textarea{
+      width:100%;
+      padding:8px 10px;
+      border-radius:10px;
+      border:1px solid var(--border);
+      background:#050814;
+      color:var(--text);
+      font-size:13px;
+      outline:none;
+    }
+    textarea{min-height:72px;resize:vertical;}
+
+    .row{display:flex;gap:10px;flex-wrap:wrap;}
+    .col{flex:1 1 160px;min-width:160px;}
+    .muted{color:var(--muted);font-size:12px;}
+    .status{font-size:12px;margin-top:6px;}
+    .status.ok{color:var(--success);}
+    .status.err{color:var(--danger);}
+    .status.warn{color:var(--warn);}
+
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center; gap:8px;
+      border-radius:999px; border:none;
+      padding:8px 14px;
+      font-size:13px; cursor:pointer;
+      background:var(--primary);
+      color:#fff;
+      box-shadow:0 4px 12px rgba(0,0,0,0.45);
+      transition:transform 0.08s ease, box-shadow 0.08s ease, background 0.15s;
+      text-decoration:none;
+      user-select:none;
+    }
+    .btn:hover{transform:translateY(-1px);box-shadow:0 7px 18px rgba(0,0,0,0.6);background:var(--primary-2);}
+    .btn.secondary{background:#26324f;}
+    .btn.secondary:hover{background:#39476c;}
+    .btn.danger{background:#5a1b2b;}
+    .btn.danger:hover{background:#8b2a43;}
+    .btn.ghost{
+      background:transparent;
+      border:1px solid rgba(255,255,255,0.20);
+      box-shadow:none;
+    }
+    .btn.ghost:hover{background:rgba(255,255,255,0.06);}
+
+    .slot{
+      border:1px solid rgba(255,255,255,0.12);
+      border-radius:14px;
+      padding:10px;
+      background:rgba(255,255,255,0.04);
+      margin-top:10px;
+    }
+    .slot-top{
+      display:flex; justify-content:space-between; align-items:center; gap:10px;
+      margin-bottom:8px;
+    }
+    .slot-title{
+      display:flex; align-items:center; gap:8px;
+      font-weight:700;
+      font-size:13px;
+    }
+    .slot-badges{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;}
+    .badge{
+      display:inline-flex;align-items:center;gap:6px;
+      padding:3px 8px;border-radius:999px;
+      font-size:10.5px;
+      border:1px solid rgba(255,255,255,0.16);
+      background:rgba(0,0,0,0.25);
+      color:var(--muted);
+    }
+    .badge.ok{color:#b7ffcc;border-color:rgba(102,187,106,0.35);}
+    .badge.warn{color:#ffe0b2;border-color:rgba(255,183,77,0.35);}
+    .badge.err{color:#ffb3b3;border-color:rgba(239,83,80,0.35);}
+
+    .slot-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;}
+    .slot-actions .btn{padding:7px 12px;font-size:12.5px;}
+
+    .divider{height:1px;background:rgba(255,255,255,0.10);margin:10px 0;}
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      font-size:12px;
+      margin-top:10px;
+    }
+    thead th{
+      background:#101530;
+      padding:7px 8px;
+      position:sticky;
+      top:0;
+      z-index:1;
+      text-align:left;
+      border-bottom:1px solid rgba(255,255,255,0.08);
+    }
+    tbody td{
+      padding:6px 8px;
+      border-top:1px solid #1f2440;
+      vertical-align:top;
+    }
+    tbody tr:nth-child(even){background:#080c1c;}
+    tbody tr:nth-child(odd){background:#0b1024;}
+
+    .grid-two{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+    @media(max-width:980px){.grid-two{grid-template-columns:1fr;}}
+    .mini-card{
+      border:1px solid rgba(255,255,255,0.12);
+      border-radius:14px;
+      padding:10px;
+      background:rgba(255,255,255,0.04);
+    }
+    .mini-title{font-weight:700;font-size:12.5px;margin-bottom:6px;}
+    .kpi{
+      display:flex;justify-content:space-between;gap:10px;
+      padding:7px 8px;border-radius:12px;
+      border:1px dashed rgba(255,255,255,0.18);
+      background:rgba(0,0,0,0.22);
+      margin-top:8px;
+      font-size:12px;
+    }
+    .kpi strong{font-size:13px;}
+    .scorebar{
+      height:10px;border-radius:999px;
+      background:rgba(255,255,255,0.08);
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,0.12);
+      margin-top:8px;
+    }
+    .scorebar > div{
+      height:100%;
+      width:0%;
+      background:linear-gradient(90deg,#ef5350,#ffb74d,#66bb6a);
+      transition:width .25s ease;
+    }
+
+    .filters{
+      display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;
+      margin-top:10px;
+    }
+
+    .right-area .card{margin-top:0;}
+    .tabs{
+      display:flex;gap:8px;flex-wrap:wrap;
+      border-bottom:1px solid rgba(255,255,255,0.10);
+      padding-bottom:8px;margin-bottom:10px;
+    }
+    .tab{
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.16);
+      background:transparent;
+      color:var(--muted);
+      cursor:pointer;
+      font-size:12px;
+    }
+    .tab.active{
+      background:rgba(13,110,253,0.18);
+      border-color:rgba(66,165,245,0.55);
+      color:#e8f0ff;
+      font-weight:700;
+    }
+    .panel{display:none;}
+    .panel.active{display:block;}
+
+    pre{
+      background:#050814;
+      border-radius:14px;
+      border:1px solid var(--border);
+      padding:10px;
+      font-size:11px;
+      max-height:280px;
+      overflow:auto;
+      white-space:pre-wrap;
+      word-break:break-word;
+    }
+
+    /* ===== Print A4 ===== */
+    @page{ size: A4; margin: 12mm; }
+    .print-only{display:none;}
+    @media print{
+      header, .no-print{display:none !important;}
+      body{background:#fff;color:#000;}
+      main{display:block;max-width:none;margin:0;padding:0;}
+      .card{box-shadow:none;border:1px solid #ddd;background:#fff;color:#000;margin:0 0 10px 0;}
+      .muted, .pill, .badge{color:#333 !important;}
+      table{font-size:10.5px;}
+      thead th{background:#f2f2f2 !important;color:#000;}
+      tbody tr:nth-child(even), tbody tr:nth-child(odd){background:#fff !important;}
+      .print-only{display:block;}
+      a{color:#000;text-decoration:none;}
+    }
+  </style>
+</head>
+
+<body>
+<header>
+  <h1>FA – Analysis Accuracy</h1>
+  <p>วิเคราะห์ความถูกต้องของงบการเงิน: Data Quality → Accounting Rules → Analytical Procedures (Trend/Vertical/Ratio/Cashflow)</p>
+  <div class="nav-bar">
+    <a href="index.html">🏠 หน้าหลักระบบ</a>
+    <span>›</span>
+    <a href="fa-analysis-menu.html">📌 เมนูระบบวิเคราะห์รายงานการเงิน</a>
+    <span>›</span>
+    <span>✅ วิเคราะห์ความถูกต้องของงบการเงิน</span>
+  </div>
+</header>
+
+<main>
+  <!-- LEFT -->
+  <aside class="left-area">
+
+    <!-- Context -->
+    <section class="card no-print">
+      <div class="card-header">
+        <h2>1) Context</h2>
+        <span class="pill">เตรียมข้อมูล</span>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <label>ชื่อหน่วยรับตรวจ</label>
+          <input type="text" id="orgName" placeholder="เช่น เทศบาลเมืองศรีสะเกษ">
+        </div>
+        <div class="col">
+          <label>รหัสหน่วยรับตรวจ</label>
+          <input type="text" id="orgCode" placeholder="เช่น 3350401">
+        </div>
+      </div>
+
+      <div class="row" style="margin-top:10px;">
+        <div class="col">
+          <label>ปีงบประมาณ (ปัจจุบัน)</label>
+          <input type="number" id="yearNow" placeholder="2568">
+        </div>
+        <div class="col">
+          <label>ปีงบประมาณ (ปีก่อน)</label>
+          <input type="number" id="yearPrev" placeholder="2567">
+        </div>
+      </div>
+
+      <div style="margin-top:10px;">
+        <label>หมายเหตุ (Optional)</label>
+        <textarea id="contextNote" placeholder="เช่น งบแสดงฐานะการเงิน/ผลดำเนินงาน/กระแสเงินสด, ข้อจำกัดข้อมูล, สมมติฐาน ฯลฯ"></textarea>
+      </div>
+
+      <div class="divider"></div>
+      <div class="row">
+        <a class="btn secondary" href="fa-analysis-menu.html">↩ กลับเมนูวิเคราะห์</a>
+        <a class="btn ghost" href="index.html">🏠 กลับหน้าหลัก</a>
+      </div>
+
+      <div class="muted" style="margin-top:8px;">
+        * ระบบนี้ไม่ผูกกับแบบฟอร์ม อปท.8.x — เน้นหลักบัญชี/งบการเงิน/รายงานการเงิน
+      </div>
+    </section>
+
+    <!-- Slots 10 -->
+    <section class="card no-print">
+      <div class="card-header">
+        <h2>2) Data Slots (10 ช่อง)</h2>
+        <span class="pill">นำเข้าไฟล์</span>
+      </div>
+      <div class="muted">รองรับ .xlsx .xls .csv .json (อ่านในเครื่อง) | แต่ละ Slot = 1 ชุดข้อมูล (เช่น TB / งบดุล / งบรายได้-ค่าใช้จ่าย / กระแสเงินสด / รายการบัญชีสรุป)</div>
+
+      <div id="slots"></div>
+
+      <div class="divider"></div>
+      <div class="row">
+        <button class="btn secondary" id="btnSaveAll">💾 บันทึกชุดข้อมูล (Local)</button>
+        <button class="btn danger" id="btnClearAll">🗑 ล้างทั้งหมด</button>
+      </div>
+      <div id="slotStatus" class="status"></div>
+    </section>
+
+    <!-- Analysis Config -->
+    <section class="card no-print">
+      <div class="card-header">
+        <h2>3) ตั้งค่าการวิเคราะห์</h2>
+        <span class="pill">Run</span>
+      </div>
+
+      <div class="filters">
+        <div class="col" style="min-width:220px;">
+          <label>เลือกข้อมูลสำหรับวิเคราะห์ (เลือกหลาย Slot)</label>
+          <select id="analysisSlots" multiple size="6"></select>
+          <div class="muted" style="margin-top:6px;">Tip: กด Ctrl/Shift เพื่อเลือกหลายรายการ</div>
+        </div>
+
+        <div class="col" style="min-width:220px;">
+          <label>เลือกวิธีการวิเคราะห์</label>
+          <select id="analysisMethod">
+            <option value="full">Full Pack: DQ + Rules + Analytics</option>
+            <option value="dq">Data Quality Only</option>
+            <option value="rules">Accounting Rules Only</option>
+            <option value="analytics">Analytical Procedures Only</option>
+          </select>
+
+          <div style="margin-top:10px;">
+            <label>รูปแบบการแสดงผล</label>
+            <select id="viewMode">
+              <option value="dashboard">Dashboard + Findings</option>
+              <option value="findings">Findings Table</option>
+              <option value="data">Normalized Data Preview</option>
+            </select>
+          </div>
+
+          <div style="margin-top:10px;">
+            <label>ความคลาดเคลื่อนที่ยอมรับได้ (Tolerance)</label>
+            <input type="number" id="tolerance" value="1" min="0" step="0.01">
+            <div class="muted" style="margin-top:6px;">ใช้กับการทดสอบสมการบัญชี/การโยงงบ (หน่วยเดียวกับข้อมูล เช่น บาท)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+      <div class="row">
+        <button class="btn" id="btnAnalyze">🧪 วิเคราะห์</button>
+        <button class="btn secondary" id="btnShowResult">📊 ดูผลการวิเคราะห์</button>
+      </div>
+      <div id="analysisStatus" class="status"></div>
+    </section>
+
+    <!-- Export -->
+    <section class="card no-print">
+      <div class="card-header">
+        <h2>4) ส่งออกผล (Export)</h2>
+        <span class="pill">A4 ทุกระบบ</span>
+      </div>
+      <div class="muted">รองรับ: Print A4 (PDF), CSV, JSON | (Excel) = CSV ที่เปิดด้วย Excel ได้</div>
+      <div class="row" style="margin-top:10px;">
+        <button class="btn" id="btnPrintA4">🖨️ ส่งออก A4 (Print/PDF)</button>
+        <button class="btn secondary" id="btnExportCSV">⬇️ Export CSV (Findings)</button>
+        <button class="btn secondary" id="btnExportJSON">⬇️ Export JSON (Bundle)</button>
+      </div>
+      <div id="exportStatus" class="status"></div>
+    </section>
+
+  </aside>
+
+  <!-- RIGHT -->
+  <section class="right-area">
+
+    <!-- Print-only header -->
+    <section class="card print-only">
+      <h2 style="margin:0 0 6px;">รายงานผลการวิเคราะห์ความถูกต้องของงบการเงิน (A4)</h2>
+      <div style="font-size:12px;">
+        หน่วยรับตรวจ: <strong id="pOrgName">-</strong> (รหัส: <strong id="pOrgCode">-</strong>) |
+        ปี: <strong id="pYearNow">-</strong> / <strong id="pYearPrev">-</strong>
+      </div>
+      <div style="font-size:11.5px;margin-top:6px;">
+        พิมพ์เมื่อ: <strong id="pPrintedAt">-</strong>
+      </div>
+    </section>
+
+    <!-- Dashboard -->
+    <section class="card" id="resultCard">
+      <div class="card-header">
+        <h2>Chatboard / Dashboard</h2>
+        <span class="pill">ผลวิเคราะห์</span>
+      </div>
+
+      <div class="tabs no-print">
+        <button class="tab active" data-tab="dash">📊 Dashboard</button>
+        <button class="tab" data-tab="find">🧾 Findings</button>
+        <button class="tab" data-tab="data">🧩 Data</button>
+        <button class="tab" data-tab="raw">🧱 Raw</button>
+      </div>
+
+      <div class="panel active" id="panel-dash">
+        <div class="grid-two">
+          <div class="mini-card">
+            <div class="mini-title">คะแนนความถูกต้องโดยรวม (Overall Accuracy Score)</div>
+            <div class="kpi">
+              <span>Overall</span>
+              <strong id="kpiOverall">-</strong>
+            </div>
+            <div class="scorebar" title="0-100">
+              <div id="scoreFill"></div>
+            </div>
+
+            <div class="kpi">
+              <span>Data Quality</span>
+              <strong id="kpiDQ">-</strong>
+            </div>
+            <div class="kpi">
+              <span>Accounting Rules</span>
+              <strong id="kpiRules">-</strong>
+            </div>
+            <div class="kpi">
+              <span>Analytics</span>
+              <strong id="kpiAnalytics">-</strong>
+            </div>
+
+            <div class="divider"></div>
+            <div class="muted" id="scoreInterpretation">ยังไม่มีการวิเคราะห์</div>
+          </div>
+
+          <div class="mini-card">
+            <div class="mini-title">สรุปสิ่งที่พบ (Top Findings)</div>
+            <div id="topFindings" class="muted">ยังไม่มีข้อมูล</div>
+
+            <div class="divider"></div>
+            <div class="mini-title">Red Flags (เชิงตรวจสอบ)</div>
+            <ul id="redFlags" class="muted" style="margin:6px 0 0; padding-left:18px;">
+              <li>กำไรสูง แต่ CFO ติดลบต่อเนื่อง</li>
+              <li>ลูกหนี้เพิ่มเร็วกว่ารายได้</li>
+              <li>ความสัมพันธ์ A = L + E ไม่สมดุลเกิน tolerance</li>
+              <li>รายการไม่ปกติ (one-off) สูงผิดสัดส่วน</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+        <div class="mini-title">ข้อเสนอแนะเชิงปฏิบัติ (Actionable Next Steps)</div>
+        <div id="nextSteps" class="muted">
+          • ตรวจสอบ mapping ให้ครบถ้วน → รัน Full Pack อีกครั้ง<br>
+          • หากพบ High severity: สุ่มทดสอบเอกสารหลักฐาน/รายการ GL ที่เกี่ยวข้อง<br>
+          • บันทึกผลเป็น A4 และแนบเป็นแฟ้มงานตรวจสอบ
+        </div>
+      </div>
+
+      <div class="panel" id="panel-find">
+        <div class="muted">ตาราง Findings (กรองตามความรุนแรงได้)</div>
+        <div class="filters no-print" style="margin-top:10px;">
+          <div class="col" style="min-width:200px;">
+            <label>Filter Severity</label>
+            <select id="severityFilter">
+              <option value="ALL">ทั้งหมด</option>
+              <option value="HIGH">High</option>
+              <option value="MED">Medium</option>
+              <option value="LOW">Low</option>
+              <option value="INFO">Info</option>
+            </select>
+          </div>
+          <div class="col" style="min-width:240px;">
+            <label>ค้นหา (ค้นจาก test / message / year)</label>
+            <input type="text" id="findSearch" placeholder="เช่น A=L+E, cash, 2568">
+          </div>
+          <div class="col" style="min-width:180px;">
+            <button class="btn secondary" id="btnApplyFilter">🔎 Apply</button>
+          </div>
+        </div>
+
+        <div id="findingsTableWrap" style="max-height:420px;overflow:auto;margin-top:10px;"></div>
+      </div>
+
+      <div class="panel" id="panel-data">
+        <div class="muted">Normalized Data Preview (ตัวอย่าง 50 แถว)</div>
+        <pre id="normalizedPreview">ยังไม่มีข้อมูล</pre>
+      </div>
+
+      <div class="panel" id="panel-raw">
+        <div class="muted">Raw Data Preview (ต่อ Slot — แสดงบางส่วน)</div>
+        <pre id="rawPreview">ยังไม่มีข้อมูล</pre>
+      </div>
+
+    </section>
+
+  </section>
+</main>
+
+<script>
+/* =========================================================
+   FA Analysis Accuracy (Single-file)
+   - Slots 10 ช่อง (Excel/CSV/JSON)
+   - Normalize → Schema กลาง
+   - วิเคราะห์ (DQ + Rules + Analytics)
+   - ดูผล / Export (A4 Print, CSV, JSON)
+========================================================= */
+
+(function(){
+  // ---------- Helpers ----------
+  const $ = (id)=>document.getElementById(id);
+  const nowISO = ()=> new Date().toISOString();
+  const fmtDT = (d)=> {
+    const x = d instanceof Date ? d : new Date(d);
+    return x.toLocaleString("th-TH", { year:"numeric", month:"2-digit", day:"2-digit", hour:"2-digit", minute:"2-digit" });
+  };
+  const safeNum = (v)=>{
+    if(v===null || v===undefined) return NaN;
+    if(typeof v === "number") return v;
+    const s = String(v).replace(/,/g,"").trim();
+    if(s==="") return NaN;
+    const n = Number(s);
+    return Number.isFinite(n) ? n : NaN;
+  };
+  const sum = (arr)=> arr.reduce((a,b)=>a+(Number.isFinite(b)?b:0),0);
+  const escapeHtml = (str)=> String(str)
+    .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;").replace(/'/g,"&#039;");
+  const downloadBlob = (blob, filename)=>{
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(()=>{ URL.revokeObjectURL(url); a.remove(); }, 0);
+  };
+
+  // ---------- State ----------
+  const SLOTS_COUNT = 10;
+
+  // each slot: { id, name, fileName, type, rawRows, header, mapping, normalized, meta, savedAt }
+  const slots = Array.from({length:SLOTS_COUNT}, (_,i)=>({
+    id: `S${i+1}`,
+    name: `Slot ${i+1}`,
+    fileName: "",
+    type: "",
+    rawRows: [],
+    header: [],
+    mapping: {}, // colIndex->fieldKey
+    normalized: [], // canonical lines
+    meta: { importedAt:null, rows:0, mappedPct:0 },
+    savedAt: null
+  }));
+
+  // analysis result
+  let analysisBundle = null; // { meta, selectedSlots, normalizedUnion, findings, scores, summary, rawDigest, createdAt }
+
+  // ---------- Canonical fields ----------
+  // Minimal canonical for accuracy: (statement_lines-like)
+  // We'll normalize each row into:
+  // { year, kind, statement, code, name, amount, dr, cr, net, slotId, sourceRow }
+  const CANON_FIELDS = [
+    { key:"ignore", label:"❌ Ignore" },
+    { key:"year", label:"ปี/Year (year)" },
+    { key:"statement", label:"งบ/Statement (BS|IS|CF|TB|OTHER)" },
+    { key:"code", label:"รหัสบัญชี/Code (code)" },
+    { key:"name", label:"ชื่อบัญชี/รายการ (name)" },
+    { key:"amount", label:"ยอดรวม/Amount (amount)" },
+    { key:"dr", label:"เดบิต (dr)" },
+    { key:"cr", label:"เครดิต (cr)" },
+    { key:"net", label:"สุทธิ/คงเหลือ (net)" },
+    { key:"section", label:"หมวด/Section (section)" },
+    { key:"period", label:"งวด/Period (period)" },
+    { key:"noteRef", label:"อ้างอิงหมายเหตุ (noteRef)" }
+  ];
+
+  // ---------- UI Init ----------
+  const slotsWrap = $("slots");
+  const slotStatus = $("slotStatus");
+  const analysisSlotsSel = $("analysisSlots");
+  const analysisStatus = $("analysisStatus");
+  const exportStatus = $("exportStatus");
+
+  renderSlotsUI();
+  refreshAnalysisSlotsSelect();
+  loadFromLocalIfAny();
+
+  // Tabs
+  document.querySelectorAll(".tab").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      document.querySelectorAll(".tab").forEach(b=>b.classList.remove("active"));
+      btn.classList.add("active");
+      const key = btn.dataset.tab;
+      document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));
+      if(key==="dash") $("panel-dash").classList.add("active");
+      if(key==="find") $("panel-find").classList.add("active");
+      if(key==="data") $("panel-data").classList.add("active");
+      if(key==="raw")  $("panel-raw").classList.add("active");
+    });
+  });
+
+  // Actions
+  $("btnSaveAll").addEventListener("click", saveAllLocal);
+  $("btnClearAll").addEventListener("click", clearAll);
+  $("btnAnalyze").addEventListener("click", runAnalysis);
+  $("btnShowResult").addEventListener("click", showResultAccordingView);
+  $("btnPrintA4").addEventListener("click", ()=> {
+    // ensure print header is filled
+    syncPrintHeader();
+    window.print();
+  });
+  $("btnExportCSV").addEventListener("click", exportFindingsCSV);
+  $("btnExportJSON").addEventListener("click", exportBundleJSON);
+  $("btnApplyFilter").addEventListener("click", renderFindingsTable);
+  $("severityFilter").addEventListener("change", renderFindingsTable);
+  $("findSearch").addEventListener("input", ()=> {
+    // debounce-ish
+    clearTimeout(window.__fa_find_t);
+    window.__fa_find_t = setTimeout(renderFindingsTable, 180);
+  });
+
+  // ---------- Render slots UI ----------
+  function renderSlotsUI(){
+    let html = "";
+    for(const slot of slots){
+      html += `
+        <div class="slot" id="slot-${slot.id}">
+          <div class="slot-top">
+            <div class="slot-title">
+              🧩 <span>${slot.id}</span> <span style="opacity:.9;">${escapeHtml(slot.name)}</span>
+            </div>
+            <div class="slot-badges" id="badges-${slot.id}">
+              ${renderSlotBadges(slot)}
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              <label>อัปโหลดไฟล์ (Excel/CSV/JSON)</label>
+              <input type="file" id="file-${slot.id}" accept=".xlsx,.xls,.csv,.json">
+            </div>
+            <div class="col">
+              <label>Statement Type</label>
+              <select id="stype-${slot.id}">
+                <option value="">-- เลือกประเภทข้อมูล --</option>
+                <option value="TB">Trial Balance / GL Summary (TB)</option>
+                <option value="BS">งบแสดงฐานะการเงิน (BS)</option>
+                <option value="IS">งบผลการดำเนินงาน/รายได้-ค่าใช้จ่าย (IS)</option>
+                <option value="CF">งบกระแสเงินสด (CF)</option>
+                <option value="OTHER">อื่น ๆ (OTHER)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="muted" style="margin-top:6px;">
+            ไฟล์: <span id="fname-${slot.id}">${slot.fileName ? escapeHtml(slot.fileName) : "-"}</span>
+            · แถวข้อมูล: <strong id="rows-${slot.id}">${slot.meta.rows || 0}</strong>
+            · Mapping: <strong id="mpct-${slot.id}">${slot.meta.mappedPct || 0}%</strong>
+          </div>
+
+          <div class="slot-actions">
+            <button class="btn secondary" id="btnMap-${slot.id}">🧷 Mapping</button>
+            <button class="btn secondary" id="btnView-${slot.id}">👁 ดูข้อมูล</button>
+            <button class="btn" id="btnNorm-${slot.id}">⚙ Normalize</button>
+            <button class="btn secondary" id="btnSave-${slot.id}">💾 Save Slot</button>
+            <button class="btn danger" id="btnDel-${slot.id}">🗑 ลบ Slot</button>
+          </div>
+
+          <div id="slotmsg-${slot.id}" class="status"></div>
+
+          <div id="mapwrap-${slot.id}" style="display:none;margin-top:10px;"></div>
+          <div id="viewwrap-${slot.id}" style="display:none;margin-top:10px;max-height:240px;overflow:auto;"></div>
+        </div>
+      `;
+    }
+    slotsWrap.innerHTML = html;
+
+    // bind events for each slot
+    for(const slot of slots){
+      const fileEl = $(`file-${slot.id}`);
+      const stypeEl = $(`stype-${slot.id}`);
+      fileEl.addEventListener("change", (e)=>handleFile(slot.id, e));
+      stypeEl.value = slot.type || "";
+      stypeEl.addEventListener("change", ()=> {
+        slot.type = stypeEl.value;
+        updateSlotBadges(slot.id);
+      });
+
+      $(`btnMap-${slot.id}`).addEventListener("click", ()=>toggleMapping(slot.id));
+      $(`btnView-${slot.id}`).addEventListener("click", ()=>toggleView(slot.id));
+      $(`btnNorm-${slot.id}`).addEventListener("click", ()=>normalizeSlot(slot.id));
+      $(`btnSave-${slot.id}`).addEventListener("click", ()=>saveSlotLocal(slot.id));
+      $(`btnDel-${slot.id}`).addEventListener("click", ()=>deleteSlot(slot.id));
+    }
+  }
+
+  function renderSlotBadges(slot){
+    const badges = [];
+    if(slot.type) badges.push(`<span class="badge ok">📁 ${escapeHtml(slot.type)}</span>`);
+    if(slot.meta.rows>0) badges.push(`<span class="badge ok">✅ Loaded</span>`);
+    if(slot.meta.rows===0) badges.push(`<span class="badge">⏳ Empty</span>`);
+    if(slot.normalized && slot.normalized.length>0) badges.push(`<span class="badge ok">🧩 Norm</span>`);
+    if(slot.meta.mappedPct>=60) badges.push(`<span class="badge ok">🧷 Map ${slot.meta.mappedPct}%</span>`);
+    else if(slot.meta.mappedPct>0) badges.push(`<span class="badge warn">🧷 Map ${slot.meta.mappedPct}%</span>`);
+    else badges.push(`<span class="badge">🧷 Map 0%</span>`);
+    return badges.join("");
+  }
+
+  function updateSlotBadges(slotId){
+    const slot = slots.find(s=>s.id===slotId);
+    $(`badges-${slotId}`).innerHTML = renderSlotBadges(slot);
+    $(`fname-${slotId}`).textContent = slot.fileName || "-";
+    $(`rows-${slotId}`).textContent = slot.meta.rows || 0;
+    $(`mpct-${slotId}`).textContent = slot.meta.mappedPct || 0;
+    refreshAnalysisSlotsSelect();
+  }
+
+  function setSlotMsg(slotId, text, kind){
+    const el = $(`slotmsg-${slotId}`);
+    el.textContent = text || "";
+    el.className = "status" + (kind ? " "+kind : "");
+  }
+
+  // ---------- File ingest ----------
+  function handleFile(slotId, e){
+    const slot = slots.find(s=>s.id===slotId);
+    const file = e.target.files[0];
+    if(!file){
+      setSlotMsg(slotId, "", "");
+      return;
+    }
+
+    slot.fileName = file.name;
+    slot.meta.importedAt = nowISO();
+    setSlotMsg(slotId, "กำลังอ่านไฟล์...", "");
+
+    const fname = file.name.toLowerCase();
+
+    const reader = new FileReader();
+    if(fname.endsWith(".xlsx") || fname.endsWith(".xls")){
+      reader.readAsArrayBuffer(file);
+      reader.onload = (ev)=>{
+        try{
+          const data = new Uint8Array(ev.target.result);
+          const workbook = XLSX.read(data, { type:"array" });
+          const sheetName = workbook.SheetNames[0];
+          const sheet = workbook.Sheets[sheetName];
+          const rows = XLSX.utils.sheet_to_json(sheet, { header:1, defval:"" });
+
+          processRows(slotId, rows);
+          setSlotMsg(slotId, `อ่านไฟล์สำเร็จ: ${Math.max(0,rows.length-1)} แถว`, "ok");
+        }catch(err){
+          console.error(err);
+          setSlotMsg(slotId, "ผิดพลาดในการอ่าน Excel", "err");
+        }
+        updateSlotBadges(slotId);
+      };
+    } else if(fname.endsWith(".csv")){
+      reader.readAsText(file, "utf-8");
+      reader.onload = (ev)=>{
+        try{
+          const text = ev.target.result;
+          const rows = text.split(/\r?\n/).filter(x=>x.trim()!=="").map(line=>{
+            // simple CSV split (basic)
+            return line.split(",");
+          });
+          processRows(slotId, rows);
+          setSlotMsg(slotId, `อ่าน CSV สำเร็จ: ${Math.max(0,rows.length-1)} แถว`, "ok");
+        }catch(err){
+          console.error(err);
+          setSlotMsg(slotId, "ผิดพลาดในการอ่าน CSV", "err");
+        }
+        updateSlotBadges(slotId);
+      };
+    } else if(fname.endsWith(".json")){
+      reader.readAsText(file, "utf-8");
+      reader.onload = (ev)=>{
+        try{
+          const obj = JSON.parse(ev.target.result);
+
+          // Accept: array of objects OR {data:[...]} OR {rows:[...]}
+          let arr = Array.isArray(obj) ? obj : (obj.data || obj.rows || []);
+          if(!Array.isArray(arr)) arr = [];
+
+          // Convert objects to rows (header + rows)
+          const keys = Array.from(arr.reduce((set, it)=> {
+            Object.keys(it||{}).forEach(k=>set.add(k));
+            return set;
+          }, new Set()));
+          const rows = [keys, ...arr.map(it=> keys.map(k=> (it && it[k]!==undefined)?it[k]:""))];
+
+          processRows(slotId, rows);
+          setSlotMsg(slotId, `อ่าน JSON สำเร็จ: ${Math.max(0,rows.length-1)} แถว`, "ok");
+        }catch(err){
+          console.error(err);
+          setSlotMsg(slotId, "ผิดพลาดในการอ่าน JSON", "err");
+        }
+        updateSlotBadges(slotId);
+      };
+    } else {
+      setSlotMsg(slotId, "รองรับเฉพาะ .xlsx .xls .csv .json", "err");
+      slot.fileName = file.name;
+      updateSlotBadges(slotId);
+    }
+  }
+
+  function processRows(slotId, rows){
+    const slot = slots.find(s=>s.id===slotId);
+    slot.rawRows = rows || [];
+    slot.header = (rows && rows[0]) ? rows[0].map(x=>String(x||"")) : [];
+    slot.meta.rows = Math.max(0, (rows?.length||0)-1);
+    slot.normalized = []; // reset
+    // default mapping guess
+    slot.mapping = {};
+    slot.header.forEach((h, idx)=> {
+      slot.mapping[idx] = guessField(h);
+    });
+    slot.meta.mappedPct = calcMappedPct(slot.mapping);
+    // refresh UI if mapping panel open
+    renderMapping(slotId);
+    renderView(slotId);
+  }
+
+  function guessField(header){
+    const h = String(header||"").toLowerCase();
+    if(h.includes("ปี") || h.includes("year") || h.includes("fiscal")) return "year";
+    if(h.includes("งบ") || h.includes("statement") || h.includes("bs") || h.includes("is") || h.includes("cf") || h.includes("tb")) return "statement";
+    if(h.includes("รหัส") || h.includes("code") || h.includes("บัญชี")) return "code";
+    if(h.includes("ชื่อ") || h.includes("name") || h.includes("รายการ")) return "name";
+    if(h.includes("เดบิต") || h.includes("dr") || h.includes("debit")) return "dr";
+    if(h.includes("เครดิต") || h.includes("cr") || h.includes("credit")) return "cr";
+    if(h.includes("สุทธิ") || h.includes("คงเหลือ") || h.includes("net") || h.includes("balance")) return "net";
+    if(h.includes("ยอด") || h.includes("amount") || h.includes("รวม")) return "amount";
+    if(h.includes("หมวด") || h.includes("section") || h.includes("ประเภท")) return "section";
+    if(h.includes("งวด") || h.includes("period")) return "period";
+    if(h.includes("หมายเหตุ") || h.includes("note")) return "noteRef";
+    return "ignore";
+  }
+
+  function calcMappedPct(mapping){
+    const keys = Object.values(mapping||{});
+    if(!keys.length) return 0;
+    const used = keys.filter(k=>k && k!=="ignore").length;
+    return Math.round((used/keys.length)*100);
+  }
+
+  // ---------- Mapping UI ----------
+  function toggleMapping(slotId){
+    const wrap = $(`mapwrap-${slotId}`);
+    wrap.style.display = (wrap.style.display==="none" || !wrap.style.display) ? "block" : "none";
+    renderMapping(slotId);
+  }
+
+  function renderMapping(slotId){
+    const slot = slots.find(s=>s.id===slotId);
+    const wrap = $(`mapwrap-${slotId}`);
+    if(!wrap) return;
+
+    if(!slot.header || slot.header.length===0){
+      wrap.innerHTML = `<div class="muted">ยังไม่มีหัวคอลัมน์ (อัปโหลดไฟล์ก่อน)</div>`;
+      return;
+    }
+
+    let html = `
+      <div class="mini-card">
+        <div class="mini-title">Mapping: ${slot.id} (${escapeHtml(slot.fileName||"-")})</div>
+        <div class="muted">เลือกให้แต่ละคอลัมน์แมปไปยังฟิลด์มาตรฐานเพื่อ Normalize และวิเคราะห์</div>
+        <div style="max-height:220px;overflow:auto;margin-top:8px;">
+          <table>
+            <thead>
+              <tr>
+                <th style="width:6%;">#</th>
+                <th style="width:44%;">หัวคอลัมน์</th>
+                <th style="width:50%;">แมปไป</th>
+              </tr>
+            </thead>
+            <tbody>
+    `;
+    slot.header.forEach((h, idx)=>{
+      html += `
+        <tr>
+          <td>${idx+1}</td>
+          <td>${escapeHtml(h || "(ว่าง)")}</td>
+          <td>
+            <select class="select-small" data-map-slot="${slotId}" data-col="${idx}">
+              ${CANON_FIELDS.map(f=>{
+                const sel = (slot.mapping[idx]===f.key) ? "selected" : "";
+                return `<option value="${f.key}" ${sel}>${escapeHtml(f.label)}</option>`;
+              }).join("")}
+            </select>
+          </td>
+        </tr>
+      `;
+    });
+    html += `
+            </tbody>
+          </table>
+        </div>
+
+        <div class="divider"></div>
+        <div class="row">
+          <button class="btn secondary" data-action="autoguess" data-slot="${slotId}">🤖 เดา Mapping ใหม่</button>
+          <button class="btn" data-action="applymap" data-slot="${slotId}">✅ บันทึก Mapping</button>
+        </div>
+        <div class="muted" style="margin-top:8px;">Mapping ครบมากขึ้น → วิเคราะห์แม่นขึ้น (อย่างน้อย year/code/name และ net หรือ amount)</div>
+      </div>
+    `;
+    wrap.innerHTML = html;
+
+    // bind mapping change
+    wrap.querySelectorAll("select[data-map-slot]").forEach(sel=>{
+      sel.addEventListener("change", ()=>{
+        const col = Number(sel.dataset.col);
+        slot.mapping[col] = sel.value;
+        slot.meta.mappedPct = calcMappedPct(slot.mapping);
+        updateSlotBadges(slotId);
+      });
+    });
+
+    wrap.querySelectorAll("button[data-action]").forEach(btn=>{
+      btn.addEventListener("click", ()=>{
+        const act = btn.dataset.action;
+        if(act==="autoguess"){
+          slot.header.forEach((h, idx)=> slot.mapping[idx] = guessField(h));
+          slot.meta.mappedPct = calcMappedPct(slot.mapping);
+          renderMapping(slotId);
+          updateSlotBadges(slotId);
+          setSlotMsg(slotId, "เดา Mapping ใหม่แล้ว", "ok");
+        }
+        if(act==="applymap"){
+          slot.meta.mappedPct = calcMappedPct(slot.mapping);
+          updateSlotBadges(slotId);
+          setSlotMsg(slotId, "บันทึก Mapping แล้ว", "ok");
+        }
+      });
+    });
+  }
+
+  // ---------- View raw preview ----------
+  function toggleView(slotId){
+    const wrap = $(`viewwrap-${slotId}`);
+    wrap.style.display = (wrap.style.display==="none" || !wrap.style.display) ? "block" : "none";
+    renderView(slotId);
+  }
+
+  function renderView(slotId){
+    const slot = slots.find(s=>s.id===slotId);
+    const wrap = $(`viewwrap-${slotId}`);
+    if(!wrap) return;
+
+    if(!slot.rawRows || slot.rawRows.length===0){
+      wrap.innerHTML = `<div class="muted">ยังไม่มีข้อมูล</div>`;
+      return;
+    }
+
+    const rows = slot.rawRows;
+    const maxRows = Math.min(8, rows.length);
+    let html = `<table><thead><tr>`;
+    (rows[0]||[]).forEach((h, idx)=>{
+      html += `<th>Col ${idx+1}<br>${escapeHtml(String(h||""))}</th>`;
+    });
+    html += `</tr></thead><tbody>`;
+    for(let r=1;r<maxRows;r++){
+      html += `<tr>`;
+      (rows[r]||[]).forEach(cell=>{
+        html += `<td>${escapeHtml(String(cell ?? ""))}</td>`;
+      });
+      html += `</tr>`;
+    }
+    html += `</tbody></table>`;
+    wrap.innerHTML = html;
+  }
+
+  // ---------- Normalize ----------
+  function normalizeSlot(slotId){
+    const slot = slots.find(s=>s.id===slotId);
+
+    if(!slot.rawRows || slot.rawRows.length<2){
+      setSlotMsg(slotId, "ยังไม่มีข้อมูล (อัปโหลดไฟล์ก่อน)", "err");
+      return;
+    }
+    if(!slot.type){
+      setSlotMsg(slotId, "กรุณาเลือก Statement Type ก่อน Normalize", "warn");
+      return;
+    }
+
+    const ctxYearNow = safeNum($("yearNow").value);
+    const ctxYearPrev= safeNum($("yearPrev").value);
+
+    const header = slot.header || [];
+    const mapping = slot.mapping || {};
+    const rows = slot.rawRows;
+
+    const out = [];
+    for(let r=1;r<rows.length;r++){
+      const row = rows[r];
+      if(!row || row.every(c=> String(c??"").trim()==="")) continue;
+
+      const rec = {
+        year: null,
+        statement: slot.type || null,
+        code: "",
+        name: "",
+        section: "",
+        period: "",
+        noteRef: "",
+        amount: null,
+        dr: null,
+        cr: null,
+        net: null,
+        slotId: slot.id,
+        sourceRow: r+1
+      };
+
+      for(let c=0;c<header.length;c++){
+        const key = mapping[c] || "ignore";
+        if(key==="ignore") continue;
+        const val = row[c];
+
+        if(key==="year"){
+          const n = safeNum(val);
+          if(Number.isFinite(n)) rec.year = n;
+        } else if(key==="statement"){
+          const s = String(val||"").trim().toUpperCase();
+          if(["BS","IS","CF","TB","OTHER"].includes(s)) rec.statement = s;
+        } else if(key==="code"){
+          rec.code = String(val??"").trim();
+        } else if(key==="name"){
+          rec.name = String(val??"").trim();
+        } else if(key==="section"){
+          rec.section = String(val??"").trim();
+        } else if(key==="period"){
+          rec.period = String(val??"").trim();
+        } else if(key==="noteRef"){
+          rec.noteRef = String(val??"").trim();
+        } else if(key==="amount"){
+          const n = safeNum(val);
+          rec.amount = Number.isFinite(n) ? n : rec.amount;
+        } else if(key==="dr"){
+          const n = safeNum(val);
+          rec.dr = Number.isFinite(n) ? n : rec.dr;
+        } else if(key==="cr"){
+          const n = safeNum(val);
+          rec.cr = Number.isFinite(n) ? n : rec.cr;
+        } else if(key==="net"){
+          const n = safeNum(val);
+          rec.net = Number.isFinite(n) ? n : rec.net;
+        }
+      }
+
+      // fill year if missing: prefer context yearNow
+      if(!Number.isFinite(rec.year)){
+        if(Number.isFinite(ctxYearNow)) rec.year = ctxYearNow;
+        else if(Number.isFinite(ctxYearPrev)) rec.year = ctxYearPrev;
+      }
+
+      // derive net if missing but dr/cr exist
+      const dr = Number.isFinite(rec.dr)?rec.dr:0;
+      const cr = Number.isFinite(rec.cr)?rec.cr:0;
+      if(!Number.isFinite(rec.net) && (Number.isFinite(rec.dr)||Number.isFinite(rec.cr))){
+        rec.net = dr - cr;
+      }
+
+      // derive amount from net if amount missing
+      if(!Number.isFinite(rec.amount) && Number.isFinite(rec.net)){
+        rec.amount = rec.net;
+      }
+
+      // keep only meaningful rows (need at least name or code or amount)
+      const hasId = (rec.code || rec.name);
+      const hasVal = Number.isFinite(rec.amount) || Number.isFinite(rec.net) || Number.isFinite(rec.dr) || Number.isFinite(rec.cr);
+      if(hasId || hasVal){
+        out.push(rec);
+      }
+    }
+
+    slot.normalized = out;
+    setSlotMsg(slotId, `Normalize สำเร็จ: ${out.length} รายการ`, out.length? "ok":"warn");
+    updateSlotBadges(slotId);
+
+    // update global previews
+    renderGlobalPreviews();
+  }
+
+  function renderGlobalPreviews(){
+    // raw digest per slot
+    const digest = slots
+      .filter(s=>s.rawRows && s.rawRows.length>0)
+      .map(s=>{
+        const slice = (s.rawRows||[]).slice(0,6);
+        return { slot:s.id, file:s.fileName, type:s.type, preview:slice };
+      });
+    $("rawPreview").textContent = digest.length ? JSON.stringify(digest, null, 2) : "ยังไม่มีข้อมูล";
+
+    // normalized union preview
+    const union = slots.flatMap(s=>s.normalized||[]);
+    $("normalizedPreview").textContent = union.length ? JSON.stringify(union.slice(0,50), null, 2) : "ยังไม่มีข้อมูล";
+  }
+
+  // ---------- Analysis selection ----------
+  function refreshAnalysisSlotsSelect(){
+    // update multiselect list with loaded slots
+    const selected = new Set(Array.from(analysisSlotsSel.selectedOptions || []).map(o=>o.value));
+    analysisSlotsSel.innerHTML = "";
+
+    slots.forEach(s=>{
+      const loaded = (s.normalized && s.normalized.length>0) || (s.rawRows && s.rawRows.length>1);
+      const label = `${s.id} · ${s.type||"?"} · ${(s.fileName||"no-file")} · rows:${s.meta.rows||0} · norm:${(s.normalized||[]).length}`;
+      const opt = document.createElement("option");
+      opt.value = s.id;
+      opt.textContent = label;
+      if(selected.has(s.id)) opt.selected = true;
+      if(!loaded) opt.disabled = true;
+      analysisSlotsSel.appendChild(opt);
+    });
+  }
+
+  // ---------- Analysis Engine ----------
+  function runAnalysis(){
+    analysisStatus.textContent = "";
+    analysisStatus.className = "status";
+
+    const selected = Array.from(analysisSlotsSel.selectedOptions || []).map(o=>o.value);
+    if(selected.length===0){
+      analysisStatus.textContent = "กรุณาเลือกอย่างน้อย 1 Slot เพื่อวิเคราะห์";
+      analysisStatus.className = "status err";
+      return;
+    }
+
+    // ensure normalized exists, attempt auto-normalize if raw exists
+    for(const sid of selected){
+      const slot = slots.find(s=>s.id===sid);
+      if((slot.normalized||[]).length===0 && (slot.rawRows||[]).length>1){
+        // try normalize with current mapping
+        normalizeSlot(sid);
+      }
+    }
+
+    const method = $("analysisMethod").value;
+    const tol = safeNum($("tolerance").value);
+    const tolerance = Number.isFinite(tol) ? tol : 0;
+
+    const ctx = readContext();
+
+    // union normalized
+    const union = selected.flatMap(sid=>{
+      const slot = slots.find(s=>s.id===sid);
+      return (slot.normalized||[]).map(x=>({...x}));
+    });
+
+    if(union.length===0){
+      analysisStatus.textContent = "ไม่มีข้อมูล normalized (กรุณา Normalize ก่อน หรือแก้ Mapping)";
+      analysisStatus.className = "status err";
+      return;
+    }
+
+    // Run checks
+    const findings = [];
+    const dqFind = (method==="full"||method==="dq") ? runDQ(union, selected) : [];
+    const ruleFind = (method==="full"||method==="rules") ? runRules(union, tolerance, ctx) : [];
+    const anaFind = (method==="full"||method==="analytics") ? runAnalytics(union, ctx) : [];
+    findings.push(...dqFind, ...ruleFind, ...anaFind);
+
+    // Scores
+    const scores = scoreAll(findings, method);
+    const summary = summarize(findings, scores);
+
+    analysisBundle = {
+      meta: ctx,
+      selectedSlots: selected,
+      normalizedUnion: union,
+      findings,
+      scores,
+      summary,
+      createdAt: nowISO(),
+      rawDigest: selected.map(sid=>{
+        const slot = slots.find(s=>s.id===sid);
+        return { slotId:sid, file:slot.fileName, type:slot.type, rows:slot.meta.rows, mappedPct:slot.meta.mappedPct };
+      })
+    };
+
+    analysisStatus.textContent = `วิเคราะห์สำเร็จ: พบ ${findings.length} ประเด็น | Overall ${scores.overall}/100`;
+    analysisStatus.className = "status ok";
+
+    // render to dashboard
+    renderResultToUI();
+    // jump to view mode (if set)
+    showResultAccordingView();
+  }
+
+  function readContext(){
+    return {
+      orgName: $("orgName").value || "",
+      orgCode: $("orgCode").value || "",
+      yearNow: $("yearNow").value ? Number($("yearNow").value) : null,
+      yearPrev: $("yearPrev").value ? Number($("yearPrev").value) : null,
+      note: $("contextNote").value || "",
+      generatedAt: nowISO()
+    };
+  }
+
+  // ---------- DQ checks ----------
+  function runDQ(union, selectedSlots){
+    const f = [];
+
+    // DQ1: Missing year
+    const missYear = union.filter(x=>!Number.isFinite(safeNum(x.year)));
+    if(missYear.length>0){
+      f.push(makeFinding("MED","DQ_MISSING_YEAR",null,
+        `พบรายการไม่มีปี (year) จำนวน ${missYear.length} รายการ`,
+        "ตรวจ mapping ของคอลัมน์ปี หรือใส่ปีใน Context", {count:missYear.length}));
+    } else {
+      f.push(makeFinding("INFO","DQ_MISSING_YEAR",null,"ไม่พบรายการที่ไม่มีปี","-",{count:0}));
+    }
+
+    // DQ2: Non-numeric amount/net/dr/cr
+    const badNum = union.filter(x=>{
+      const a = safeNum(x.amount), n = safeNum(x.net), dr = safeNum(x.dr), cr = safeNum(x.cr);
+      // if any provided but not numeric: detect by original string maybe; here just check if fields exist but NaN
+      const hasAny = (x.amount!==null && x.amount!==undefined && String(x.amount).trim()!=="") ||
+                     (x.net!==null && x.net!==undefined && String(x.net).trim()!=="") ||
+                     (x.dr!==null && x.dr!==undefined && String(x.dr).trim()!=="") ||
+                     (x.cr!==null && x.cr!==undefined && String(x.cr).trim()!=="");
+      const allNan = (!Number.isFinite(a) && !Number.isFinite(n) && !Number.isFinite(dr) && !Number.isFinite(cr));
+      return hasAny && allNan;
+    });
+    if(badNum.length>0){
+      f.push(makeFinding("MED","DQ_NON_NUMERIC",null,
+        `พบรายการที่มีค่าจำนวนเงินไม่เป็นตัวเลข จำนวน ${badNum.length} รายการ`,
+        "ตรวจรูปแบบตัวเลข/คั่นหลักพัน/สัญลักษณ์ หรือแก้ Mapping",
+        {count:badNum.length}));
+    } else {
+      f.push(makeFinding("INFO","DQ_NON_NUMERIC",null,"รูปแบบตัวเลขอยู่ในเกณฑ์","-",{count:0}));
+    }
+
+    // DQ3: Duplicate (same year+statement+code+name+amount)
+    const keyCount = new Map();
+    for(const x of union){
+      const k = [
+        x.year, x.statement, (x.code||"").trim().toLowerCase(), (x.name||"").trim().toLowerCase(),
+        Number.isFinite(safeNum(x.amount)) ? safeNum(x.amount) : ""
+      ].join("|");
+      keyCount.set(k, (keyCount.get(k)||0)+1);
+    }
+    const dup = Array.from(keyCount.entries()).filter(([,c])=>c>1).length;
+    if(dup>0){
+      f.push(makeFinding("LOW","DQ_DUPLICATE",null,
+        `พบกลุ่มข้อมูลซ้ำ (duplicate groups) จำนวน ${dup} กลุ่ม`,
+        "ตรวจว่าซ้ำเพราะนำเข้าซ้ำ หรือเป็นคนละงวด/คนละแหล่ง แล้วควรเพิ่ม field period/section",
+        {groups:dup}));
+    } else {
+      f.push(makeFinding("INFO","DQ_DUPLICATE",null,"ไม่พบกลุ่มข้อมูลซ้ำเด่นชัด","-",{groups:0}));
+    }
+
+    // DQ4: Mapping completeness per slot
+    selectedSlots.forEach(sid=>{
+      const slot = slots.find(s=>s.id===sid);
+      if((slot.meta.mappedPct||0) < 40){
+        f.push(makeFinding("MED","DQ_MAPPING_LOW",null,
+          `${sid}: Mapping ต่ำ (${slot.meta.mappedPct||0}%) อาจทำให้วิเคราะห์ผิดพลาด`,
+          "เข้าไปที่ Mapping ของ Slot แล้วแมป year/code/name และ net/amount ให้ครบ",
+          {slotId:sid, mappedPct:slot.meta.mappedPct||0}
+        ));
+      }
